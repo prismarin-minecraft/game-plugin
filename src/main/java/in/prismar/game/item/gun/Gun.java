@@ -5,6 +5,8 @@ import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.gun.sound.GunSound;
 import in.prismar.game.item.gun.sound.GunSoundType;
+import in.prismar.game.item.gun.type.AmmoType;
+import in.prismar.game.item.gun.type.GunType;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.raytrace.result.RaytraceBlockHit;
@@ -194,6 +196,7 @@ public class Gun extends CustomItem {
         int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), "ammo");
         if(RELOADING.contains(player.getUniqueId())) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§eReloading"));
+            return;
         } else {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
                     ammo <= 0 ? "§cNo ammo" : "§b" + ammo + "§8/§7" + maxAmmo

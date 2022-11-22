@@ -1,7 +1,7 @@
 package in.prismar.game.item.gun.impl;
 
 import in.prismar.game.item.gun.Gun;
-import in.prismar.game.item.gun.GunType;
+import in.prismar.game.item.gun.type.GunType;
 import org.bukkit.Material;
 
 /**

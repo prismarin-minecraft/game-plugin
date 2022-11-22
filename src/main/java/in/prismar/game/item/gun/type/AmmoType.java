@@ -1,4 +1,4 @@
-package in.prismar.game.item.gun;
+package in.prismar.game.item.gun.type;
 
 import in.prismar.library.spigot.item.ItemBuilder;
 import lombok.AllArgsConstructor;
@@ -43,6 +43,7 @@ public enum AmmoType {
                        player.getInventory().setItem(i, null);
                    } else {
                        stack.setAmount(stack.getAmount() - amount);
+                       return;
                    }
                 }
             }

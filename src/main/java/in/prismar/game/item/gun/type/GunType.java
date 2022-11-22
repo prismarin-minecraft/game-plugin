@@ -1,4 +1,4 @@
-package in.prismar.game.item.gun;
+package in.prismar.game.item.gun.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
