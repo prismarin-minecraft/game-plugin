@@ -1,17 +1,12 @@
-package in.prismar.game.weapon;
+package in.prismar.game.item.gun;
 
 import in.prismar.game.raytrace.Raytrace;
-import in.prismar.game.raytrace.hitbox.RaytraceEntityHitbox;
-import in.prismar.game.raytrace.hitbox.RaytraceHitbox;
-import in.prismar.game.raytrace.hitbox.RaytraceHitboxHelper;
 import in.prismar.game.raytrace.result.RaytraceHit;
 import in.prismar.game.raytrace.result.RaytraceResult;
 import in.prismar.game.util.ParticleUtil;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
 
@@ -27,15 +22,25 @@ import java.util.List;
 @Getter
 public class Bullet {
 
+    private Particle particle;
+    private Location origin;
     private Raytrace raytrace;
     private Location endPoint;
+    private double range;
 
-    public Bullet(Particle particle, Location origin, Vector direction, double range, Consumer<List<RaytraceHit>> consumer) {
+    public Bullet(Particle particle, Location origin, Vector direction, double range) {
+        this.particle = particle;
+        this.origin = origin;
+        this.range = range;
         this.endPoint = origin.clone().add(direction.multiply(range));
-        ParticleUtil.spawnParticleAlongLine(origin, endPoint, particle, 20, 0);
+
         this.raytrace = new Raytrace(origin, direction);
+    }
+
+    public List<RaytraceHit> invoke() {
+        ParticleUtil.spawnParticleAlongLine(origin, endPoint, particle, 20, 0);
         RaytraceResult result = this.raytrace.ray(range);
         result.getHits().sort(Comparator.comparingDouble(o -> o.getPoint().distanceSquared(origin)));
-        consumer.accept(result.getHits());
+        return result.getHits();
     }
 }

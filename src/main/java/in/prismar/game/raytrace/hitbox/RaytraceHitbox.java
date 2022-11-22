@@ -1,6 +1,6 @@
-package eu.smashmc.backrooms.util.raytrace.hitbox;
+package in.prismar.game.raytrace.hitbox;
 
-import eu.smashmc.backrooms.util.raytrace.result.RaytraceHit;
+import in.prismar.game.raytrace.result.RaytraceHit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 

@@ -1,15 +1,15 @@
-package eu.smashmc.backrooms.util.raytrace.hitbox;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+package in.prismar.game.raytrace.hitbox;
 
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Copyright (c) Maga, All Rights Reserved Unauthorized copying of this file,

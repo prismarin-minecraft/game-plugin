@@ -1,4 +1,4 @@
-package eu.smashmc.backrooms.util;
+package in.prismar.game.util;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -13,14 +13,14 @@ import org.bukkit.util.Vector;
  **/
 public final class ParticleUtil {
 
-    public static void spawnParticleAlongLine(Player player, Location start, Location end, Particle particle, int pointsPerLine, int particleCount) {
+    public static void spawnParticleAlongLine(Location start, Location end, Particle particle, int pointsPerLine, int particleCount) {
         double d = start.distance(end) / pointsPerLine;
         for (int i = 0; i < pointsPerLine; i++) {
             Location l = start.clone();
             Vector direction = end.toVector().subtract(start.toVector()).normalize();
             Vector v = direction.multiply(i * d);
             l.add(v.getX(), v.getY(), v.getZ());
-            player.spawnParticle(particle, l, particleCount);
+            start.getWorld().spawnParticle(particle, l, particleCount);
         }
     }
 }

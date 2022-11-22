@@ -1,8 +1,7 @@
-name: Prismarin-Security
+name: Prismarin-Game
 version: 1.0
 api-version: 1.18
-main: in.prismar.security.Security
+main: in.prismar.game.Game
 author: Maga
-description: Prismarin-Security made by ReaperMaga
+description: Prismarin-Game made by ReaperMaga
 depend: [Prismarin-Core]
-softdepend: [Prismarin-Essentials]

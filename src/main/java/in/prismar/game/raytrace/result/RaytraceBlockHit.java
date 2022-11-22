@@ -1,4 +1,4 @@
-package eu.smashmc.backrooms.util.raytrace.result;
+package in.prismar.game.raytrace.result;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;

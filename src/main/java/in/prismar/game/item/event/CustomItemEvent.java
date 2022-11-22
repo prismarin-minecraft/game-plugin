@@ -1,4 +1,4 @@
-package eu.smashmc.backrooms.game.item.event;
+package in.prismar.game.item.event;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
  **/
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface BackroomItemEvent {
+public @interface CustomItemEvent {
 }

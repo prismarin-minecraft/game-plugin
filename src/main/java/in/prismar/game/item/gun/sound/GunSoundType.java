@@ -1,7 +1,22 @@
-package in.prismar.game.item.gun.sound;/**
+package in.prismar.game.item.gun.sound;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+/**
  * Copyright (c) Maga, All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * Written by Maga
- **/public enum GunSoundType {
+ **/
+@AllArgsConstructor
+@Getter
+public enum GunSoundType {
+
+    SHOOT(true),
+    RELOAD(false),
+    HIT(false),
+    HEADSHOT(false);
+
+    private final boolean surrounding;
 }

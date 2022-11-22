@@ -1,4 +1,7 @@
-package in.prismar.game.weapon;
+package in.prismar.game.item.gun;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -6,11 +9,15 @@ package in.prismar.game.weapon;
  * Proprietary and confidential
  * Written by Maga
  **/
+@AllArgsConstructor
+@Getter
 public enum GunType {
 
-    PISTOL,
-    SMG,
-    SHOTGUN,
-    AR,
-    SNIPER
+    PISTOL("Pistol"),
+    SMG("SMG"),
+    SHOTGUN("Shotgun"),
+    AR("Assault Rifle"),
+    SNIPER("Sniper");
+
+    private final String displayName;
 }

@@ -1,9 +1,8 @@
-package eu.smashmc.backrooms.game.item.event;
+package in.prismar.game.item.event;
 
-import eu.smashmc.backrooms.game.item.BackroomItem;
-import eu.smashmc.backrooms.game.GameProvider;
-import eu.smashmc.backrooms.game.GameService;
-import eu.smashmc.backrooms.game.model.Game;
+import in.prismar.game.Game;
+import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.holder.CustomItemHolder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -21,23 +20,23 @@ import java.util.Map;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class BackroomItemEventBus {
+public class CustomItemEventBus {
 
-    private final BackroomItem item;
+    private final CustomItem item;
     private Map<Class<?>, List<Method>> subscribers;
 
-    public BackroomItemEventBus(BackroomItem item) {
+    public CustomItemEventBus(CustomItem item) {
         this.item = item;
         this.subscribers = new HashMap<>();
         scan();
     }
 
-    public void publish(Player player, GameProvider provider, GameService service, Game game, Object event) {
+    public void publish(Player player, Game game, CustomItemHolder holder,  Object event) {
         if(subscribers.containsKey(event.getClass())) {
             List<Method> methods = subscribers.get(event.getClass());
             for(Method method : methods) {
                 try {
-                    method.invoke(item, player, provider, service, game, event);
+                    method.invoke(item, player, game, holder, event);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -48,8 +47,8 @@ public class BackroomItemEventBus {
     private void scan() {
         Class<?> clazz = item.getClass();
         for(Method method : clazz.getMethods()) {
-            if(method.isAnnotationPresent(BackroomItemEvent.class)) {
-                Parameter parameter = method.getParameters()[4];
+            if(method.isAnnotationPresent(CustomItemEvent.class)) {
+                Parameter parameter = method.getParameters()[3];
                 Class<?> type = parameter.getType();
                 if(!subscribers.containsKey(type)) {
                     subscribers.put(type, new ArrayList<>());
@@ -64,8 +63,7 @@ public class BackroomItemEventBus {
     public class BackroomItemEventArgs<T> {
 
         private Player player;
-        private GameProvider provider;
-        private GameService service;
+        private Game game;
         private T event;
     }
 }

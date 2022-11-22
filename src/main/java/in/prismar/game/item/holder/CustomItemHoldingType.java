@@ -6,7 +6,11 @@ package in.prismar.game.item.holder;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class CustomItemHolder {
+public enum CustomItemHoldingType {
 
-    private
+    INVENTORY,
+    RIGHT_HAND,
+    LEFT_HAND,
+    ARMOR,
+
 }

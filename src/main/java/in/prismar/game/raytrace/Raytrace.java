@@ -1,10 +1,11 @@
-package eu.smashmc.backrooms.util.raytrace;
+package in.prismar.game.raytrace;
 
-import eu.smashmc.backrooms.util.raytrace.hitbox.RaytraceHitbox;
-import eu.smashmc.backrooms.util.raytrace.hitbox.RaytraceHitboxFace;
-import eu.smashmc.backrooms.util.raytrace.hitbox.RaytraceHitboxHelper;
-import eu.smashmc.backrooms.util.raytrace.result.RaytraceHit;
-import eu.smashmc.backrooms.util.raytrace.result.RaytraceResult;
+
+import in.prismar.game.raytrace.hitbox.RaytraceHitbox;
+import in.prismar.game.raytrace.hitbox.RaytraceHitboxFace;
+import in.prismar.game.raytrace.hitbox.RaytraceHitboxHelper;
+import in.prismar.game.raytrace.result.RaytraceHit;
+import in.prismar.game.raytrace.result.RaytraceResult;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
