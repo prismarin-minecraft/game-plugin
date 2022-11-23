@@ -3,10 +3,15 @@ package in.prismar.game.item.command;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
+import in.prismar.game.item.command.sub.AmmoSubCommand;
+import in.prismar.game.item.command.sub.GetSubCommand;
+import in.prismar.game.item.command.sub.ListSubCommand;
 import in.prismar.library.meta.anno.Inject;
+import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
+import in.prismar.library.spigot.command.spigot.template.help.HelpCommand;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
 import org.bukkit.entity.Player;
 
@@ -17,37 +22,27 @@ import org.bukkit.entity.Player;
  * Written by Maga
  **/
 @AutoCommand
-public class CustomItemCommand extends SpigotCommand<Player> {
+public class CustomItemCommand extends HelpCommand<Player> {
 
     @Inject
     private CustomItemRegistry registry;
 
 
     public CustomItemCommand() {
-        super("customitem");
+        super("customitem", "CustomItem");
+        setBaseColor("§6");
         setSenders(Player.class);
         setPermission(PrismarinConstants.PERMISSION_PREFIX + "customitem");
     }
 
-    @Override
-    public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        if(arguments.getLength() >= 1) {
-            final String id = arguments.getString(0);
-            if(!registry.existsItemById(id)) {
-                player.sendMessage(PrismarinConstants.PREFIX + "§cThis item does not exists.");
-                return true;
-            }
-            CustomItem customItem = registry.getItemById(id);
-            player.getInventory().addItem(customItem.build());
-            player.sendMessage(PrismarinConstants.PREFIX + "§7You received the item §a" + customItem.getDisplayName());
-            return true;
-        }
-        player.sendMessage(PrismarinConstants.PREFIX + "Items§8:");
-        for(CustomItem item : registry.getItems().values()) {
-            player.sendMessage(PrismarinConstants.PREFIX + "  §8- §a" + item.getId());
-        }
-        return true;
+    @SafeInitialize
+    private void initialize() {
+        addChild(new ListSubCommand(registry));
+        addChild(new GetSubCommand(registry));
+        addChild(new AmmoSubCommand(registry));
     }
+
+
 
 
 }

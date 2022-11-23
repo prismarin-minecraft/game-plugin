@@ -1,15 +1,14 @@
-package in.prismar.game.item.command;
+package in.prismar.game.item.command.sub;
 
 import com.google.common.base.Joiner;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.gun.type.AmmoType;
 import in.prismar.library.common.math.MathUtil;
-import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
-import in.prismar.library.spigot.command.spigot.SpigotCommand;
-import in.prismar.library.spigot.meta.anno.AutoCommand;
+import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,37 +18,34 @@ import org.bukkit.inventory.ItemStack;
  * Proprietary and confidential
  * Written by Maga
  **/
-@AutoCommand
-public class AmmoCommand extends SpigotCommand<Player> {
+public class AmmoSubCommand extends HelpSubCommand<Player> {
 
-    @Inject
-    private CustomItemRegistry registry;
+    private final CustomItemRegistry registry;
 
-
-    public AmmoCommand() {
+    public AmmoSubCommand(CustomItemRegistry registry) {
         super("ammo");
-        setSenders(Player.class);
-        setPermission(PrismarinConstants.PERMISSION_PREFIX + "ammo");
+        setDescription("Get an ammo type");
+        setAliases("a");
+        setUsage("<type> <amount>");
+        this.registry = registry;
     }
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        if(arguments.getLength() >= 2) {
-            AmmoType type = AmmoType.getAmmoType(arguments.getString(0));
+        if(arguments.getLength() >= 3) {
+            AmmoType type = AmmoType.getAmmoType(arguments.getString(1));
             if(type == null) {
-                player.sendMessage(PrismarinConstants.PREFIX + "§cWrong type: " + Joiner.on(", ").join(AmmoType.values()));
+                player.sendMessage(PrismarinConstants.PREFIX + "§cThis type does not exists" );
                 return true;
             }
-            int amount = MathUtil.clamp(arguments.getInteger(1), 1, 64);
+            int amount = MathUtil.clamp(arguments.getInteger(2), 1, 64);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + amount + "x " + type.name());
             ItemStack item = type.getItem().clone();
             item.setAmount(amount);
             player.getInventory().addItem(item);
             return true;
         }
-        player.sendMessage(PrismarinConstants.PREFIX + "§cUsage: /ammo <type> <amount>");
+        player.sendMessage(PrismarinConstants.PREFIX + "§7Ammo types§8: §3" + Joiner.on("§8, §3").join(AmmoType.values()));
         return true;
     }
-
-
 }

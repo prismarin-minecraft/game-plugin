@@ -3,11 +3,10 @@ package in.prismar.game.item.gun;
 import in.prismar.game.raytrace.Raytrace;
 import in.prismar.game.raytrace.result.RaytraceHit;
 import in.prismar.game.raytrace.result.RaytraceResult;
-import in.prismar.game.util.ParticleUtil;
+import in.prismar.library.spigot.particle.ParticleUtil;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
 
 import java.util.Comparator;
