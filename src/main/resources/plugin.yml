@@ -5,3 +5,4 @@ main: in.prismar.game.Game
 author: Maga
 description: Prismarin-Game made by ReaperMaga
 depend: [Prismarin-Core]
+softdepend: [Multiverse-Core]

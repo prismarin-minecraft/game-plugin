@@ -1,11 +1,14 @@
 package in.prismar.game.item;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.gun.impl.TestGun;
+import in.prismar.game.item.gun.Gun;
+import in.prismar.game.item.gun.impl.G36Gun;
+import in.prismar.game.item.gun.impl.L96Gun;
+import in.prismar.game.item.gun.impl.Spas12Gun;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
+import in.prismar.game.util.PersistentItemDataUtil;
 import in.prismar.library.meta.anno.Service;
-import in.prismar.library.spigot.item.ItemUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -37,7 +40,9 @@ public class CustomItemRegistry {
     }
 
     private void load() {
-        register(new TestGun());
+        register(new G36Gun());
+        register(new L96Gun());
+        register(new Spas12Gun());
     }
 
 
@@ -127,5 +132,16 @@ public class CustomItemRegistry {
 
     public ItemStack createItem(String id) {
         return getItemById(id.toLowerCase()).build();
+    }
+
+    public ItemStack createGunItem(String id) {
+        CustomItem customItem = getItemById(id.toLowerCase());
+        if(customItem instanceof Gun gun) {
+            ItemStack item = getItemById(id.toLowerCase()).build();
+            PersistentItemDataUtil.setInteger(game, item, "ammo", gun.getMaxAmmo());
+            return item;
+        }
+        return customItem.build();
+
     }
 }

@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -41,9 +42,9 @@ import java.util.*;
 @Setter
 public class Gun extends CustomItem {
 
-
+    private static final DecimalFormat RELOADING_DECIMAL_FORMAT = new DecimalFormat("0.0");
     private static Map<UUID, Long> LAST_INTERACT = new HashMap<>();
-    private static Set<UUID> RELOADING = new HashSet<>();
+    private static Map<UUID, Long> RELOADING = new HashMap<>();
     private static Map<UUID, Long> UPDATE_PLAYER_TICK = new HashMap<>();
 
     private final GunType type;
@@ -73,12 +74,16 @@ public class Gun extends CustomItem {
 
         registerSound(GunSoundType.SHOOT, Sound.ENTITY_BLAZE_HURT, 0.6f, 2f);
 
-        registerSound(GunSoundType.HIT, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.65f, 1.66f);
+        registerSound(GunSoundType.HIT, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.9f, 1.66f);
+        registerSound(GunSoundType.HEADSHOT, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.3f, 1f);
 
         registerSound(GunSoundType.RELOAD, Sound.BLOCK_PISTON_CONTRACT, 0.65f, 0.7f);
 
         allFlags();
 
+    }
+
+    protected void generateDefaultLore() {
         addLore("§c ");
         addLore(" §7Type§8: §b" + type.getDisplayName());
         addLore(" §7Range§8: §b" + range);
@@ -92,7 +97,6 @@ public class Gun extends CustomItem {
         addLore("   §8➥ §7Body§8: §b" + bodyDamage);
         addLore("   §8➥ §7Legs§8: §b" + legDamage);
         addLore("§c ");
-
     }
 
     public void playSound(Player player, GunSoundType type) {
@@ -116,8 +120,14 @@ public class Gun extends CustomItem {
         this.sounds.get(type).add(new GunSound(sound, volume, pitch));
     }
 
+    public void clearSounds(GunSoundType type) {
+        if(this.sounds.containsKey(type)) {
+            this.sounds.get(type).clear();
+        }
+    }
+
     public void shoot(Player player) {
-        double spread = player.isSneaking() ? this.spread : this.sneakSpread;
+        double spread = !player.isSneaking() ? this.spread : this.sneakSpread;
         Bullet bullet = new Bullet(Particle.CRIT, player.getEyeLocation().subtract(0, 0.3, 0),
                 getRandomizedDirection(player, spread), range);
         playSound(player, GunSoundType.SHOOT);
@@ -126,6 +136,7 @@ public class Gun extends CustomItem {
         for(RaytraceHit hit : hits) {
             if(hit instanceof RaytraceEntityHit entityHit) {
                 if(!entityHit.getTarget().getName().equals(player.getName())) {
+                    boolean headshot = false;
                     double distance = entityHit.getTarget().getLocation().distanceSquared(entityHit.getPoint());
                     double damage = 0;
                     if(distance <= 0.7) {
@@ -134,6 +145,7 @@ public class Gun extends CustomItem {
                         damage = bodyDamage;
                     } else if (distance >= 2.1) {
                         damage = headDamage;
+                        headshot = true;
                     }
                     for (int i = 0; i < damageReduce; i++) {
                         damage -= (damage / 100) * 50;
@@ -141,6 +153,11 @@ public class Gun extends CustomItem {
                     if(damage > 0) {
                         LivingEntity entity = (LivingEntity)entityHit.getTarget();
                         entity.damage(damage, player);
+                        if(headshot) {
+                            playSound(player, GunSoundType.HEADSHOT);
+                        } else {
+                            playSound(player, GunSoundType.HIT);
+                        }
                     }
                     damageReduce++;
                 }
@@ -151,10 +168,13 @@ public class Gun extends CustomItem {
     }
 
     public void reload(Player player, Game game, ItemStack stack) {
-        if(RELOADING.contains(player.getUniqueId())) {
+        if(RELOADING.containsKey(player.getUniqueId())) {
             return;
         }
         int current = PersistentItemDataUtil.getInteger(game, stack, "ammo");
+        if(current >= maxAmmo) {
+            return;
+        }
         int needed = maxAmmo - current;
 
         int ammoToGive;
@@ -173,7 +193,7 @@ public class Gun extends CustomItem {
                 PersistentItemDataUtil.setInteger(game, stack, "ammo", finalAmmoToGive);
                 RELOADING.remove(player.getUniqueId());
             }, reloadTimeInTicks);
-            RELOADING.add(player.getUniqueId());
+            RELOADING.put(player.getUniqueId(), System.currentTimeMillis() + 1000 * (reloadTimeInTicks/20));
             playSound(player, GunSoundType.RELOAD);
         }
 
@@ -194,8 +214,11 @@ public class Gun extends CustomItem {
             currentUpdateTick = 0;
         }
         int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), "ammo");
-        if(RELOADING.contains(player.getUniqueId())) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§eReloading"));
+        if(RELOADING.containsKey(player.getUniqueId())) {
+            long max = RELOADING.get(player.getUniqueId());
+            long difference = max - System.currentTimeMillis();
+            double result = (double) difference / 1000.0;
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§eReloading " + RELOADING_DECIMAL_FORMAT.format(result) + "s"));
             return;
         } else {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(
@@ -208,7 +231,9 @@ public class Gun extends CustomItem {
         long difference = System.currentTimeMillis() - lastInteract;
         if (difference <= 210 && currentUpdateTick % fireRateTicks == 0) {
             if(ammo >= 1) {
-                shoot(player);
+                for (int i = 0; i < bulletsPerShot; i++) {
+                    shoot(player);
+                }
                 ammo--;
                 PersistentItemDataUtil.setInteger(game, holder.getStack(), "ammo", ammo);
             }

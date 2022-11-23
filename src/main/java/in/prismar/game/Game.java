@@ -1,5 +1,7 @@
 package in.prismar.game;
 
+import in.prismar.game.map.GameMapFacade;
+import in.prismar.game.map.model.GameMap;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.meta.SpigotCommandProcessor;
@@ -7,8 +9,11 @@ import in.prismar.library.spigot.meta.SpigotListenerProcessor;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import in.prismar.library.spigot.setup.SpigotSetup;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -23,6 +28,10 @@ public class Game extends JavaPlugin {
     private SpigotSetup setup;
 
     private MetaRegistry metaRegistry;
+
+
+    private GameMapFacade mapFacade;
+
 
     @Override
     public void onEnable() {
@@ -39,6 +48,10 @@ public class Game extends JavaPlugin {
         this.metaRegistry.build(this.getClassLoader(), "in.prismar.game");
 
         setup.register();
+    }
+
+    public String getDefaultDirectory() {
+        return new StringBuilder("plugins").append(File.separator).append(getDescription().getName()).append(File.separator).toString();
     }
 
 }
