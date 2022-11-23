@@ -24,6 +24,9 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
+        if(event.isCancelled()) {
+            return;
+        }
         if(event.getEntity() instanceof Player target && event.getDamager() instanceof Player damager) {
              double damage = event.getDamage();
              double nextHealth = target.getHealth() - damage;
@@ -40,8 +43,15 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if(event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-            event.setCancelled(true);
+        if(event.getEntity() instanceof Player player) {
+            if(facade.isCurrentlyPlaying(player)) {
+                if(event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                    event.setCancelled(true);
+                }
+            } else {
+                event.setCancelled(true);
+            }
+
         }
     }
 
