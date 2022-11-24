@@ -44,8 +44,11 @@ public class EntityDamageListener implements Listener {
                  target.sendTitle("§4You died", "", 5, 20, 5);
                  event.setCancelled(true);
                  facade.respawn(target);
+
+                 int health = (int)damager.getHealth();
+                 facade.sendMessage(PrismarinConstants.PREFIX + getRandomDeathMessage(damager, target) + " §8(§c"+health+"♥§8)");
+
                  damager.setHealth(20);
-                 facade.sendMessage(PrismarinConstants.PREFIX + getRandomDeathMessage(damager, target));
              }
         }
     }
