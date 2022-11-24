@@ -1,14 +1,13 @@
-package in.prismar.game.map.listener.block;
+package in.prismar.game.map.listener.player;
 
 import in.prismar.game.map.GameMapFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -17,16 +16,16 @@ import org.bukkit.event.block.BlockPlaceEvent;
  * Written by Maga
  **/
 @AutoListener
-public class BlockPlaceListener implements Listener {
+public class PlayerQuitListener implements Listener {
 
     @Inject
     private GameMapFacade facade;
 
     @EventHandler
-    public void onCall(BlockPlaceEvent event) {
+    public void onCall(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if(facade.isCurrentlyPlaying(player)) {
-            event.setCancelled(true);
+            facade.leave(player);
         }
     }
 }

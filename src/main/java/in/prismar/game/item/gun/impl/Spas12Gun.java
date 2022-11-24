@@ -18,14 +18,14 @@ public class Spas12Gun extends Gun {
     public Spas12Gun() {
         super("Spas-12", GunType.SHOTGUN, Material.IRON_SHOVEL, "§fSpas-12");
         setAmmoType(AmmoType.SHOTGUN);
-        setSpread(25);
-        setSneakSpread(20);
+        setSpread(18);
+        setSneakSpread(14);
 
         setRange(13);
 
-        setLegDamage(2);
-        setBodyDamage(4);
-        setHeadDamage(6);
+        setLegDamage(5);
+        setBodyDamage(7);
+        setHeadDamage(8);
 
         setFireRate(120);
 
@@ -33,12 +33,12 @@ public class Spas12Gun extends Gun {
 
         setReloadTimeInTicks(60);
 
-        setBulletsPerShot(5);
+        setBulletsPerShot(8);
 
         generateDefaultLore();
 
         clearSounds(GunSoundType.SHOOT);
-        registerSound(GunSoundType.SHOOT, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 0.5f, 0.6f);
+        registerSound(GunSoundType.SHOOT, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 0.45f, 0.6f);
 
     }
 }

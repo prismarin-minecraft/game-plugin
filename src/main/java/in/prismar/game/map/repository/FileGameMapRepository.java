@@ -45,6 +45,7 @@ public class FileGameMapRepository extends GsonFileWrapper<Map<String, GameMap>>
         map.setIcon(new ItemContainer(icon));
         map.setSpawns(new ArrayList<>());
         map.setPowerUps(new ArrayList<>());
+        map.setPlayers(new HashMap<>());
         return create(map);
     }
 

@@ -1,7 +1,10 @@
 package in.prismar.game.map.listener.entity;
 
+import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.map.GameMapFacade;
+import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.Player;
@@ -22,6 +25,12 @@ public class EntityDamageListener implements Listener {
     @Inject
     private GameMapFacade facade;
 
+    private ConfigStore store;
+
+    public EntityDamageListener() {
+        this.store = PrismarinApi.getProvider(ConfigStore.class);
+    }
+
     @EventHandler
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
         if(event.isCancelled()) {
@@ -32,13 +41,20 @@ public class EntityDamageListener implements Listener {
              double nextHealth = target.getHealth() - damage;
              if(nextHealth <= 0) {
                  damager.sendTitle("§4☠", "", 5, 20, 5);
-                 target.sendTitle("§4You died", "§7from " + damager.getName(), 5, 20, 5);
+                 target.sendTitle("§4You died", "", 5, 20, 5);
                  event.setCancelled(true);
                  facade.respawn(target);
                  damager.setHealth(20);
-                 facade.sendMessage(PrismarinConstants.PREFIX + "§e" + damager.getName() + " §7banged §c" + target.getName()+"'s §7mom.");
+                 facade.sendMessage(PrismarinConstants.PREFIX + getRandomDeathMessage(damager, target));
              }
         }
+    }
+
+    public String getRandomDeathMessage(Player killer, Player target) {
+        String[] messages = store.getProperty("death.messages").split("/");
+        String random = messages[MathUtil.random(messages.length - 1)];
+        return random.replace("&", "§").replace("{killer}", killer.getName())
+                .replace("{target}", target.getName());
     }
 
     @EventHandler

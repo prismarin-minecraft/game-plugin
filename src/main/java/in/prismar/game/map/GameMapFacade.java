@@ -1,6 +1,7 @@
 package in.prismar.game.map;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.placeholder.PlaceholderStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
@@ -39,15 +40,17 @@ public class GameMapFacade {
     private GameMapRepository repository;
     private GameMapRotator rotator;
 
-
     @Inject
     private PowerUpRegistry powerUpRegistry;
 
     private final UserProvider<User> userProvider;
 
+    private final PlaceholderStore placeholderStore;
+
     public GameMapFacade(Game game) {
         this.repository = new FileGameMapRepository(game.getDefaultDirectory());
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
+        this.placeholderStore = PrismarinApi.getProvider(PlaceholderStore.class);
         Bukkit.getScheduler().runTaskTimer(game, rotator = new GameMapRotator(this), 5, 5);
     }
 
@@ -67,10 +70,7 @@ public class GameMapFacade {
         return false;
     }
 
-    public void join(Player player) {
-        rotator.getCurrentMap().getPlayers().put(player.getUniqueId(), player);
-        respawn(player);
-    }
+
 
     public void fillAmmo(Player player) {
         for (int i = 9; i < 15; i++) {
@@ -102,10 +102,18 @@ public class GameMapFacade {
 
     }
 
+    public void join(Player player) {
+        rotator.getCurrentMap().getPlayers().put(player.getUniqueId(), player);
+        respawn(player);
+
+        placeholderStore.setPlayerPlaceholder(player.getUniqueId(), "playing", true);
+    }
+
     public void leave(Player player) {
         rotator.getCurrentMap().getPlayers().remove(player.getUniqueId());
         resetPlayer(player, GameMode.ADVENTURE);
         player.performCommand("spawn");
+        placeholderStore.setPlayerPlaceholder(player.getUniqueId(), "playing", false);
     }
 
     private void resetPlayer(Player player, GameMode mode) {

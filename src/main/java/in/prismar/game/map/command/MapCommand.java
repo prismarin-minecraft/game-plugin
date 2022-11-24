@@ -42,6 +42,7 @@ public class MapCommand extends HelpCommand<Player> {
         addChild(new CallVoteSubCommand(facade));
         addChild(new JoinSubCommand(facade));
         addChild(new LeaveSubCommand(facade));
+        addChild(new EditIconSubCommand(facade));
     }
 
 
