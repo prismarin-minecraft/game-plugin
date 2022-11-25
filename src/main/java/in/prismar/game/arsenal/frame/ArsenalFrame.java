@@ -27,13 +27,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEvent> {
 
     private static final ItemStack ARROW_DOWN = new CustomSkullBuilder("https://textures.minecraft.net/texture/72431911f4178b4d2b413aa7f5c78ae4447fe9246943c31df31163c0e043e0d6").build();
+    private static final ItemStack ARROW_RIGHT = new CustomSkullBuilder("https://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e").build();
 
     private static final int PRIMARY_SLOT = 22;
     private static final int SECONDARY_SLOT = 24;
-    private static final int HELMET_SLOT = 10;
-    private static final int CHESTPLATE_SLOT = 19;
-    private static final int LEGGINGS_SLOT = 28;
-    private static final int BOOTS_SLOT = 37;
+    private static final int HELMET_SLOT = 11;
+    private static final int CHESTPLATE_SLOT = 20;
+    private static final int LEGGINGS_SLOT = 29;
+    private static final int BOOTS_SLOT = 38;
 
     private final ArsenalService service;
     private Player player;
@@ -50,7 +51,11 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
         addButton(PRIMARY_SLOT-9, createArrowDownItem("§cPrimary"));
         addButton(SECONDARY_SLOT-9, createArrowDownItem("§eSecondary"));
-        addButton(HELMET_SLOT-9, createArrowDownItem("§dArmor"));
+
+        addButton(HELMET_SLOT-1, createArrowRightItem("§dHelmet"));
+        addButton(CHESTPLATE_SLOT-1, createArrowRightItem("§dChestplate"));
+        addButton(LEGGINGS_SLOT-1, createArrowRightItem("§dLeggings"));
+        addButton(BOOTS_SLOT-1, createArrowRightItem("§dBoots"));
 
         addArsenalItem(PRIMARY_SLOT, "primary", "§cEmpty");
         addArsenalItem(SECONDARY_SLOT, "secondary", "§cEmpty");
@@ -67,6 +72,14 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
     private ItemStack createArrowDownItem(String display) {
         ItemStack stack = ARROW_DOWN.clone();
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(display);
+        stack.setItemMeta(meta);
+        return stack;
+    }
+
+    private ItemStack createArrowRightItem(String display) {
+        ItemStack stack = ARROW_RIGHT.clone();
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(display);
         stack.setItemMeta(meta);

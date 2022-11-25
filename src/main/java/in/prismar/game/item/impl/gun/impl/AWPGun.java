@@ -14,7 +14,7 @@ import org.bukkit.Material;
 public class AWPGun extends Gun {
 
     public AWPGun() {
-        super("AWP", GunType.SNIPER, Material.SPYGLASS, "§cAWP");
+        super("AWP", GunType.SNIPER, Material.NETHERITE_HOE, "§cAWP");
         setAmmoType(AmmoType.SNIPER);
         setSpread(12);
         setSneakSpread(0);
