@@ -11,24 +11,24 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class G36Gun extends Gun {
+public class VectorGun extends Gun {
 
-    public G36Gun() {
-        super("G36", GunType.AR, Material.IRON_PICKAXE, "§9G36");
-        setAmmoType(AmmoType.AR);
-        setSpread(2.5);
-        setSneakSpread(1);
-        setRange(50);
+    public VectorGun() {
+        super("Vector", GunType.SMG, Material.GOLDEN_AXE, "§eVector");
+        setAmmoType(AmmoType.SMG);
+        setSpread(3);
+        setSneakSpread(1.5);
+        setRange(30);
 
-        setLegDamage(3);
-        setBodyDamage(6);
-        setHeadDamage(9);
+        setLegDamage(2);
+        setBodyDamage(5);
+        setHeadDamage(8);
 
-        setFireRate(400);
+        setFireRate(750);
 
-        setMaxAmmo(30);
+        setMaxAmmo(25);
 
-        setReloadTimeInTicks(40);
+        setReloadTimeInTicks(20);
 
         generateDefaultLore();
 

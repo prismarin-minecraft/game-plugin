@@ -42,15 +42,22 @@ import java.util.*;
 @Setter
 public class Gun extends CustomItem {
 
+    public static final String AMMO_KEY = "ammo";
+
     private static final DecimalFormat RELOADING_DECIMAL_FORMAT = new DecimalFormat("0.0");
     private static Map<UUID, Long> LAST_INTERACT = new HashMap<>();
     private static Map<UUID, Long> RELOADING = new HashMap<>();
     private static Map<UUID, Long> UPDATE_PLAYER_TICK = new HashMap<>();
 
     private final GunType type;
+
+    private Particle shootParticle = Particle.CRIT;
     private AmmoType ammoType = AmmoType.PISTOL;
     private double range = 20;
     private int fireRate = 120;
+
+    private boolean rightClickShoot = true;
+    private boolean disableInteraction = true;
 
     private double spread = 1;
     private double sneakSpread = 0.5;
@@ -78,6 +85,8 @@ public class Gun extends CustomItem {
         registerSound(GunSoundType.HEADSHOT, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.3f, 1f);
 
         registerSound(GunSoundType.RELOAD, Sound.BLOCK_PISTON_CONTRACT, 0.65f, 0.7f);
+
+        setUnbreakable(true);
 
         allFlags();
 
@@ -128,7 +137,7 @@ public class Gun extends CustomItem {
 
     public void shoot(Player player) {
         double spread = !player.isSneaking() ? this.spread : this.sneakSpread;
-        Bullet bullet = new Bullet(Particle.CRIT, player.getEyeLocation().subtract(0, 0.3, 0),
+        Bullet bullet = new Bullet(shootParticle, player.getEyeLocation().subtract(0, 0.3, 0),
                 getRandomizedDirection(player, spread), range);
         playSound(player, GunSoundType.SHOOT);
         List<RaytraceHit> hits = bullet.invoke();
@@ -171,7 +180,7 @@ public class Gun extends CustomItem {
         if(RELOADING.containsKey(player.getUniqueId())) {
             return;
         }
-        int current = PersistentItemDataUtil.getInteger(game, stack, "ammo");
+        int current = PersistentItemDataUtil.getInteger(game, stack, AMMO_KEY);
         if(current >= maxAmmo) {
             return;
         }
@@ -190,10 +199,10 @@ public class Gun extends CustomItem {
             }
             int finalAmmoToGive = ammoToGive;
             Bukkit.getScheduler().runTaskLater(game, () -> {
-                PersistentItemDataUtil.setInteger(game, stack, "ammo", finalAmmoToGive);
+                PersistentItemDataUtil.setInteger(game, stack, AMMO_KEY, finalAmmoToGive);
                 RELOADING.remove(player.getUniqueId());
             }, reloadTimeInTicks);
-            RELOADING.put(player.getUniqueId(), System.currentTimeMillis() + 1000 * (reloadTimeInTicks/20));
+            RELOADING.put(player.getUniqueId(), System.currentTimeMillis() + 50 * reloadTimeInTicks);
             playSound(player, GunSoundType.RELOAD);
         }
 
@@ -213,7 +222,7 @@ public class Gun extends CustomItem {
         if(currentUpdateTick >= Integer.MAX_VALUE) {
             currentUpdateTick = 0;
         }
-        int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), "ammo");
+        int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
         if(RELOADING.containsKey(player.getUniqueId())) {
             long max = RELOADING.get(player.getUniqueId());
             long difference = max - System.currentTimeMillis();
@@ -235,7 +244,7 @@ public class Gun extends CustomItem {
                     shoot(player);
                 }
                 ammo--;
-                PersistentItemDataUtil.setInteger(game, holder.getStack(), "ammo", ammo);
+                PersistentItemDataUtil.setInteger(game, holder.getStack(), AMMO_KEY, ammo);
             }
         }
         if(difference > 210) {
@@ -250,17 +259,34 @@ public class Gun extends CustomItem {
     @CustomItemEvent
     public void onInteract(Player player, Game game, CustomItemHolder holder, PlayerInteractEvent event) {
         if (holder.getHoldingType() == CustomItemHoldingType.RIGHT_HAND) {
+            boolean allowedInteract = rightClickShoot ? event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR :
+                    event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR;
             if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                reload(event.getPlayer(), game, holder.getStack());
-            } else if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
-                event.setCancelled(true);
-                if(!LAST_INTERACT.containsKey(player.getUniqueId())) {
-                    UPDATE_PLAYER_TICK.put(player.getUniqueId(), 0l);
+                if(!rightClickShoot) {
+                    updateLastInteract(player);
+                    int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
+                    if(ammo <= 0) {
+                        reload(event.getPlayer(), game, holder.getStack());
+                    }
+                } else {
+                    reload(event.getPlayer(), game, holder.getStack());
                 }
-                LAST_INTERACT.put(player.getUniqueId(), System.currentTimeMillis());
+
+            } else if(allowedInteract) {
+                if(disableInteraction) {
+                    event.setCancelled(true);
+                }
+               updateLastInteract(player);
             }
 
         }
+    }
+
+    private void updateLastInteract(Player player) {
+        if(!LAST_INTERACT.containsKey(player.getUniqueId())) {
+            UPDATE_PLAYER_TICK.put(player.getUniqueId(), 0l);
+        }
+        LAST_INTERACT.put(player.getUniqueId(), System.currentTimeMillis());
     }
 
     private Vector getRandomizedDirection(Player player, double spread) {

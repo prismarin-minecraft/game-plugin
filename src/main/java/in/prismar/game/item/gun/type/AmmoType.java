@@ -20,7 +20,9 @@ public enum AmmoType {
     PISTOL(new ItemBuilder(Material.FLINT).setName("§7Pistol Ammo").build()),
     AR(new ItemBuilder(Material.GLOWSTONE_DUST).setName("§eAR Ammo").build()),
     SNIPER(new ItemBuilder(Material.REDSTONE).setName("§cSniper Ammo").build()),
-    SHOTGUN(new ItemBuilder(Material.BLAZE_POWDER).setName("§fShotgun Ammo").build());
+    SHOTGUN(new ItemBuilder(Material.BLAZE_POWDER).setName("§fShotgun Ammo").build()),
+
+    SMG(new ItemBuilder(Material.LAPIS_LAZULI).setName("§9SMG Ammo").build());
 
     private final ItemStack item;
 

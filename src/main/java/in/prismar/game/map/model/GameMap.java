@@ -1,5 +1,6 @@
 package in.prismar.game.map.model;
 
+import in.prismar.api.map.GameMapLeaderboardEntry;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.repository.entity.StringRepositoryEntity;
 import in.prismar.library.spigot.item.container.ItemContainer;
@@ -26,7 +27,9 @@ public class GameMap extends StringRepositoryEntity {
 
     private List<GameMapPowerUp> powerUps;
 
-    private transient Map<UUID, Player> players;
+    private transient List<GameMapLeaderboardEntry> leaderboard;
+
+    private transient Map<UUID, GameMapPlayer> players;
 
     @Override
     public String toString() {
@@ -35,5 +38,9 @@ public class GameMap extends StringRepositoryEntity {
 
     public Location getRandomSpawn() {
         return spawns.get(MathUtil.random(spawns.size() - 1));
+    }
+
+    public String getFancyName() {
+        return icon.getItem().getItemMeta().getDisplayName();
     }
 }

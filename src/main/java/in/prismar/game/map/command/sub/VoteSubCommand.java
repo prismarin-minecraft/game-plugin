@@ -7,6 +7,7 @@ import in.prismar.game.map.repository.GameMapRepository;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -48,7 +49,9 @@ public class VoteSubCommand extends HelpSubCommand<Player> {
                 return true;
             }
             facade.getRotator().voteForMap(map, player.getUniqueId());
-            player.sendMessage(PrismarinConstants.PREFIX + "§7You have voted for the map §b" + map.getIcon().getItem().getItemMeta().getDisplayName());
+            Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§b" + player.getName() + " §7has voted for §3" + map.getFancyName());
+
+            player.sendMessage(PrismarinConstants.PREFIX + "§7You have voted for the map §b" + map.getFancyName());
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.65f, 1);
             return true;
         }

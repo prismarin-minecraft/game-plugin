@@ -34,7 +34,7 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
         if(arguments.getLength() >= 2) {
-            final String id = arguments.getString(1);
+            final String id = arguments.getString(1).toLowerCase();
             if(repository.existsById(id)) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis map already exists");
                 return true;

@@ -6,6 +6,7 @@ import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.placeholder.PlaceholderStore;
 import in.prismar.game.map.GameMapFacade;
 import in.prismar.game.map.model.GameMap;
+import in.prismar.game.map.model.GameMapPlayer;
 import in.prismar.game.map.model.GameMapPowerUp;
 import in.prismar.game.map.powerup.PowerUp;
 import in.prismar.library.spigot.hologram.Hologram;
@@ -127,7 +128,8 @@ public class GameMapRotator implements Runnable {
                     mapPowerUp.setHologram(spawnPowerUpHologram(mapPowerUp.getLocation(), powerUp));
                 } else {
                     if(mapPowerUp.getHologram() != null) {
-                        for(Player player : currentMap.getPlayers().values()) {
+                        for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                            Player player = mapPlayer.getPlayer();
                             if(!player.getWorld().getName().equalsIgnoreCase(mapPowerUp.getLocation().getWorld().getName())) {
                                 continue;
                             }
@@ -154,15 +156,15 @@ public class GameMapRotator implements Runnable {
             if(now >= nextRotate) {
                 GameMap winner = findVoteWinner();
                 if(!winner.getId().equalsIgnoreCase(currentMap.getId())) {
-                    for(Player player : currentMap.getPlayers().values()) {
-                        winner.getPlayers().put(player.getUniqueId(), player);
+                    for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                        winner.getPlayers().put(mapPlayer.getPlayer().getUniqueId(), mapPlayer);
                     }
                     currentMap.getPlayers().clear();
                 }
 
                 this.currentMap = winner;
-                for(Player player : currentMap.getPlayers().values()) {
-                    facade.respawn(player);
+                for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                    facade.respawn(mapPlayer.getPlayer());
                 }
                 registerCurrentMapPlaceholder();
                 Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§7Map changed to " + winner.getIcon().getItem().getItemMeta().getDisplayName());

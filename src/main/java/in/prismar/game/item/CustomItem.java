@@ -26,6 +26,8 @@ public class CustomItem {
     private final Material material;
 
     private final String displayName;
+
+    private boolean unbreakable;
     private List<String> lore;
 
     private CustomItemEventBus eventBus;
@@ -36,6 +38,11 @@ public class CustomItem {
         this.displayName = displayName;
         this.material = material;
         this.eventBus = new CustomItemEventBus(this);
+    }
+
+    public CustomItem setUnbreakable(boolean unbreakable) {
+        this.unbreakable = unbreakable;
+        return this;
     }
 
     public CustomItem allFlags() {
@@ -63,6 +70,7 @@ public class CustomItem {
         if (this.flags != null) {
             meta.addItemFlags(this.flags);
         }
+        meta.setUnbreakable(unbreakable);
         stack.setItemMeta(meta);
         return stack;
     }

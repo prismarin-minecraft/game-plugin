@@ -11,27 +11,27 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class L96Gun extends Gun {
+public class DesertEagleGun extends Gun {
 
-    public L96Gun() {
-        super("L96", GunType.SNIPER, Material.GOLDEN_HOE, "§cL96");
-        setAmmoType(AmmoType.SNIPER);
-        setSpread(10);
+    public DesertEagleGun() {
+        super("DesertEagle", GunType.PISTOL, Material.BLAZE_ROD, "§fDesert Eagle");
+        setAmmoType(AmmoType.PISTOL);
+        setSpread(1.5);
         setSneakSpread(0);
+        setRange(45);
 
-        setRange(70);
-
-        setLegDamage(10);
-        setBodyDamage(15);
-        setHeadDamage(20);
+        setLegDamage(6);
+        setBodyDamage(12);
+        setHeadDamage(18);
 
         setFireRate(60);
 
-        setMaxAmmo(5);
+        setMaxAmmo(7);
 
-        setReloadTimeInTicks(80);
+        setReloadTimeInTicks(45);
 
         generateDefaultLore();
+
 
     }
 }

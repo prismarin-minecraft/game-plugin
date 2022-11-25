@@ -1,8 +1,11 @@
 package in.prismar.game;
 
+import in.prismar.api.PrismarinApi;
+import in.prismar.api.map.GameMapProvider;
 import in.prismar.game.map.GameMapFacade;
 import in.prismar.game.map.model.GameMap;
 import in.prismar.library.meta.MetaRegistry;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.meta.SpigotCommandProcessor;
 import in.prismar.library.spigot.meta.SpigotListenerProcessor;
@@ -30,6 +33,7 @@ public class Game extends JavaPlugin {
     private MetaRegistry metaRegistry;
 
 
+    @Inject
     private GameMapFacade mapFacade;
 
 
@@ -48,6 +52,12 @@ public class Game extends JavaPlugin {
         this.metaRegistry.build(this.getClassLoader(), "in.prismar.game");
 
         setup.register();
+
+        initApi();
+    }
+
+    private void initApi() {
+        PrismarinApi.registerProvider(GameMapProvider.class, mapFacade);
     }
 
     public String getDefaultDirectory() {

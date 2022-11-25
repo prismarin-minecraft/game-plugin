@@ -11,24 +11,24 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class G36Gun extends Gun {
+public class M4A1Gun extends Gun {
 
-    public G36Gun() {
-        super("G36", GunType.AR, Material.IRON_PICKAXE, "§9G36");
+    public M4A1Gun() {
+        super("M4A1", GunType.AR, Material.NETHERITE_PICKAXE, "§9M4A1");
         setAmmoType(AmmoType.AR);
-        setSpread(2.5);
+        setSpread(2);
         setSneakSpread(1);
-        setRange(50);
+        setRange(55);
 
-        setLegDamage(3);
-        setBodyDamage(6);
-        setHeadDamage(9);
+        setLegDamage(7);
+        setBodyDamage(9);
+        setHeadDamage(12);
 
-        setFireRate(400);
+        setFireRate(415);
 
         setMaxAmmo(30);
 
-        setReloadTimeInTicks(40);
+        setReloadTimeInTicks(50);
 
         generateDefaultLore();
 

@@ -1,5 +1,6 @@
 package in.prismar.game.map.listener.player;
 
+import in.prismar.api.PrismarinConstants;
 import in.prismar.game.map.GameMapFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
@@ -26,7 +27,7 @@ public class PlayerInventoryClickListener implements Listener {
     public void onCall(InventoryClickEvent event) {
         if(event.getClickedInventory() != null) {
             Player player = (Player) event.getWhoClicked();
-            if(facade.isCurrentlyPlaying(player)) {
+            if(facade.isCurrentlyPlaying(player) && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "inventory.click.bypass")) {
                 event.setCancelled(true);
                 event.setResult(Event.Result.DENY);
             }

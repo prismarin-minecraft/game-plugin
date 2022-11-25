@@ -13,32 +13,30 @@ import org.bukkit.Sound;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class Spas12Gun extends Gun {
+public class M1014Gun extends Gun {
 
-    public Spas12Gun() {
-        super("Spas-12", GunType.SHOTGUN, Material.IRON_SHOVEL, "§aSpas-12");
-        setAmmoType(AmmoType.SHOTGUN);
+    public M1014Gun() {
+        super("M1014", GunType.SHOTGUN, Material.GOLDEN_SHOVEL, "§aM1014");
+            setAmmoType(AmmoType.SHOTGUN);
         setSpread(15);
-        setSneakSpread(10);
-
-        setRange(13);
+        setSneakSpread(11);
+        setRange(17);
 
         setLegDamage(6);
-        setBodyDamage(7);
-        setHeadDamage(8);
+        setBodyDamage(8);
+        setHeadDamage(10);
 
-        setFireRate(120);
+        setFireRate(40);
 
-        setMaxAmmo(12);
-
-        setReloadTimeInTicks(60);
-
+        setMaxAmmo(6);
         setBulletsPerShot(8);
+        setReloadTimeInTicks(60);
 
         generateDefaultLore();
 
         clearSounds(GunSoundType.SHOOT);
         registerSound(GunSoundType.SHOOT, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 0.45f, 0.6f);
+
 
     }
 }

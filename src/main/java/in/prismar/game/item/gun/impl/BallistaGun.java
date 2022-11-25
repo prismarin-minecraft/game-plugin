@@ -11,23 +11,23 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class L96Gun extends Gun {
+public class BallistaGun extends Gun {
 
-    public L96Gun() {
-        super("L96", GunType.SNIPER, Material.GOLDEN_HOE, "§cL96");
+    public BallistaGun() {
+        super("Ballista", GunType.SNIPER, Material.IRON_HOE, "§cBallista");
         setAmmoType(AmmoType.SNIPER);
         setSpread(10);
         setSneakSpread(0);
 
         setRange(70);
 
-        setLegDamage(10);
-        setBodyDamage(15);
-        setHeadDamage(20);
+        setLegDamage(14);
+        setBodyDamage(18);
+        setHeadDamage(26);
 
         setFireRate(60);
 
-        setMaxAmmo(5);
+        setMaxAmmo(7);
 
         setReloadTimeInTicks(80);
 
