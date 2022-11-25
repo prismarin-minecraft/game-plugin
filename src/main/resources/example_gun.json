@@ -1,0 +1,29 @@
+[
+  {
+    "id": "Test",
+    "material": "LEATHER",
+    "displayName": "§bTest Gun",
+    "type": "PISTOL",
+    "shootParticle": "CRIT",
+    "ammoType": "PISTOL",
+    "range": 15.0,
+    "maxAmmo": 10,
+    "fireRate": 120,
+    "spread": 2,
+    "sneakSpread": 1,
+    "bulletsPerShot": 1,
+    "reloadTimeInTicks": 20,
+    "legDamage": 2,
+    "bodyDamage": 3,
+    "headDamage": 5,
+    "sounds": {
+      "SHOOT": [
+        {
+          "sound": "ENTITY_PLAYER_BURP",
+          "volume": 0.9,
+          "pitch": 1
+        }
+      ]
+    }
+  }
+]

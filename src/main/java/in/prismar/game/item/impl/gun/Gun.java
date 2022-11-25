@@ -92,7 +92,7 @@ public class Gun extends CustomItem {
 
     }
 
-    protected void generateDefaultLore() {
+    public void generateDefaultLore() {
         addLore("§c ");
         addLore(" §7Type§8: §b" + type.getDisplayName());
         addLore(" §7Range§8: §b" + range);

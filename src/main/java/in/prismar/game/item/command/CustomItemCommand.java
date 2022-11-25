@@ -3,10 +3,7 @@ package in.prismar.game.item.command;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.command.sub.AmmoSubCommand;
-import in.prismar.game.item.command.sub.GetSubCommand;
-import in.prismar.game.item.command.sub.HolderInfoSubCommand;
-import in.prismar.game.item.command.sub.ListSubCommand;
+import in.prismar.game.item.command.sub.*;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.spigot.command.exception.CommandException;
@@ -42,6 +39,7 @@ public class CustomItemCommand extends HelpCommand<Player> {
         addChild(new GetSubCommand(registry));
         addChild(new AmmoSubCommand(registry));
         addChild(new HolderInfoSubCommand(registry));
+        addChild(new ReloadSubCommand(registry));
     }
 
 

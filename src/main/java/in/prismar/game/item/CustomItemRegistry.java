@@ -6,6 +6,7 @@ import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.GrenadeItem;
 import in.prismar.game.item.impl.gun.impl.*;
+import in.prismar.game.item.reader.CustomItemReader;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import lombok.Getter;
@@ -26,19 +27,24 @@ import java.util.*;
 public class CustomItemRegistry {
 
     private final Game game;
+
+    private CustomItemReader reader;
     private Map<String, CustomItem> items;
     private Map<UUID, List<CustomItemHolder>> holders;
 
     public CustomItemRegistry(Game game) {
         this.game = game;
         this.items = new HashMap<>();
+        this.reader = new CustomItemReader();
         this.holders = new HashMap<>();
         load();
 
         Bukkit.getScheduler().runTaskTimer(game, new CustomItemUpdater(game, this), 1, 1);
     }
 
-    private void load() {
+    public void load() {
+        this.items.clear();
+
         register(new G36Gun());
         register(new L96Gun());
         register(new Spas12Gun());
@@ -54,8 +60,10 @@ public class CustomItemRegistry {
         register(new MP5Gun());
         register(new PPSh41Gun());
 
-
         register(new GrenadeItem());
+
+        reader.apply(this);
+
     }
 
 
