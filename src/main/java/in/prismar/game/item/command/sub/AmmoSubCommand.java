@@ -2,9 +2,8 @@ package in.prismar.game.item.command.sub;
 
 import com.google.common.base.Joiner;
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.gun.type.AmmoType;
+import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;

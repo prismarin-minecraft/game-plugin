@@ -1,4 +1,4 @@
-package in.prismar.game.item.gun.type;
+package in.prismar.game.item.impl.gun.type;
 
 import in.prismar.library.spigot.item.ItemBuilder;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package in.prismar.game.item.gun;
+package in.prismar.game.item.impl.gun;
 
 import in.prismar.game.raytrace.Raytrace;
 import in.prismar.game.raytrace.result.RaytraceHit;

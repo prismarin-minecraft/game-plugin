@@ -1,4 +1,4 @@
-package in.prismar.game.item.gun.type;
+package in.prismar.game.item.impl.gun.sound;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +11,12 @@ import lombok.Getter;
  **/
 @AllArgsConstructor
 @Getter
-public enum GunType {
+public enum GunSoundType {
 
-    PISTOL("Pistol"),
-    SMG("SMG"),
-    SHOTGUN("Shotgun"),
-    AR("Assault Rifle"),
-    SNIPER("Sniper");
+    SHOOT(true),
+    RELOAD(false),
+    HIT(false),
+    HEADSHOT(false);
 
-    private final String displayName;
+    private final boolean surrounding;
 }

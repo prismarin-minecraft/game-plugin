@@ -1,14 +1,14 @@
-package in.prismar.game.item.gun;
+package in.prismar.game.item.impl.gun;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
-import in.prismar.game.item.gun.sound.GunSound;
-import in.prismar.game.item.gun.sound.GunSoundType;
-import in.prismar.game.item.gun.type.AmmoType;
-import in.prismar.game.item.gun.type.GunType;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
+import in.prismar.game.item.impl.gun.sound.GunSound;
+import in.prismar.game.item.impl.gun.sound.GunSoundType;
+import in.prismar.game.item.impl.gun.type.AmmoType;
+import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.game.raytrace.result.RaytraceBlockHit;
 import in.prismar.game.raytrace.result.RaytraceEntityHit;
 import in.prismar.game.raytrace.result.RaytraceHit;

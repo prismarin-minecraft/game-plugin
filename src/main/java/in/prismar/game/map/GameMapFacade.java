@@ -7,11 +7,13 @@ import in.prismar.api.placeholder.PlaceholderStore;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
+import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.Game;
+import in.prismar.game.arsenal.ArsenalService;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.gun.Gun;
-import in.prismar.game.item.gun.type.AmmoType;
+import in.prismar.game.item.impl.gun.Gun;
+import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.map.model.GameMap;
 import in.prismar.game.map.model.GameMapPlayer;
 import in.prismar.game.map.powerup.PowerUpRegistry;
@@ -23,6 +25,7 @@ import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.tuple.Tuple;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
+import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -47,8 +50,11 @@ public class GameMapFacade implements GameMapProvider {
     private CustomItemRegistry itemRegistry;
 
     @Inject
+    private ArsenalService arsenalService;
+
+    @Inject
     private GameStatsDistributor statsDistributor;
-    
+
     private GameMapRepository repository;
     private GameMapRotator rotator;
 
@@ -60,7 +66,10 @@ public class GameMapFacade implements GameMapProvider {
     private final PlaceholderStore placeholderStore;
 
 
+    private final Game game;
+
     public GameMapFacade(Game game) {
+        this.game = game;
         this.repository = new FileGameMapRepository(game.getDefaultDirectory());
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
         this.placeholderStore = PrismarinApi.getProvider(PlaceholderStore.class);
@@ -68,13 +77,13 @@ public class GameMapFacade implements GameMapProvider {
     }
 
     public void sendMessage(String message) {
-        if(getRotator().getCurrentMap() != null) {
+        if (getRotator().getCurrentMap() != null) {
             sendMessage(getRotator().getCurrentMap(), message);
         }
     }
 
     public void sendMessage(GameMap map, String message) {
-        for(GameMapPlayer player : map.getPlayers().values()) {
+        for (GameMapPlayer player : map.getPlayers().values()) {
             player.getPlayer().sendMessage(message);
         }
     }
@@ -82,12 +91,12 @@ public class GameMapFacade implements GameMapProvider {
     public void updateLeaderboard(GameMap map) {
         List<GameMapLeaderboardEntry> list = new ArrayList<>();
         List<Tuple<Player, Integer>> entries = new ArrayList<>();
-        for(GameMapPlayer mapPlayer : map.getPlayers().values()) {
+        for (GameMapPlayer mapPlayer : map.getPlayers().values()) {
             entries.add(new Tuple<>(mapPlayer.getPlayer(), mapPlayer.getKills()));
         }
         entries.sort((o1, o2) -> Integer.compare(o2.getSecond(), o1.getSecond()));
 
-        for(Tuple<Player, Integer> entry : entries) {
+        for (Tuple<Player, Integer> entry : entries) {
             list.add(new GameMapLeaderboardEntry(entry.getFirst().getUniqueId(), entry.getFirst().getName(), entry.getSecond()));
         }
         map.setLeaderboard(list);
@@ -95,8 +104,8 @@ public class GameMapFacade implements GameMapProvider {
 
     @Override
     public Optional<String> getMapByPlayer(UUID uuid) {
-        for(GameMap map : repository.findAll()) {
-            if(map.getPlayers().containsKey(uuid)) {
+        for (GameMap map : repository.findAll()) {
+            if (map.getPlayers().containsKey(uuid)) {
                 return Optional.of(map.getId());
             }
         }
@@ -105,7 +114,7 @@ public class GameMapFacade implements GameMapProvider {
 
     @Override
     public List<GameMapLeaderboardEntry> getLeaderboard() {
-        if(getRotator().getCurrentMap() != null) {
+        if (getRotator().getCurrentMap() != null) {
             return getLeaderboard(getRotator().getCurrentMap().getId());
         }
         return Collections.emptyList();
@@ -114,8 +123,8 @@ public class GameMapFacade implements GameMapProvider {
     @Override
     public List<GameMapLeaderboardEntry> getLeaderboard(String id) {
         GameMap map = getRepository().findById(id);
-        if(map != null) {
-            if(map.getLeaderboard() != null) {
+        if (map != null) {
+            if (map.getLeaderboard() != null) {
                 return map.getLeaderboard();
             }
         }
@@ -124,15 +133,15 @@ public class GameMapFacade implements GameMapProvider {
 
     @Override
     public String getMapName(String id) {
-        if(repository.existsById(id)) {
+        if (repository.existsById(id)) {
             return repository.findById(id).getFancyName();
         }
         return "None";
     }
 
     public Optional<GameMap> getMapByPlayer(Player player) {
-        for(GameMap map : repository.findAll()) {
-            if(map.getPlayers().containsKey(player.getUniqueId())) {
+        for (GameMap map : repository.findAll()) {
+            if (map.getPlayers().containsKey(player.getUniqueId())) {
                 return Optional.of(map);
             }
         }
@@ -145,29 +154,28 @@ public class GameMapFacade implements GameMapProvider {
     }
 
 
-
     public void fillAmmo(Player player) {
-        for (int i = 9; i < 13; i++) {
+        for (int i = 9; i < 12; i++) {
             ItemStack item = AmmoType.AR.getItem().clone();
             item.setAmount(64);
             player.getInventory().setItem(i, item);
         }
-        for (int i = 13; i < 15; i++) {
+        for (int i = 12; i < 13; i++) {
             ItemStack item = AmmoType.SNIPER.getItem().clone();
             item.setAmount(64);
             player.getInventory().setItem(i, item);
         }
-        for (int i = 15; i < 17; i++) {
+        for (int i = 13; i < 14; i++) {
             ItemStack item = AmmoType.SHOTGUN.getItem().clone();
             item.setAmount(64);
             player.getInventory().setItem(i, item);
         }
-        for (int i = 17; i < 19; i++) {
+        for (int i = 14; i < 17; i++) {
             ItemStack item = AmmoType.SMG.getItem().clone();
             item.setAmount(64);
             player.getInventory().setItem(i, item);
         }
-        for (int i = 19; i < 21; i++) {
+        for (int i = 17; i < 18; i++) {
             ItemStack item = AmmoType.PISTOL.getItem().clone();
             item.setAmount(64);
             player.getInventory().setItem(i, item);
@@ -181,18 +189,32 @@ public class GameMapFacade implements GameMapProvider {
 
         fillAmmo(player);
 
-        final int[] slots = {0, 1, 2, 3, 4, 5, 6, 7, 27, 28, 29, 30, 31, 32, 33, 34, 35};
-
-        int index = 0;
-        for(CustomItem customItem : itemRegistry.getItems().values()) {
-            if(customItem instanceof Gun gun) {
-                player.getInventory().setItem(slots[index], itemRegistry.createGunItem(gun.getId()));
-                index++;
-            }
+        User user = arsenalService.manage(player);
+        ItemStack primary = createArsenalItem(user, "primary");
+        if (primary != null) {
+            player.getInventory().setItem(0, primary);
+        }
+        ItemStack secondary = createArsenalItem(user, "secondary");
+        if (secondary != null) {
+            player.getInventory().setItem(1, secondary);
         }
 
-        player.getInventory().setItem(8, itemRegistry.createItem("Grenade"));
+        player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
+    }
 
+    private ItemStack createArsenalItem(User user, String key) {
+        ArsenalItem item = arsenalService.getItem(user, key);
+        if (item != null) {
+            ItemStack stack = item.getItem().clone();
+            CustomItem customItem = itemRegistry.getItemByStack(stack);
+            if (customItem != null) {
+                if(customItem instanceof Gun gun) {
+                    PersistentItemDataUtil.setInteger(game, stack, Gun.AMMO_KEY, gun.getMaxAmmo());
+                }
+            }
+            return stack;
+        }
+        return null;
     }
 
     public void join(Player player) {
@@ -233,12 +255,12 @@ public class GameMapFacade implements GameMapProvider {
 
     public GameMap getRandomMap() {
         GameMap[] maps = getRepository().findAll().toArray(new GameMap[0]);
-        return maps[MathUtil.random(maps.length-1)];
+        return maps[MathUtil.random(maps.length - 1)];
     }
 
     @Override
     public boolean isInMap(UUID uuid) {
-        if(getRotator().getCurrentMap() != null) {
+        if (getRotator().getCurrentMap() != null) {
             return getRotator().getCurrentMap().getPlayers().containsKey(uuid);
         }
         return false;
@@ -246,7 +268,7 @@ public class GameMapFacade implements GameMapProvider {
 
     @Override
     public boolean isInMap(UUID uuid, String name) {
-        if(repository.existsById(name)) {
+        if (repository.existsById(name)) {
             GameMap map = repository.findById(name);
             return map.getPlayers().containsKey(uuid);
         }

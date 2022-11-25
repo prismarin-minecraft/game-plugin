@@ -1,11 +1,11 @@
 package in.prismar.game.item;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.gun.Gun;
-import in.prismar.game.item.gun.impl.*;
+import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.GrenadeItem;
+import in.prismar.game.item.impl.gun.impl.*;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import lombok.Getter;

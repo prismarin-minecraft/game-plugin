@@ -1,4 +1,4 @@
-package in.prismar.game.item.gun.sound;
+package in.prismar.game.item.impl.gun.sound;
 
 import lombok.Data;
 import org.bukkit.Sound;
