@@ -48,23 +48,29 @@ public class EntityDamageListener implements Listener {
              double damage = event.getDamage();
              double nextHealth = target.getHealth() - damage;
              if(nextHealth <= 0) {
-                 statsDistributor.resetKillstreak(target);
-                 int streak = statsDistributor.addKillstreak(damager);
-                 StringBuilder skulls = new StringBuilder();
-                 for (int i = 0; i < streak; i++) {
-                     if(i <= 4) {
-                         skulls = skulls.append("§4☠ ");
-                     }
-                 }
-                 damager.sendTitle(skulls.toString().trim(), "", 5, 20, 5);
                  target.sendTitle("§4You died", "", 5, 20, 5);
                  event.setCancelled(true);
                  facade.respawn(target);
 
                  int health = (int)damager.getHealth();
                  facade.sendMessage(PrismarinConstants.PREFIX + getRandomDeathMessage(damager, target) + " §8(§c"+health+"♥§8)");
-
                  damager.setHealth(20);
+                 statsDistributor.resetKillstreak(target);
+
+                 boolean samePlayer = damager.getUniqueId().equals(target.getUniqueId());
+
+                 if(!samePlayer) {
+                     int streak = statsDistributor.addKillstreak(damager);
+                     StringBuilder skulls = new StringBuilder();
+                     for (int i = 0; i < streak; i++) {
+                         if(i <= 4) {
+                             skulls = skulls.append("§4☠ ");
+                         }
+                     }
+
+                     damager.sendTitle(skulls.toString().trim(), "", 5, 20, 5);
+                 }
+
 
                  Optional<GameMap> mapOptional = facade.getMapByPlayer(target);
                  if(mapOptional.isPresent()) {
@@ -72,18 +78,20 @@ public class EntityDamageListener implements Listener {
                      GameMapPlayer targetMapPlayer = map.getPlayers().get(target.getUniqueId());
                      GameMapPlayer damagerMapPlayer = map.getPlayers().get(damager.getUniqueId());
 
-                     damagerMapPlayer.setKills(damagerMapPlayer.getKills() + 1);
+                     if(!samePlayer) {
+                         damagerMapPlayer.setKills(damagerMapPlayer.getKills() + 1);
+                         statsDistributor.addKill(damager);
+                         statsDistributor.addMapKill(damager, map.getId());
+                         displayStreak(map, damager, statsDistributor.getKillstreak(damager));
+                         facade.updateLeaderboard(map);
+                     }
+
                      targetMapPlayer.setDeaths(targetMapPlayer.getDeaths() + 1);
-
-                     facade.updateLeaderboard(map);
-
-                     statsDistributor.addKill(damager);
-                     statsDistributor.addMapKill(damager, map.getId());
 
                      statsDistributor.addDeath(target);
                      statsDistributor.addMapDeath(target, map.getId());
 
-                     displayStreak(map, damager, streak);
+
 
                  }
              }
