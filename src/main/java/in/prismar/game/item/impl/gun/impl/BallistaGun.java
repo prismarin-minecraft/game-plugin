@@ -4,6 +4,7 @@ import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -15,11 +16,12 @@ public class BallistaGun extends Gun {
 
     public BallistaGun() {
         super("Ballista", GunType.SNIPER, Material.IRON_HOE, "§cBallista");
+        setShootParticle(Particle.SPELL_INSTANT);
         setAmmoType(AmmoType.SNIPER);
         setSpread(10);
         setSneakSpread(0);
 
-        setRange(70);
+        setRange(160);
 
         setLegDamage(14);
         setBodyDamage(18);

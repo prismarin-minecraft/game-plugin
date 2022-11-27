@@ -4,6 +4,7 @@ import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -15,11 +16,12 @@ public class AWPGun extends Gun {
 
     public AWPGun() {
         super("AWP", GunType.SNIPER, Material.NETHERITE_HOE, "§cAWP");
+        setShootParticle(Particle.SPELL_INSTANT);
         setAmmoType(AmmoType.SNIPER);
         setSpread(12);
         setSneakSpread(0);
 
-        setRange(80);
+        setRange(160);
 
         setLegDamage(17);
         setBodyDamage(20);

@@ -32,11 +32,7 @@ public class AmmoSubCommand extends HelpSubCommand<Player> {
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
         if(arguments.getLength() >= 3) {
-            AmmoType type = AmmoType.getAmmoType(arguments.getString(1));
-            if(type == null) {
-                player.sendMessage(PrismarinConstants.PREFIX + "§cThis type does not exists" );
-                return true;
-            }
+            AmmoType type = arguments.getEnumType(AmmoType.values(), 1);
             int amount = MathUtil.clamp(arguments.getInteger(2), 1, 64);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + amount + "x " + type.name());
             ItemStack item = type.getItem().clone();

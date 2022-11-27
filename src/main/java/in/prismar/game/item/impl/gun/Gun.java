@@ -5,6 +5,8 @@ import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
+import in.prismar.game.item.impl.attachment.Attachment;
+import in.prismar.game.item.impl.attachment.AttachmentModifier;
 import in.prismar.game.item.impl.gun.sound.GunSound;
 import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
@@ -43,8 +45,11 @@ import java.util.*;
 public class Gun extends CustomItem {
 
     public static final String AMMO_KEY = "ammo";
+    public static final String ATTACHMENTS_KEY = "attachments";
 
     private static final DecimalFormat RELOADING_DECIMAL_FORMAT = new DecimalFormat("0.0");
+
+
     private static Map<UUID, Long> LAST_INTERACT = new HashMap<>();
     private static Map<UUID, Long> RELOADING = new HashMap<>();
     private static Map<UUID, Long> UPDATE_PLAYER_TICK = new HashMap<>();
@@ -71,6 +76,8 @@ public class Gun extends CustomItem {
     private double bodyDamage = 3;
     private double headDamage = 5;
 
+    private int attachmentSlots = 3;
+
     private Map<GunSoundType, List<GunSound>> sounds;
 
 
@@ -93,19 +100,29 @@ public class Gun extends CustomItem {
     }
 
     public void generateDefaultLore() {
-        addLore("§c ");
-        addLore(" §7Type§8: §b" + type.getDisplayName());
-        addLore(" §7Range§8: §b" + range);
-        addLore(" §7RPM§8: §b" + fireRate);
-        addLore(" §7Spread§8: §b" + spread);
-        addLore(" §7Sneak Spread§8: §b" + sneakSpread);
-        addLore(" §7Magazine§8: §b" + maxAmmo);
-        addLore(" §7Reload time§8: §b" + reloadTimeInTicks / 20 + "s");
-        addLore(" §7Damage§8: §b");
-        addLore("   §8➥ §7Head§8: §b" + headDamage);
-        addLore("   §8➥ §7Body§8: §b" + bodyDamage);
-        addLore("   §8➥ §7Legs§8: §b" + legDamage);
-        addLore("§c ");
+        setLore(buildDefaultLore(Collections.emptyList()));
+    }
+
+    public List<String> buildDefaultLore(List<Attachment> attachments) {
+        List<String> lore = new ArrayList<>();
+        lore.add("§c ");
+        lore.add(" §7Type§8: §b" + type.getDisplayName());
+        lore.add(" §7Range§8: §b" + range);
+        lore.add(" §7RPM§8: §b" + fireRate);
+        lore.add(" §7Spread§8: §b" + spread);
+        lore.add(" §7Sneak Spread§8: §b" + sneakSpread);
+        lore.add(" §7Magazine§8: §b" + maxAmmo);
+        lore.add(" §7Reload time§8: §b" + reloadTimeInTicks / 20 + "s");
+        lore.add(" §7Damage§8: §b");
+        lore.add("   §8➥ §7Head§8: §b" + headDamage);
+        lore.add("   §8➥ §7Body§8: §b" + bodyDamage);
+        lore.add("   §8➥ §7Legs§8: §b" + legDamage);
+        lore.add(" §7Attachments §8(§3" + attachments.size() + "§8/§3" + getAttachmentSlots() + "§8)");
+        for(Attachment attachment : attachments) {
+            lore.add("   §8➥ §b" + attachment.getDisplayName());
+        }
+        lore.add("§c ");
+        return lore;
     }
 
     public void playSound(Player player, GunSoundType type) {
@@ -135,9 +152,33 @@ public class Gun extends CustomItem {
         }
     }
 
-    public void shoot(Player player) {
-        double spread = !player.isSneaking() ? this.spread : this.sneakSpread;
-        Bullet bullet = new Bullet(shootParticle, player.getEyeLocation().subtract(0, 0.3, 0),
+    public List<Attachment> getAttachments(Game game, ItemStack stack) {
+        List<Attachment> attachments = new ArrayList<>();
+        final String value = PersistentItemDataUtil.getString(game, stack, ATTACHMENTS_KEY);
+        for(String id : value.split(",")) {
+            CustomItem item = game.getItemRegistry().getItemById(id);
+            if(item != null) {
+                if(item instanceof Attachment attachment) {
+                    attachments.add(attachment);
+                }
+            }
+        }
+        return attachments;
+    }
+
+    public void shoot(Game game, Player player, ItemStack stack) {
+        double normalSpread = this.spread;
+        double sneakSpread = this.sneakSpread;
+        double range = this.range;
+        boolean allowParticle = true;
+        for(Attachment attachment : getAttachments(game, stack)) {
+            normalSpread = attachment.apply(AttachmentModifier.SPREAD, normalSpread);
+            sneakSpread = attachment.apply(AttachmentModifier.SNEAK_SPREAD, sneakSpread);
+            range = attachment.apply(AttachmentModifier.RANGE, range);
+            allowParticle = attachment.apply(AttachmentModifier.PARTICLE, allowParticle);
+        }
+        double spread = !player.isSneaking() ? normalSpread : sneakSpread;
+        Bullet bullet = new Bullet(allowParticle ? shootParticle : null, player.getEyeLocation().subtract(0, 0.0, 0),
                 getRandomizedDirection(player, spread), range);
         playSound(player, GunSoundType.SHOOT);
         List<RaytraceHit> hits = bullet.invoke();
@@ -180,6 +221,12 @@ public class Gun extends CustomItem {
         if(RELOADING.containsKey(player.getUniqueId())) {
             return;
         }
+        List<Attachment> attachments = getAttachments(game, stack);
+        int maxAmmo = this.maxAmmo;
+        for(Attachment attachment : attachments) {
+            maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
+        }
+
         int current = PersistentItemDataUtil.getInteger(game, stack, AMMO_KEY);
         if(current >= maxAmmo) {
             return;
@@ -223,6 +270,13 @@ public class Gun extends CustomItem {
             currentUpdateTick = 0;
         }
         int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
+        List<Attachment> attachments = getAttachments(game, holder.getStack());
+        int fireRate = this.fireRate;
+        int maxAmmo = this.maxAmmo;
+        for(Attachment attachment : attachments) {
+            fireRate = attachment.apply(AttachmentModifier.FIRE_RATE, fireRate);
+            maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
+        }
         if(RELOADING.containsKey(player.getUniqueId())) {
             long max = RELOADING.get(player.getUniqueId());
             long difference = max - System.currentTimeMillis();
@@ -241,7 +295,7 @@ public class Gun extends CustomItem {
         if (difference <= 210 && currentUpdateTick % fireRateTicks == 0) {
             if(ammo >= 1) {
                 for (int i = 0; i < bulletsPerShot; i++) {
-                    shoot(player);
+                    shoot(game, player, holder.getStack());
                 }
                 ammo--;
                 PersistentItemDataUtil.setInteger(game, holder.getStack(), AMMO_KEY, ammo);
@@ -254,7 +308,6 @@ public class Gun extends CustomItem {
         UPDATE_PLAYER_TICK.put(player.getUniqueId(), currentUpdateTick);
 
     }
-
 
     @CustomItemEvent
     public void onInteract(Player player, Game game, CustomItemHolder holder, PlayerInteractEvent event) {

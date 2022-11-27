@@ -2,6 +2,7 @@ package in.prismar.game;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.map.GameMapProvider;
+import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.map.GameMapFacade;
 import in.prismar.game.map.model.GameMap;
 import in.prismar.library.meta.MetaRegistry;
@@ -35,6 +36,9 @@ public class Game extends JavaPlugin {
 
     @Inject
     private GameMapFacade mapFacade;
+
+    @Inject
+    private CustomItemRegistry itemRegistry;
 
 
     @Override

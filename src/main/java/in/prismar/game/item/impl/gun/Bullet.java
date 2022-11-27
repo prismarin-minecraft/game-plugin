@@ -37,7 +37,9 @@ public class Bullet {
     }
 
     public List<RaytraceHit> invoke() {
-        ParticleUtil.spawnParticleAlongLine(origin, endPoint, particle, 20, 0);
+        if(particle != null) {
+            ParticleUtil.spawnParticleAlongLine(origin, endPoint, particle, 20, 0);
+        }
         RaytraceResult result = this.raytrace.ray(range);
         result.getHits().sort(Comparator.comparingDouble(o -> o.getPoint().distanceSquared(origin)));
         return result.getHits();

@@ -3,11 +3,14 @@ package in.prismar.game.item.command.sub;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
+import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
+import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import in.prismar.library.spigot.text.InteractiveTextBuilder;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -36,7 +39,14 @@ public class GetSubCommand extends HelpSubCommand<Player> {
                 return true;
             }
             CustomItem customItem = registry.getItemById(id);
-            player.getInventory().addItem(customItem.build());
+            ItemStack stack = customItem.build();
+            if(arguments.getLength() >= 3) {
+                if(customItem instanceof Gun gun) {
+                    PersistentItemDataUtil.setString(registry.getGame(), stack, Gun.ATTACHMENTS_KEY, "AdaptiveChambering");
+                }
+            }
+
+            player.getInventory().addItem(stack);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You received the item §a" + customItem.getDisplayName());
             return true;
         }

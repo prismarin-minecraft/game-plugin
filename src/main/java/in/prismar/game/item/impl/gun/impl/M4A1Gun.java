@@ -21,8 +21,8 @@ public class M4A1Gun extends Gun {
         setRange(55);
 
         setLegDamage(7);
-        setBodyDamage(9);
-        setHeadDamage(12);
+        setBodyDamage(8);
+        setHeadDamage(9);
 
         setFireRate(415);
 

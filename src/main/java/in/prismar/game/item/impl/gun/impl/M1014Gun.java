@@ -5,6 +5,7 @@ import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 
 /**
@@ -17,6 +18,7 @@ public class M1014Gun extends Gun {
 
     public M1014Gun() {
         super("M1014", GunType.SHOTGUN, Material.GOLDEN_SHOVEL, "§aM1014");
+        setShootParticle(Particle.FLAME);
             setAmmoType(AmmoType.SHOTGUN);
         setSpread(15);
         setSneakSpread(11);

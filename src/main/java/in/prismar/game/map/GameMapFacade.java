@@ -12,6 +12,8 @@ import in.prismar.game.Game;
 import in.prismar.game.arsenal.ArsenalService;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
+import in.prismar.game.item.impl.attachment.Attachment;
+import in.prismar.game.item.impl.attachment.AttachmentModifier;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.map.model.GameMap;
@@ -46,6 +48,10 @@ import java.util.*;
 @Getter
 public class GameMapFacade implements GameMapProvider {
 
+    private final UserProvider<User> userProvider;
+
+    private final PlaceholderStore placeholderStore;
+
     @Inject
     private CustomItemRegistry itemRegistry;
 
@@ -55,15 +61,11 @@ public class GameMapFacade implements GameMapProvider {
     @Inject
     private GameStatsDistributor statsDistributor;
 
-    private GameMapRepository repository;
-    private GameMapRotator rotator;
-
     @Inject
     private PowerUpRegistry powerUpRegistry;
 
-    private final UserProvider<User> userProvider;
-
-    private final PlaceholderStore placeholderStore;
+    private GameMapRepository repository;
+    private GameMapRotator rotator;
 
 
     private final Game game;
@@ -100,6 +102,16 @@ public class GameMapFacade implements GameMapProvider {
             list.add(new GameMapLeaderboardEntry(entry.getFirst().getUniqueId(), entry.getFirst().getName(), entry.getSecond()));
         }
         map.setLeaderboard(list);
+    }
+
+    @Override
+    public long getNextMapRotationTimestamp() {
+        return rotator.getNextRotate();
+    }
+
+    @Override
+    public long getVoteMapRotationTimestamp() {
+        return rotator.getNextRotateVote();
     }
 
     @Override
@@ -209,7 +221,11 @@ public class GameMapFacade implements GameMapProvider {
             CustomItem customItem = itemRegistry.getItemByStack(stack);
             if (customItem != null) {
                 if(customItem instanceof Gun gun) {
-                    PersistentItemDataUtil.setInteger(game, stack, Gun.AMMO_KEY, gun.getMaxAmmo());
+                    int maxAmmo = gun.getMaxAmmo();
+                    for(Attachment attachment : gun.getAttachments(game, stack)) {
+                        maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
+                    }
+                    PersistentItemDataUtil.setInteger(game, stack, Gun.AMMO_KEY, maxAmmo);
                 }
             }
             return stack;

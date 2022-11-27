@@ -1,6 +1,7 @@
 package in.prismar.game.item;
 
 import in.prismar.game.Game;
+import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
@@ -34,7 +35,7 @@ public class CustomItemRegistry {
 
     public CustomItemRegistry(Game game) {
         this.game = game;
-        this.items = new HashMap<>();
+        this.items = new LinkedHashMap<>();
         this.reader = new CustomItemReader();
         this.holders = new HashMap<>();
         load();
@@ -61,6 +62,13 @@ public class CustomItemRegistry {
         register(new PPSh41Gun());
 
         register(new GrenadeItem());
+
+        register(new AdaptiveChamberingAttachment());
+        register(new VerticalGripAttachmentItem());
+        register(new BipodAttachmentItem());
+        register(new ExtendedMagazineAttachmentItem());
+        register(new BarrelAttachmentItem());
+        register(new SuppressorAttachmentItem());
 
         reader.apply(this);
 

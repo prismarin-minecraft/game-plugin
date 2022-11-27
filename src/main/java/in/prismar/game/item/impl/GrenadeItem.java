@@ -41,19 +41,34 @@ public class GrenadeItem extends CustomItem {
         player.getInventory().setItemInMainHand(null);
         player.updateInventory();
         new BukkitRunnable() {
+            int timer = 35;
+            boolean wasOnGround = false;
             @Override
             public void run() {
-                item.getWorld().playSound(item.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1f, 1);
-                for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
-                    if(near instanceof Player target) {
-                        double damage = 24 - target.getLocation().distance(item.getLocation());
-                        target.damage(damage, player);
+                if(timer <= 0) {
+                    item.getWorld().playSound(item.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1f, 1);
+                    for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
+                        if(near instanceof Player target) {
+                            double damage = 24 - target.getLocation().distance(item.getLocation());
+                            target.damage(damage, player);
+                        }
                     }
+                    item.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, item.getLocation(), 2);
+                    item.remove();
+                    cancel();
+                    return;
                 }
-                item.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, item.getLocation(), 2);
-                item.remove();
+                if(item.isOnGround() && !wasOnGround) {
+                    wasOnGround = true;
+
+                }
+                if(timer % 2 == 0) {
+                    item.getWorld().playSound(item.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.4f, 2f);
+                }
+                item.getWorld().spawnParticle(Particle.SMOKE_NORMAL, item.getLocation(), 0);
+                timer--;
             }
-        }.runTaskLater(game, 35);
+        }.runTaskTimer(game, 1, 1);
     }
 
 

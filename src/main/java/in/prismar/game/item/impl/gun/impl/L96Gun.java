@@ -4,6 +4,7 @@ import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -15,11 +16,12 @@ public class L96Gun extends Gun {
 
     public L96Gun() {
         super("L96", GunType.SNIPER, Material.GOLDEN_HOE, "§cL96");
+        setShootParticle(Particle.SPELL_INSTANT);
         setAmmoType(AmmoType.SNIPER);
         setSpread(10);
         setSneakSpread(0);
 
-        setRange(70);
+        setRange(160);
 
         setLegDamage(10);
         setBodyDamage(15);
