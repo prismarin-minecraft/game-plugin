@@ -135,7 +135,6 @@ public class EntityDamageListener implements Listener {
                     event.setCancelled(true);
                 }
             } else {
-                System.out.println("Cancelled: " + event.getCause().name());
                 event.setCancelled(true);
             }
 
