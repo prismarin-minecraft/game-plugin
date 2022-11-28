@@ -1,4 +1,4 @@
-package in.prismar.game.arsenal;
+package in.prismar.game.map.arsenal;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;

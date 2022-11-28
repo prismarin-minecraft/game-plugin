@@ -10,12 +10,13 @@ import in.prismar.game.item.impl.attachment.AttachmentModifier;
 import in.prismar.game.item.impl.gun.sound.GunSound;
 import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
+import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.game.item.impl.gun.type.GunType;
-import in.prismar.game.raytrace.result.RaytraceBlockHit;
-import in.prismar.game.raytrace.result.RaytraceEntityHit;
-import in.prismar.game.raytrace.result.RaytraceHit;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
+import in.prismar.library.spigot.raytrace.result.RaytraceBlockHit;
+import in.prismar.library.spigot.raytrace.result.RaytraceEntityHit;
+import in.prismar.library.spigot.raytrace.result.RaytraceHit;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
@@ -44,15 +45,21 @@ import java.util.*;
 @Setter
 public class Gun extends CustomItem {
 
+    //----------------------------------------------------------------------------------
     public static final String AMMO_KEY = "ammo";
     public static final String ATTACHMENTS_KEY = "attachments";
-
     private static final DecimalFormat RELOADING_DECIMAL_FORMAT = new DecimalFormat("0.0");
 
-
+    /**
+     * These maps can be potential memory leaks
+     */
     private static Map<UUID, Long> LAST_INTERACT = new HashMap<>();
     private static Map<UUID, Long> RELOADING = new HashMap<>();
     private static Map<UUID, Long> UPDATE_PLAYER_TICK = new HashMap<>();
+
+    public static Map<UUID, GunDamageType> LAST_DAMAGE = new HashMap<>();
+    //----------------------------------------------------------------------------------
+
 
     private final GunType type;
 
@@ -166,6 +173,7 @@ public class Gun extends CustomItem {
         return attachments;
     }
 
+
     public void shoot(Game game, Player player, ItemStack stack) {
         double normalSpread = this.spread;
         double sneakSpread = this.sneakSpread;
@@ -186,24 +194,27 @@ public class Gun extends CustomItem {
         for(RaytraceHit hit : hits) {
             if(hit instanceof RaytraceEntityHit entityHit) {
                 if(!entityHit.getTarget().getName().equals(player.getName())) {
-                    boolean headshot = false;
                     double distance = entityHit.getTarget().getLocation().distanceSquared(entityHit.getPoint());
                     double damage = 0;
+                    GunDamageType damageType = GunDamageType.BODY;
                     if(distance <= 0.7) {
+                        damageType = GunDamageType.LEGS;
                         damage = legDamage;
                     } else if(distance > 0.7 && distance <= 2.1) {
                         damage = bodyDamage;
+                        damageType = GunDamageType.BODY;
                     } else if (distance >= 2.1) {
                         damage = headDamage;
-                        headshot = true;
+                        damageType = GunDamageType.HEADSHOT;
                     }
                     for (int i = 0; i < damageReduce; i++) {
                         damage -= (damage / 100) * 50;
                     }
                     if(damage > 0) {
                         LivingEntity entity = (LivingEntity)entityHit.getTarget();
+                        LAST_DAMAGE.put(entity.getUniqueId(), damageType);
                         entity.damage(damage, player);
-                        if(headshot) {
+                        if(damageType == GunDamageType.HEADSHOT) {
                             playSound(player, GunSoundType.HEADSHOT);
                         } else {
                             playSound(player, GunSoundType.HIT);

@@ -1,5 +1,7 @@
 package in.prismar.game.map.listener.player;
 
+import in.prismar.game.map.GameMapFacade;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,25 +23,31 @@ import java.util.UUID;
 @AutoListener
 public class PlayerMoveListener implements Listener {
 
-    final double CLIMBPITCH = -1.0, CLIMBSPEED = 0.6D;
+    @Inject
+    private GameMapFacade facade;
 
-    Set<UUID> wasOnLadder = new HashSet<>();
+    private final double climbPitch = -1.0, climbSpeed = 0.6D;
+
+    private Set<UUID> wasOnLadder = new HashSet<>();
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (player.getLocation().getPitch() < CLIMBPITCH && event.getTo().getY() - event.getFrom().getY() > 0.1D &&
+        if(!facade.isCurrentlyPlaying(player)) {
+            return;
+        }
+        if (player.getLocation().getPitch() < climbPitch && event.getTo().getY() - event.getFrom().getY() > 0.1D &&
                 (player.getLocation().add(0.0D, 1.1D, 0.0D).getBlock().getType() == Material.END_ROD)) {
-            player.setVelocity(player.getVelocity().clone().setY(CLIMBSPEED));
+            player.setVelocity(player.getVelocity().clone().setY(climbSpeed));
             wasOnLadder.add(player.getUniqueId());
             if(player.isSneaking()) {
                 player.setVelocity(player.getLocation().getDirection().multiply(0.5).setY(0.5));
             }
             return;
         }
-        if (player.getLocation().getPitch() > CLIMBPITCH && event.getTo().getY() - event.getFrom().getY() < 0.1D &&
+        if (player.getLocation().getPitch() > climbPitch && event.getTo().getY() - event.getFrom().getY() < 0.1D &&
                 (player.getLocation().add(0.0D, -1.1D, 0.0D).getBlock().getType() == Material.END_ROD)) {
-            player.setVelocity(player.getVelocity().clone().setY(-CLIMBSPEED));
+            player.setVelocity(player.getVelocity().clone().setY(-climbPitch));
             wasOnLadder.add(player.getUniqueId());
             if(player.isSneaking()) {
                 player.setVelocity(player.getLocation().getDirection().multiply(0.5).setY(0.5));

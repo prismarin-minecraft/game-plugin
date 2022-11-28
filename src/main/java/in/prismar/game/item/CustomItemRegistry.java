@@ -1,6 +1,11 @@
 package in.prismar.game.item;
 
 import in.prismar.game.Game;
+import in.prismar.game.item.impl.MolotovItem;
+import in.prismar.game.item.impl.armor.recruit.RecruitBoots;
+import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
+import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
+import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.holder.CustomItemHolder;
@@ -62,6 +67,7 @@ public class CustomItemRegistry {
         register(new PPSh41Gun());
 
         register(new GrenadeItem());
+        register(new MolotovItem());
 
         register(new AdaptiveChamberingAttachment());
         register(new VerticalGripAttachmentItem());
@@ -70,23 +76,31 @@ public class CustomItemRegistry {
         register(new BarrelAttachmentItem());
         register(new SuppressorAttachmentItem());
 
+        register(new RecruitHelmet());
+        register(new RecruitChestplate());
+        register(new RecruitLeggings());
+        register(new RecruitBoots());
+
         reader.apply(this);
 
     }
 
 
-    public void publishEvent(Player player, Object event) {
+    public List<CustomItemHolder> publishEvent(Player player, Object event) {
         if (holders.containsKey(player.getUniqueId())) {
-            for (CustomItemHolder holder : holders.get(player.getUniqueId())) {
+            List<CustomItemHolder> list = holders.get(player.getUniqueId());
+            for (CustomItemHolder holder : list) {
                 holder.getItem().getEventBus().publish(player, game, holder, event);
             }
+            return list;
         }
+        return Collections.emptyList();
     }
 
     public List<CustomItemHolder> scan(Player player) {
         List<CustomItemHolder> items = new ArrayList<>();
 
-        for (ItemStack stack : player.getInventory().getContents()) {
+        for (ItemStack stack : player.getInventory().getStorageContents()) {
             CustomItem item = getItemByStack(stack);
             if (item != null) {
                 if (!isItemInHand(player, stack, true) && !isItemInHand(player, stack, false)) {

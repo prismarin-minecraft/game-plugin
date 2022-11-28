@@ -1,9 +1,9 @@
 package in.prismar.game.item.impl.gun;
 
-import in.prismar.game.raytrace.Raytrace;
-import in.prismar.game.raytrace.result.RaytraceHit;
-import in.prismar.game.raytrace.result.RaytraceResult;
 import in.prismar.library.spigot.particle.ParticleUtil;
+import in.prismar.library.spigot.raytrace.Raytrace;
+import in.prismar.library.spigot.raytrace.result.RaytraceHit;
+import in.prismar.library.spigot.raytrace.result.RaytraceResult;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Particle;

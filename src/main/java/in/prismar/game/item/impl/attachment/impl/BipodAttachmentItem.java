@@ -1,9 +1,10 @@
 package in.prismar.game.item.impl.attachment.impl;
 
-import in.prismar.game.item.impl.attachment.Attachment;
 import in.prismar.game.item.impl.attachment.AttachmentModifier;
+import in.prismar.game.item.impl.attachment.template.GripAttachment;
 import in.prismar.game.item.impl.attachment.applier.ApplierOperation;
 import in.prismar.game.item.impl.attachment.applier.DoublePercentageAttachmentApplier;
+import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
 
 /**
@@ -12,14 +13,17 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class BipodAttachmentItem extends Attachment {
+public class BipodAttachmentItem extends GripAttachment {
 
     public BipodAttachmentItem() {
         super("Bipod", Material.TRIPWIRE_HOOK, "§cBipod");
+        addAllowedTypes(GunType.AR, GunType.SNIPER);
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.SUBTRACT));
 
         addLore("§c");
         addLore(" §7Sneak spread§8: §a-25%");
+        addAllowedTypesLore();
         addLore("§c");
     }
+
 }

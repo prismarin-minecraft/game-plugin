@@ -9,7 +9,7 @@ import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.Game;
-import in.prismar.game.arsenal.ArsenalService;
+import in.prismar.game.map.arsenal.ArsenalService;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.impl.attachment.Attachment;
@@ -211,7 +211,29 @@ public class GameMapFacade implements GameMapProvider {
             player.getInventory().setItem(1, secondary);
         }
 
+        ItemStack helmet = createArsenalItem(user, "helmet");
+        if (helmet != null) {
+            player.getInventory().setHelmet(helmet);
+        }
+
+        ItemStack chestplate = createArsenalItem(user, "chestplate");
+        if (chestplate != null) {
+            player.getInventory().setChestplate(chestplate);
+        }
+
+        ItemStack leggings = createArsenalItem(user, "leggings");
+        if (leggings != null) {
+            player.getInventory().setLeggings(leggings);
+        }
+
+        ItemStack boots = createArsenalItem(user, "boots");
+        if (boots != null) {
+            player.getInventory().setBoots(boots);
+        }
+
+
         player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
+        player.getInventory().setItem(4, itemRegistry.createItem("Molotov"));
     }
 
     private ItemStack createArsenalItem(User user, String key) {

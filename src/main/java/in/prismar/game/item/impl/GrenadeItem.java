@@ -42,7 +42,6 @@ public class GrenadeItem extends CustomItem {
         player.updateInventory();
         new BukkitRunnable() {
             int timer = 35;
-            boolean wasOnGround = false;
             @Override
             public void run() {
                 if(timer <= 0) {
@@ -57,10 +56,6 @@ public class GrenadeItem extends CustomItem {
                     item.remove();
                     cancel();
                     return;
-                }
-                if(item.isOnGround() && !wasOnGround) {
-                    wasOnGround = true;
-
                 }
                 if(timer % 2 == 0) {
                     item.getWorld().playSound(item.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.4f, 2f);

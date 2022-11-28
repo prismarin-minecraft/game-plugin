@@ -1,9 +1,10 @@
-package in.prismar.game.arsenal.frame;
+package in.prismar.game.map.arsenal.frame;
 
 import in.prismar.api.user.User;
 import in.prismar.api.user.data.ArsenalItem;
-import in.prismar.game.arsenal.ArsenalService;
+import in.prismar.game.map.arsenal.ArsenalService;
 import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.impl.armor.ArmorItem;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.library.common.event.EventSubscriber;
@@ -106,6 +107,9 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
                             service.setItem(user, "primary", stack.clone());
                             reopen();
                         }
+                    } else if(item instanceof ArmorItem armor) {
+                        service.setItem(user, armor.getType().name().toLowerCase(), stack.clone());
+                        reopen();
                     }
                 }
             }

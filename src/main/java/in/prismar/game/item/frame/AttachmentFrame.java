@@ -113,6 +113,9 @@ public class AttachmentFrame extends Frame {
                                 if(attachments.size() >= gun.getAttachmentSlots()) {
                                     return;
                                 }
+                                if(!attachment.isAllowedToAttach(gun, attachments)) {
+                                    return;
+                                }
                                 attachments.add(attachment);
                                 PersistentItemDataUtil.setString(registry.getGame(), item, Gun.ATTACHMENTS_KEY, Joiner.on(",").join(attachments));
                                 event.getEvent().setCurrentItem(new ItemStack(Material.AIR));

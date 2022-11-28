@@ -44,6 +44,8 @@ public class ListSubCommand extends HelpSubCommand<Player> {
         for(Map.Entry<String, CustomItem> entry : registry.getItems().entrySet()) {
             pager.addItem(new ItemBuilder(entry.getValue().getMaterial())
                             .setName(entry.getValue().getDisplayName())
+                            .addLore(entry.getValue().getLore() != null ?
+            entry.getValue().getLore().toArray(new String[0]) : new String[]{})
                     .addLore("§c")
                     .addLore(" §8" + PrismarinConstants.DOT + " §3Click §7to retrieve this item")
                     .addLore("§c")

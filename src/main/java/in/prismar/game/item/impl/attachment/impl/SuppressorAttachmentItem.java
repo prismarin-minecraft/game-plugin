@@ -6,6 +6,7 @@ import in.prismar.game.item.impl.attachment.applier.ApplierOperation;
 import in.prismar.game.item.impl.attachment.applier.BooleanAttachmentApplier;
 import in.prismar.game.item.impl.attachment.applier.DoublePercentageAttachmentApplier;
 import in.prismar.game.item.impl.attachment.applier.IntPercentageAttachmentApplier;
+import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
 
 /**
@@ -18,12 +19,14 @@ public class SuppressorAttachmentItem extends Attachment {
 
     public SuppressorAttachmentItem() {
         super("Suppressor", Material.CLAY_BALL, "§dSuppressor");
+        addAllowedTypes(GunType.AR, GunType.SMG, GunType.PISTOL, GunType.SNIPER);
         registerApplier(AttachmentModifier.PARTICLE, new BooleanAttachmentApplier(false));
         registerApplier(AttachmentModifier.RANGE, new DoublePercentageAttachmentApplier(15, ApplierOperation.SUBTRACT));
 
         addLore("§c");
         addLore(" §7Hides particles");
         addLore(" §7Range§8: §c-25%");
+        addAllowedTypesLore();
         addLore("§c");
     }
 }

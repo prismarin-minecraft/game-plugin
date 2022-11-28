@@ -1,12 +1,12 @@
 package in.prismar.game.item.impl.attachment;
 
+import com.google.common.base.Joiner;
 import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.impl.gun.Gun;
+import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -17,12 +17,33 @@ import java.util.Map;
 public class Attachment extends CustomItem {
 
     private final Map<AttachmentModifier, List<AttachmentApplier>> appliers;
+    private Set<GunType> allowedTypes;
 
     public Attachment(String id, Material material, String displayName) {
         super(id, material, displayName);
+        this.allowedTypes = new HashSet<>();
         this.appliers = new HashMap<>();
     }
 
+    public Attachment addAllowedTypes(GunType... types) {
+        this.allowedTypes.addAll(Arrays.asList(types));
+        return this;
+    }
+
+    protected void addAllowedTypesLore() {
+        addLore(" §7Gun types§8: §3" + Joiner.on("§8, §3").join(
+              allowedTypes.stream().map(type -> type.getDisplayName()).toList()
+        ));
+    }
+
+    public boolean isAllowedToAttach(Gun gun, List<Attachment> currentAttachments) {
+        for(Attachment current : currentAttachments) {
+            if(current.getId().equals(getId())) {
+                return false;
+            }
+        }
+        return this.allowedTypes.contains(gun.getType());
+    }
 
     public void registerApplier(AttachmentModifier modifier, AttachmentApplier applier) {
         if(!appliers.containsKey(modifier)) {

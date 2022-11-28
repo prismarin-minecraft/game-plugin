@@ -1,8 +1,4 @@
-package in.prismar.game.raytrace.result;
-
-import lombok.Data;
-
-import java.util.List;
+package in.prismar.game.item.impl.armor;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -10,8 +6,11 @@ import java.util.List;
  * Proprietary and confidential
  * Written by Maga
  **/
-@Data
-public class RaytraceResult {
+public enum ArmorType {
 
-    private List<RaytraceHit> hits;
+
+    HELMET,
+    CHESTPLATE,
+    LEGGINGS,
+    BOOTS;
 }
