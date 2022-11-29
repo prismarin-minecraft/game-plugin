@@ -215,11 +215,8 @@ public class GameMapFacade implements GameMapProvider {
         if (helmet != null) {
             player.getInventory().setHelmet(helmet);
         }
+        giveArsenalChestplate(user, player);
 
-        ItemStack chestplate = createArsenalItem(user, "chestplate");
-        if (chestplate != null) {
-            player.getInventory().setChestplate(chestplate);
-        }
 
         ItemStack leggings = createArsenalItem(user, "leggings");
         if (leggings != null) {
@@ -230,10 +227,16 @@ public class GameMapFacade implements GameMapProvider {
         if (boots != null) {
             player.getInventory().setBoots(boots);
         }
-
-
         player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
         player.getInventory().setItem(4, itemRegistry.createItem("Molotov"));
+    }
+
+    public void giveArsenalChestplate(User user, Player player) {
+        ItemStack chestplate = createArsenalItem(user, "chestplate");
+        if (chestplate != null) {
+            player.getInventory().setChestplate(chestplate);
+        }
+
     }
 
     private ItemStack createArsenalItem(User user, String key) {

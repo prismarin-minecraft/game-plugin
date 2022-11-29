@@ -6,6 +6,8 @@ import in.prismar.game.item.impl.attachment.applier.IntPercentageAttachmentAppli
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
 
+import java.util.Arrays;
+
 /**
  * Copyright (c) Maga, All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -16,7 +18,7 @@ public class ExtendedMagazineAttachmentItem extends Attachment {
 
     public ExtendedMagazineAttachmentItem() {
         super("ExtendedMagazine", Material.NAME_TAG, "§eExtended Magazine");
-        addAllowedTypes(GunType.values());
+        addAllowedTypes(Arrays.stream(GunType.values()).filter(type -> type != GunType.SHOTGUN).toList().toArray(new GunType[0]));
         registerApplier(AttachmentModifier.MAX_AMMO, new IntPercentageAttachmentApplier(25));
 
         addLore("§c");

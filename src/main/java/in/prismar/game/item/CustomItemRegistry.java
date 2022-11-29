@@ -71,6 +71,7 @@ public class CustomItemRegistry {
 
         register(new AdaptiveChamberingAttachment());
         register(new VerticalGripAttachmentItem());
+        register(new HorizontalGripAttachmentItem());
         register(new BipodAttachmentItem());
         register(new ExtendedMagazineAttachmentItem());
         register(new BarrelAttachmentItem());

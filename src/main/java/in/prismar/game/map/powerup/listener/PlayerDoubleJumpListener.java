@@ -47,6 +47,7 @@ public class PlayerDoubleJumpListener implements Listener {
                         player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 0.7f, 1);
                     }
                 } else {
+                    user.removeTag("doubleJump");
                     player.setAllowFlight(false);
                     player.setFlying(false);
                 }
