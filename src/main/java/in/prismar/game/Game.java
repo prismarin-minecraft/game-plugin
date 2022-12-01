@@ -1,5 +1,6 @@
 package in.prismar.game;
 
+import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.map.GameMapProvider;
 import in.prismar.game.item.CustomItemRegistry;
@@ -58,6 +59,8 @@ public class Game extends JavaPlugin {
         setup.register();
 
         initApi();
+
+        NPCLib.getInstance().registerPlugin(this);
     }
 
     private void initApi() {

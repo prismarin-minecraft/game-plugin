@@ -231,12 +231,13 @@ public class GameMapFacade implements GameMapProvider {
         player.getInventory().setItem(4, itemRegistry.createItem("Molotov"));
     }
 
-    public void giveArsenalChestplate(User user, Player player) {
+    public boolean giveArsenalChestplate(User user, Player player) {
         ItemStack chestplate = createArsenalItem(user, "chestplate");
         if (chestplate != null) {
             player.getInventory().setChestplate(chestplate);
+            return true;
         }
-
+        return false;
     }
 
     private ItemStack createArsenalItem(User user, String key) {

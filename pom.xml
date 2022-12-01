@@ -86,10 +86,20 @@
             <id>prismarin-minecraft</id>
             <url>https://nexus.prismar.in/repository/prismarin-minecraft/</url>
         </repository>
+        <repository>
+            <id>ranull-repo-external</id>
+            <url>https://repo.ranull.com/maven/external/</url>
+        </repository>
     </repositories>
 
 
     <dependencies>
+        <dependency>
+            <groupId>dev.sergiferry</groupId>
+            <artifactId>playernpc</artifactId>
+            <version>2022.8</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.xxmicloxx</groupId>
             <artifactId>NoteBlockAPI</artifactId>

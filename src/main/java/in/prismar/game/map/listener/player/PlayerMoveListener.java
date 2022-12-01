@@ -94,6 +94,8 @@ public class PlayerMoveListener implements Listener {
             if (upper.getBlock().getType() == Material.RED_CONCRETE) {
                 User user = provider.getUserByUUID(player.getUniqueId());
                 user.removeTag("doubleJump");
+                player.setAllowFlight(false);
+                player.setFlying(false);
                 player.setVelocity(player.getLocation().getDirection().multiply(3).setY(0));
                 player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 0.5f, 1);
                 player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_LAUNCH, 0.7f, 1);
@@ -103,7 +105,11 @@ public class PlayerMoveListener implements Listener {
             if (player.getInventory().getChestplate() != null) {
                 if (player.getInventory().getChestplate().getType() == Material.ELYTRA) {
                     User user = provider.getUserByUUID(player.getUniqueId());
-                    facade.giveArsenalChestplate(user, player);
+                    boolean success = facade.giveArsenalChestplate(user, player);
+                    if(!success) {
+                        player.getInventory().setChestplate(new ItemStack(Material.AIR));
+                    }
+                    player.updateInventory();
                 }
             }
         }
