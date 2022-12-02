@@ -1,9 +1,11 @@
 package in.prismar.game.item.impl.gun.impl;
 
 import in.prismar.game.item.impl.gun.Gun;
+import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -31,6 +33,10 @@ public class DesertEagleGun extends Gun {
         setReloadTimeInTicks(45);
 
         generateDefaultLore();
+
+        clearSounds(GunSoundType.SHOOT);
+        registerSound(GunSoundType.SHOOT, Sound.ENTITY_SKELETON_HURT, 0.5f, 1f);
+
 
 
     }

@@ -1,10 +1,12 @@
 package in.prismar.game.item.impl.gun.impl;
 
 import in.prismar.game.item.impl.gun.Gun;
+import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -34,6 +36,10 @@ public class BallistaGun extends Gun {
         setReloadTimeInTicks(80);
 
         generateDefaultLore();
+
+
+        clearSounds(GunSoundType.SHOOT);
+        registerSound(GunSoundType.SHOOT, Sound.ENTITY_ENDERMAN_HURT, 0.7f, 1);
 
     }
 }

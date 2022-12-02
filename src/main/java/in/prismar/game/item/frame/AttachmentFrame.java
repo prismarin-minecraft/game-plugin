@@ -103,6 +103,9 @@ public class AttachmentFrame extends Frame {
                     CustomItem customItem = registry.getItemByStack(stack);
                     if(customItem != null) {
                         if(customItem instanceof Gun gun) {
+                            if(this.item != null) {
+                                ItemUtil.giveItem(event.getPlayer(), item);
+                            }
                             setReceiveBack(false);
                             AttachmentFrame frame = new AttachmentFrame(registry, event.getEvent().getCurrentItem());
                             frame.openInventory(event.getPlayer(), Sound.BLOCK_PISTON_EXTEND, 0.7f);
@@ -144,15 +147,6 @@ public class AttachmentFrame extends Frame {
     private void rebuildLore(List<Attachment> attachments) {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(gun.buildDefaultLore(attachments));
-        if(attachments.isEmpty()) {
-            if(meta.hasEnchants()) {
-                for(Enchantment enchantment : meta.getEnchants().keySet()) {
-                    meta.removeEnchant(enchantment);
-                }
-            }
-        } else {
-            meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
-        }
         item.setItemMeta(meta);
     }
 
