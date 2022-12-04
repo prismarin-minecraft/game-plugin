@@ -38,17 +38,7 @@ public class GameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        NPC.Global npc = NPCLib.getInstance().generateGlobalNPC(game, player.getUniqueId().toString(),
-                LocationUtil.getCenterOfBlock(player.getLocation().getBlock().getLocation().clone().add(0, 0.2, 0)));
 
-        Tuple<String, String> tuple = NmsUtil.getTextureAndSignature(player);
-        npc.setSkin(tuple.getFirst(), tuple.getSecond());
-        npc.addCustomClickAction(NPC.Interact.ClickType.RIGHT_CLICK, (npc1, clicker) -> {
-            
-        });
-        npc.setSleeping(true);
-        npc.update();
-        npc.forceUpdate();
         return true;
     }
 
