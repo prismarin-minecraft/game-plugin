@@ -5,16 +5,15 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.map.GameMapProvider;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.map.GameMapFacade;
-import in.prismar.game.map.model.GameMap;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
+import in.prismar.library.spigot.entity.GlowingEntities;
 import in.prismar.library.spigot.meta.SpigotCommandProcessor;
 import in.prismar.library.spigot.meta.SpigotListenerProcessor;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import in.prismar.library.spigot.setup.SpigotSetup;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,6 +33,8 @@ public class Game extends JavaPlugin {
 
     private MetaRegistry metaRegistry;
 
+    private GlowingEntities glowingEntities;
+
 
     @Inject
     private GameMapFacade mapFacade;
@@ -42,13 +43,21 @@ public class Game extends JavaPlugin {
     private CustomItemRegistry itemRegistry;
 
 
+
+
     @Override
     public void onEnable() {
         initialize();
     }
 
+    @Override
+    public void onDisable() {
+    }
+
     private void initialize() {
+        this.glowingEntities = new GlowingEntities(this);
         this.setup = new SpigotSetup(this, "game");
+
         this.metaRegistry = new MetaRegistry();
         this.metaRegistry.registerProcessor(AutoCommand.class, new SpigotCommandProcessor(setup, metaRegistry));
         this.metaRegistry.registerProcessor(AutoListener.class, new SpigotListenerProcessor(setup, metaRegistry));

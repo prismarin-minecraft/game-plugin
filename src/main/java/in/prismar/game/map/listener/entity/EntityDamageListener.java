@@ -52,13 +52,16 @@ public class EntityDamageListener implements Listener {
             return;
         }
         if(event.getEntity() instanceof Player target && event.getDamager() instanceof Player damager) {
-            this.lastDamager.put(target.getUniqueId(), damager);
-             double damage = event.getDamage();
-             double nextHealth = target.getHealth() - damage;
-             if(nextHealth <= 0) {
-                 event.setCancelled(true);
-                 handleDeath(target, damager);
-             }
+            if(facade.isCurrentlyPlaying(target) && facade.isCurrentlyPlaying(damager)) {
+                this.lastDamager.put(target.getUniqueId(), damager);
+                double damage = event.getDamage();
+                double nextHealth = target.getHealth() - damage;
+                if(nextHealth <= 0) {
+                    event.setCancelled(true);
+                    handleDeath(target, damager);
+                }
+            }
+
         }
     }
 
