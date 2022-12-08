@@ -7,7 +7,11 @@ import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
+import in.prismar.library.spigot.scheduler.Scheduler;
+import in.prismar.library.spigot.scheduler.SchedulerRunnable;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -18,9 +22,6 @@ import org.bukkit.entity.Player;
 @AutoCommand
 public class GameCommand extends SpigotCommand<Player> {
 
-
-
-
     public GameCommand(Game game) {
         super("game");
         setSenders(Player.class);
@@ -29,8 +30,7 @@ public class GameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        player.sendMessage("SHine!");
-
+        player.sendMessage("Starting scheduler!");
         return true;
     }
 

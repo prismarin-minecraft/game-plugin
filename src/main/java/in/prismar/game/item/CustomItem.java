@@ -27,6 +27,8 @@ public class CustomItem {
 
     private final String displayName;
 
+    private int customModelData = -1;
+
     private boolean unbreakable;
     private List<String> lore;
 
@@ -38,6 +40,11 @@ public class CustomItem {
         this.displayName = displayName;
         this.material = material;
         this.eventBus = new CustomItemEventBus(this);
+    }
+
+    public CustomItem setCustomModelData(int value) {
+        this.customModelData = value;
+        return this;
     }
 
     public CustomItem setUnbreakable(boolean unbreakable) {
@@ -61,6 +68,9 @@ public class CustomItem {
     public ItemStack build() {
         ItemStack stack = new ItemStack(material);
         ItemMeta meta = stack.getItemMeta();
+        if(customModelData != -1) {
+            meta.setCustomModelData(customModelData);
+        }
         if(displayName != null) {
             meta.setDisplayName(displayName);
         }

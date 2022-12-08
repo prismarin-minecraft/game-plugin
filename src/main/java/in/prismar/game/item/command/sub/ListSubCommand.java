@@ -12,7 +12,11 @@ import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.text.InteractiveTextBuilder;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,14 +46,15 @@ public class ListSubCommand extends HelpSubCommand<Player> {
         Pager pager = new Pager("§6Custom Items" , 6);
         pager.fill();
         for(Map.Entry<String, CustomItem> entry : registry.getItems().entrySet()) {
-            pager.addItem(new ItemBuilder(entry.getValue().getMaterial())
-                            .setName(entry.getValue().getDisplayName())
-                            .addLore(entry.getValue().getLore() != null ?
-            entry.getValue().getLore().toArray(new String[0]) : new String[]{})
-                    .addLore("§c")
-                    .addLore(" §8" + PrismarinConstants.DOT + " §3Click §7to retrieve this item")
-                    .addLore("§c")
-                    .build(), (ClickFrameButtonEvent) (player1, event) -> {
+            ItemStack clone = entry.getValue().build();
+            ItemMeta meta = clone.getItemMeta();
+            List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+            lore.add("§c");
+            lore.add(" §8" + PrismarinConstants.DOT + " §3Click §7to retrieve this item");
+            lore.add("§c");
+            meta.setLore(lore);
+            clone.setItemMeta(meta);
+            pager.addItem(clone, (ClickFrameButtonEvent) (player1, event) -> {
                 player.performCommand("customitem get " + entry.getKey());
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.65F, 1);
             });

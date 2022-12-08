@@ -2,7 +2,9 @@ package in.prismar.game;
 
 import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
+import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.map.GameMapFacade;
 import in.prismar.library.meta.MetaRegistry;
@@ -42,6 +44,9 @@ public class Game extends JavaPlugin {
     @Inject
     private CustomItemRegistry itemRegistry;
 
+    @Inject
+    private ExtractionFacade extractionFacade;
+
 
 
 
@@ -74,6 +79,7 @@ public class Game extends JavaPlugin {
 
     private void initApi() {
         PrismarinApi.registerProvider(GameMapProvider.class, mapFacade);
+        PrismarinApi.registerProvider(ExtractionProvider.class, extractionFacade);
     }
 
     public String getDefaultDirectory() {
