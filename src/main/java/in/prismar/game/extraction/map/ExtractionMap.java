@@ -14,5 +14,7 @@ import java.util.List;
 @Data
 public class ExtractionMap {
 
+    private String openingTime;
+    private String endingTime;
     private List<Location> spawns;
 }

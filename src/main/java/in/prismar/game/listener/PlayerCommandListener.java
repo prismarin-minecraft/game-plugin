@@ -42,7 +42,7 @@ public class PlayerCommandListener implements Listener {
         if (Bukkit.getServer().getHelpMap().getHelpTopic(arguments[0]) != null) {
             if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "disabledcommands.bypass")) {
                 final String[] disabledCommands;
-                if(extractionFacade.isIn(player)) {
+                if(extractionFacade.isIn(player) && !extractionFacade.isInSafeZone(player)) {
                     disabledCommands = configStore.getProperty("extraction.disabled.commands").split(",");
                 } else if(mapFacade.isInMap(player.getUniqueId())) {
                     disabledCommands = configStore.getProperty("ffa.disabled.commands").split(",");

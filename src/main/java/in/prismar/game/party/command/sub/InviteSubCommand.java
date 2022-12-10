@@ -52,6 +52,7 @@ public class InviteSubCommand extends HelpSubCommand<Player> {
 
             InteractiveTextBuilder textBuilder = new InteractiveTextBuilder(PrismarinConstants.PREFIX);
             textBuilder.addText("§8[§aAccept§8]", "/party accept " + player.getName(), "§7Click me to accept this invite");
+            textBuilder.addText(" ");
             textBuilder.addText("§8[§cDeny§8]", "/party deny " + player.getName(), "§7Click me to deny this invite");
             target.sendMessage(PrismarinConstants.PREFIX + "§7You were invited to §b" + player.getName() + "'s §7party");
             target.spigot().sendMessage(textBuilder.build());

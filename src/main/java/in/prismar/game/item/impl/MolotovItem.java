@@ -39,6 +39,7 @@ public class MolotovItem extends CustomItem {
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_LINGERING_POTION_THROW, 0.8f, 1);
         Vector vector = player.getLocation().getDirection().multiply(1.4);
         Item item = player.getWorld().dropItem(player.getEyeLocation(), new ItemStack(getMaterial()));
+        item.setPickupDelay(Integer.MAX_VALUE);
         item.setVelocity(vector);
         player.getInventory().setItemInMainHand(null);
         player.updateInventory();

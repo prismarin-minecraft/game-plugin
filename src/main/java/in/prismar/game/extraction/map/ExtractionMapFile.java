@@ -21,10 +21,23 @@ public class ExtractionMapFile extends GsonFileWrapper<ExtractionMap> {
         load();
         if(getEntity() == null) {
             ExtractionMap map = new ExtractionMap();
+            map.setOpeningTime("18:00:00");
+            map.setEndingTime("20:00:00");
             map.setSpawns(new ArrayList<>());
             setEntity(map);
             save();
         }
+    }
+
+    public void addSpawn(Location location) {
+        getEntity().getSpawns().add(location);
+        save();
+    }
+
+    public Location removeLatestSpawn() {
+        Location location = getEntity().getSpawns().remove(getEntity().getSpawns().size() - 1);
+        save();
+        return location;
     }
 
     @Override
