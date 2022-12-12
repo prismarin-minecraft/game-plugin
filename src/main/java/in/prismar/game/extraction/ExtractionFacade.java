@@ -60,7 +60,7 @@ public class ExtractionFacade implements ExtractionProvider {
     public void open() {
         setRunning(true);
         Bukkit.broadcastMessage(" ");
-        Bukkit.broadcastMessage(PrismarinConstants.ARROW_RIGHT + " §c§lEXTRACTION §7is now open!");
+        Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§c§lEXTRACTION §7is now open!");
         Bukkit.broadcastMessage(" ");
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.7f, 1);
@@ -70,7 +70,7 @@ public class ExtractionFacade implements ExtractionProvider {
     public void close() {
         setRunning(false);
         Bukkit.broadcastMessage(" ");
-        Bukkit.broadcastMessage(PrismarinConstants.ARROW_RIGHT + " §c§lEXTRACTION §7is now closed!");
+        Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§c§lEXTRACTION §7is now closed!");
         Bukkit.broadcastMessage(" ");
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 0.7f, 1);
