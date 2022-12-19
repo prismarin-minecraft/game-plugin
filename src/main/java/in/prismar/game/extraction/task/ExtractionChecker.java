@@ -3,8 +3,10 @@ package in.prismar.game.extraction.task;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.warp.WarpProvider;
+import in.prismar.game.airdrop.AirDrop;
 import in.prismar.game.extraction.ExtractionFacade;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -46,7 +48,27 @@ public class ExtractionChecker implements Runnable {
             if(isOnTime(endingTime, current)) {
                 facade.close();
             }
+            for(String airDropTime : facade.getMapFile().getEntity().getAirdropTimes()) {
+                LocalTime time = LocalTime.parse(airDropTime);
+                if(isOnTime(time, current) && !isSpawned(time)) {
+                    Location location = facade.getMapFile().findAirDropRandomLocation();
+                    if(location != null){
+                        Bukkit.getScheduler().runTask(facade.getGame(), () -> {
+                            facade.getAirDropRegistry().callAirDrop(location);
+                        });
+                    }
+                }
+            }
         }
+    }
+
+    private boolean isSpawned(LocalTime time) {
+        for(AirDrop drop : facade.getAirDropRegistry().getAirDrops()) {
+            if(isOnTime(time, dateFormat.format(new Date(drop.getSpawned())))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isOnTime(LocalTime start, String check) {

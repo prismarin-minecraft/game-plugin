@@ -2,6 +2,7 @@ package in.prismar.game.extraction.map;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
+import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.file.gson.GsonFileWrapper;
 import in.prismar.library.spigot.file.GsonLocationAdapter;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  **/
 public class ExtractionMapFile extends GsonFileWrapper<ExtractionMap> {
 
+
     public ExtractionMapFile(String directory) {
         super(directory.concat("extraction.json"), new TypeToken<ExtractionMap>(){}.getType());
         load();
@@ -27,6 +29,25 @@ public class ExtractionMapFile extends GsonFileWrapper<ExtractionMap> {
             setEntity(map);
             save();
         }
+        if(getEntity().getAirdropTimes() == null) {
+            getEntity().setAirdropTimes(new ArrayList<>());
+            save();
+        }
+        if(getEntity().getAirdropLocations() == null) {
+            getEntity().setAirdropLocations(new ArrayList<>());
+            save();
+        }
+    }
+
+    public Location findAirDropRandomLocation() {
+        if(!getEntity().getAirdropLocations().isEmpty()) {
+            if(getEntity().getAirdropLocations().size() == 1) {
+                return getEntity().getAirdropLocations().get(0);
+            }
+            //TODO: not old location airdrop
+            return getEntity().getAirdropLocations().get(MathUtil.random(getEntity().getAirdropLocations().size()-1));
+        }
+        return null;
     }
 
     public void addSpawn(Location location) {

@@ -16,5 +16,8 @@ public class ExtractionMap {
 
     private String openingTime;
     private String endingTime;
+
+    private List<String> airdropTimes;
+    private List<Location> airdropLocations;
     private List<Location> spawns;
 }

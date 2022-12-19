@@ -7,10 +7,12 @@ import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.region.RegionProvider;
 import in.prismar.api.warp.WarpProvider;
 import in.prismar.game.Game;
+import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.extraction.corpse.Corpse;
 import in.prismar.game.extraction.map.ExtractionMapFile;
 import in.prismar.game.extraction.task.ExtractionChecker;
 import in.prismar.game.extraction.task.ExtractionCorpseDespawner;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,9 @@ import java.util.List;
 @Service
 @Getter
 public class ExtractionFacade implements ExtractionProvider {
+
+    @Inject
+    private AirDropRegistry airDropRegistry;
 
     private ExtractionMapFile mapFile;
     private final Game game;
@@ -56,6 +61,7 @@ public class ExtractionFacade implements ExtractionProvider {
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, checker = new ExtractionChecker(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, new ExtractionCorpseDespawner(this), 20, 20);
     }
+
 
     public void open() {
         setRunning(true);
