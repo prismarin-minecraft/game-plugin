@@ -38,10 +38,6 @@ public class GameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-
-
-
-        player.sendMessage("Spawned aidrop!");
         return true;
     }
 

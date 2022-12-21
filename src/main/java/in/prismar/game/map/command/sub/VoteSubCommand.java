@@ -44,7 +44,7 @@ public class VoteSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cNo vote is currently running");
                 return true;
             }
-            if(facade.getRotator().getVoting().get(map.getId()).contains(player.getUniqueId())) {
+            if(facade.getRotator().hasVoted(player)) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cYou already voted");
                 return true;
             }

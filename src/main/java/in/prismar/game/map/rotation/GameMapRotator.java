@@ -4,11 +4,14 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.placeholder.PlaceholderStore;
+import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.game.map.GameMapFacade;
 import in.prismar.game.map.model.GameMap;
 import in.prismar.game.map.model.GameMapPlayer;
 import in.prismar.game.map.model.GameMapPowerUp;
 import in.prismar.game.map.powerup.PowerUp;
+import in.prismar.game.stats.GameStatsDistributor;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.hologram.Hologram;
 import in.prismar.library.spigot.hologram.line.HologramLineType;
 import in.prismar.library.spigot.text.InteractiveTextBuilder;
@@ -41,6 +44,7 @@ public class GameMapRotator implements Runnable {
 
     private final PlaceholderStore placeholderStore;
 
+
     private Map<String, Set<UUID>> voting;
 
     private GameMap currentMap;
@@ -48,6 +52,8 @@ public class GameMapRotator implements Runnable {
     private long nextRotate;
 
     private long nextRotateVote;
+
+
 
     public GameMapRotator(GameMapFacade facade) {
         this.facade = facade;
@@ -61,6 +67,17 @@ public class GameMapRotator implements Runnable {
 
         nextRotateTimer();
 
+    }
+
+    public boolean hasVoted(Player player) {
+        for(Set<UUID> uuids : voting.values()){
+            for(UUID uuid : uuids) {
+                if(player.getUniqueId().equals(uuid)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void callVote() {
@@ -89,6 +106,27 @@ public class GameMapRotator implements Runnable {
             this.voting.put(map.getId(), new HashSet<>());
         }
         displayVoteSurvey();
+    }
+
+    public void displayWinners() {
+        if (currentMap.getLeaderboard().isEmpty()) {
+            return;
+        }
+        for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+            Player player = mapPlayer.getPlayer();
+            player.sendMessage("§8╔═══════════════════════╗");
+            player.sendMessage(" ");
+            player.sendMessage("§8» §7Winners for this map are§8:");
+            player.sendMessage("§8» §b" + currentMap.getLeaderboard().get(0).getName() + " §7is first.");
+            if(currentMap.getLeaderboard().size() >= 2) {
+                player.sendMessage("§8» §6" + currentMap.getLeaderboard().get(1).getName() + " §7is second.");
+            }
+            if(currentMap.getLeaderboard().size() >= 3) {
+                player.sendMessage("§8» §3" + currentMap.getLeaderboard().get(2).getName() + " §7is third.");
+            }
+            player.sendMessage(" ");
+            player.sendMessage("§8╚═══════════════════════╝");
+        }
     }
 
     public void displayVoteSurvey() {
@@ -155,18 +193,24 @@ public class GameMapRotator implements Runnable {
         if(facade.getRepository().findAll().size() >= 1) {
             if(now >= nextRotate) {
                 GameMap winner = findVoteWinner();
+                for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                    winner.getPlayers().put(mapPlayer.getPlayer().getUniqueId(), new GameMapPlayer(mapPlayer.getPlayer()));
+                }
                 if(!winner.getId().equalsIgnoreCase(currentMap.getId())) {
-                    for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
-                        winner.getPlayers().put(mapPlayer.getPlayer().getUniqueId(), mapPlayer);
-                    }
                     currentMap.getPlayers().clear();
                 }
 
                 this.currentMap = winner;
+                facade.updateLeaderboard(currentMap);
+                ScoreboardProvider provider = PrismarinApi.getProvider(ScoreboardProvider.class);
                 for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                    facade.getStatsDistributor().resetKillstreak(mapPlayer.getPlayer());
                     facade.respawn(mapPlayer.getPlayer());
+                    provider.recreateSidebar(mapPlayer.getPlayer());
                 }
+
                 registerCurrentMapPlaceholder();
+                displayWinners();
                 Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§7Map changed to " + winner.getIcon().getItem().getItemMeta().getDisplayName());
                 nextRotateTimer();
                 voting.clear();

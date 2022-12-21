@@ -26,6 +26,8 @@ public class ExtractionMapFile extends GsonFileWrapper<ExtractionMap> {
             map.setOpeningTime("18:00:00");
             map.setEndingTime("20:00:00");
             map.setSpawns(new ArrayList<>());
+            map.setAirdropLocations(new ArrayList<>());
+            map.setAirdropTimes(new ArrayList<>());
             setEntity(map);
             save();
         }
@@ -55,8 +57,19 @@ public class ExtractionMapFile extends GsonFileWrapper<ExtractionMap> {
         save();
     }
 
+    public void addAirdropSpawn(Location location) {
+        getEntity().getAirdropLocations().add(location);
+        save();
+    }
+
     public Location removeLatestSpawn() {
         Location location = getEntity().getSpawns().remove(getEntity().getSpawns().size() - 1);
+        save();
+        return location;
+    }
+
+    public Location removeLatestAirdrop() {
+        Location location = getEntity().getAirdropLocations().remove(getEntity().getAirdropLocations().size() - 1);
         save();
         return location;
     }

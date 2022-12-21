@@ -31,6 +31,8 @@ public class ExtractionCommand extends HelpCommand<Player> {
         addChild(new JoinSubCommand(facade));
         addChild(new LeaveSubCommand(facade));
         addChild(new AddSpawnSubCommand(facade));
+        addChild(new AddAirdropSpawnSubCommand(facade));
+        addChild(new RemoveAirdropSpawnSubCommand(facade));
         addChild(new RemoveSpawnSubCommand(facade));
         addChild(new SpawnsSubCommand(facade));
         addChild(new OpenSubCommand(facade));
