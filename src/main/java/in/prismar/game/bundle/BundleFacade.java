@@ -1,12 +1,10 @@
 package in.prismar.game.bundle;
 
-import in.prismar.api.bundle.BundleProvider;
 import in.prismar.game.Game;
 import in.prismar.game.bundle.repository.BundleRepository;
 import in.prismar.game.bundle.repository.FileBundleRepository;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -16,7 +14,7 @@ import org.bukkit.entity.Player;
  **/
 @Service
 @Getter
-public class BundleFacade implements BundleProvider {
+public class BundleFacade  {
 
     private final BundleRepository repository;
 
@@ -24,8 +22,4 @@ public class BundleFacade implements BundleProvider {
         this.repository = new FileBundleRepository(game.getDefaultDirectory());
     }
 
-    @Override
-    public void give(Player player, String bundle) {
-
-    }
 }
