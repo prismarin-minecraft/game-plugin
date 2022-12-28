@@ -21,10 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -50,14 +47,6 @@ public class Gun extends CustomItem {
     public static final String ATTACHMENTS_KEY = "attachments";
     private static final DecimalFormat RELOADING_DECIMAL_FORMAT = new DecimalFormat("0.0");
 
-    /**
-     * These maps can be potential memory leaks
-     */
-    private static Map<UUID, Long> LAST_INTERACT = new HashMap<>();
-    private static Map<UUID, Long> RELOADING = new HashMap<>();
-    private static Map<UUID, Long> UPDATE_PLAYER_TICK = new HashMap<>();
-
-    public static Map<UUID, GunDamageType> LAST_DAMAGE = new HashMap<>();
     //----------------------------------------------------------------------------------
 
 
@@ -68,7 +57,6 @@ public class Gun extends CustomItem {
     private double range = 20;
     private int fireRate = 120;
 
-    private boolean rightClickShoot = true;
     private boolean disableInteraction = true;
 
     private double spread = 1;
@@ -125,7 +113,7 @@ public class Gun extends CustomItem {
         lore.add("   §8➥ §7Body§8: §b" + bodyDamage);
         lore.add("   §8➥ §7Legs§8: §b" + legDamage);
         lore.add(" §7Attachments §8(§3" + attachments.size() + "§8/§3" + getAttachmentSlots() + "§8)");
-        for(Attachment attachment : attachments) {
+        for (Attachment attachment : attachments) {
             lore.add("   §8➥ §b" + attachment.getDisplayName());
         }
         lore.add("§c ");
@@ -141,9 +129,7 @@ public class Gun extends CustomItem {
                     player.playSound(player.getLocation(), sound.getSound(), sound.getVolume(), sound.getPitch());
                 }
             }
-
         }
-
     }
 
     public void registerSound(GunSoundType type, Sound sound, float volume, float pitch) {
@@ -154,7 +140,7 @@ public class Gun extends CustomItem {
     }
 
     public void clearSounds(GunSoundType type) {
-        if(this.sounds.containsKey(type)) {
+        if (this.sounds.containsKey(type)) {
             this.sounds.get(type).clear();
         }
     }
@@ -162,10 +148,10 @@ public class Gun extends CustomItem {
     public List<Attachment> getAttachments(Game game, ItemStack stack) {
         List<Attachment> attachments = new ArrayList<>();
         final String value = PersistentItemDataUtil.getString(game, stack, ATTACHMENTS_KEY);
-        for(String id : value.split(",")) {
+        for (String id : value.split(",")) {
             CustomItem item = game.getItemRegistry().getItemById(id);
-            if(item != null) {
-                if(item instanceof Attachment attachment) {
+            if (item != null) {
+                if (item instanceof Attachment attachment) {
                     attachments.add(attachment);
                 }
             }
@@ -179,28 +165,36 @@ public class Gun extends CustomItem {
         double sneakSpread = this.sneakSpread;
         double range = this.range;
         boolean allowParticle = true;
-        for(Attachment attachment : getAttachments(game, stack)) {
+        for (Attachment attachment : getAttachments(game, stack)) {
             normalSpread = attachment.apply(AttachmentModifier.SPREAD, normalSpread);
             sneakSpread = attachment.apply(AttachmentModifier.SNEAK_SPREAD, sneakSpread);
             range = attachment.apply(AttachmentModifier.RANGE, range);
             allowParticle = attachment.apply(AttachmentModifier.PARTICLE, allowParticle);
         }
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
-        Bullet bullet = new Bullet(allowParticle ? shootParticle : null, player.getEyeLocation().subtract(0, 0.0, 0),
+        Location eyeLocation = player.getEyeLocation();
+
+        double distanceFromEyes = -0.5;
+
+        double distanceFromEyeCenter = 0.5;
+        Vector eyeOffset = rotateVector(new Vector(distanceFromEyes, -0.5, distanceFromEyeCenter), eyeLocation.getYaw(), eyeLocation.getPitch());
+        Location particleOrigin = eyeLocation.clone().add(eyeOffset);
+
+        Bullet bullet = new Bullet(allowParticle ? shootParticle : null, particleOrigin, eyeLocation.clone(),
                 getRandomizedDirection(player, spread), range);
         playSound(player, GunSoundType.SHOOT);
         List<RaytraceHit> hits = bullet.invoke();
         int damageReduce = 0;
-        for(RaytraceHit hit : hits) {
-            if(hit instanceof RaytraceEntityHit entityHit) {
-                if(!entityHit.getTarget().getName().equals(player.getName())) {
+        for (RaytraceHit hit : hits) {
+            if (hit instanceof RaytraceEntityHit entityHit) {
+                if (!entityHit.getTarget().getName().equals(player.getName())) {
                     double distance = entityHit.getTarget().getLocation().distanceSquared(entityHit.getPoint());
                     double damage = 0;
                     GunDamageType damageType = GunDamageType.BODY;
-                    if(distance <= 0.7) {
+                    if (distance <= 0.7) {
                         damageType = GunDamageType.LEGS;
                         damage = legDamage;
-                    } else if(distance > 0.7 && distance <= 2.1) {
+                    } else if (distance > 0.7 && distance <= 2.1) {
                         damage = bodyDamage;
                         damageType = GunDamageType.BODY;
                     } else if (distance >= 2.1) {
@@ -210,11 +204,14 @@ public class Gun extends CustomItem {
                     for (int i = 0; i < damageReduce; i++) {
                         damage -= (damage / 100) * 50;
                     }
-                    if(damage > 0) {
-                        LivingEntity entity = (LivingEntity)entityHit.getTarget();
-                        LAST_DAMAGE.put(entity.getUniqueId(), damageType);
+                    if (damage > 0) {
+                        LivingEntity entity = (LivingEntity) entityHit.getTarget();
+                        if(entity instanceof Player target) {
+                            GunPlayer targetGunPlayer = GunPlayer.of(target);
+                            targetGunPlayer.setLastDamageReceived(damageType);
+                        }
                         entity.damage(damage, player);
-                        if(damageType == GunDamageType.HEADSHOT) {
+                        if (damageType == GunDamageType.HEADSHOT) {
                             playSound(player, GunSoundType.HEADSHOT);
                         } else {
                             playSound(player, GunSoundType.HIT);
@@ -222,24 +219,52 @@ public class Gun extends CustomItem {
                     }
                     damageReduce++;
                 }
-            } else if(hit instanceof RaytraceBlockHit blockHit) {
+            } else if (hit instanceof RaytraceBlockHit blockHit) {
                 damageReduce++;
             }
         }
     }
 
+    private final Vector rotateVector(Vector v, float yawDegrees, float pitchDegrees) {
+        double yaw = Math.toRadians(-1 * (yawDegrees + 90));
+        double pitch = Math.toRadians(-pitchDegrees);
+
+        double cosYaw = Math.cos(yaw);
+        double cosPitch = Math.cos(pitch);
+        double sinYaw = Math.sin(yaw);
+        double sinPitch = Math.sin(pitch);
+
+        double initialX, initialY, initialZ;
+        double x, y, z;
+
+        // Z_Axis rotation (Pitch)
+        initialX = v.getX();
+        initialY = v.getY();
+        x = initialX * cosPitch - initialY * sinPitch;
+        y = initialX * sinPitch + initialY * cosPitch;
+
+        // Y_Axis rotation (Yaw)
+        initialZ = v.getZ();
+        initialX = x;
+        z = initialZ * cosYaw - initialX * sinYaw;
+        x = initialZ * sinYaw + initialX * cosYaw;
+
+        return new Vector(x, y, z);
+    }
+
     public void reload(Player player, Game game, ItemStack stack) {
-        if(RELOADING.containsKey(player.getUniqueId())) {
+        GunPlayer gunPlayer = GunPlayer.of(player);
+        if (gunPlayer.isReloading()) {
             return;
         }
         List<Attachment> attachments = getAttachments(game, stack);
         int maxAmmo = this.maxAmmo;
-        for(Attachment attachment : attachments) {
+        for (Attachment attachment : attachments) {
             maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
         }
 
         int current = PersistentItemDataUtil.getInteger(game, stack, AMMO_KEY);
-        if(current >= maxAmmo) {
+        if (current >= maxAmmo) {
             return;
         }
         int needed = maxAmmo - current;
@@ -247,8 +272,8 @@ public class Gun extends CustomItem {
         int ammoToGive;
 
         int ammo = AmmoType.getAmmoInInventory(player, ammoType);
-        if(ammo >= 1) {
-            if(ammo < needed) {
+        if (ammo >= 1) {
+            if (ammo < needed) {
                 AmmoType.takeAmmo(player, ammoType, ammo);
                 ammoToGive = current + ammo;
             } else {
@@ -258,38 +283,36 @@ public class Gun extends CustomItem {
             int finalAmmoToGive = ammoToGive;
             Bukkit.getScheduler().runTaskLater(game, () -> {
                 PersistentItemDataUtil.setInteger(game, stack, AMMO_KEY, finalAmmoToGive);
-                RELOADING.remove(player.getUniqueId());
+                gunPlayer.setReloading(false);
             }, reloadTimeInTicks);
-            RELOADING.put(player.getUniqueId(), System.currentTimeMillis() + 50 * reloadTimeInTicks);
+            gunPlayer.setReloading(true);
+            gunPlayer.setReloadingEndTimestamp(System.currentTimeMillis() + 50 * reloadTimeInTicks);
             playSound(player, GunSoundType.RELOAD);
         }
-
 
 
     }
 
     @CustomItemEvent
     public void onUpdate(Player player, Game game, CustomItemHolder holder, CustomItemHolder event) {
-        if(event.getHoldingType() != CustomItemHoldingType.RIGHT_HAND) {
+        if (event.getHoldingType() != CustomItemHoldingType.RIGHT_HAND) {
             return;
         }
-        if(!UPDATE_PLAYER_TICK.containsKey(player.getUniqueId())) {
-            UPDATE_PLAYER_TICK.put(player.getUniqueId(), 0l);
-        }
-        long currentUpdateTick = UPDATE_PLAYER_TICK.get(player.getUniqueId());
-        if(currentUpdateTick >= Integer.MAX_VALUE) {
+        GunPlayer gunPlayer = GunPlayer.of(player);
+        long currentUpdateTick = gunPlayer.getCurrentUpdateTick();
+        if (currentUpdateTick >= Integer.MAX_VALUE) {
             currentUpdateTick = 0;
         }
         int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
         List<Attachment> attachments = getAttachments(game, holder.getStack());
         int fireRate = this.fireRate;
         int maxAmmo = this.maxAmmo;
-        for(Attachment attachment : attachments) {
+        for (Attachment attachment : attachments) {
             fireRate = attachment.apply(AttachmentModifier.FIRE_RATE, fireRate);
             maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
         }
-        if(RELOADING.containsKey(player.getUniqueId())) {
-            long max = RELOADING.get(player.getUniqueId());
+        if (gunPlayer.isReloading()) {
+            long max = gunPlayer.getReloadingEndTimestamp();
             long difference = max - System.currentTimeMillis();
             double result = (double) difference / 1000.0;
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§eReloading " + RELOADING_DECIMAL_FORMAT.format(result) + "s"));
@@ -301,57 +324,39 @@ public class Gun extends CustomItem {
         }
 
         int fireRateTicks = 1200 / fireRate;
-        long lastInteract = LAST_INTERACT.containsKey(player.getUniqueId()) ? LAST_INTERACT.get(player.getUniqueId()) : 0;
+        long lastInteract = gunPlayer.getLastInteract();
         long difference = System.currentTimeMillis() - lastInteract;
         if (difference <= 210 && currentUpdateTick % fireRateTicks == 0) {
-            if(ammo >= 1) {
+            if (ammo >= 1) {
                 for (int i = 0; i < bulletsPerShot; i++) {
                     shoot(game, player, holder.getStack());
                 }
                 ammo--;
                 PersistentItemDataUtil.setInteger(game, holder.getStack(), AMMO_KEY, ammo);
+                currentUpdateTick = 0;
             }
         }
-        if(difference > 210) {
-            LAST_INTERACT.remove(player.getUniqueId());
-        }
         currentUpdateTick++;
-        UPDATE_PLAYER_TICK.put(player.getUniqueId(), currentUpdateTick);
-
+        gunPlayer.setCurrentUpdateTick(currentUpdateTick);
     }
 
     @CustomItemEvent
     public void onInteract(Player player, Game game, CustomItemHolder holder, PlayerInteractEvent event) {
         if (holder.getHoldingType() == CustomItemHoldingType.RIGHT_HAND) {
-            boolean allowedInteract = rightClickShoot ? event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR :
-                    event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR;
-            if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                if(!rightClickShoot) {
-                    updateLastInteract(player);
-                    int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
-                    if(ammo <= 0) {
-                        reload(event.getPlayer(), game, holder.getStack());
-                    }
-                } else {
-                    reload(event.getPlayer(), game, holder.getStack());
-                }
-
-            } else if(allowedInteract) {
-                if(disableInteraction) {
+            boolean allowedInteract = event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR;
+            if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                reload(event.getPlayer(), game, holder.getStack());
+            } else if (allowedInteract) {
+                if (disableInteraction) {
                     event.setCancelled(true);
                 }
-               updateLastInteract(player);
+                GunPlayer gunPlayer = GunPlayer.of(player);
+                gunPlayer.setLastInteract(System.currentTimeMillis());
             }
 
         }
     }
 
-    private void updateLastInteract(Player player) {
-        if(!LAST_INTERACT.containsKey(player.getUniqueId())) {
-            UPDATE_PLAYER_TICK.put(player.getUniqueId(), 0l);
-        }
-        LAST_INTERACT.put(player.getUniqueId(), System.currentTimeMillis());
-    }
 
     private Vector getRandomizedDirection(Player player, double spread) {
         Vector dir = player.getLocation().getDirection().normalize();

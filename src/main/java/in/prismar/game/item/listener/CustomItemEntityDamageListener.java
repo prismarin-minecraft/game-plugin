@@ -6,6 +6,7 @@ import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.armor.ArmorItem;
 import in.prismar.game.item.impl.gun.Gun;
+import in.prismar.game.item.impl.gun.GunPlayer;
 import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.meta.anno.Inject;
@@ -50,9 +51,9 @@ public class CustomItemEntityDamageListener implements Listener {
                 }
 
                 int reducePercentage = bodyProtection;
-                if(Gun.LAST_DAMAGE.containsKey(player.getUniqueId())) {
-                    GunDamageType type = Gun.LAST_DAMAGE.get(player.getUniqueId());
-                    if(type == GunDamageType.HEADSHOT) {
+                GunPlayer gunPlayer = GunPlayer.of(player.getUniqueId());
+                if(gunPlayer.getLastDamageReceived() != null) {
+                    if(gunPlayer.getLastDamageReceived() == GunDamageType.HEADSHOT) {
                         reducePercentage = headProtection;
                     }
                 }

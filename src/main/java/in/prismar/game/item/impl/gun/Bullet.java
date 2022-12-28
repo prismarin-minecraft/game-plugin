@@ -23,12 +23,14 @@ public class Bullet {
 
     private Particle particle;
     private Location origin;
+    private Location particleOrigin;
     private Raytrace raytrace;
     private Location endPoint;
     private double range;
 
-    public Bullet(Particle particle, Location origin, Vector direction, double range) {
+    public Bullet(Particle particle, Location particleOrigin, Location origin, Vector direction, double range) {
         this.particle = particle;
+        this.particleOrigin = particleOrigin;
         this.origin = origin;
         this.range = range;
         this.endPoint = origin.clone().add(direction.multiply(range));
@@ -38,10 +40,9 @@ public class Bullet {
 
     public List<RaytraceHit> invoke() {
         if(particle != null) {
-            ParticleUtil.spawnParticleAlongLine(origin, endPoint, particle, 20, 0);
+            ParticleUtil.spawnParticleAlongLine(particleOrigin, endPoint, particle, 20, 0);
         }
         RaytraceResult result = this.raytrace.ray(range);
-        result.getHits().sort(Comparator.comparingDouble(o -> o.getPoint().distanceSquared(origin)));
         return result.getHits();
     }
 }
