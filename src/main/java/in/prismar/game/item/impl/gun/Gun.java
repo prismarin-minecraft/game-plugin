@@ -326,7 +326,7 @@ public class Gun extends CustomItem {
         int fireRateTicks = 1200 / fireRate;
         long lastInteract = gunPlayer.getLastInteract();
         long difference = System.currentTimeMillis() - lastInteract;
-        if (difference <= 210 && currentUpdateTick % fireRateTicks == 0) {
+        if (difference <= 210 && currentUpdateTick >= fireRateTicks) {
             if (ammo >= 1) {
                 for (int i = 0; i < bulletsPerShot; i++) {
                     shoot(game, player, holder.getStack());
