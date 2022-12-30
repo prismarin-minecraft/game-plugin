@@ -114,7 +114,7 @@ public class GameMapRotator implements Runnable {
         }
         for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
             Player player = mapPlayer.getPlayer();
-            player.sendMessage("§8╔═══════════════════════╗");
+            player.sendMessage(PrismarinConstants.BORDER);
             player.sendMessage(" ");
             player.sendMessage("§8» §7Winners for this map are§8:");
             player.sendMessage("§8» §b" + currentMap.getLeaderboard().get(0).getName() + " §7is first.");
@@ -125,13 +125,13 @@ public class GameMapRotator implements Runnable {
                 player.sendMessage("§8» §3" + currentMap.getLeaderboard().get(2).getName() + " §7is third.");
             }
             player.sendMessage(" ");
-            player.sendMessage("§8╚═══════════════════════╝");
+            player.sendMessage(PrismarinConstants.BORDER);
         }
     }
 
     public void displayVoteSurvey() {
         for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage("§8╔═══════════════════════╗");
+            player.sendMessage(PrismarinConstants.BORDER);
             player.sendMessage(" ");
             player.sendMessage("§8» §7Vote for the next map");
             player.sendMessage(" ");
@@ -144,7 +144,7 @@ public class GameMapRotator implements Runnable {
             }
 
             player.sendMessage(" ");
-            player.sendMessage("§8╚═══════════════════════╝");
+            player.sendMessage(PrismarinConstants.BORDER);
         }
     }
 

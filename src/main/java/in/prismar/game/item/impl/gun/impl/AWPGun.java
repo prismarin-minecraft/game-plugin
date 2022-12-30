@@ -18,6 +18,7 @@ public class AWPGun extends Gun {
 
     public AWPGun() {
         super("AWP", GunType.SNIPER, Material.NETHERITE_HOE, "§cAWP");
+        setZoom(8);
         setShootParticle(Particle.SPELL_INSTANT);
         setAmmoType(AmmoType.SNIPER);
         setSpread(12);

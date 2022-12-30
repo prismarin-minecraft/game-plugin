@@ -16,6 +16,7 @@ public class M4A1Gun extends Gun {
     public M4A1Gun() {
         super("M4A1", GunType.AR, Material.NETHERITE_PICKAXE, "§9M4A1");
         setCustomModelData(1);
+        setZoom(2);
         setAmmoType(AmmoType.AR);
         setSpread(2);
         setSneakSpread(1);

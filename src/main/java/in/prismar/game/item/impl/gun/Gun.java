@@ -27,6 +27,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
@@ -65,6 +67,7 @@ public class Gun extends CustomItem {
     private int bulletsPerShot = 1;
 
     private int maxAmmo = 10;
+    private boolean unlimitedAmmo;
     private int reloadTimeInTicks = 20;
 
     private double legDamage = 2;
@@ -72,6 +75,8 @@ public class Gun extends CustomItem {
     private double headDamage = 5;
 
     private int attachmentSlots = 3;
+
+    private int zoom;
 
     private Map<GunSoundType, List<GunSound>> sounds;
 
@@ -271,7 +276,7 @@ public class Gun extends CustomItem {
 
         int ammoToGive;
 
-        int ammo = AmmoType.getAmmoInInventory(player, ammoType);
+        int ammo = !unlimitedAmmo ? AmmoType.getAmmoInInventory(player, ammoType) : needed;
         if (ammo >= 1) {
             if (ammo < needed) {
                 AmmoType.takeAmmo(player, ammoType, ammo);
@@ -299,6 +304,16 @@ public class Gun extends CustomItem {
             return;
         }
         GunPlayer gunPlayer = GunPlayer.of(player);
+
+        if(zoom > 0) {
+            if(player.isSneaking()) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, zoom - 1));
+            } else {
+                player.removePotionEffect(PotionEffectType.SLOW);
+            }
+        }
+
+
         long currentUpdateTick = gunPlayer.getCurrentUpdateTick();
         if (currentUpdateTick >= Integer.MAX_VALUE) {
             currentUpdateTick = 0;
