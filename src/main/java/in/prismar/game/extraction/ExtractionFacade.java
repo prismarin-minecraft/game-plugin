@@ -12,6 +12,7 @@ import in.prismar.game.extraction.corpse.Corpse;
 import in.prismar.game.extraction.map.ExtractionMapFile;
 import in.prismar.game.extraction.task.ExtractionChecker;
 import in.prismar.game.extraction.task.ExtractionCorpseDespawner;
+import in.prismar.library.common.random.UniqueRandomizer;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
@@ -128,12 +129,7 @@ public class ExtractionFacade implements ExtractionProvider {
     }
 
     public Location getMapSpawnLocation() {
-        if(currentMapSpawnIndex >= mapFile.getEntity().getSpawns().size()) {
-            currentMapSpawnIndex = 0;
-        }
-        Location location = mapFile.getEntity().getSpawns().get(currentMapSpawnIndex);
-        currentMapSpawnIndex++;
-        return location;
+        return UniqueRandomizer.getRandom("spawnExtraction", mapFile.getEntity().getSpawns());
     }
 
     @Override
