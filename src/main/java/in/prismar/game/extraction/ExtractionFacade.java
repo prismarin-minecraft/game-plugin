@@ -2,16 +2,22 @@ package in.prismar.game.extraction;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.compass.CompassEntryReachEvent;
+import in.prismar.api.compass.CompassProvider;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.region.RegionProvider;
+import in.prismar.api.user.User;
+import in.prismar.api.user.UserProvider;
 import in.prismar.api.warp.WarpProvider;
 import in.prismar.game.Game;
+import in.prismar.game.airdrop.AirDrop;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.extraction.corpse.Corpse;
 import in.prismar.game.extraction.map.ExtractionMapFile;
 import in.prismar.game.extraction.task.ExtractionChecker;
 import in.prismar.game.extraction.task.ExtractionCorpseDespawner;
+import in.prismar.library.common.event.EventSubscriber;
 import in.prismar.library.common.random.UniqueRandomizer;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
@@ -25,6 +31,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -49,6 +56,10 @@ public class ExtractionFacade implements ExtractionProvider {
 
     private ConfigStore configStore;
 
+    private UserProvider<User> userProvider;
+
+    private CompassProvider compassProvider;
+
     @Setter
     private boolean running;
     private int currentMapSpawnIndex = 0;
@@ -59,8 +70,18 @@ public class ExtractionFacade implements ExtractionProvider {
         this.corpses = new ArrayList<>();
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
         this.regionProvider = PrismarinApi.getProvider(RegionProvider.class);
+        this.userProvider = PrismarinApi.getProvider(UserProvider.class);
+        this.compassProvider = PrismarinApi.getProvider(CompassProvider.class);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, checker = new ExtractionChecker(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, new ExtractionCorpseDespawner(this), 20, 20);
+
+        compassProvider.getEventBus().subscribe(CompassEntryReachEvent.class, entity -> {
+            if(entity.getName().equalsIgnoreCase("Last Death")) {
+                compassProvider.removeEntry(entity.getPlayer(), entity.getName());
+                User user = userProvider.getUserByUUID(entity.getPlayer().getUniqueId());
+                user.removeTag("lastDeath");
+            }
+        });
     }
 
 
@@ -101,12 +122,26 @@ public class ExtractionFacade implements ExtractionProvider {
         for(Corpse corpse : corpses) {
             corpse.getNpc().forceUpdate(player);
         }
+
+        for(AirDrop airDrop : getSpawnedAirdrops()) {
+            compassProvider.addEntry(player, airDrop.getLocation(), "Airdrop", "YELLOW");
+        }
+        User user = userProvider.getUserByUUID(player.getUniqueId());
+        if(user.containsTag("lastDeath")) {
+            compassProvider.addEntry(player, user.getTag("lastDeath"), "Last Death", "RED");
+        }
+    }
+
+    public List<AirDrop> getSpawnedAirdrops() {
+        return airDropRegistry.getAirDrops().stream().filter(airDrop -> airDrop.getLocation().getWorld().getName().equals(getExtractionWorld().getName())).toList();
     }
 
     public void leave(Player player) {
         WarpProvider provider = PrismarinApi.getProvider(WarpProvider.class);
         provider.teleportToSpawn(player);
         player.setHealth(20);
+
+        compassProvider.removeAllEntries(player);
     }
 
     public void kill(Player player) {
@@ -115,6 +150,8 @@ public class ExtractionFacade implements ExtractionProvider {
             long seconds = Long.valueOf(configStore.getProperty("extraction.corpse.despawn"));
             this.corpses.add(new Corpse(game, player, System.currentTimeMillis() + 1000 * seconds));
         }
+        User user = userProvider.getUserByUUID(player.getUniqueId());
+        user.setTag("lastDeath", player.getLocation());
         player.getInventory().clear();
         leave(player);
     }
