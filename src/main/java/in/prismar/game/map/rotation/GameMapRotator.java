@@ -194,7 +194,7 @@ public class GameMapRotator implements Runnable {
             if(now >= nextRotate) {
                 GameMap winner = findVoteWinner();
                 for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
-                    winner.getPlayers().put(mapPlayer.getPlayer().getUniqueId(), new GameMapPlayer(mapPlayer.getPlayer()));
+                    winner.getPlayers().put(mapPlayer.getPlayer().getUniqueId(), mapPlayer);
                 }
                 if(!winner.getId().equalsIgnoreCase(currentMap.getId())) {
                     currentMap.getPlayers().clear();

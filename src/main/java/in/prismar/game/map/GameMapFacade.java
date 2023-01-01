@@ -270,7 +270,7 @@ public class GameMapFacade implements GameMapProvider {
     }
 
     public void leave(Player player) {
-        rotator.getCurrentMap().getPlayers().remove(player.getUniqueId());
+        GameMapPlayer mapPlayer = rotator.getCurrentMap().getPlayers().remove(player.getUniqueId());
         resetPlayer(player, GameMode.ADVENTURE);
         statsDistributor.resetKillstreak(player);
         player.performCommand("spawn");
@@ -278,6 +278,9 @@ public class GameMapFacade implements GameMapProvider {
         provider.recreateTablist(player);
         provider.recreateSidebar(player);
         updateLeaderboard(rotator.getCurrentMap());
+
+        player.getInventory().setArmorContents(mapPlayer.getArmor());
+        player.getInventory().setStorageContents(mapPlayer.getContent());
     }
 
     private void resetPlayer(Player player, GameMode mode) {
