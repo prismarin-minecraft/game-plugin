@@ -1,17 +1,12 @@
-# Game Plugin
-
-Gun toml template:
-
-```toml
-id = "internet"
-displayName = "§aDisplay Test"
+id = "test"
+displayName = "Display Test"
 material = "IRON_HOE"
 customModelData = 0
 
-type = "AR"
-ammoType = "AR"
 
 shootParticle = "FLAME"
+type = "AR"
+
 bulletsPerShot = 1
 range = 50.0
 zoom = 5
@@ -26,10 +21,4 @@ legDamage = 3.0
 spread = 2.0
 sneakSpread = 0.5
 
-[[sounds]]
-type = "SHOOT"
-sound = "BLOCK_CHEST_CLOSE"
-volume = 1.0
-pitch = 2.0
-surroundingDistance = 20
-```
+sounds = []

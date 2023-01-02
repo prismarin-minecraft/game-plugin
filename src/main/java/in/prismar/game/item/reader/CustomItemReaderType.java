@@ -1,7 +1,7 @@
 package in.prismar.game.item.reader;
 
-import lombok.Data;
-import org.bukkit.Material;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -9,13 +9,12 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-@Data
-public class BaseReaderData {
+@Getter
+@AllArgsConstructor
+public enum CustomItemReaderType {
 
-    private String id;
-    private Material material;
-    private String displayName;
+    GUNS("guns");
 
-    private int customModelData;
+    private final String path;
 
 }

@@ -6,9 +6,11 @@ import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.game.item.reader.BaseReaderData;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +21,13 @@ import java.util.Map;
  * Written by Maga
  **/
 @Data
+@NoArgsConstructor
 public class GunData extends BaseReaderData {
 
 
     private GunType type;
     private Particle shootParticle;
+
     private AmmoType ammoType;
 
     private double range;
@@ -42,7 +46,9 @@ public class GunData extends BaseReaderData {
     private double bodyDamage;
     private double headDamage;
 
-    private Map<GunSoundType, List<GunSound>> sounds;
+    private int zoom;
+
+    private List<GunSoundData> sounds = new ArrayList<>();
 
 
 }

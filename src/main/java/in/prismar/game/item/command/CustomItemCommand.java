@@ -11,6 +11,7 @@ import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
 import in.prismar.library.spigot.command.spigot.template.help.HelpCommand;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 /**
@@ -40,6 +41,8 @@ public class CustomItemCommand extends HelpCommand<Player> {
         addChild(new AmmoSubCommand(registry));
         addChild(new HolderInfoSubCommand(registry));
         addChild(new ReloadSubCommand(registry));
+        addChild(new DownloadSubCommand(registry));
+
     }
 
 

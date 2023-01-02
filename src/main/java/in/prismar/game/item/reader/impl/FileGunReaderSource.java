@@ -1,20 +1,15 @@
 package in.prismar.game.item.reader.impl;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import in.prismar.api.PrismarinApi;
-import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.sound.GunSound;
 import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.reader.CustomItemReaderSource;
-import org.bukkit.Sound;
+import in.prismar.library.file.toml.TomlConfig;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -24,29 +19,21 @@ import java.util.Map;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class GunReaderSource implements CustomItemReaderSource {
-
-    private final ConfigStore store;
-    private final Gson gson;
-
-    public GunReaderSource() {
-        this.store = PrismarinApi.getProvider(ConfigStore.class);
-        this.gson = new GsonBuilder().create();
-    }
-
+public class FileGunReaderSource implements CustomItemReaderSource {
     @Override
     public List<CustomItem> read(CustomItemRegistry registry) {
-        final String json = store.getProperty("guns");
-        if(json != null) {
-            List<CustomItem> items = new ArrayList<>();
-            List<GunData> list = gson.fromJson(json, new TypeToken<List<GunData>>(){}.getType());
-            for(GunData data : list) {
+        List<CustomItem> items = new ArrayList<>();
+        File directory = new File(registry.getGame().getDefaultDirectory() + "items" + File.separator + "guns" + File.separator);
+        for(File file : directory.listFiles()) {
+            TomlConfig<GunData> tomlConfig = new TomlConfig<>(file.getAbsolutePath(), GunData.class);
+            if(tomlConfig.getEntity() != null) {
+                GunData data = tomlConfig.getEntity();
                 Gun gun = new Gun(data.getId(), data.getType(), data.getMaterial(), data.getDisplayName());
+                gun.setCustomModelData(data.getCustomModelData());
                 if(data.getShootParticle() != null) {
                     gun.setShootParticle(data.getShootParticle());
                 }
                 gun.setAmmoType(data.getAmmoType());
-
                 gun.setRange(data.getRange());
                 gun.setFireRate(data.getFireRate());
                 gun.setSpread(data.getSpread());
@@ -56,18 +43,23 @@ public class GunReaderSource implements CustomItemReaderSource {
                 gun.setLegDamage(data.getLegDamage());
                 gun.setBodyDamage(data.getBodyDamage());
                 gun.setHeadDamage(data.getHeadDamage());
+                gun.setZoom(data.getZoom());
 
-                if(data.getSounds() != null) {
-                    for(Map.Entry<GunSoundType, List<GunSound>> entry : data.getSounds().entrySet()) {
-                        gun.getSounds().put(entry.getKey(), entry.getValue());
+                if(!data.getSounds().isEmpty()) {
+                    for(GunSoundData soundData : data.getSounds()) {
+                        GunSound gunSound = new GunSound(soundData.getSound(), (float)soundData.getVolume(), (float)soundData.getPitch());
+                        gunSound.setSurroundingDistance(soundData.getSurroundingDistance());
+                        if(!gun.getSounds().containsKey(soundData.getType())) {
+                            gun.getSounds().put(soundData.getType(), new ArrayList<>());
+                        }
+                        gun.getSounds().get(soundData.getType()).add(gunSound);
                     }
                 }
                 gun.generateDefaultLore();
                 items.add(gun);
             }
-            return items;
         }
-        return Collections.emptyList();
-    }
 
+        return items;
+    }
 }

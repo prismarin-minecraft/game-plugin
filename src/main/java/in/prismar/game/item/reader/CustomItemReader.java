@@ -2,7 +2,8 @@ package in.prismar.game.item.reader;
 
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.reader.impl.GunReaderSource;
+import in.prismar.game.item.reader.impl.FileGunReaderSource;
+import in.prismar.game.item.reader.impl.VaultGunReaderSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class CustomItemReader {
     public CustomItemReader() {
         this.sources = new ArrayList<>();
 
-        this.sources.add(new GunReaderSource());
+        this.sources.add(new FileGunReaderSource());
     }
 
     public void apply(CustomItemRegistry registry) {
