@@ -2,6 +2,7 @@ package in.prismar.game.item;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
+import in.prismar.game.item.impl.throwable.AirstrikeItem;
 import in.prismar.game.item.impl.throwable.MolotovItem;
 import in.prismar.game.item.impl.armor.recruit.RecruitBoots;
 import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
@@ -83,6 +84,8 @@ public class CustomItemRegistry {
         register(new RecruitLeggings());
         register(new RecruitBoots());
         register(new MedicalSyringeItem());
+
+        register(new AirstrikeItem());
 
         reader.apply(this);
 
