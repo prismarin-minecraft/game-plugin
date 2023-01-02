@@ -16,4 +16,6 @@ public class GunSound {
     private final float volume;
     private final float pitch;
 
+    private double surroundingDistance = 20;
+
 }

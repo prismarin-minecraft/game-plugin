@@ -13,6 +13,8 @@ import in.prismar.api.warp.WarpProvider;
 import in.prismar.game.Game;
 import in.prismar.game.airdrop.AirDrop;
 import in.prismar.game.airdrop.AirDropRegistry;
+import in.prismar.game.airdrop.event.AirdropCallEvent;
+import in.prismar.game.airdrop.event.AirdropRemoveEvent;
 import in.prismar.game.extraction.corpse.Corpse;
 import in.prismar.game.extraction.map.ExtractionMapFile;
 import in.prismar.game.extraction.task.ExtractionChecker;
@@ -20,7 +22,9 @@ import in.prismar.game.extraction.task.ExtractionCorpseDespawner;
 import in.prismar.library.common.event.EventSubscriber;
 import in.prismar.library.common.random.UniqueRandomizer;
 import in.prismar.library.meta.anno.Inject;
+import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
+import in.prismar.library.spigot.text.CenteredMessage;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -84,12 +88,35 @@ public class ExtractionFacade implements ExtractionProvider {
         });
     }
 
+    @SafeInitialize
+    private void initialize() {
+        airDropRegistry.getEventBus().subscribe(AirdropCallEvent.class, entity -> {
+            World world = getExtractionWorld();
+            if(world != null) {
+                for(Player player : world.getPlayers()) {
+                    updateCompass(player);
+                }
+            }
+        });
+        airDropRegistry.getEventBus().subscribe(AirdropCallEvent.class, entity -> {
+            World world = getExtractionWorld();
+            if(world != null) {
+                for(Player player : world.getPlayers()) {
+                    updateCompass(player);
+                }
+            }
+        });
+    }
+
 
     public void open() {
         setRunning(true);
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage(PrismarinConstants.BORDER));
         Bukkit.broadcastMessage(" ");
-        Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§c§lEXTRACTION §7is now open!");
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage("§c§lEXTRACTION §7is now open!"));
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage("§7You can join with §8/§cextraction join"));
         Bukkit.broadcastMessage(" ");
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage(PrismarinConstants.BORDER));
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.7f, 1);
         }
@@ -97,9 +124,11 @@ public class ExtractionFacade implements ExtractionProvider {
 
     public void close() {
         setRunning(false);
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage(PrismarinConstants.BORDER));
         Bukkit.broadcastMessage(" ");
-        Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§c§lEXTRACTION §7is now closed!");
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage("§c§lEXTRACTION §7is now closed!"));
         Bukkit.broadcastMessage(" ");
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage(PrismarinConstants.BORDER));
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_HURT, 0.7f, 1);
         }
@@ -123,13 +152,7 @@ public class ExtractionFacade implements ExtractionProvider {
             corpse.getNpc().forceUpdate(player);
         }
 
-        for(AirDrop airDrop : getSpawnedAirdrops()) {
-            compassProvider.addEntry(player, airDrop.getLocation(), "Airdrop", "YELLOW");
-        }
-        User user = userProvider.getUserByUUID(player.getUniqueId());
-        if(user.containsTag("lastDeath")) {
-            compassProvider.addEntry(player, user.getTag("lastDeath"), "Last Death", "RED");
-        }
+        updateCompass(player);
     }
 
     public List<AirDrop> getSpawnedAirdrops() {
@@ -142,6 +165,17 @@ public class ExtractionFacade implements ExtractionProvider {
         player.setHealth(20);
 
         compassProvider.removeAllEntries(player);
+    }
+
+    public void updateCompass(Player player) {
+        compassProvider.removeAllEntries(player);
+        for(AirDrop airDrop : getSpawnedAirdrops()) {
+            compassProvider.addEntry(player, airDrop.getArmorStand().getLocation(), "Airdrop", "YELLOW");
+        }
+        User user = userProvider.getUserByUUID(player.getUniqueId());
+        if(user.containsTag("lastDeath")) {
+            compassProvider.addEntry(player, user.getTag("lastDeath"), "Last Death", "RED");
+        }
     }
 
     public void kill(Player player) {

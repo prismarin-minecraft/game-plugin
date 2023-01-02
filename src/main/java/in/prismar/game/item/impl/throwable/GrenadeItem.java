@@ -1,10 +1,11 @@
-package in.prismar.game.item.impl;
+package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
+import in.prismar.library.spigot.item.ItemUtil;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -39,7 +40,7 @@ public class GrenadeItem extends CustomItem {
         Item item = player.getWorld().dropItem(player.getEyeLocation(), new ItemStack(getMaterial()));
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setVelocity(vector);
-        player.getInventory().setItemInMainHand(null);
+        ItemUtil.takeItemFromHand(player, true);
         player.updateInventory();
         new BukkitRunnable() {
             int timer = 35;

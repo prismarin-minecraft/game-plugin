@@ -1,8 +1,8 @@
 package in.prismar.game.item;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.impl.MedicalSyringeItem;
-import in.prismar.game.item.impl.MolotovItem;
+import in.prismar.game.item.impl.medical.MedicalSyringeItem;
+import in.prismar.game.item.impl.throwable.MolotovItem;
 import in.prismar.game.item.impl.armor.recruit.RecruitBoots;
 import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
@@ -11,7 +11,7 @@ import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
-import in.prismar.game.item.impl.GrenadeItem;
+import in.prismar.game.item.impl.throwable.GrenadeItem;
 import in.prismar.game.item.impl.gun.impl.*;
 import in.prismar.game.item.reader.CustomItemReader;
 import in.prismar.library.meta.anno.Service;

@@ -1,4 +1,4 @@
-package in.prismar.game.item.impl;
+package in.prismar.game.item.impl.medical;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItem;

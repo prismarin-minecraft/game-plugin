@@ -21,15 +21,13 @@ import java.util.List;
 @Getter
 public class Bullet {
 
-    private Particle particle;
     private Location origin;
     private Location particleOrigin;
     private Raytrace raytrace;
     private Location endPoint;
     private double range;
 
-    public Bullet(Particle particle, Location particleOrigin, Location origin, Vector direction, double range) {
-        this.particle = particle;
+    public Bullet(Location particleOrigin, Location origin, Vector direction, double range) {
         this.particleOrigin = particleOrigin;
         this.origin = origin;
         this.range = range;
@@ -39,9 +37,6 @@ public class Bullet {
     }
 
     public List<RaytraceHit> invoke() {
-        if(particle != null) {
-            ParticleUtil.spawnParticleAlongLine(particleOrigin, endPoint, particle, 20, 0);
-        }
         RaytraceResult result = this.raytrace.ray(range);
         return result.getHits();
     }

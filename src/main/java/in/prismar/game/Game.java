@@ -4,6 +4,7 @@ import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
+import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.map.GameMapFacade;
@@ -47,6 +48,8 @@ public class Game extends JavaPlugin {
     @Inject
     private ExtractionFacade extractionFacade;
 
+    @Inject
+    private AirDropRegistry airDropRegistry;
 
 
 
@@ -57,6 +60,7 @@ public class Game extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        airDropRegistry.despawnAll();
     }
 
     private void initialize() {

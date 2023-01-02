@@ -25,7 +25,7 @@ public class LeaveSubCommand extends HelpSubCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        if(!facade.isInSafeZone(player)) {
+        if(!facade.isInSafeZone(player) && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "extraction.leave")) {
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not inside a safezone.");
             return true;
         }

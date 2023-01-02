@@ -1,5 +1,7 @@
-package in.prismar.game.item.impl.gun.sound;
+package in.prismar.game.airdrop.event;
 
+import in.prismar.game.airdrop.AirDrop;
+import in.prismar.library.common.event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,14 +13,7 @@ import lombok.Getter;
  **/
 @AllArgsConstructor
 @Getter
-public enum GunSoundType {
+public class AirdropRemoveEvent implements Event {
 
-    SHOOT(true),
-    RELOAD(false),
-    HIT(false),
-    HEADSHOT(false),
-
-    BULLET_IMPACT(true);
-
-    private final boolean surrounding;
+    private AirDrop airDrop;
 }

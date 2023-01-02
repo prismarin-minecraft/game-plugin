@@ -14,6 +14,7 @@ import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
+import in.prismar.library.spigot.particle.ParticleUtil;
 import in.prismar.library.spigot.raytrace.result.RaytraceBlockHit;
 import in.prismar.library.spigot.raytrace.result.RaytraceEntityHit;
 import in.prismar.library.spigot.raytrace.result.RaytraceHit;
@@ -22,6 +23,7 @@ import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -33,6 +35,7 @@ import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -56,6 +59,8 @@ public class Gun extends CustomItem {
 
     private Particle shootParticle = Particle.CRIT;
     private AmmoType ammoType = AmmoType.PISTOL;
+
+    private Map<Material, Integer> wallbangTypes;
     private double range = 20;
     private int fireRate = 120;
 
@@ -85,18 +90,35 @@ public class Gun extends CustomItem {
         super(id, material, displayName);
         this.sounds = new HashMap<>();
         this.type = type;
+        this.wallbangTypes = new HashMap<>();
+
+        for(Material wallbangType : Material.values()) {
+            if(wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG")) {
+                addWallbangTypes(wallbangType, 25);
+            } else if(wallbangType.name().contains("GLASS")) {
+                addWallbangTypes(wallbangType, 0);
+            }
+        }
 
         registerSound(GunSoundType.SHOOT, Sound.ENTITY_BLAZE_HURT, 0.6f, 1f);
 
-        registerSound(GunSoundType.HIT, Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.9f, 1.66f);
-        registerSound(GunSoundType.HEADSHOT, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.3f, 1f);
+        registerSound(GunSoundType.HIT, Sound.BLOCK_BASALT_HIT, 0.9f, 2F);
+        registerSound(GunSoundType.HEADSHOT, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.35f, 1f);
 
         registerSound(GunSoundType.RELOAD, Sound.BLOCK_PISTON_CONTRACT, 0.65f, 0.7f);
+
+        GunSound impactSound = registerSound(GunSoundType.BULLET_IMPACT, Sound.BLOCK_STONE_HIT, 0.65f, 1);
+        impactSound.setSurroundingDistance(10);
 
         setUnbreakable(true);
 
         allFlags();
 
+    }
+
+    public Gun addWallbangTypes(Material material, int reduce) {
+        this.wallbangTypes.put(material, reduce);
+        return this;
     }
 
     public void generateDefaultLore() {
@@ -126,22 +148,32 @@ public class Gun extends CustomItem {
     }
 
     public void playSound(Player player, GunSoundType type) {
+        playSound(player, player.getLocation(), type);
+    }
+
+    public void playSound(Player player, Location location, GunSoundType type) {
         if (sounds.containsKey(type)) {
             for (GunSound sound : sounds.get(type)) {
                 if (type.isSurrounding()) {
-                    player.getWorld().playSound(player.getLocation(), sound.getSound(), sound.getVolume(), sound.getPitch());
+                    for(Player near : player.getWorld().getPlayers()) {
+                        if(near.getLocation().distanceSquared(location) <= (sound.getSurroundingDistance() * sound.getSurroundingDistance())) {
+                            near.playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
+                        }
+                    }
                 } else {
-                    player.playSound(player.getLocation(), sound.getSound(), sound.getVolume(), sound.getPitch());
+                    player.playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
                 }
             }
         }
     }
 
-    public void registerSound(GunSoundType type, Sound sound, float volume, float pitch) {
+    public GunSound registerSound(GunSoundType type, Sound sound, float volume, float pitch) {
         if (!this.sounds.containsKey(type)) {
             this.sounds.put(type, new ArrayList<>());
         }
-        this.sounds.get(type).add(new GunSound(sound, volume, pitch));
+        GunSound gunSound = new GunSound(sound, volume, pitch);
+        this.sounds.get(type).add(gunSound);
+        return gunSound;
     }
 
     public void clearSounds(GunSoundType type) {
@@ -185,30 +217,29 @@ public class Gun extends CustomItem {
         Vector eyeOffset = rotateVector(new Vector(distanceFromEyes, -0.5, distanceFromEyeCenter), eyeLocation.getYaw(), eyeLocation.getPitch());
         Location particleOrigin = eyeLocation.clone().add(eyeOffset);
 
-        Bullet bullet = new Bullet(allowParticle ? shootParticle : null, particleOrigin, eyeLocation.clone(),
+        Bullet bullet = new Bullet(particleOrigin, eyeLocation.clone(),
                 getRandomizedDirection(player, spread), range);
         playSound(player, GunSoundType.SHOOT);
         List<RaytraceHit> hits = bullet.invoke();
-        int damageReduce = 0;
+        int damageReducePercentage = 0;
         for (RaytraceHit hit : hits) {
             if (hit instanceof RaytraceEntityHit entityHit) {
                 if (!entityHit.getTarget().getName().equals(player.getName())) {
-                    double distance = entityHit.getTarget().getLocation().distanceSquared(entityHit.getPoint());
                     double damage = 0;
-                    GunDamageType damageType = GunDamageType.BODY;
-                    if (distance <= 0.7) {
+                    GunDamageType damageType = getHitType(entityHit.getTarget(), entityHit.getPoint());
+                    if (damageType == GunDamageType.LEGS) {
                         damageType = GunDamageType.LEGS;
                         damage = legDamage;
-                    } else if (distance > 0.7 && distance <= 2.1) {
+                    } else if (damageType == GunDamageType.BODY) {
                         damage = bodyDamage;
                         damageType = GunDamageType.BODY;
-                    } else if (distance >= 2.1) {
+                    } else if (damageType == GunDamageType.HEADSHOT) {
                         damage = headDamage;
-                        damageType = GunDamageType.HEADSHOT;
                     }
-                    for (int i = 0; i < damageReduce; i++) {
-                        damage -= (damage / 100) * 50;
+                    if(damageReducePercentage > 0) {
+                        damage -= (damage / 100) * damageReducePercentage;
                     }
+
                     if (damage > 0) {
                         LivingEntity entity = (LivingEntity) entityHit.getTarget();
                         if(entity instanceof Player target) {
@@ -222,12 +253,41 @@ public class Gun extends CustomItem {
                             playSound(player, GunSoundType.HIT);
                         }
                     }
-                    damageReduce++;
+                    damageReducePercentage += 30;
                 }
             } else if (hit instanceof RaytraceBlockHit blockHit) {
-                damageReduce++;
+                if(!wallbangTypes.containsKey(blockHit.getTarget().getType())) {
+                    blockHit.getTarget().getWorld().spawnParticle(Particle.BLOCK_DUST, blockHit.getPoint(), 2,
+                            blockHit.getTarget().getBlockData());
+                    playSound(player, blockHit.getPoint(), GunSoundType.BULLET_IMPACT);
+                    if(allowParticle) {
+                        spawnParticle(particleOrigin, blockHit.getPoint());
+                    }
+                    return;
+                }
+                damageReducePercentage += wallbangTypes.get(blockHit.getTarget().getType());
             }
         }
+        if(allowParticle) {
+            spawnParticle(particleOrigin, bullet.getEndPoint());
+        }
+    }
+
+    private void spawnParticle(Location particleOrigin, Location location) {
+        ParticleUtil.spawnParticleAlongLine(particleOrigin, location, shootParticle, 20, 0);
+    }
+
+    private GunDamageType getHitType(Entity target, Location hitPoint) {
+        double distance = target.getLocation().distanceSquared(hitPoint);
+        GunDamageType damageType = GunDamageType.BODY;
+        if (distance <= 0.7) {
+            damageType = GunDamageType.LEGS;
+        } else if (distance > 0.7 && distance <= 2.1) {
+            damageType = GunDamageType.BODY;
+        } else if (distance >= 2.1) {
+            damageType = GunDamageType.HEADSHOT;
+        }
+        return damageType;
     }
 
     private final Vector rotateVector(Vector v, float yawDegrees, float pitchDegrees) {
