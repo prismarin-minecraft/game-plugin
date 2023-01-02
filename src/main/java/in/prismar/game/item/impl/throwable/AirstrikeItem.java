@@ -32,7 +32,8 @@ import java.util.List;
  **/
 public class AirstrikeItem extends CustomItem {
     public AirstrikeItem() {
-        super("Airstrike", Material.REPEATER, "§4§lAirstrike");
+        super("Airstrike", Material.STICK, "§4§lAirstrike");
+        setCustomModelData(1);
         allFlags();
     }
 
@@ -45,7 +46,7 @@ public class AirstrikeItem extends CustomItem {
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 0.8f, 0.1f);
         Vector vector = player.getLocation().getDirection().multiply(1.4);
-        Item item = player.getWorld().dropItem(player.getEyeLocation(), new ItemStack(getMaterial()));
+        Item item = player.getWorld().dropItem(player.getEyeLocation(), event.getItem().clone());
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setVelocity(vector);
         ItemUtil.takeItemFromHand(player, true);
@@ -71,7 +72,7 @@ public class AirstrikeItem extends CustomItem {
 
                     List<ArmorStand> spawned = new ArrayList<>();
                     final Particle.DustOptions options = new Particle.DustOptions(Color.YELLOW, 1);
-                    Scheduler.runTimerFor(10, 10, 20 * 15, new SchedulerRunnable() {
+                    Scheduler.runTimerFor(10, 10, 20 * 20, new SchedulerRunnable() {
                         @Override
                         public void run() {
                             Location particle = start.clone().add(0, 2.2, 0);
@@ -105,7 +106,7 @@ public class AirstrikeItem extends CustomItem {
                                     armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.5f, 1.5f);
                                 }
                             }
-                            if(getCurrentTicks() % 10 == 0) {
+                            if(getCurrentTicks() % 5 == 0) {
                                 for (int i = 0; i < 1; i++) {
                                     Location location = start.clone().add(MathUtil.random(-20, 20), start.getY(), MathUtil.random(-20, 20));
                                     spawned.add(spawnMissile(stack, location));

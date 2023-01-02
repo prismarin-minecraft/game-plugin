@@ -52,7 +52,7 @@ public class AirdropItem extends CustomItem {
 
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 2f);
         Vector vector = player.getLocation().getDirection().multiply(1.4);
-        Item item = player.getWorld().dropItem(player.getEyeLocation(), new ItemStack(getMaterial()));
+        Item item = player.getWorld().dropItem(player.getEyeLocation(), event.getItem().clone());
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setVelocity(vector);
         ItemUtil.takeItemFromHand(player, true);
