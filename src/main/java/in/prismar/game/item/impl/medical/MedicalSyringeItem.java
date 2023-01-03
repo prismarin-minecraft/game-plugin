@@ -41,6 +41,7 @@ public class MedicalSyringeItem extends CustomItem {
 
     public MedicalSyringeItem() {
         super("MedicalSyringe", Material.FEATHER, "§fMedical Syringe");
+        setCustomModelData(1);
         allFlags();
     }
 

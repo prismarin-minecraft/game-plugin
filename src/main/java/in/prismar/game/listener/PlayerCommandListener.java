@@ -4,7 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.extraction.ExtractionFacade;
-import in.prismar.game.map.GameMapFacade;
+import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Bukkit;

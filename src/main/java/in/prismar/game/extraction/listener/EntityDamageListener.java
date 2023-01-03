@@ -1,14 +1,8 @@
 package in.prismar.game.extraction.listener;
 
-import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
-import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.extraction.ExtractionFacade;
-import in.prismar.game.map.GameMapFacade;
-import in.prismar.game.map.model.GameMap;
-import in.prismar.game.map.model.GameMapPlayer;
 import in.prismar.game.stats.GameStatsDistributor;
-import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.Player;
@@ -17,11 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -70,8 +59,10 @@ public class EntityDamageListener implements Listener {
         boolean samePlayer = damager == null ? true : damager.getUniqueId().equals(target.getUniqueId());
         if(!samePlayer) {
             statsDistributor.addKill(damager);
+            statsDistributor.addMapKill(damager, "extraction");
         }
         statsDistributor.addDeath(target);
+        statsDistributor.addMapDeath(target, "extraction");
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -1,5 +1,6 @@
 package in.prismar.game.item.impl.gun;
 
+import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
@@ -196,8 +197,18 @@ public class Gun extends CustomItem {
         return attachments;
     }
 
+    private long addStatsValue(SeasonData seasonData, String key) {
+        long current = seasonData.getStats().getOrDefault(key, 0l) + 1;
+        seasonData.getStats().put(key, current);
+        return current;
+    }
+
 
     public void shoot(Game game, Player player, ItemStack stack) {
+        GunPlayer gunPlayer = GunPlayer.of(player);
+        SeasonData seasonData = gunPlayer.getUser().getSeasonData();
+       addStatsValue(seasonData, "shots");
+
         double normalSpread = this.spread;
         double sneakSpread = this.sneakSpread;
         double range = this.range;
@@ -249,10 +260,12 @@ public class Gun extends CustomItem {
                         entity.damage(damage, player);
                         if (damageType == GunDamageType.HEADSHOT) {
                             playSound(player, GunSoundType.HEADSHOT);
+                            addStatsValue(seasonData, "headshots");
                         } else {
                             playSound(player, GunSoundType.HIT);
                         }
                     }
+                    addStatsValue(seasonData, "hits");
                     damageReducePercentage += 30;
                 }
             } else if (hit instanceof RaytraceBlockHit blockHit) {

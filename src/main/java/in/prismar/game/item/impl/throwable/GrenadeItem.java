@@ -39,7 +39,7 @@ public class GrenadeItem extends CustomItem {
 
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 0.8f, 1);
         Vector vector = player.getLocation().getDirection().multiply(1.4);
-        Item item = player.getWorld().dropItem(player.getEyeLocation(), new ItemStack(getMaterial()));
+        Item item = player.getWorld().dropItem(player.getEyeLocation(), event.getItem().clone());
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setVelocity(vector);
         ItemUtil.takeItemFromHand(player, true);
@@ -49,7 +49,7 @@ public class GrenadeItem extends CustomItem {
             @Override
             public void run() {
                 if(timer <= 0) {
-                    item.getWorld().playSound(item.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1f, 1);
+                    item.getWorld().playSound(item.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2f, 1);
                     for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
                         if(near instanceof Player target) {
                             double damage = 24 - target.getLocation().distance(item.getLocation());
@@ -62,7 +62,7 @@ public class GrenadeItem extends CustomItem {
                     return;
                 }
                 if(timer % 2 == 0) {
-                    item.getWorld().playSound(item.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.4f, 2f);
+                    item.getWorld().playSound(item.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 2f);
                 }
                 item.getWorld().spawnParticle(Particle.SMOKE_NORMAL, item.getLocation(), 0);
                 timer--;

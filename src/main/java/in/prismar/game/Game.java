@@ -7,7 +7,7 @@ import in.prismar.api.map.GameMapProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.map.GameMapFacade;
+import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;

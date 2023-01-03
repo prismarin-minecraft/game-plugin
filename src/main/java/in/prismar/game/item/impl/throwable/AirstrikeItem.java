@@ -68,7 +68,7 @@ public class AirstrikeItem extends CustomItem {
 
                     Location start = item.getLocation().clone();
                     item.remove();
-                    item.getWorld().playSound(item.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 1f, 1);
+                    item.getWorld().playSound(item.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 3f, 1);
 
                     List<ArmorStand> spawned = new ArrayList<>();
                     final Particle.DustOptions options = new Particle.DustOptions(Color.YELLOW, 1);
@@ -103,7 +103,7 @@ public class AirstrikeItem extends CustomItem {
                                         }
                                     }
                                 } else {
-                                    armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.5f, 1.5f);
+                                    armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.5f, 1.5f);
                                 }
                             }
                             if(getCurrentTicks() % 5 == 0) {
