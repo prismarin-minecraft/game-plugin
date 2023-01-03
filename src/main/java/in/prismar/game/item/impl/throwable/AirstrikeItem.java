@@ -57,7 +57,7 @@ public class AirstrikeItem extends CustomItem {
         meta.setCustomModelData(3);
         stack.setItemMeta(meta);
 
-        final double y = 100;
+        final double y = 70;
 
         new BukkitRunnable() {
             @Override
@@ -96,9 +96,9 @@ public class AirstrikeItem extends CustomItem {
                                     iterator.remove();
                                     armorStand.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, armorStand.getLocation(), 1);
                                     armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 3f, 1);
-                                    for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
+                                    for(Entity near : item.getWorld().getNearbyEntities(armorStand.getLocation(), 7, 7, 7)) {
                                         if(near instanceof Player target) {
-                                            double damage = 24 - target.getLocation().distance(item.getLocation());
+                                            double damage = 24 - target.getLocation().distance(armorStand.getLocation());
                                             target.damage(damage, player);
                                         }
                                     }
@@ -108,7 +108,7 @@ public class AirstrikeItem extends CustomItem {
                             }
                             if(getCurrentTicks() % 5 == 0) {
                                 for (int i = 0; i < 1; i++) {
-                                    Location location = start.clone().add(MathUtil.random(-20, 20), start.getY(), MathUtil.random(-20, 20));
+                                    Location location = start.clone().add(MathUtil.random(-20, 20), y, MathUtil.random(-20, 20));
                                     spawned.add(spawnMissile(stack, location));
                                 }
 
