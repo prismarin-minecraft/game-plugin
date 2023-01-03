@@ -25,7 +25,9 @@ import org.bukkit.util.Vector;
  **/
 public class GrenadeItem extends CustomItem {
     public GrenadeItem() {
-        super("Grenade", Material.SLIME_BALL, "§6Grenade");
+        super("Grenade", Material.STICK, "§6Grenade");
+        setCustomModelData(2);
+        allFlags();
     }
 
     @CustomItemEvent

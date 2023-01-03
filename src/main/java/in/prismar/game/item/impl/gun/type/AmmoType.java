@@ -17,12 +17,12 @@ import org.bukkit.inventory.ItemStack;
 @Getter
 public enum AmmoType {
 
-    PISTOL(new ItemBuilder(Material.FLINT).setName("§7Pistol Ammo").build()),
-    AR(new ItemBuilder(Material.GLOWSTONE_DUST).setName("§eAR Ammo").build()),
-    SNIPER(new ItemBuilder(Material.REDSTONE).setName("§cSniper Ammo").build()),
-    SHOTGUN(new ItemBuilder(Material.BLAZE_POWDER).setName("§fShotgun Ammo").build()),
+    PISTOL(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build()),
+    AR(new ItemBuilder(Material.ARROW).setCustomModelData(2).setName("§eAR Ammo").build()),
+    SNIPER(new ItemBuilder(Material.ARROW).setCustomModelData(3).setName("§cSniper Ammo").build()),
+    SHOTGUN(new ItemBuilder(Material.ARROW).setCustomModelData(4).setName("§fShotgun Ammo").build()),
 
-    SMG(new ItemBuilder(Material.LAPIS_LAZULI).setName("§9SMG Ammo").build());
+    SMG(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build());
 
     private final ItemStack item;
 
