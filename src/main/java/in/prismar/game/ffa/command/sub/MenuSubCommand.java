@@ -54,6 +54,7 @@ public class MenuSubCommand extends HelpSubCommand<Player> {
         frame.addButton(13, new ItemBuilder(Material.LIME_WOOL).glow().setName("§a§lPLAY")
                         .addLore("§C")
                         .addLore(PrismarinConstants.ARROW_RIGHT + " §7Current map§8: §b" + facade.getRotator().getCurrentMap().getFancyName())
+                        .addLore(PrismarinConstants.ARROW_RIGHT + " §7Currently playing§8: §b" + facade.getRotator().getCurrentMap().getPlayers().size())
                         .addLore("§c")
                         .addLore("§7Click me to play")
                         .build()
