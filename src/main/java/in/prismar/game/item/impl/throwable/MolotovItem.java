@@ -26,7 +26,8 @@ import java.util.List;
  **/
 public class MolotovItem extends CustomItem {
     public MolotovItem() {
-        super("Molotov", Material.SPLASH_POTION, "§cMolotov");
+        super("Molotov", Material.STICK, "§cMolotov");
+        setCustomModelData(3);
         allFlags();
     }
 
