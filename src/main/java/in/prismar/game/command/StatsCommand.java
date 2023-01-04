@@ -174,9 +174,6 @@ public class StatsCommand extends SpigotCommand<Player> {
         for (GameMap gameMap : mapFacade.getRepository().findAll()) {
             ItemStack map = new ItemBuilder(Material.MAP).setName("§b" + gameMap.getFancyName())
                     .addLore("§c")
-                    .addLore(dot + "Playtime§8: §b" + playtimeProvider.getOverallTimeInHours(user) + "h")
-                    .addLore(dot + "Balance§8: §b" + NumberFormatter.formatDoubleToThousands(data.getBalance()) + " $")
-                    .addLore("§c")
                     .addLore(dot + "Kills§8: §b" + getStatsValue(user, season, "kills.map." + gameMap.getId()))
                     .addLore(dot + "Deaths§8: §b" + getStatsValue(user, season, "deaths.map." + gameMap.getId()))
                     .addLore(dot + "K/D§8: §b" + getKD(user, season, "kills.map." + gameMap.getId(), "deaths.map." + gameMap.getId()))
