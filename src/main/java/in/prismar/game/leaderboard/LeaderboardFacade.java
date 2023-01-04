@@ -53,25 +53,11 @@ public class LeaderboardFacade {
         despawn(leaderboard);
         UserProvider<User> userProvider = PrismarinApi.getProvider(UserProvider.class);
 
-        final String fullSorted = "seasons." + PrismarinConstants.CURRENT_SEASON + "stats." + leaderboard.getSorted();
+        String fullSorted = "seasons." + PrismarinConstants.CURRENT_SEASON + ".stats." + leaderboard.getSorted();
+        if(leaderboard.getSorted().equalsIgnoreCase("balance")) {
+            fullSorted = "seasons." + PrismarinConstants.CURRENT_SEASON + ".balance";
+        }
         userProvider.getAllSorted(fullSorted, 0, leaderboard.getSize()).thenAccept(data -> {
-            //Temp solution for sorting since okhttp does not return me a valid sorted list
-            data.sort((o1, o2) -> {
-                long o1Value;
-                long o2Value;
-                try {
-                    o1Value = o1.getSeasons().get(PrismarinConstants.CURRENT_SEASON).getStats().get(leaderboard.getSorted());
-                }catch (Exception exception) {
-                    o1Value = 0;
-                }
-                try {
-                    o2Value = o2.getSeasons().get(PrismarinConstants.CURRENT_SEASON).getStats().get(leaderboard.getSorted());
-                }catch (Exception exception) {
-                    o2Value = 0;
-                }
-                return Long.compare(o2Value, o1Value);
-            });
-
             Hologram hologram = new Hologram(leaderboard.getLocation());
             hologram.addLine(HologramLineType.TEXT, PrismarinConstants.BORDER);
             hologram.addLine(HologramLineType.TEXT, "§6Leaderboard §8| §b" + leaderboard.getTitle());
@@ -79,21 +65,26 @@ public class LeaderboardFacade {
             for (int i = 0; i < leaderboard.getSize(); i++) {
                 if(data.size() >= i+1) {
                     UserData userData = data.get(i);
+                    long amount = 0;
                     if(userData.getSeasons().containsKey(PrismarinConstants.CURRENT_SEASON)) {
                         SeasonData seasonData = userData.getSeasons().get(PrismarinConstants.CURRENT_SEASON);
-                        if(seasonData.getStats() != null) {
-                            if(seasonData.getStats().containsKey(leaderboard.getSorted())) {
-                                long amount = seasonData.getStats().get(leaderboard.getSorted());
-                                final String color = i == 0 ? "§b" : i == 1 ? "§6" : i == 2 ? "§3" : "§7";
-                                final String text = leaderboard.getFormat().replace("%player%", userData.getName())
-                                        .replace("%amount%", NumberFormatter.formatNumberToThousands(amount)).replace("%place%", (i+1) + "")
-                                        .replace("%color%", color);
-                                hologram.addLine(HologramLineType.TEXT, text);
-                            }
+                        if(leaderboard.getSorted().equalsIgnoreCase("balance")) {
+                            amount = (long)seasonData.getBalance();
+                        } else {
+                            if(seasonData.getStats() != null) {
+                                if(seasonData.getStats().containsKey(leaderboard.getSorted())) {
+                                    amount = seasonData.getStats().get(leaderboard.getSorted());
+                                }
 
+                            }
                         }
 
                     }
+                    final String color = i == 0 ? "§b" : i == 1 ? "§6" : i == 2 ? "§3" : "§7";
+                    final String text = leaderboard.getFormat().replace("%player%", userData.getName())
+                            .replace("%amount%", NumberFormatter.formatNumberToThousands(amount)).replace("%place%", (i+1) + "")
+                            .replace("%color%", color);
+                    hologram.addLine(HologramLineType.TEXT, text);
 
                 }
             }
@@ -104,7 +95,5 @@ public class LeaderboardFacade {
             throwable.printStackTrace();
             return null;
         });
-
-
     }
 }
