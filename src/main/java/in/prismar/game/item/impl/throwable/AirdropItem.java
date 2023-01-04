@@ -36,6 +36,8 @@ public class AirdropItem extends CustomItem {
         super("Airdrop", Material.STICK, "§eAirdrop");
         setCustomModelData(1);
         allFlags();
+
+
     }
 
     @CustomItemEvent
