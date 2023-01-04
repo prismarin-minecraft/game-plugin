@@ -49,6 +49,10 @@ public class ArsenalService {
         return user;
     }
 
+    public void giveStarterArsenal(User user) {
+
+    }
+
     public void setItem(User user, String key, ItemStack item) {
         SeasonData data = user.getSeasonData();
         ArsenalItem arsenalItem = new ArsenalItem();
