@@ -31,37 +31,36 @@ public class GrenadeItem extends ThrowableItem {
         super("Grenade", Material.STICK, "§6Grenade");
         setCustomModelData(2);
         allFlags();
-
-        setOnThrow(throwEvent -> {
-            Player player = throwEvent.getPlayer();
-            Item item = throwEvent.getItem();
-            Game game = throwEvent.getGame();
-            new BukkitRunnable() {
-                int timer = 35;
-                @Override
-                public void run() {
-                    if(timer <= 0) {
-                        item.getWorld().playSound(item.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2f, 1);
-                        for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
-                            if(near instanceof Player target) {
-                                double damage = 24 - target.getLocation().distance(item.getLocation());
-                                target.damage(damage, player);
-                            }
-                        }
-                        item.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, item.getLocation(), 2);
-                        item.remove();
-                        cancel();
-                        return;
-                    }
-                    if(timer % 2 == 0) {
-                        item.getWorld().playSound(item.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 2f);
-                    }
-                    item.getWorld().spawnParticle(Particle.SMOKE_NORMAL, item.getLocation(), 0);
-                    timer--;
-                }
-            }.runTaskTimer(game, 1, 1);
-        });
     }
 
-
+    @Override
+    public void onThrow(ThrowEvent throwEvent) {
+        Player player = throwEvent.getPlayer();
+        Item item = throwEvent.getItem();
+        Game game = throwEvent.getGame();
+        new BukkitRunnable() {
+            int timer = 35;
+            @Override
+            public void run() {
+                if(timer <= 0) {
+                    item.getWorld().playSound(item.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 2f, 1);
+                    for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
+                        if(near instanceof Player target) {
+                            double damage = 24 - target.getLocation().distance(item.getLocation());
+                            target.damage(damage, player);
+                        }
+                    }
+                    item.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, item.getLocation(), 2);
+                    item.remove();
+                    cancel();
+                    return;
+                }
+                if(timer % 2 == 0) {
+                    item.getWorld().playSound(item.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 2f);
+                }
+                item.getWorld().spawnParticle(Particle.SMOKE_NORMAL, item.getLocation(), 0);
+                timer--;
+            }
+        }.runTaskTimer(game, 1, 1);
+    }
 }

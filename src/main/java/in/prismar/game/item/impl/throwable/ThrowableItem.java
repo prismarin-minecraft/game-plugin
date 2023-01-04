@@ -28,18 +28,22 @@ import org.bukkit.util.Vector;
  * Written by Maga
  **/
 @Setter
-public class ThrowableItem extends CustomItem {
+public abstract class ThrowableItem extends CustomItem {
 
     private Sound launchSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
     private float launchSoundVolume = 0.8f;
     private double strength = 1.4;
 
-    private Consumer<ThrowEvent> onThrow;
-
     public ThrowableItem(String id, Material material, String display) {
         super(id, material, display);
         allFlags();
     }
+
+    public boolean isAllowedToThrow(Player player, Game game){
+        return true;
+    }
+
+    public abstract void onThrow(ThrowEvent throwEvent);
 
     @CustomItemEvent
     public void onCall(Player player, Game game, CustomItemHolder holder, PlayerInteractEvent event) {
@@ -47,6 +51,9 @@ public class ThrowableItem extends CustomItem {
             return;
         }
         event.setCancelled(true);
+        if(!isAllowedToThrow(player, game)) {
+            return;
+        }
 
         player.getWorld().playSound(player.getLocation(), launchSound, launchSoundVolume, 1);
         Vector vector = player.getLocation().getDirection().multiply(strength);
@@ -55,9 +62,7 @@ public class ThrowableItem extends CustomItem {
         item.setVelocity(vector);
         ItemUtil.takeItemFromHand(player, true);
         player.updateInventory();
-        if(onThrow != null) {
-            onThrow.accept(new ThrowEvent(player, game, holder, event, item));
-        }
+        onThrow(new ThrowEvent(player, game, holder, event, item));
     }
 
 

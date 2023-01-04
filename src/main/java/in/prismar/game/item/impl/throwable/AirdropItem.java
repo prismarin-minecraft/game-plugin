@@ -31,7 +31,7 @@ import java.util.List;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class AirdropItem extends CustomItem {
+public class AirdropItem extends ThrowableItem {
     public AirdropItem() {
         super("Airdrop", Material.STICK, "§eAirdrop");
         setCustomModelData(1);
@@ -40,25 +40,18 @@ public class AirdropItem extends CustomItem {
 
     }
 
-    @CustomItemEvent
-    public void onCall(Player player, Game game, CustomItemHolder holder, PlayerInteractEvent event) {
-        if (holder.getHoldingType() != CustomItemHoldingType.RIGHT_HAND) {
-            return;
-        }
-        event.setCancelled(true);
+    @Override
+    public boolean isAllowedToThrow(Player player, Game game) {
         if(!game.getExtractionFacade().isIn(player)) {
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou can only call an airdrop inside extraction.");
-            return;
+            return false;
         }
+        return true;
+    }
 
-
-        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.8f, 2f);
-        Vector vector = player.getLocation().getDirection().multiply(1.4);
-        Item item = player.getWorld().dropItem(player.getEyeLocation(), event.getItem().clone());
-        item.setPickupDelay(Integer.MAX_VALUE);
-        item.setVelocity(vector);
-        ItemUtil.takeItemFromHand(player, true);
-        player.updateInventory();
+    @Override
+    public void onThrow(ThrowEvent throwEvent) {
+        Item item = throwEvent.getItem();
 
         new BukkitRunnable() {
             @Override
@@ -67,22 +60,15 @@ public class AirdropItem extends CustomItem {
                     cancel();
                     item.remove();
                     item.getWorld().playSound(item.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3f, 1);
-                    game.getAirDropRegistry().callAirDrop(item.getLocation());
+                    throwEvent.getGame().getAirDropRegistry().callAirDrop(item.getLocation());
                     return;
                 }
                 item.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, item.getLocation(), 0);
             }
-        }.runTaskTimer(game, 1, 1);
+        }.runTaskTimer(throwEvent.getGame(), 1, 1);
     }
 
-    private ArmorStand spawnMissile(ItemStack stack, Location location) {
-        ArmorStand armorStand = location.getWorld().spawn(location, ArmorStand.class);
-        armorStand.setInvisible(true);
-        armorStand.setInvulnerable(true);
-        armorStand.setGravity(true);
-        armorStand.getEquipment().setHelmet(stack);
-        return armorStand;
-    }
+
 
 
 }
