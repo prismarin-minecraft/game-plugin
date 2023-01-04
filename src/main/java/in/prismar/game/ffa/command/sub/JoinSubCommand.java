@@ -36,6 +36,10 @@ public class JoinSubCommand extends HelpSubCommand<Player> {
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou are already playing");
             return true;
         }
+        if(!facade.isOpen() && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX +"ffa.join.bypass")) {
+            player.sendMessage(PrismarinConstants.PREFIX + "§cFFA is closed!");
+            return true;
+        }
         facade.join(player);
         player.sendMessage(PrismarinConstants.PREFIX + "§7You are now playing on §b" +
                 facade.getRotator().getCurrentMap().getIcon().getItem().getItemMeta().getDisplayName());

@@ -29,6 +29,7 @@ import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -70,12 +71,24 @@ public class GameMapFacade implements GameMapProvider {
 
     private final Game game;
 
+    @Setter
+    private boolean open = true;
+
     public GameMapFacade(Game game) {
         this.game = game;
         this.repository = new FileGameMapRepository(game.getDefaultDirectory());
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
         this.placeholderStore = PrismarinApi.getProvider(PlaceholderStore.class);
         Bukkit.getScheduler().runTaskTimer(game, rotator = new GameMapRotator(this), 5, 5);
+    }
+
+    public void close() {
+        Iterator<GameMapPlayer> iterator = getRotator().getCurrentMap().getPlayers().values().iterator();
+        while (iterator.hasNext()) {
+            GameMapPlayer player = iterator.next();
+            leave(player.getPlayer());
+        }
+        this.open = false;
     }
 
     public void sendMessage(String message) {
@@ -228,6 +241,7 @@ public class GameMapFacade implements GameMapProvider {
             player.getInventory().setBoots(boots);
         }
         player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
+        player.getInventory().setItem(8, itemRegistry.createItem("FFALeave"));
     }
 
     public boolean giveArsenalChestplate(User user, Player player) {

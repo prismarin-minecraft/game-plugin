@@ -9,12 +9,14 @@ import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.library.common.event.EventSubscriber;
 import in.prismar.library.spigot.inventory.Frame;
+import in.prismar.library.spigot.inventory.button.event.ClickFrameButtonEvent;
 import in.prismar.library.spigot.inventory.event.FrameClickEvent;
 import in.prismar.library.spigot.item.CustomSkullBuilder;
 import in.prismar.library.spigot.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -65,6 +67,10 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
         addArsenalItem(CHESTPLATE_SLOT, "chestplate", "§cEmpty");
         addArsenalItem(LEGGINGS_SLOT, "leggings", "§cEmpty");
         addArsenalItem(BOOTS_SLOT, "boots", "§cEmpty");
+
+        addButton(53, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to FFA menu").build(), (ClickFrameButtonEvent) (player1, event) -> {
+            player.performCommand("ffa menu");
+        });
 
 
 

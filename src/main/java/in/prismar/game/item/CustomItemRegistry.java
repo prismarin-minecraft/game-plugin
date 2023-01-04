@@ -1,6 +1,7 @@
 package in.prismar.game.item;
 
 import in.prismar.game.Game;
+import in.prismar.game.item.impl.FFALeaveItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.throwable.AirdropItem;
 import in.prismar.game.item.impl.throwable.AirstrikeItem;
@@ -88,6 +89,8 @@ public class CustomItemRegistry {
 
         register(new AirstrikeItem());
         register(new AirdropItem());
+
+        register(new FFALeaveItem());
 
         reader.apply(this);
 
