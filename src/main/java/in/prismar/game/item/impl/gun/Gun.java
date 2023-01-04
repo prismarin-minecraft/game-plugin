@@ -1,5 +1,6 @@
 package in.prismar.game.item.impl.gun;
 
+import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItem;
@@ -435,6 +436,10 @@ public class Gun extends CustomItem {
             if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 reload(event.getPlayer(), game, holder.getStack());
             } else if (allowedInteract) {
+                if(game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
+                    player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
+                    return;
+                }
                 if (disableInteraction) {
                     event.setCancelled(true);
                 }

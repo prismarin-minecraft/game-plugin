@@ -97,6 +97,8 @@ public class CustomItemRegistry {
     }
 
 
+
+
     public List<CustomItemHolder> publishEvent(Player player, Object event) {
         if (holders.containsKey(player.getUniqueId())) {
             List<CustomItemHolder> list = holders.get(player.getUniqueId());

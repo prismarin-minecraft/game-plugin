@@ -1,5 +1,6 @@
 package in.prismar.game.item.impl.throwable;
 
+import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
@@ -51,6 +52,10 @@ public abstract class ThrowableItem extends CustomItem {
             return;
         }
         event.setCancelled(true);
+        if(game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
+            player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
+           return;
+        }
         if(!isAllowedToThrow(player, game)) {
             return;
         }

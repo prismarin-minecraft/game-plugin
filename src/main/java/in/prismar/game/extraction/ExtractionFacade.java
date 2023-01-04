@@ -1,5 +1,7 @@
 package in.prismar.game.extraction;
 
+import dev.sergiferry.playernpc.api.NPC;
+import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.compass.CompassEntryReachEvent;
@@ -32,6 +34,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +123,18 @@ public class ExtractionFacade implements ExtractionProvider {
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.7f, 1);
         }
+        changeNPCText("§aEnabled");
+
+    }
+
+    private void changeNPCText(String text) {
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("PlayerNPC");
+        if(plugin != null) {
+            NPC.Global npc = NPCLib.getInstance().getGlobalNPC(plugin, "extraction");
+            npc.setText("§4§lEXTRACTION", text);
+            npc.forceUpdate();
+        }
+
     }
 
     public void close() {
@@ -139,6 +154,7 @@ public class ExtractionFacade implements ExtractionProvider {
                 provider.teleportToSpawn(player);
             }
         }
+        changeNPCText("§cDisabled");
     }
 
     public void join(Player player) {

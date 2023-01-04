@@ -4,6 +4,7 @@ import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
+import in.prismar.api.region.RegionProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.item.CustomItemRegistry;
@@ -51,6 +52,8 @@ public class Game extends JavaPlugin {
     @Inject
     private AirDropRegistry airDropRegistry;
 
+    private RegionProvider regionProvider;
+
 
 
     @Override
@@ -66,6 +69,7 @@ public class Game extends JavaPlugin {
     private void initialize() {
         this.glowingEntities = new GlowingEntities(this);
         this.setup = new SpigotSetup(this, "game");
+        this.regionProvider = PrismarinApi.getProvider(RegionProvider.class);
 
         this.metaRegistry = new MetaRegistry();
         this.metaRegistry.registerProcessor(AutoCommand.class, new SpigotCommandProcessor(setup, metaRegistry));
