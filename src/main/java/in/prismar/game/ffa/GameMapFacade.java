@@ -228,7 +228,6 @@ public class GameMapFacade implements GameMapProvider {
             player.getInventory().setBoots(boots);
         }
         player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
-        player.getInventory().setItem(4, itemRegistry.createItem("Molotov"));
     }
 
     public boolean giveArsenalChestplate(User user, Player player) {
