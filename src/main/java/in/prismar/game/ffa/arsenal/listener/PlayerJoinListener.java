@@ -4,6 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -24,6 +26,9 @@ public class PlayerJoinListener implements Listener {
 
     @Inject
     private GameMapFacade facade;
+
+    @Inject
+    private CustomItemRegistry itemRegistry;
 
     private final UserProvider<User> userProvider;
 

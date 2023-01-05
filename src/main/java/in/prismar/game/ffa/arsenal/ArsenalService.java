@@ -50,7 +50,13 @@ public class ArsenalService {
     }
 
     public void giveStarterArsenal(User user) {
+        setItem(user, "helmet", itemRegistry.createItem("RecruitHelmet"));
+        setItem(user, "chestplate", itemRegistry.createItem("RecruitChestplate"));
+        setItem(user, "leggings", itemRegistry.createItem("RecruitLeggings"));
+        setItem(user, "boots", itemRegistry.createItem("RecruitBoots"));
 
+        setItem(user, "primary", itemRegistry.createItem("M4A1"));
+        setItem(user, "secondary", itemRegistry.createItem("Glock17"));
     }
 
     public void setItem(User user, String key, ItemStack item) {
