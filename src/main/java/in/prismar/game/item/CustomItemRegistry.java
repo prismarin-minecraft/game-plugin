@@ -3,6 +3,7 @@ package in.prismar.game.item;
 import in.prismar.game.Game;
 import in.prismar.game.item.impl.FFALeaveItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
+import in.prismar.game.item.impl.meele.KatanaItem;
 import in.prismar.game.item.impl.throwable.AirdropItem;
 import in.prismar.game.item.impl.throwable.AirstrikeItem;
 import in.prismar.game.item.impl.throwable.MolotovItem;
@@ -91,6 +92,8 @@ public class CustomItemRegistry {
         register(new AirdropItem());
 
         register(new FFALeaveItem());
+
+        register(new KatanaItem());
 
         reader.apply(this);
 

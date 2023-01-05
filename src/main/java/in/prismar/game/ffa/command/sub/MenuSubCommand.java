@@ -46,9 +46,9 @@ public class MenuSubCommand extends HelpSubCommand<Player> {
         Frame frame = new Frame("§bFFA", 3);
         frame.fill();
 
-        frame.addButton(10, new ItemBuilder(Material.WOODEN_PICKAXE).setName("§cArsenal").allFlags()
-                .setCustomModelData(2).addLore("§C").addLore("§7Click me to open your arsenal").build(), (ClickFrameButtonEvent) (player1, event) -> {
-                    player.performCommand("arsenal");
+        frame.addButton(10, new ItemBuilder(Material.WOODEN_PICKAXE).setName("§6Loadout").allFlags()
+                .setCustomModelData(2).addLore("§c").addLore("§7Click me to open your loadout").build(), (ClickFrameButtonEvent) (player1, event) -> {
+                    player.performCommand("loadout");
                 });
 
         frame.addButton(13, new ItemBuilder(Material.LIME_WOOL).glow().setName("§a§lPLAY")
@@ -60,7 +60,7 @@ public class MenuSubCommand extends HelpSubCommand<Player> {
                         .build()
                 , (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("ffa join"));
 
-        frame.addButton(16, new ItemBuilder(Material.PAPER).setName("§6Stats")
+        frame.addButton(16, new ItemBuilder(Material.PAPER).setName("§cStats")
                 .addLore("§C").addLore("§7Click me to view your statistics").build(), (ClickFrameButtonEvent) (player1, event) -> {
             player.performCommand("stats");
         });

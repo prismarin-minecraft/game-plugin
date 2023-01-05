@@ -25,6 +25,7 @@ public class ArsenalCommand extends SpigotCommand<Player> {
 
     public ArsenalCommand() {
         super("arsenal");
+        setAliases("loadout", "lo");
         setSenders(Player.class);
     }
 

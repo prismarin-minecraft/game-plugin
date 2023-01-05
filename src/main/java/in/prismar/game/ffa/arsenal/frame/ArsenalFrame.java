@@ -44,7 +44,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     private User user;
 
     public ArsenalFrame(Player player, ArsenalService service) {
-        super("§6Arsenal", 6);
+        super("§6Loadout", 6);
         this.service = service;
         this.player = player;
         this.user = service.manage(player);
