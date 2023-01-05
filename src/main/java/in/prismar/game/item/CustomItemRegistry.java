@@ -56,20 +56,9 @@ public class CustomItemRegistry {
     public void load() {
         this.items.clear();
 
-        register(new G36Gun());
-        register(new L96Gun());
-        register(new Spas12Gun());
-        register(new FnScarGun());
-        register(new P2020Gun());
-        register(new VectorGun());
-        register(new M1014Gun());
-        register(new DesertEagleGun());
-
-        register(new AWPGun());
-        register(new BallistaGun());
         register(new M4A1Gun());
-        register(new MP5Gun());
-        register(new PPSh41Gun());
+        register(new Glock17Gun());
+        register(new AWPGun());
 
         register(new GrenadeItem());
         register(new MolotovItem());

@@ -47,12 +47,10 @@ public class FileGunReaderSource implements CustomItemReaderSource {
 
                 if(!data.getSounds().isEmpty()) {
                     for(GunSoundData soundData : data.getSounds()) {
-                        GunSound gunSound = new GunSound(soundData.getSound(), (float)soundData.getVolume(), (float)soundData.getPitch());
+                        GunSound gunSound = new GunSound(null, (float)soundData.getVolume(), (float)soundData.getPitch());
+                        gunSound.setSoundName(soundData.getSound());
                         gunSound.setSurroundingDistance(soundData.getSurroundingDistance());
-                        if(!gun.getSounds().containsKey(soundData.getType())) {
-                            gun.getSounds().put(soundData.getType(), new ArrayList<>());
-                        }
-                        gun.getSounds().get(soundData.getType()).add(gunSound);
+                        gun.getSounds().put(soundData.getType(), gunSound);
                     }
                 }
                 gun.generateDefaultLore();

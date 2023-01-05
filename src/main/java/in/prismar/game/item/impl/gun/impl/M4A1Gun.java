@@ -1,6 +1,7 @@
 package in.prismar.game.item.impl.gun.impl;
 
 import in.prismar.game.item.impl.gun.Gun;
+import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
@@ -14,13 +15,13 @@ import org.bukkit.Material;
 public class M4A1Gun extends Gun {
 
     public M4A1Gun() {
-        super("M4A1", GunType.AR, Material.NETHERITE_PICKAXE, "§9M4A1");
-        setCustomModelData(1);
+        super("M4A1", GunType.AR, Material.WOODEN_PICKAXE, "§9M4A1");
+        setCustomModelData(2);
         setZoom(2);
         setAmmoType(AmmoType.AR);
         setSpread(2);
         setSneakSpread(1);
-        setRange(55);
+        setRange(70);
 
         setLegDamage(7);
         setBodyDamage(8);
@@ -31,6 +32,8 @@ public class M4A1Gun extends Gun {
         setMaxAmmo(30);
 
         setReloadTimeInTicks(50);
+
+        registerSound(GunSoundType.SHOOT, "shoot.ar", 2, 1);
 
         generateDefaultLore();
 

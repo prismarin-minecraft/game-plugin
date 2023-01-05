@@ -46,6 +46,9 @@ public class GunPlayer {
     private User user;
 
     private boolean reloading;
+
+    private String reloadingGunId = "";
+
     private long reloadingEndTimestamp;
     private long currentUpdateTick;
 

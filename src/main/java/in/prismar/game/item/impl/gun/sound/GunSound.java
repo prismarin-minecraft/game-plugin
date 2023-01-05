@@ -15,6 +15,7 @@ import org.bukkit.Sound;
 public class GunSound {
 
     private Sound sound;
+    private String soundName;
     private float volume;
     private float pitch;
 

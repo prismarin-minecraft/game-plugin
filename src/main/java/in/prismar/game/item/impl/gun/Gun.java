@@ -85,7 +85,7 @@ public class Gun extends CustomItem {
 
     private int zoom;
 
-    private Map<GunSoundType, List<GunSound>> sounds;
+    private Map<GunSoundType, GunSound> sounds;
 
 
     public Gun(String id, GunType type, Material material, String displayName) {
@@ -155,34 +155,42 @@ public class Gun extends CustomItem {
 
     public void playSound(Player player, Location location, GunSoundType type) {
         if (sounds.containsKey(type)) {
-            for (GunSound sound : sounds.get(type)) {
-                if (type.isSurrounding()) {
-                    for(Player near : player.getWorld().getPlayers()) {
-                        if(near.getLocation().distanceSquared(location) <= (sound.getSurroundingDistance() * sound.getSurroundingDistance())) {
+            GunSound sound = sounds.get(type);
+            if (type.isSurrounding()) {
+                for(Player near : player.getWorld().getPlayers()) {
+                    if(near.getLocation().distanceSquared(location) <= (sound.getSurroundingDistance() * sound.getSurroundingDistance())) {
+                        if(sound.getSound() == null) {
+                            near.playSound(location, sound.getSoundName(), sound.getVolume(), sound.getPitch());
+                        } else {
                             near.playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
                         }
                     }
+                }
+            } else {
+                if(sound.getSound() == null) {
+                    player.playSound(location, sound.getSoundName(), sound.getVolume(), sound.getPitch());
                 } else {
                     player.playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
                 }
+
             }
         }
     }
 
     public GunSound registerSound(GunSoundType type, Sound sound, float volume, float pitch) {
-        if (!this.sounds.containsKey(type)) {
-            this.sounds.put(type, new ArrayList<>());
-        }
         GunSound gunSound = new GunSound(sound, volume, pitch);
-        this.sounds.get(type).add(gunSound);
+        this.sounds.put(type, gunSound);
         return gunSound;
     }
 
-    public void clearSounds(GunSoundType type) {
-        if (this.sounds.containsKey(type)) {
-            this.sounds.get(type).clear();
-        }
+    public GunSound registerSound(GunSoundType type, String sound, float volume, float pitch) {
+        GunSound gunSound = new GunSound(null, volume, pitch);
+        gunSound.setSoundName(sound);
+        this.sounds.put(type, gunSound);
+        return gunSound;
     }
+
+
 
     public List<Attachment> getAttachments(Game game, ItemStack stack) {
         List<Attachment> attachments = new ArrayList<>();
@@ -361,10 +369,14 @@ public class Gun extends CustomItem {
             }
             int finalAmmoToGive = ammoToGive;
             Bukkit.getScheduler().runTaskLater(game, () -> {
+                if(!gunPlayer.isReloading()) {
+                    return;
+                }
                 PersistentItemDataUtil.setInteger(game, stack, AMMO_KEY, finalAmmoToGive);
                 gunPlayer.setReloading(false);
             }, reloadTimeInTicks);
             gunPlayer.setReloading(true);
+            gunPlayer.setReloadingGunId(getId());
             gunPlayer.setReloadingEndTimestamp(System.currentTimeMillis() + 50 * reloadTimeInTicks);
             playSound(player, GunSoundType.RELOAD);
         }
@@ -401,6 +413,10 @@ public class Gun extends CustomItem {
             maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
         }
         if (gunPlayer.isReloading()) {
+            if(!gunPlayer.getReloadingGunId().equals(getId())) {
+                gunPlayer.setReloading(false);
+                return;
+            }
             long max = gunPlayer.getReloadingEndTimestamp();
             long difference = max - System.currentTimeMillis();
             double result = (double) difference / 1000.0;
