@@ -135,7 +135,7 @@ public class GameMapRotator implements Runnable {
             player.sendMessage(" ");
             for(GameMap map : facade.getRepository().findAll()) {
                 InteractiveTextBuilder textBuilder = new InteractiveTextBuilder();
-                textBuilder.addText("§8» §b" + map.getIcon().getItem().getItemMeta().getDisplayName() , "/map vote " + map.getId(),
+                textBuilder.addText("§8» §b" + map.getIcon().getItem().getItemMeta().getDisplayName() , "/ffa vote " + map.getId(),
                         "§7Vote for this map");
                 player.spigot().sendMessage(textBuilder.build());
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.65f, 1);
