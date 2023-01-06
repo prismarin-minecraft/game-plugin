@@ -28,7 +28,7 @@ sneakSpread = 0.5
 
 [[sounds]]
 type = "SHOOT"
-sound = "BLOCK_CHEST_CLOSE"
+sound = "shoot.ar"
 volume = 1.0
 pitch = 2.0
 surroundingDistance = 20

@@ -56,9 +56,9 @@ public class CustomItemRegistry {
     public void load() {
         this.items.clear();
 
-        register(new M4A1Gun());
-        register(new Glock17Gun());
-        register(new AWPGun());
+        //register(new M4A1Gun());
+        //register(new Glock17Gun());
+        //register(new AWPGun());
 
         register(new GrenadeItem());
         register(new MolotovItem());
