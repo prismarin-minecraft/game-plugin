@@ -37,6 +37,7 @@ public class FileGunReaderSource implements CustomItemReaderSource {
                 gun.setRange(data.getRange());
                 gun.setFireRate(data.getFireRate());
                 gun.setSpread(data.getSpread());
+                gun.setSneakSpread(data.getSneakSpread());
                 gun.setBulletsPerShot(data.getBulletsPerShot());
                 gun.setMaxAmmo(data.getMaxAmmo());
                 gun.setReloadTimeInTicks(data.getReloadTimeInTicks());

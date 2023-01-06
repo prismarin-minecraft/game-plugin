@@ -1,4 +1,4 @@
-package in.prismar.game.item.impl.armor.recruit;
+package in.prismar.game.item.impl.armor.heavy;
 
 import in.prismar.game.item.impl.armor.ArmorItem;
 import in.prismar.game.item.impl.armor.ArmorType;
@@ -10,11 +10,11 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class RecruitBoots extends ArmorItem {
-    public RecruitBoots() {
-        super("RecruitBoots", Material.LEATHER_BOOTS, "§2Recruit Boots", ArmorType.BOOTS);
+public class HeavyChestplate extends ArmorItem {
+    public HeavyChestplate() {
+        super("HeavyChestplate", Material.IRON_CHESTPLATE, "§cHeavy Chestplate", ArmorType.CHESTPLATE);
         setHeadProtection(0);
-        setBodyProtection(1);
+        setBodyProtection(20);
 
         generateDefaultLore();
     }

@@ -102,7 +102,7 @@ public class Gun extends CustomItem {
             }
         }
 
-        registerSound(GunSoundType.SHOOT, Sound.ENTITY_BLAZE_HURT, 0.6f, 1f);
+        registerSound(GunSoundType.LOW_AMMO, "misc.lowammo", 0.8f, 1);
 
         registerSound(GunSoundType.HIT, Sound.BLOCK_BASALT_HIT, 0.9f, 2F);
         registerSound(GunSoundType.HEADSHOT, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.35f, 1f);
@@ -454,6 +454,11 @@ public class Gun extends CustomItem {
             } else if (allowedInteract) {
                 if(game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
                     player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
+                    return;
+                }
+                int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
+                if(ammo <= 0) {
+                    playSound(player, GunSoundType.LOW_AMMO);
                     return;
                 }
                 if (disableInteraction) {

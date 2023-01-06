@@ -14,7 +14,7 @@ public class RecruitChestplate extends ArmorItem {
     public RecruitChestplate() {
         super("RecruitChestplate", Material.LEATHER_CHESTPLATE, "§2Recruit Chestplate", ArmorType.CHESTPLATE);
         setHeadProtection(0);
-        setBodyProtection(10);
+        setBodyProtection(5);
 
         generateDefaultLore();
     }

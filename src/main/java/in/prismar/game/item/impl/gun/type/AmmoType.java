@@ -19,6 +19,7 @@ public enum AmmoType {
 
     PISTOL(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build()),
     AR(new ItemBuilder(Material.ARROW).setCustomModelData(2).setName("§eAR Ammo").build()),
+    LMG(new ItemBuilder(Material.ARROW).setCustomModelData(2).setName("§eAR Ammo").build()),
     SNIPER(new ItemBuilder(Material.ARROW).setCustomModelData(3).setName("§cSniper Ammo").build()),
     SHOTGUN(new ItemBuilder(Material.ARROW).setCustomModelData(4).setName("§fShotgun Ammo").build()),
 

@@ -55,8 +55,8 @@ public class ArsenalService {
         setItem(user, "leggings", itemRegistry.createItem("RecruitLeggings"));
         setItem(user, "boots", itemRegistry.createItem("RecruitBoots"));
 
-        setItem(user, "primary", itemRegistry.createItem("M4A1"));
-        setItem(user, "secondary", itemRegistry.createItem("Glock17"));
+        setItem(user, "primary", itemRegistry.createItem("vector"));
+        setItem(user, "secondary", itemRegistry.createItem("glock17"));
     }
 
     public void setItem(User user, String key, ItemStack item) {

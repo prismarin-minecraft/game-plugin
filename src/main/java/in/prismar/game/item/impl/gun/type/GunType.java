@@ -17,7 +17,9 @@ public enum GunType {
     SMG("SMG"),
     SHOTGUN("Shotgun"),
     AR("Assault Rifle"),
-    SNIPER("Sniper");
+    SNIPER("Sniper"),
+
+    LMG("LMG");
 
     private final String displayName;
 }

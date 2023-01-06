@@ -14,7 +14,7 @@ public class RecruitLeggings extends ArmorItem {
     public RecruitLeggings() {
         super("RecruitLeggings", Material.LEATHER_LEGGINGS, "§2Recruit Leggings", ArmorType.LEGGINGS);
         setHeadProtection(0);
-        setBodyProtection(6);
+        setBodyProtection(2);
         generateDefaultLore();
     }
 }

@@ -19,6 +19,7 @@ import in.prismar.library.spigot.meta.anno.AutoCommand;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import in.prismar.library.spigot.setup.SpigotSetup;
 import lombok.Getter;
+import org.bukkit.Particle;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;

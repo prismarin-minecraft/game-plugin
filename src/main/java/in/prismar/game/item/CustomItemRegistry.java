@@ -2,6 +2,18 @@ package in.prismar.game.item;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.impl.FFALeaveItem;
+import in.prismar.game.item.impl.armor.heavy.HeavyBoots;
+import in.prismar.game.item.impl.armor.heavy.HeavyChestplate;
+import in.prismar.game.item.impl.armor.heavy.HeavyHelmet;
+import in.prismar.game.item.impl.armor.heavy.HeavyLeggings;
+import in.prismar.game.item.impl.armor.juggernaut.JuggernautBoots;
+import in.prismar.game.item.impl.armor.juggernaut.JuggernautChestplate;
+import in.prismar.game.item.impl.armor.juggernaut.JuggernautHelmet;
+import in.prismar.game.item.impl.armor.juggernaut.JuggernautLeggings;
+import in.prismar.game.item.impl.armor.lightweight.LightweightBoots;
+import in.prismar.game.item.impl.armor.lightweight.LightweightChestplate;
+import in.prismar.game.item.impl.armor.lightweight.LightweightHelmet;
+import in.prismar.game.item.impl.armor.lightweight.LightweightLeggings;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.meele.KatanaItem;
 import in.prismar.game.item.impl.throwable.AirdropItem;
@@ -71,10 +83,7 @@ public class CustomItemRegistry {
         register(new BarrelAttachmentItem());
         register(new SuppressorAttachmentItem());
 
-        register(new RecruitHelmet());
-        register(new RecruitChestplate());
-        register(new RecruitLeggings());
-        register(new RecruitBoots());
+
         register(new MedicalSyringeItem());
 
         register(new AirstrikeItem());
@@ -82,7 +91,25 @@ public class CustomItemRegistry {
 
         register(new FFALeaveItem());
 
-        register(new KatanaItem());
+        register(new RecruitHelmet());
+        register(new RecruitChestplate());
+        register(new RecruitLeggings());
+        register(new RecruitBoots());
+
+        register(new LightweightHelmet());
+        register(new LightweightChestplate());
+        register(new LightweightLeggings());
+        register(new LightweightBoots());
+
+        register(new HeavyHelmet());
+        register(new HeavyChestplate());
+        register(new HeavyLeggings());
+        register(new HeavyBoots());
+
+        register(new JuggernautHelmet());
+        register(new JuggernautChestplate());
+        register(new JuggernautLeggings());
+        register(new JuggernautBoots());
 
         reader.apply(this);
 
