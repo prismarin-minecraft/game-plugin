@@ -190,8 +190,11 @@ public class GameMapRotator implements Runnable {
 
         if(facade.getRepository().findAll().size() >= 1) {
             if(now >= nextRotate) {
+                displayWinners();
                 GameMap winner = findVoteWinner();
                 for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                    mapPlayer.setKills(0);
+                    mapPlayer.setDeaths(0);
                     winner.getPlayers().put(mapPlayer.getPlayer().getUniqueId(), mapPlayer);
                 }
                 if(!winner.getId().equalsIgnoreCase(currentMap.getId())) {
@@ -208,7 +211,6 @@ public class GameMapRotator implements Runnable {
                 }
 
                 registerCurrentMapPlaceholder();
-                displayWinners();
                 Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§7Map changed to " + winner.getIcon().getItem().getItemMeta().getDisplayName());
                 nextRotateTimer();
                 voting.clear();
