@@ -8,6 +8,7 @@ import in.prismar.game.ffa.model.GameMap;
 import in.prismar.game.ffa.model.GameMapPlayer;
 import in.prismar.game.stats.GameStatsDistributor;
 import in.prismar.library.common.math.MathUtil;
+import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.Player;
@@ -36,6 +37,8 @@ public class EntityDamageListener implements Listener {
 
     @Inject
     private GameStatsDistributor statsDistributor;
+
+
 
     private ConfigStore store;
 
@@ -105,7 +108,17 @@ public class EntityDamageListener implements Listener {
                 damagerMapPlayer.setKills(damagerMapPlayer.getKills() + 1);
                 statsDistributor.addKill(damager);
                 statsDistributor.addMapKill(damager, map.getId());
-                displayStreak(map, damager, statsDistributor.getKillstreak(damager));
+
+                int money = statsDistributor.addFFAKillMoney(damager);
+                damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(money) + "$ §7for killing §c" + target.getName());
+
+                int killstreak = statsDistributor.getKillstreak(damager);
+                displayStreak(map, damager, killstreak);
+                int streakMoney = statsDistributor.addFFAKillstreakMoney(damager, killstreak);
+                if(streakMoney != -1) {
+                    damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(streakMoney) + "$ §7for having a §c" + killstreak + " §7killstreak");
+                }
+
                 facade.updateLeaderboard(map);
             }
 
@@ -144,7 +157,7 @@ public class EntityDamageListener implements Listener {
         String[] messages = store.getProperty("killstreak.messages").split("/");
         String chosenMessage = null;
         for(String message : messages) {
-            if(message.startsWith("{" + streak)) {
+            if(message.contains("{" + streak + "}")) {
                 chosenMessage = message;
                 break;
             }
