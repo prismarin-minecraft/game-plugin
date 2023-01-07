@@ -6,6 +6,7 @@ import in.prismar.library.spigot.entity.GlowingEntities;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
+import in.prismar.library.spigot.inventory.Frame;
 import in.prismar.library.spigot.location.LocationUtil;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
 import in.prismar.library.spigot.scheduler.Scheduler;
@@ -38,6 +39,10 @@ public class GameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
+        Frame frame = new Frame("§f七七七七七七七七ㇺ", 6);
+        frame.addButton(25, new ItemStack(Material.STICK));
+        frame.build();
+        frame.openInventory(player);
         return true;
     }
 

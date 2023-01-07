@@ -83,7 +83,7 @@ public class AirstrikeItem extends ThrowableItem {
                                     armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 3f, 1);
                                     for(Entity near : item.getWorld().getNearbyEntities(armorStand.getLocation(), 7, 7, 7)) {
                                         if(near instanceof Player target) {
-                                            double damage = 24 - target.getLocation().distance(armorStand.getLocation());
+                                            double damage = 30 - target.getLocation().distance(armorStand.getLocation());
                                             target.damage(damage, player);
                                         }
                                     }
