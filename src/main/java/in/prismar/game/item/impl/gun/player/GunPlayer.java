@@ -1,4 +1,4 @@
-package in.prismar.game.item.impl.gun;
+package in.prismar.game.item.impl.gun.player;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;
@@ -6,11 +6,10 @@ import in.prismar.api.user.UserProvider;
 import in.prismar.game.item.impl.gun.type.GunDamageType;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -22,7 +21,7 @@ import java.util.UUID;
 @Setter
 public class GunPlayer {
 
-    private static final Map<UUID, GunPlayer> PLAYERS = new HashMap<>();
+    public static final Map<UUID, GunPlayer> PLAYERS = new HashMap<>();
 
     public static GunPlayer of(Player player) {
         return of(player.getUniqueId());
@@ -37,6 +36,7 @@ public class GunPlayer {
             return PLAYERS.get(uuid);
         }
         GunPlayer player = new GunPlayer();
+
         UserProvider<User> provider = PrismarinApi.getProvider(UserProvider.class);
         player.setUser(provider.getUserByUUID(uuid));
         PLAYERS.put(uuid, player);
@@ -44,6 +44,7 @@ public class GunPlayer {
     }
 
     private User user;
+
 
     private boolean reloading;
 
@@ -55,6 +56,7 @@ public class GunPlayer {
     private long lastInteract;
 
     private GunDamageType lastDamageReceived;
+
 
 
 }

@@ -14,7 +14,7 @@ public class LightweightBoots extends ArmorItem {
     public LightweightBoots() {
         super("LightweightBoots", Material.CHAINMAIL_BOOTS, "§7Lightweight Boots", ArmorType.BOOTS);
         setHeadProtection(0);
-        setBodyProtection(3);
+        setBodyProtection(4);
 
         generateDefaultLore();
     }

@@ -13,7 +13,7 @@ import org.bukkit.Material;
 public class RecruitHelmet extends ArmorItem {
     public RecruitHelmet() {
         super("RecruitHelmet", Material.LEATHER_HELMET, "§2Recruit Helmet", ArmorType.HELMET);
-        setHeadProtection(5);
+        setHeadProtection(10);
         setBodyProtection(0);
         generateDefaultLore();
     }

@@ -15,7 +15,6 @@ import in.prismar.game.item.impl.armor.lightweight.LightweightChestplate;
 import in.prismar.game.item.impl.armor.lightweight.LightweightHelmet;
 import in.prismar.game.item.impl.armor.lightweight.LightweightLeggings;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
-import in.prismar.game.item.impl.meele.KatanaItem;
 import in.prismar.game.item.impl.throwable.AirdropItem;
 import in.prismar.game.item.impl.throwable.AirstrikeItem;
 import in.prismar.game.item.impl.throwable.MolotovItem;
@@ -63,14 +62,16 @@ public class CustomItemRegistry {
         load();
 
         Bukkit.getScheduler().runTaskTimer(game, new CustomItemUpdater(game, this), 1, 1);
+       // Bukkit.getScheduler().runTaskTimer(game, new GunStackTask(), 1, 1);
     }
 
     public void load() {
         this.items.clear();
 
-        //register(new M4A1Gun());
-        //register(new Glock17Gun());
-        //register(new AWPGun());
+
+
+
+        register(new TestGun());
 
         register(new GrenadeItem());
         register(new MolotovItem());

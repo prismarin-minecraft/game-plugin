@@ -13,8 +13,8 @@ import org.bukkit.Material;
 public class HeavyHelmet extends ArmorItem {
     public HeavyHelmet() {
         super("HeavyHelmet", Material.IRON_HELMET, "§cHeavy Helmet", ArmorType.HELMET);
-        setHeadProtection(0);
-        setBodyProtection(20);
+        setHeadProtection(30);
+        setBodyProtection(0);
 
         generateDefaultLore();
 

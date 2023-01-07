@@ -83,7 +83,7 @@ public class GameMapFacade implements GameMapProvider {
     }
 
     public void close() {
-        Iterator<GameMapPlayer> iterator = getRotator().getCurrentMap().getPlayers().values().iterator();
+        Iterator<GameMapPlayer> iterator = new ArrayList<>(getRotator().getCurrentMap().getPlayers().values()).iterator();
         while (iterator.hasNext()) {
             GameMapPlayer player = iterator.next();
             leave(player.getPlayer());

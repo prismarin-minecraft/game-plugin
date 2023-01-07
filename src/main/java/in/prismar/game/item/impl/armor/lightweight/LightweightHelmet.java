@@ -13,7 +13,7 @@ import org.bukkit.Material;
 public class LightweightHelmet extends ArmorItem {
     public LightweightHelmet() {
         super("LightweightHelmet", Material.CHAINMAIL_HELMET, "§7Lightweight Helmet", ArmorType.HELMET);
-        setHeadProtection(10);
+        setHeadProtection(20);
         setBodyProtection(0);
         generateDefaultLore();
     }

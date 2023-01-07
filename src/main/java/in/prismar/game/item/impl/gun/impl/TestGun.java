@@ -12,28 +12,30 @@ import org.bukkit.Material;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class Glock17Gun extends Gun {
+public class TestGun extends Gun {
 
-    public Glock17Gun() {
-        super("Glock17", GunType.PISTOL, Material.WOODEN_HOE, "§7Glock 17");
+    public TestGun() {
+        super("Test", GunType.PISTOL, Material.WOODEN_HOE, "§7Test");
         setCustomModelData(4);
-        setZoom(2);
+        setBulletsPerShot(2);
+        setZoom(5);
         setAmmoType(AmmoType.PISTOL);
-        setSpread(2);
-        setSneakSpread(1);
-        setRange(40);
+        setSpread(0);
+        setSneakSpread(0);
+        setRange(175);
 
-        setLegDamage(3);
-        setBodyDamage(5);
-        setHeadDamage(7);
+        setLegDamage(4);
+        setBodyDamage(4);
+        setHeadDamage(4);
 
-        setFireRate(120);
+        setFireRate(60);
 
-        setMaxAmmo(7);
+        setUnlimitedAmmo(true);
+        setMaxAmmo(100);
 
-        setReloadTimeInTicks(20);
+        setReloadTimeInTicks(10);
 
-        registerSound(GunSoundType.SHOOT, "shoot.pistol", 1.5f, 1);
+        registerSound(GunSoundType.SHOOT, "shoot.pistol", 1, 1);
 
         generateDefaultLore();
 

@@ -14,7 +14,7 @@ public class HeavyBoots extends ArmorItem {
     public HeavyBoots() {
         super("HeavyBoots", Material.IRON_BOOTS, "§cHeavy Boots", ArmorType.BOOTS);
         setHeadProtection(0);
-        setBodyProtection(6);
+        setBodyProtection(5);
 
         generateDefaultLore();
     }

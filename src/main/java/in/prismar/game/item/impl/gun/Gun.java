@@ -9,6 +9,7 @@ import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.attachment.Attachment;
 import in.prismar.game.item.impl.attachment.AttachmentModifier;
+import in.prismar.game.item.impl.gun.player.GunPlayer;
 import in.prismar.game.item.impl.gun.sound.GunSound;
 import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
@@ -37,7 +38,6 @@ import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.function.Predicate;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -266,7 +266,9 @@ public class Gun extends CustomItem {
                             GunPlayer targetGunPlayer = GunPlayer.of(target);
                             targetGunPlayer.setLastDamageReceived(damageType);
                         }
+                        entity.setNoDamageTicks(0);
                         entity.damage(damage, player);
+                        entity.setVelocity(new Vector());
                         if (damageType == GunDamageType.HEADSHOT) {
                             playSound(player, GunSoundType.HEADSHOT);
                             addStatsValue(seasonData, "headshots");

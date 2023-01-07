@@ -1,6 +1,6 @@
 package in.prismar.game.item.listener;
 
-import in.prismar.game.item.impl.gun.GunPlayer;
+import in.prismar.game.item.impl.gun.player.GunPlayer;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

@@ -14,7 +14,7 @@ public class RecruitBoots extends ArmorItem {
     public RecruitBoots() {
         super("RecruitBoots", Material.LEATHER_BOOTS, "§2Recruit Boots", ArmorType.BOOTS);
         setHeadProtection(0);
-        setBodyProtection(1);
+        setBodyProtection(2);
 
         generateDefaultLore();
     }

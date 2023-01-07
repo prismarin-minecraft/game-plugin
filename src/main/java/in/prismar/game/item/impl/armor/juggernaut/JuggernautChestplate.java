@@ -21,7 +21,7 @@ public class JuggernautChestplate extends ArmorItem {
     public JuggernautChestplate() {
         super("JuggernautChestplate", Material.NETHERITE_CHESTPLATE, "§4Juggernaut Chestplate", ArmorType.CHESTPLATE);
         setHeadProtection(0);
-        setBodyProtection(40);
+        setBodyProtection(37);
 
         generateDefaultLore();
 
