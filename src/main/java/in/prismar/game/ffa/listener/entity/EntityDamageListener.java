@@ -113,11 +113,13 @@ public class EntityDamageListener implements Listener {
                 damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(money) + "$ §7for killing §c" + target.getName());
 
                 int killstreak = statsDistributor.getKillstreak(damager);
-                displayStreak(map, damager, killstreak);
                 int streakMoney = statsDistributor.addFFAKillstreakMoney(damager, killstreak);
                 if(streakMoney != -1) {
                     damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(streakMoney) + "$ §7for having a §c" + killstreak + " §7killstreak");
                 }
+
+                displayStreak(map, damager, killstreak);
+
 
                 facade.updateLeaderboard(map);
             }
