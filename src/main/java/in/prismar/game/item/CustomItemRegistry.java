@@ -72,7 +72,7 @@ public class CustomItemRegistry {
 
 
 
-        register(new TestGun());
+        //register(new TestGun());
 
         register(new GrenadeItem());
         register(new MolotovItem());
