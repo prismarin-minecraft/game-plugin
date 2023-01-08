@@ -1,7 +1,7 @@
 package in.prismar.game.item.impl.medical;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
@@ -11,16 +11,10 @@ import in.prismar.library.spigot.scheduler.Scheduler;
 import in.prismar.library.spigot.scheduler.SchedulerRunnable;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.*;

@@ -3,7 +3,7 @@ package in.prismar.game.item.impl.gun;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
@@ -15,6 +15,7 @@ import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.game.item.impl.gun.type.GunType;
+import in.prismar.game.item.model.SkinableItem;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import in.prismar.library.spigot.particle.ParticleUtil;
@@ -47,7 +48,7 @@ import java.util.*;
  **/
 @Getter
 @Setter
-public class Gun extends CustomItem {
+public class Gun extends SkinableItem {
 
     //----------------------------------------------------------------------------------
     public static final String AMMO_KEY = "ammo";
@@ -63,6 +64,7 @@ public class Gun extends CustomItem {
     private AmmoType ammoType = AmmoType.PISTOL;
 
     private Map<Material, Integer> wallbangTypes;
+
     private double range = 20;
     private int fireRate = 120;
 
@@ -84,6 +86,8 @@ public class Gun extends CustomItem {
     private int attachmentSlots = 3;
 
     private int zoom;
+
+    private String previewImage;
 
     private Map<GunSoundType, GunSound> sounds;
 

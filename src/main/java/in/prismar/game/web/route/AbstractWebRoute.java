@@ -1,9 +1,7 @@
-package in.prismar.game.item.holder;
+package in.prismar.game.web.route;
 
-import in.prismar.game.item.model.CustomItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -13,9 +11,7 @@ import org.bukkit.inventory.ItemStack;
  **/
 @Getter
 @AllArgsConstructor
-public class CustomItemHolder {
+public abstract class AbstractWebRoute<T> implements WebRoute<T> {
 
-    private CustomItem item;
-    private ItemStack stack;
-    private CustomItemHoldingType holdingType;
+    private final String path;
 }

@@ -1,18 +1,9 @@
 package in.prismar.game.item.impl.armor;
 
-import in.prismar.game.Game;
-import in.prismar.game.item.CustomItem;
-import in.prismar.game.item.event.CustomItemEvent;
-import in.prismar.game.item.holder.CustomItemHolder;
-import in.prismar.game.item.holder.CustomItemHoldingType;
-import in.prismar.game.item.impl.gun.Gun;
-import in.prismar.game.item.impl.gun.type.GunDamageType;
-import in.prismar.library.common.math.MathUtil;
+import in.prismar.game.item.model.CustomItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
  * Copyright (c) Maga, All Rights Reserved

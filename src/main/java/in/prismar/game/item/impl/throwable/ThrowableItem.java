@@ -2,24 +2,19 @@ package in.prismar.game.item.impl.throwable;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.library.spigot.item.ItemUtil;
-import in.prismar.library.spigot.scheduler.Scheduler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
 
 /**

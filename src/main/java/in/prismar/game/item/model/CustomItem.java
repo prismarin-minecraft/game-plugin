@@ -1,16 +1,11 @@
-package in.prismar.game.item;
+package in.prismar.game.item.model;
 
 import in.prismar.game.item.event.CustomItemEventBus;
-import in.prismar.library.spigot.item.ItemBuilder;
 import lombok.Data;
-import lombok.Getter;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Arrays;

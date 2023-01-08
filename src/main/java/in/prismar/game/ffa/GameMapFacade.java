@@ -10,7 +10,7 @@ import in.prismar.api.user.UserProvider;
 import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.Game;
 import in.prismar.game.ffa.arsenal.ArsenalService;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.impl.attachment.Attachment;
 import in.prismar.game.item.impl.attachment.AttachmentModifier;

@@ -28,6 +28,7 @@ import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.throwable.GrenadeItem;
 import in.prismar.game.item.impl.gun.impl.*;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;

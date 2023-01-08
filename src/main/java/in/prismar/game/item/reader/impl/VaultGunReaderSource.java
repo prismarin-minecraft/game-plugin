@@ -1,21 +1,15 @@
 package in.prismar.game.item.reader.impl;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.impl.gun.Gun;
-import in.prismar.game.item.impl.gun.sound.GunSound;
-import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.reader.CustomItemReaderSource;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Copyright (c) Maga, All Rights Reserved

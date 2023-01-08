@@ -1,7 +1,7 @@
 package in.prismar.game.item.event;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.holder.CustomItemHolder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

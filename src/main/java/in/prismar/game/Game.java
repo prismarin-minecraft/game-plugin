@@ -2,6 +2,7 @@ package in.prismar.game;
 
 import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
 import in.prismar.api.region.RegionProvider;
@@ -9,6 +10,8 @@ import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.web.WebServer;
+import in.prismar.game.web.impl.ItemsRoute;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
@@ -54,6 +57,7 @@ public class Game extends JavaPlugin {
     private AirDropRegistry airDropRegistry;
 
     private RegionProvider regionProvider;
+    private WebServer webServer;
 
 
 
@@ -84,11 +88,22 @@ public class Game extends JavaPlugin {
         initApi();
 
         NPCLib.getInstance().registerPlugin(this);
+
+        initializeWebServer();
     }
 
     private void initApi() {
         PrismarinApi.registerProvider(GameMapProvider.class, mapFacade);
         PrismarinApi.registerProvider(ExtractionProvider.class, extractionFacade);
+    }
+
+    private void initializeWebServer() {
+        ConfigStore store = PrismarinApi.getProvider(ConfigStore.class);
+        final int port = Integer.valueOf(store.getProperty("live.web.port"));
+        this.webServer = new WebServer(store.getProperty("live.web.base.path"), port);
+        this.webServer.addRoute(new ItemsRoute(itemRegistry));
+        this.webServer.initializePaths();
+        System.out.println("Live web server started on port: " + port);
     }
 
     public String getDefaultDirectory() {

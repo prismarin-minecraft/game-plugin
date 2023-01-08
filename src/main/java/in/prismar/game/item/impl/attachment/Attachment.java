@@ -1,7 +1,7 @@
 package in.prismar.game.item.impl.attachment;
 
 import com.google.common.base.Joiner;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;

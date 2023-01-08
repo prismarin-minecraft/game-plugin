@@ -2,28 +2,10 @@ package in.prismar.game.item.impl.throwable;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.item.CustomItem;
-import in.prismar.game.item.event.CustomItemEvent;
-import in.prismar.game.item.holder.CustomItemHolder;
-import in.prismar.game.item.holder.CustomItemHoldingType;
-import in.prismar.library.common.math.MathUtil;
-import in.prismar.library.spigot.item.ItemUtil;
-import in.prismar.library.spigot.scheduler.Scheduler;
-import in.prismar.library.spigot.scheduler.SchedulerRunnable;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Copyright (c) Maga, All Rights Reserved

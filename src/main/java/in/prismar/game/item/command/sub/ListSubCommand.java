@@ -1,15 +1,13 @@
 package in.prismar.game.item.command.sub;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
 import in.prismar.library.spigot.inventory.button.event.ClickFrameButtonEvent;
 import in.prismar.library.spigot.inventory.template.Pager;
-import in.prismar.library.spigot.item.ItemBuilder;
-import in.prismar.library.spigot.text.InteractiveTextBuilder;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

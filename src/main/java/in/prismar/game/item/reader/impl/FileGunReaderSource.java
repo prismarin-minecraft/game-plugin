@@ -1,17 +1,15 @@
 package in.prismar.game.item.reader.impl;
 
-import in.prismar.game.item.CustomItem;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.sound.GunSound;
-import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.reader.CustomItemReaderSource;
 import in.prismar.library.file.toml.TomlConfig;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -33,6 +31,8 @@ public class FileGunReaderSource implements CustomItemReaderSource {
                 if(data.getShootParticle() != null) {
                     gun.setShootParticle(data.getShootParticle());
                 }
+                gun.setPreviewImage(data.getPreviewImage());
+                gun.setSkins(data.getSkins());
                 gun.setAmmoType(data.getAmmoType());
                 gun.setRange(data.getRange());
                 gun.setFireRate(data.getFireRate());

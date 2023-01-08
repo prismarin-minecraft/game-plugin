@@ -4,6 +4,7 @@ import in.prismar.game.item.impl.gun.sound.GunSound;
 import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunType;
+import in.prismar.game.item.model.Skin;
 import in.prismar.game.item.reader.BaseReaderData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,9 @@ public class GunData extends BaseReaderData {
     private double headDamage;
 
     private int zoom;
+
+    private String previewImage;
+    private List<Skin> skins;
 
     private List<GunSoundData> sounds = new ArrayList<>();
 
