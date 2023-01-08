@@ -107,6 +107,9 @@ public class GameMapRotator implements Runnable {
     }
 
     public void displayWinners() {
+        if(currentMap.getLeaderboard() == null) {
+            return;
+        }
         if (currentMap.getLeaderboard().isEmpty()) {
             return;
         }

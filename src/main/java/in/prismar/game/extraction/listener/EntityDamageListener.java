@@ -59,10 +59,10 @@ public class EntityDamageListener implements Listener {
         boolean samePlayer = damager == null ? true : damager.getUniqueId().equals(target.getUniqueId());
         if(!samePlayer) {
             statsDistributor.addKill(damager);
-            statsDistributor.addMapKill(damager, "extraction");
+            statsDistributor.addExtractionKill(damager);
         }
         statsDistributor.addDeath(target);
-        statsDistributor.addMapDeath(target, "extraction");
+        statsDistributor.addExtractionDeath(target);
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -451,6 +451,9 @@ public class Gun extends CustomItem {
     public void onInteract(Player player, Game game, CustomItemHolder holder, PlayerInteractEvent event) {
         if (holder.getHoldingType() == CustomItemHoldingType.RIGHT_HAND) {
             boolean allowedInteract = event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR;
+            if (disableInteraction) {
+                event.setCancelled(true);
+            }
             if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 reload(event.getPlayer(), game, holder.getStack());
             } else if (allowedInteract) {
@@ -462,9 +465,6 @@ public class Gun extends CustomItem {
                 if(ammo <= 0) {
                     playSound(player, GunSoundType.LOW_AMMO);
                     return;
-                }
-                if (disableInteraction) {
-                    event.setCancelled(true);
                 }
                 GunPlayer gunPlayer = GunPlayer.of(player);
                 gunPlayer.setLastInteract(System.currentTimeMillis());

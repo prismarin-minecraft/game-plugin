@@ -104,6 +104,22 @@ public class GameStatsDistributor {
         provider.saveAsync(user, true);
     }
 
+    public void addExtractionKill(Player player) {
+        User user = provider.getUserByUUID(player.getUniqueId());
+        checkForNullStats(user);
+        SeasonData data = user.getSeasonData();
+        data.getStats().put("kills.extraction", getCurrentValue(data, "kills.extraction") + 1);
+        provider.saveAsync(user, true);
+    }
+
+    public void addExtractionDeath(Player player) {
+        User user = provider.getUserByUUID(player.getUniqueId());
+        checkForNullStats(user);
+        SeasonData data = user.getSeasonData();
+        data.getStats().put("deaths.extraction", getCurrentValue(data, "deaths.extraction") + 1);
+        provider.saveAsync(user, true);
+    }
+
     public void addMapDeath(Player player, String map) {
         User user = provider.getUserByUUID(player.getUniqueId());
         checkForNullStats(user);
