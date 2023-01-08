@@ -101,7 +101,7 @@ public class ExtractionFacade implements ExtractionProvider {
                 }
             }
         });
-        airDropRegistry.getEventBus().subscribe(AirdropCallEvent.class, entity -> {
+        airDropRegistry.getEventBus().subscribe(AirdropRemoveEvent.class, entity -> {
             World world = getExtractionWorld();
             if(world != null) {
                 for(Player player : world.getPlayers()) {
@@ -152,6 +152,7 @@ public class ExtractionFacade implements ExtractionProvider {
             WarpProvider provider = PrismarinApi.getProvider(WarpProvider.class);
             for(Player player : world.getPlayers()) {
                 provider.teleportToSpawn(player);
+                compassProvider.removeAllEntries(player);
             }
         }
         changeNPCText("§cDisabled");
