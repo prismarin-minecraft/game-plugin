@@ -39,6 +39,7 @@ import java.util.List;
 @Getter
 public class SkinsFrame extends Frame {
 
+    private static final ItemStack BACK = new ItemBuilder(Material.OAK_DOOR).setName("§cBack").build();
     private static final ItemStack ARROW_RIGHT = new CustomSkullBuilder("https://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e").build();
     private static final int[] SLOTS = {4, 5, 6, 7,
                                         13, 14, 15, 16,
@@ -56,6 +57,11 @@ public class SkinsFrame extends Frame {
         super("§cSkins Table", 3);
         this.item = item;
         fill();
+
+        addButton(18, BACK, (ClickFrameButtonEvent) (player, event) -> {
+            ModificationsFrame frame = new ModificationsFrame(registry);
+            frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.7f);
+        });
 
         addButton(10, createArrowRightItem("§bGun"));
 
@@ -85,7 +91,6 @@ public class SkinsFrame extends Frame {
                             setReceiveBack(false);
                             SkinsFrame frame = new SkinsFrame(registry, skinItem);
                             frame.openInventory(player, Sound.BLOCK_ANVIL_STEP, 0.5f);
-
                         });
                     } else {
                         addButton(slot, AIR);

@@ -1,8 +1,7 @@
 package in.prismar.game.item.command;
 
-import in.prismar.api.PrismarinConstants;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.frame.AttachmentFrame;
+import in.prismar.game.item.frame.ModificationsFrame;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
@@ -18,20 +17,19 @@ import org.bukkit.entity.Player;
  * Written by Maga
  **/
 @AutoCommand
-public class AttachmentSubCommand extends SpigotCommand<Player> {
+public class ModificationsCommand extends SpigotCommand<Player> {
 
     @Inject
     private CustomItemRegistry registry;
 
-    public AttachmentSubCommand() {
-        super("attachment");
+    public ModificationsCommand() {
+        super("modifications");
         setSenders(Player.class);
-        setAliases("attachments");
     }
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        AttachmentFrame frame = new AttachmentFrame(registry, null);
+        ModificationsFrame frame = new ModificationsFrame(registry);
         frame.openInventory(player, Sound.BLOCK_WOODEN_PRESSURE_PLATE_CLICK_ON, 0.7F);
         return true;
     }

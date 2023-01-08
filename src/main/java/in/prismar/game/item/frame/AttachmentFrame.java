@@ -18,7 +18,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -34,6 +37,7 @@ import java.util.List;
 @Getter
 public class AttachmentFrame extends Frame {
 
+    private static final ItemStack BACK = new ItemBuilder(Material.OAK_DOOR).setName("§cBack").build();
     private static final ItemStack ARROW_RIGHT = new CustomSkullBuilder("https://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e").build();
     private static final ItemStack BLOCKED_ATTACHMENT_SLOT = new ItemBuilder(Material.IRON_BARS).setName("§cBlocked Slot")
             .addLore(" " + PrismarinConstants.ARROW_RIGHT + "§7You can buy this slot at our store§8: §b/store")
@@ -50,6 +54,10 @@ public class AttachmentFrame extends Frame {
         super("§cAttachments Table", 5);
         this.item = item;
         fill();
+        addButton(36, BACK, (ClickFrameButtonEvent) (player, event) -> {
+            ModificationsFrame frame = new ModificationsFrame(registry);
+            frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.7f);
+        });
 
         addButton(12, createArrowRightItem("§bGun"));
 
