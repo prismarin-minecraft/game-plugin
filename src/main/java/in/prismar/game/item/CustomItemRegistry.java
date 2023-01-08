@@ -131,6 +131,17 @@ public class CustomItemRegistry {
         return Collections.emptyList();
     }
 
+    public List<CustomItemHolder> publishEvent(Player player, Class<?> eventClass, Object event) {
+        if (holders.containsKey(player.getUniqueId())) {
+            List<CustomItemHolder> list = holders.get(player.getUniqueId());
+            for (CustomItemHolder holder : list) {
+                holder.getItem().getEventBus().publish(player, game, holder, eventClass, event);
+            }
+            return list;
+        }
+        return Collections.emptyList();
+    }
+
     public List<CustomItemHolder> scan(Player player) {
         List<CustomItemHolder> items = new ArrayList<>();
 

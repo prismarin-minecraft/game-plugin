@@ -31,9 +31,13 @@ public class CustomItemEventBus {
         scan();
     }
 
-    public void publish(Player player, Game game, CustomItemHolder holder,  Object event) {
-        if(subscribers.containsKey(event.getClass())) {
-            List<Method> methods = subscribers.get(event.getClass());
+    public void publish(Player player, Game game, CustomItemHolder holder, Object event) {
+        publish(player, game, holder, event.getClass(), event);
+    }
+
+    public void publish(Player player, Game game, CustomItemHolder holder, Class<?> eventClass, Object event) {
+        if(subscribers.containsKey(eventClass)) {
+            List<Method> methods = subscribers.get(eventClass);
             for(Method method : methods) {
                 try {
                     method.invoke(item, player, game, holder, event);
@@ -47,7 +51,7 @@ public class CustomItemEventBus {
     private void scan() {
         Class<?> clazz = item.getClass();
         for(Method method : clazz.getMethods()) {
-            if(method.isAnnotationPresent(CustomItemEvent.class)) {
+             if(method.isAnnotationPresent(CustomItemEvent.class)) {
                 Parameter parameter = method.getParameters()[3];
                 Class<?> type = parameter.getType();
                 if(!subscribers.containsKey(type)) {

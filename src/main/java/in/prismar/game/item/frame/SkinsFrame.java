@@ -90,7 +90,7 @@ public class SkinsFrame extends Frame {
                             skinItem.setItemMeta(skinItemItemMeta);
                             setReceiveBack(false);
                             SkinsFrame frame = new SkinsFrame(registry, skinItem);
-                            frame.openInventory(player, Sound.BLOCK_ANVIL_STEP, 0.5f);
+                            frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.7f);
                         });
                     } else {
                         addButton(slot, AIR);
