@@ -3,6 +3,7 @@ package in.prismar.game.ffa.arsenal.listener;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
+import in.prismar.api.user.data.BattlePass;
 import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.library.meta.anno.Inject;
@@ -42,6 +43,9 @@ public class PlayerJoinListener implements Listener {
         User user = userProvider.getUserByUUID(player.getUniqueId());
         if(user.getSeasonData().getArsenal().isEmpty()) {
             facade.getArsenalService().giveStarterArsenal(user);
+        }
+        if(user.getSeasonData().getBattlePass() == null) {
+            user.getSeasonData().setBattlePass(new BattlePass());
         }
     }
 }
