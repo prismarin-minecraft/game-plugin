@@ -85,6 +85,7 @@ public class StatsCommand extends SpigotCommand<Player> {
                 .addLore("§c")
                 .addLore(dot + "Playtime§8: §b" + playtimeProvider.getOverallTimeInHours(user) + "h")
                 .addLore(dot + "Balance§8: §b" + NumberFormatter.formatDoubleToThousands(data.getBalance()) + " $")
+                .addLore(dot + "Battlepass§8: §b" + data.getBattlePass().getLevel())
                 .addLore("§c")
                 .build();
         frame.addButton(12, general);
