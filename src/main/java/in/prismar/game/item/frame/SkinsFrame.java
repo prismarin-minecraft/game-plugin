@@ -1,6 +1,7 @@
 package in.prismar.game.item.frame;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
@@ -47,14 +48,17 @@ public class SkinsFrame extends Frame {
 
     private static final ItemStack AIR = new ItemStack(Material.AIR);
 
+    private Player currentPlayer;
+
     private ItemStack item;
     private SkinableItem skinableItem;
 
     @Setter
     private boolean receiveBack = true;
 
-    public SkinsFrame(CustomItemRegistry registry, ItemStack item) {
+    public SkinsFrame(CustomItemRegistry registry, Player currentPlayer, ItemStack item) {
         super("§cSkins Table", 3);
+        this.currentPlayer = currentPlayer;
         this.item = item;
         fill();
 
@@ -70,26 +74,28 @@ public class SkinsFrame extends Frame {
             if(customItem instanceof SkinableItem skinableItem) {
                 this.skinableItem = skinableItem;
                 addButton(11, item, (ClickFrameButtonEvent) (player, inventoryClickEvent) -> {
-                    SkinsFrame frame = new SkinsFrame(registry, null);
+                    SkinsFrame frame = new SkinsFrame(registry, player, null);
                     frame.openInventory(player, Sound.BLOCK_PISTON_CONTRACT, 0.7F);
                 });
+                List<Skin> skins = skinableItem.getSkins().stream()
+                        .filter((Predicate<Skin>) skin -> currentPlayer.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "skins." + skinableItem.getId().toLowerCase() + "." + skin.getData()))
+                        .toList();
                 for (int i = 0; i < SLOTS.length; i++) {
                     int slot = SLOTS[i];
-                    if(skinableItem.getSkins().size() > i) {
-                        Skin skin = skinableItem.getSkins().get(i);
+                    if(skins.size() > i) {
+                        Skin skin = skins.get(i);
                         ItemStack stack = item.clone();
                         ItemMeta meta = stack.getItemMeta();
                         meta.setDisplayName(skin.getDisplayName());
                         meta.setCustomModelData(skin.getData());
                         stack.setItemMeta(meta);
                         addButton(slot, stack, (ClickFrameButtonEvent) (player, event) -> {
-                            //TODO: Permissions
                             ItemStack skinItem = item.clone();
                             ItemMeta skinItemItemMeta = skinItem.getItemMeta();
                             skinItemItemMeta.setCustomModelData(skin.getData());
                             skinItem.setItemMeta(skinItemItemMeta);
                             setReceiveBack(false);
-                            SkinsFrame frame = new SkinsFrame(registry, skinItem);
+                            SkinsFrame frame = new SkinsFrame(registry, player,  skinItem);
                             frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.7f);
                         });
                     } else {
@@ -115,7 +121,7 @@ public class SkinsFrame extends Frame {
                                 ItemUtil.giveItem(event.getPlayer(), item);
                             }
                             setReceiveBack(false);
-                            SkinsFrame frame = new SkinsFrame(registry, event.getEvent().getCurrentItem());
+                            SkinsFrame frame = new SkinsFrame(registry, currentPlayer, event.getEvent().getCurrentItem());
                             frame.openInventory(event.getPlayer(), Sound.BLOCK_PISTON_EXTEND, 0.7f);
                             event.getEvent().setCurrentItem(new ItemStack(Material.AIR));
                         }
