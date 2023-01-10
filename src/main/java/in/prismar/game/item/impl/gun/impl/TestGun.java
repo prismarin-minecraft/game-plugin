@@ -15,11 +15,11 @@ import org.bukkit.Material;
 public class TestGun extends Gun {
 
     public TestGun() {
-        super("Test", GunType.PISTOL, Material.WOODEN_HOE, "§7Test");
-        setCustomModelData(4);
+        super("Test", GunType.SNIPER, Material.DIAMOND_HOE, "§7Test");
+        setCustomModelData(1);
         setBulletsPerShot(2);
-        setZoom(5);
-        setAmmoType(AmmoType.PISTOL);
+        setZoom(8);
+        setAmmoType(AmmoType.SNIPER);
         setSpread(0);
         setSneakSpread(0);
         setRange(175);

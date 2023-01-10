@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -47,6 +48,9 @@ public class GunPlayer {
 
 
     private boolean reloading;
+
+    private boolean zooming;
+    private ItemStack zoomItem;
 
     private String reloadingGunId = "";
 

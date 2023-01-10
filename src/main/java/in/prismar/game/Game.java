@@ -56,6 +56,7 @@ public class Game extends JavaPlugin {
     @Inject
     private AirDropRegistry airDropRegistry;
 
+
     private RegionProvider regionProvider;
     private WebServer webServer;
 
@@ -68,6 +69,7 @@ public class Game extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        mapFacade.close();
         airDropRegistry.despawnAll();
     }
 

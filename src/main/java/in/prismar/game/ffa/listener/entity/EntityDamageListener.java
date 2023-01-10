@@ -107,15 +107,18 @@ public class EntityDamageListener implements Listener {
                 GameMapPlayer damagerMapPlayer = map.getPlayers().get(damager.getUniqueId());
                 damagerMapPlayer.setKills(damagerMapPlayer.getKills() + 1);
                 statsDistributor.addKill(damager);
+                int exp = statsDistributor.addFFABattlePassEXP(damager);
                 statsDistributor.addMapKill(damager, map.getId());
 
                 int money = statsDistributor.addFFAKillMoney(damager);
-                damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(money) + "$ §7for killing §c" + target.getName());
+
+                damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(exp) + " EXP §7for killing §c" + target.getName());
+                damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §6" + NumberFormatter.formatNumberToThousands(money) + "$ §7for killing §c" + target.getName());
 
                 int killstreak = statsDistributor.getKillstreak(damager);
                 int streakMoney = statsDistributor.addFFAKillstreakMoney(damager, killstreak);
                 if(streakMoney != -1) {
-                    damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(streakMoney) + "$ §7for having a §c" + killstreak + " §7killstreak");
+                    damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §6" + NumberFormatter.formatNumberToThousands(streakMoney) + "$ §7for having a §c" + killstreak + " §7killstreak");
                 }
 
                 displayStreak(map, damager, killstreak);

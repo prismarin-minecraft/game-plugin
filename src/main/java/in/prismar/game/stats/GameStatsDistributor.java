@@ -1,6 +1,9 @@
 package in.prismar.game.stats;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.battlepass.BattlePassProvider;
+import in.prismar.api.booster.BoosterProvider;
+import in.prismar.api.booster.BoosterType;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
@@ -24,6 +27,7 @@ public class GameStatsDistributor {
 
     private final UserProvider<User> provider;
 
+
     private final ConfigStore store;
 
     public GameStatsDistributor() {
@@ -31,9 +35,23 @@ public class GameStatsDistributor {
         this.store = PrismarinApi.getProvider(ConfigStore.class);
     }
 
+    public int addFFABattlePassEXP(Player player) {
+        BoosterProvider boosterProvider = PrismarinApi.getProvider(BoosterProvider.class);
+        String[] split = store.getProperty("ffa.exp.kill").split("-");
+        int exp = MathUtil.random(Integer.valueOf(split[0]), Integer.valueOf(split[1])) * boosterProvider.getMultiplier(BoosterType.BATTLEPASS);
+        addBattlePassEXP(player, exp);
+        return exp;
+    }
+
+    public void addBattlePassEXP(Player player, long exp) {
+        BattlePassProvider battlePassProvider = PrismarinApi.getProvider(BattlePassProvider.class);
+        battlePassProvider.addExp(provider.getUserByUUID(player.getUniqueId()), exp);
+    }
+
     public int addFFAKillMoney(Player player) {
+        BoosterProvider boosterProvider = PrismarinApi.getProvider(BoosterProvider.class);
         String[] stringMoney = store.getProperty("ffa.money.kill").split("-");
-        int money = MathUtil.random(Integer.valueOf(stringMoney[0]), Integer.valueOf(stringMoney[1]));
+        int money = MathUtil.random(Integer.valueOf(stringMoney[0]), Integer.valueOf(stringMoney[1])) * boosterProvider.getMultiplier(BoosterType.MONEY);
         addMoney(player, money);
         return money;
     }
@@ -48,9 +66,10 @@ public class GameStatsDistributor {
             }
         }
         if(chosenMessage != null) {
+            BoosterProvider boosterProvider = PrismarinApi.getProvider(BoosterProvider.class);
             chosenMessage = chosenMessage.replace("{" + streak + "}", "");
-            int money = Integer.valueOf(chosenMessage);
-            addMoney(player, money);
+            int money = Integer.valueOf(chosenMessage) * boosterProvider.getMultiplier(BoosterType.MONEY);
+            addMoney(player, money * boosterProvider.getMultiplier(BoosterType.MONEY));
             return money;
         }
         return -1;

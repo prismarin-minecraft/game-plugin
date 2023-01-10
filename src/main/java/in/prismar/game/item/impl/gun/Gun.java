@@ -3,7 +3,6 @@ package in.prismar.game.item.impl.gun;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
-import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
@@ -15,8 +14,11 @@ import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.game.item.impl.gun.type.GunType;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.model.SkinableItem;
 import in.prismar.library.common.math.MathUtil;
+import in.prismar.library.spigot.item.ItemBuilder;
+import in.prismar.library.spigot.item.ItemUtil;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import in.prismar.library.spigot.particle.ParticleUtil;
 import in.prismar.library.spigot.raytrace.result.RaytraceBlockHit;
@@ -30,9 +32,8 @@ import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerAnimationEvent;
-import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -401,9 +402,24 @@ public class Gun extends SkinableItem {
 
         if(zoom > 0) {
             if(player.isSneaking()) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, zoom - 1));
+                if(!gunPlayer.isZooming()) {
+                    gunPlayer.setZooming(true);
+                    if(type == GunType.SNIPER) {
+                        ItemStack zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(holder.getItem().getDisplayName()).build();
+                        gunPlayer.setZoomItem(zoomItem);
+                    }
+                }
+                if(type == GunType.SNIPER && !gunPlayer.isReloading()) {
+                    ItemUtil.sendFakeMainHeadEquipment(player, gunPlayer.getZoomItem());
+                }
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, zoom - 1, false, false));
             } else {
-                player.removePotionEffect(PotionEffectType.SLOW);
+                if(gunPlayer.isZooming()) {
+                    gunPlayer.setZooming(false);
+                    player.updateInventory();
+                    player.removePotionEffect(PotionEffectType.SLOW);
+                }
+
             }
         }
 
@@ -459,9 +475,12 @@ public class Gun extends SkinableItem {
             boolean allowedInteract = event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR;
             if (disableInteraction) {
                 event.setCancelled(true);
+                event.setUseItemInHand(Event.Result.DENY);
+                event.setUseInteractedBlock(Event.Result.DENY);
             }
             if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 reload(event.getPlayer(), game, holder.getStack());
+                player.updateInventory();
             } else if (allowedInteract) {
                 if(game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
                     player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
