@@ -16,7 +16,8 @@ import org.bukkit.Material;
 public class HorizontalGripAttachmentItem extends GripAttachment {
 
     public HorizontalGripAttachmentItem() {
-        super("HorizontalGrip", Material.REPEATER, "§cHorizontal Grip");
+        super("HorizontalGrip", Material.LEVER, "§cHorizontal Grip");
+        setCustomModelData(4);
         addAllowedTypes(GunType.values());
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.SUBTRACT));
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.SUBTRACT));

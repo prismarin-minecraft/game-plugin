@@ -17,7 +17,8 @@ import java.util.Arrays;
 public class ExtendedMagazineAttachmentItem extends Attachment {
 
     public ExtendedMagazineAttachmentItem() {
-        super("ExtendedMagazine", Material.NAME_TAG, "§eExtended Magazine");
+        super("ExtendedMagazine", Material.LEVER, "§eExtended Magazine");
+        setCustomModelData(5);
         addAllowedTypes(Arrays.stream(GunType.values()).filter(type -> type != GunType.SHOTGUN).toList().toArray(new GunType[0]));
         registerApplier(AttachmentModifier.MAX_AMMO, new IntPercentageAttachmentApplier(25));
 

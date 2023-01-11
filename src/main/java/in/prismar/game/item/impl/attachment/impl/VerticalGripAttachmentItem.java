@@ -17,6 +17,7 @@ public class VerticalGripAttachmentItem extends GripAttachment {
 
     public VerticalGripAttachmentItem() {
         super("VerticalGrip", Material.LEVER, "§cVertical Grip");
+        setCustomModelData(7);
         addAllowedTypes(GunType.AR, GunType.SMG);
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.SUBTRACT));
 

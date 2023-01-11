@@ -14,5 +14,5 @@ public enum AttachmentModifier {
     MAX_AMMO,
     RANGE,
 
-    PARTICLE;
+    SOUND;
 }

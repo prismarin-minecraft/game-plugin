@@ -24,6 +24,7 @@ import in.prismar.library.spigot.particle.ParticleUtil;
 import in.prismar.library.spigot.raytrace.result.RaytraceBlockHit;
 import in.prismar.library.spigot.raytrace.result.RaytraceEntityHit;
 import in.prismar.library.spigot.raytrace.result.RaytraceHit;
+import in.prismar.library.spigot.vector.VectorUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
@@ -101,10 +102,10 @@ public class Gun extends SkinableItem {
         this.type = type;
         this.wallbangTypes = new HashMap<>();
 
-        for(Material wallbangType : Material.values()) {
-            if(wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG")) {
+        for (Material wallbangType : Material.values()) {
+            if (wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG")) {
                 addWallbangTypes(wallbangType, 25);
-            } else if(wallbangType.name().contains("GLASS")) {
+            } else if (wallbangType.name().contains("GLASS")) {
                 addWallbangTypes(wallbangType, 0);
             }
         }
@@ -160,21 +161,30 @@ public class Gun extends SkinableItem {
         playSound(player, player.getLocation(), type);
     }
 
+    public void playSound(Player player, GunSoundType type, float soundDecreasePercentage) {
+        playSound(player, player.getLocation(), type, soundDecreasePercentage);
+    }
+
     public void playSound(Player player, Location location, GunSoundType type) {
+        playSound(player, location, type, 0);
+    }
+
+    public void playSound(Player player, Location location, GunSoundType type, float soundDecreasePercentage) {
         if (sounds.containsKey(type)) {
             GunSound sound = sounds.get(type);
             if (type.isSurrounding()) {
-                for(Player near : player.getWorld().getPlayers()) {
-                    if(near.getLocation().distanceSquared(location) <= (sound.getSurroundingDistance() * sound.getSurroundingDistance())) {
-                        if(sound.getSound() == null) {
-                            near.playSound(location, sound.getSoundName(), sound.getVolume(), sound.getPitch());
+                for (Player near : player.getWorld().getPlayers()) {
+                    if (near.getLocation().distanceSquared(location) <= (sound.getSurroundingDistance() * sound.getSurroundingDistance())) {
+                        if (sound.getSound() == null) {
+                            float decrease = (sound.getVolume() / 100.0f) * soundDecreasePercentage;
+                            near.playSound(location, sound.getSoundName(), sound.getVolume() - decrease, sound.getPitch());
                         } else {
                             near.playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
                         }
                     }
                 }
             } else {
-                if(sound.getSound() == null) {
+                if (sound.getSound() == null) {
                     player.playSound(location, sound.getSoundName(), sound.getVolume(), sound.getPitch());
                 } else {
                     player.playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
@@ -196,7 +206,6 @@ public class Gun extends SkinableItem {
         this.sounds.put(type, gunSound);
         return gunSound;
     }
-
 
 
     public List<Attachment> getAttachments(Game game, ItemStack stack) {
@@ -223,30 +232,30 @@ public class Gun extends SkinableItem {
     public void shoot(Game game, Player player, ItemStack stack) {
         GunPlayer gunPlayer = GunPlayer.of(player);
         SeasonData seasonData = gunPlayer.getUser().getSeasonData();
-       addStatsValue(seasonData, "shots");
+        addStatsValue(seasonData, "shots");
 
         double normalSpread = this.spread;
         double sneakSpread = this.sneakSpread;
         double range = this.range;
-        boolean allowParticle = true;
+        boolean soundDecrease = true;
         for (Attachment attachment : getAttachments(game, stack)) {
             normalSpread = attachment.apply(AttachmentModifier.SPREAD, normalSpread);
             sneakSpread = attachment.apply(AttachmentModifier.SNEAK_SPREAD, sneakSpread);
             range = attachment.apply(AttachmentModifier.RANGE, range);
-            allowParticle = attachment.apply(AttachmentModifier.PARTICLE, allowParticle);
+            soundDecrease = attachment.apply(AttachmentModifier.SOUND, soundDecrease);
         }
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
         Location eyeLocation = player.getEyeLocation();
 
         double distanceFromEyes = -0.5;
-
         double distanceFromEyeCenter = 0.5;
-        Vector eyeOffset = rotateVector(new Vector(distanceFromEyes, -0.5, distanceFromEyeCenter), eyeLocation.getYaw(), eyeLocation.getPitch());
+        Vector eyeOffset = VectorUtil.rotateVector(new Vector(distanceFromEyes, -0.5, distanceFromEyeCenter), eyeLocation.getYaw(), eyeLocation.getPitch());
+
         Location particleOrigin = eyeLocation.clone().add(eyeOffset);
 
         Bullet bullet = new Bullet(particleOrigin, eyeLocation.clone(),
-                getRandomizedDirection(player, spread), range);
-        playSound(player, GunSoundType.SHOOT);
+                VectorUtil.getRandomizedDirection(player, spread), range);
+        playSound(player, GunSoundType.SHOOT, soundDecrease ? 50 : 0);
         List<RaytraceHit> hits = bullet.invoke();
         int damageReducePercentage = 0;
         for (RaytraceHit hit : hits) {
@@ -263,13 +272,13 @@ public class Gun extends SkinableItem {
                     } else if (damageType == GunDamageType.HEADSHOT) {
                         damage = headDamage;
                     }
-                    if(damageReducePercentage > 0) {
+                    if (damageReducePercentage > 0) {
                         damage -= (damage / 100) * damageReducePercentage;
                     }
 
                     if (damage > 0) {
                         LivingEntity entity = (LivingEntity) entityHit.getTarget();
-                        if(entity instanceof Player target) {
+                        if (entity instanceof Player target) {
                             GunPlayer targetGunPlayer = GunPlayer.of(target);
                             targetGunPlayer.setLastDamageReceived(damageType);
                         }
@@ -287,21 +296,17 @@ public class Gun extends SkinableItem {
                     damageReducePercentage += 30;
                 }
             } else if (hit instanceof RaytraceBlockHit blockHit) {
-                if(!wallbangTypes.containsKey(blockHit.getTarget().getType())) {
+                if (!wallbangTypes.containsKey(blockHit.getTarget().getType())) {
                     blockHit.getTarget().getWorld().spawnParticle(Particle.BLOCK_DUST, blockHit.getPoint(), 2,
                             blockHit.getTarget().getBlockData());
                     playSound(player, blockHit.getPoint(), GunSoundType.BULLET_IMPACT);
-                    if(allowParticle) {
-                        spawnParticle(particleOrigin, blockHit.getPoint());
-                    }
+                    spawnParticle(particleOrigin, blockHit.getPoint());
                     return;
                 }
                 damageReducePercentage += wallbangTypes.get(blockHit.getTarget().getType());
             }
         }
-        if(allowParticle) {
-            spawnParticle(particleOrigin, bullet.getEndPoint());
-        }
+        spawnParticle(particleOrigin, bullet.getEndPoint());
     }
 
     private void spawnParticle(Location particleOrigin, Location location) {
@@ -321,32 +326,6 @@ public class Gun extends SkinableItem {
         return damageType;
     }
 
-    private final Vector rotateVector(Vector v, float yawDegrees, float pitchDegrees) {
-        double yaw = Math.toRadians(-1 * (yawDegrees + 90));
-        double pitch = Math.toRadians(-pitchDegrees);
-
-        double cosYaw = Math.cos(yaw);
-        double cosPitch = Math.cos(pitch);
-        double sinYaw = Math.sin(yaw);
-        double sinPitch = Math.sin(pitch);
-
-        double initialX, initialY, initialZ;
-        double x, y, z;
-
-        // Z_Axis rotation (Pitch)
-        initialX = v.getX();
-        initialY = v.getY();
-        x = initialX * cosPitch - initialY * sinPitch;
-        y = initialX * sinPitch + initialY * cosPitch;
-
-        // Y_Axis rotation (Yaw)
-        initialZ = v.getZ();
-        initialX = x;
-        z = initialZ * cosYaw - initialX * sinYaw;
-        x = initialZ * sinYaw + initialX * cosYaw;
-
-        return new Vector(x, y, z);
-    }
 
     public void reload(Player player, Game game, ItemStack stack) {
         GunPlayer gunPlayer = GunPlayer.of(player);
@@ -378,7 +357,7 @@ public class Gun extends SkinableItem {
             }
             int finalAmmoToGive = ammoToGive;
             Bukkit.getScheduler().runTaskLater(game, () -> {
-                if(!gunPlayer.isReloading()) {
+                if (!gunPlayer.isReloading()) {
                     return;
                 }
                 PersistentItemDataUtil.setInteger(game, stack, AMMO_KEY, finalAmmoToGive);
@@ -400,21 +379,21 @@ public class Gun extends SkinableItem {
         }
         GunPlayer gunPlayer = GunPlayer.of(player);
 
-        if(zoom > 0) {
-            if(player.isSneaking()) {
-                if(!gunPlayer.isZooming()) {
+        if (zoom > 0) {
+            if (player.isSneaking()) {
+                if (!gunPlayer.isZooming()) {
                     gunPlayer.setZooming(true);
-                    if(type == GunType.SNIPER) {
+                    if (type == GunType.SNIPER) {
                         ItemStack zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(holder.getItem().getDisplayName()).build();
                         gunPlayer.setZoomItem(zoomItem);
                     }
                 }
-                if(type == GunType.SNIPER && !gunPlayer.isReloading()) {
+                if (type == GunType.SNIPER && !gunPlayer.isReloading()) {
                     ItemUtil.sendFakeMainHeadEquipment(player, gunPlayer.getZoomItem());
                 }
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, zoom - 1, false, false));
             } else {
-                if(gunPlayer.isZooming()) {
+                if (gunPlayer.isZooming()) {
                     gunPlayer.setZooming(false);
                     player.updateInventory();
                     player.removePotionEffect(PotionEffectType.SLOW);
@@ -437,7 +416,7 @@ public class Gun extends SkinableItem {
             maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
         }
         if (gunPlayer.isReloading()) {
-            if(!gunPlayer.getReloadingGunId().equals(getId())) {
+            if (!gunPlayer.getReloadingGunId().equals(getId())) {
                 gunPlayer.setReloading(false);
                 return;
             }
@@ -482,12 +461,12 @@ public class Gun extends SkinableItem {
                 reload(event.getPlayer(), game, holder.getStack());
                 player.updateInventory();
             } else if (allowedInteract) {
-                if(game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
+                if (game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
                     player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
                     return;
                 }
                 int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
-                if(ammo <= 0) {
+                if (ammo <= 0) {
                     playSound(player, GunSoundType.LOW_AMMO);
                     return;
                 }
@@ -498,17 +477,5 @@ public class Gun extends SkinableItem {
         }
     }
 
-
-    private Vector getRandomizedDirection(Player player, double spread) {
-        Vector dir = player.getLocation().getDirection().normalize();
-        dir.setX(dir.getX() + getRandFactor(spread));
-        dir.setY(dir.getY() + getRandFactor(spread));
-        dir.setZ(dir.getZ() + getRandFactor(spread));
-        return dir;
-    }
-
-    private double getRandFactor(double spread) {
-        return MathUtil.randomDouble(-0.01, 0.01) * spread;
-    }
 
 }

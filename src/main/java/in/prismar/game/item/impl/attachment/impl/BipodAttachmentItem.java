@@ -16,7 +16,8 @@ import org.bukkit.Material;
 public class BipodAttachmentItem extends GripAttachment {
 
     public BipodAttachmentItem() {
-        super("Bipod", Material.TRIPWIRE_HOOK, "§cBipod");
+        super("Bipod", Material.LEVER, "§cBipod");
+        setCustomModelData(6);
         addAllowedTypes(GunType.AR, GunType.SNIPER);
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.SUBTRACT));
 

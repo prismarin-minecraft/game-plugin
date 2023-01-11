@@ -16,7 +16,8 @@ import org.bukkit.Material;
 public class BarrelAttachmentItem extends Attachment {
 
     public BarrelAttachmentItem() {
-        super("Barrel", Material.REDSTONE_TORCH, "§aBarrel");
+        super("Barrel", Material.LEVER, "§aBarrel");
+        setCustomModelData(3);
         addAllowedTypes(GunType.AR, GunType.SMG, GunType.PISTOL);
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.ADD));
         registerApplier(AttachmentModifier.RANGE, new DoublePercentageAttachmentApplier(25, ApplierOperation.ADD));

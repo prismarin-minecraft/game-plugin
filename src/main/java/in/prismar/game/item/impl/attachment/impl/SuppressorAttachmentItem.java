@@ -18,13 +18,14 @@ import org.bukkit.Material;
 public class SuppressorAttachmentItem extends Attachment {
 
     public SuppressorAttachmentItem() {
-        super("Suppressor", Material.CLAY_BALL, "§dSuppressor");
+        super("Suppressor", Material.LEVER, "§dSuppressor");
+        setCustomModelData(1);
         addAllowedTypes(GunType.AR, GunType.SMG, GunType.PISTOL, GunType.SNIPER);
-        registerApplier(AttachmentModifier.PARTICLE, new BooleanAttachmentApplier(false));
+        registerApplier(AttachmentModifier.SOUND, new BooleanAttachmentApplier(false));
         registerApplier(AttachmentModifier.RANGE, new DoublePercentageAttachmentApplier(15, ApplierOperation.SUBTRACT));
 
         addLore("§c");
-        addLore(" §7Hides particles");
+        addLore(" §7Sound suppression");
         addLore(" §7Range§8: §c-25%");
         addAllowedTypesLore();
         addLore("§c");
