@@ -14,7 +14,8 @@ import lombok.Getter;
 public enum GunSoundType {
 
     SHOOT(true),
-    RELOAD(false),
+    RELOAD_IN(false),
+    RELOAD_OUT(false),
     HIT(false),
     HEADSHOT(false),
 

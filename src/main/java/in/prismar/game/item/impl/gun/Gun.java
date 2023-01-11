@@ -115,7 +115,7 @@ public class Gun extends SkinableItem {
         registerSound(GunSoundType.HIT, Sound.BLOCK_BASALT_HIT, 0.9f, 2F);
         registerSound(GunSoundType.HEADSHOT, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.35f, 1f);
 
-        registerSound(GunSoundType.RELOAD, Sound.BLOCK_PISTON_CONTRACT, 0.65f, 0.7f);
+        registerSound(GunSoundType.RELOAD_IN, Sound.BLOCK_PISTON_EXTEND, 0.65f, 0.7f);
 
         GunSound impactSound = registerSound(GunSoundType.BULLET_IMPACT, Sound.BLOCK_STONE_HIT, 0.65f, 1);
         impactSound.setSurroundingDistance(10);
@@ -362,11 +362,12 @@ public class Gun extends SkinableItem {
                 }
                 PersistentItemDataUtil.setInteger(game, stack, AMMO_KEY, finalAmmoToGive);
                 gunPlayer.setReloading(false);
+                playSound(player, GunSoundType.RELOAD_IN);
             }, reloadTimeInTicks);
             gunPlayer.setReloading(true);
             gunPlayer.setReloadingGunId(getId());
             gunPlayer.setReloadingEndTimestamp(System.currentTimeMillis() + 50 * reloadTimeInTicks);
-            playSound(player, GunSoundType.RELOAD);
+            playSound(player, GunSoundType.RELOAD_OUT);
         }
 
 
