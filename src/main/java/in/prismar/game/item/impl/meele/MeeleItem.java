@@ -60,12 +60,4 @@ public class MeeleItem extends CustomItem {
         return lore;
     }
 
-    @Override
-    public ItemStack build() {
-        ItemStack stack = super.build();
-        ItemMeta meta = stack.getItemMeta();
-        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier("generic.attackSpeed", attackSpeed, AttributeModifier.Operation.ADD_NUMBER));
-        stack.setItemMeta(meta);
-        return stack;
-    }
 }

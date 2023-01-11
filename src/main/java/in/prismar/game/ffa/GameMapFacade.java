@@ -240,7 +240,13 @@ public class GameMapFacade implements GameMapProvider {
         if (boots != null) {
             player.getInventory().setBoots(boots);
         }
-        player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
+        ItemStack lethal = createArsenalItem(user, "lethal");
+        if(lethal == null) {
+            player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
+        } else {
+            player.getInventory().setItem(3, lethal.clone());
+        }
+
         player.getInventory().setItem(8, itemRegistry.createItem("FFALeave"));
     }
 

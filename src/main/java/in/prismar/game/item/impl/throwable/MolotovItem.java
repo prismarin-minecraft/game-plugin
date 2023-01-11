@@ -14,7 +14,7 @@ import java.util.List;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class MolotovItem extends ThrowableItem {
+public class MolotovItem extends LethalItem {
     public MolotovItem() {
         super("Molotov", Material.STICK, "§cMolotov");
         setCustomModelData(3);

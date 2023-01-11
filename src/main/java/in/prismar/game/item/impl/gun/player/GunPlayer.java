@@ -50,7 +50,6 @@ public class GunPlayer {
     private boolean reloading;
 
     private boolean zooming;
-    private ItemStack zoomItem;
 
     private String reloadingGunId = "";
 

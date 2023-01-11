@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class GrenadeItem extends ThrowableItem {
+public class GrenadeItem extends LethalItem {
     public GrenadeItem() {
         super("Grenade", Material.STICK, "§6Grenade");
         setCustomModelData(2);

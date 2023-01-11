@@ -22,6 +22,9 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Copyright (c) Maga, All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -31,6 +34,8 @@ import org.bukkit.util.Vector;
 @AutoCommand
 public class GameCommand extends SpigotCommand<Player> {
 
+    private static Map<ItemStack, String> map = new HashMap<>();
+
     public GameCommand(Game game) {
         super("game");
         setSenders(Player.class);
@@ -39,10 +44,12 @@ public class GameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        Frame frame = new Frame("§f七七七七七七七七ㇺ", 6);
-        frame.addButton(25, new ItemStack(Material.STICK));
-        frame.build();
-        frame.openInventory(player);
+        if(map.containsKey(player.getInventory().getItemInMainHand())) {
+            player.sendMessage("Cached yes");
+        } else {
+            player.sendMessage("New");
+            map.put(player.getInventory().getItemInMainHand(), "yes");
+        }
         return true;
     }
 

@@ -1,5 +1,7 @@
 package in.prismar.game.item.impl.gun;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
@@ -43,6 +45,7 @@ import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -58,6 +61,11 @@ public class Gun extends SkinableItem {
     public static final String AMMO_KEY = "ammo";
     public static final String ATTACHMENTS_KEY = "attachments";
     private static final DecimalFormat RELOADING_DECIMAL_FORMAT = new DecimalFormat("0.0");
+
+    private static final Vector DEFAULT_EYE_ROTATION = new Vector(-0.5, -0.5, 0.5);
+
+    private static final Cache<ItemStack, List<Attachment>> ATTACHMENT_CACHE = CacheBuilder.newBuilder()
+            .expireAfterWrite(30, TimeUnit.MINUTES).build();
 
     //----------------------------------------------------------------------------------
 
@@ -91,6 +99,8 @@ public class Gun extends SkinableItem {
 
     private int zoom;
 
+    private ItemStack zoomItem;
+
     private String previewImage;
 
     private Map<GunSoundType, GunSound> sounds;
@@ -101,11 +111,12 @@ public class Gun extends SkinableItem {
         this.sounds = new HashMap<>();
         this.type = type;
         this.wallbangTypes = new HashMap<>();
+        this.zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(displayName).build();
 
         for (Material wallbangType : Material.values()) {
             if (wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG")) {
                 addWallbangTypes(wallbangType, 25);
-            } else if (wallbangType.name().contains("GLASS")) {
+            } else if (wallbangType.name().contains("GLASS") || wallbangType.name().contains("LEAVES") || wallbangType == Material.BARRIER) {
                 addWallbangTypes(wallbangType, 0);
             }
         }
@@ -173,15 +184,14 @@ public class Gun extends SkinableItem {
         if (sounds.containsKey(type)) {
             GunSound sound = sounds.get(type);
             if (type.isSurrounding()) {
-                for (Player near : player.getWorld().getPlayers()) {
-                    if (near.getLocation().distanceSquared(location) <= (sound.getSurroundingDistance() * sound.getSurroundingDistance())) {
-                        if (sound.getSound() == null) {
-                            float decrease = (sound.getVolume() / 100.0f) * soundDecreasePercentage;
-                            near.playSound(location, sound.getSoundName(), sound.getVolume() - decrease, sound.getPitch());
-                        } else {
-                            near.playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
-                        }
-                    }
+                float decrease = (sound.getVolume() / 100.0f) * soundDecreasePercentage;
+                if(soundDecreasePercentage == 0) {
+                    decrease = 0;
+                }
+                if(sound.getSound() == null) {
+                    location.getWorld().playSound(location, sound.getSoundName(), sound.getVolume() - decrease, sound.getPitch());
+                } else {
+                    location.getWorld().playSound(location, sound.getSound(), sound.getVolume() - decrease, sound.getPitch());
                 }
             } else {
                 if (sound.getSound() == null) {
@@ -209,6 +219,9 @@ public class Gun extends SkinableItem {
 
 
     public List<Attachment> getAttachments(Game game, ItemStack stack) {
+        if(ATTACHMENT_CACHE.asMap().containsKey(stack)) {
+            return ATTACHMENT_CACHE.asMap().get(stack);
+        }
         List<Attachment> attachments = new ArrayList<>();
         final String value = PersistentItemDataUtil.getString(game, stack, ATTACHMENTS_KEY);
         for (String id : value.split(",")) {
@@ -219,6 +232,7 @@ public class Gun extends SkinableItem {
                 }
             }
         }
+        ATTACHMENT_CACHE.put(stack, attachments);
         return attachments;
     }
 
@@ -230,6 +244,7 @@ public class Gun extends SkinableItem {
 
 
     public void shoot(Game game, Player player, ItemStack stack) {
+
         GunPlayer gunPlayer = GunPlayer.of(player);
         SeasonData seasonData = gunPlayer.getUser().getSeasonData();
         addStatsValue(seasonData, "shots");
@@ -246,17 +261,15 @@ public class Gun extends SkinableItem {
         }
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
         Location eyeLocation = player.getEyeLocation();
-
-        double distanceFromEyes = -0.5;
-        double distanceFromEyeCenter = 0.5;
-        Vector eyeOffset = VectorUtil.rotateVector(new Vector(distanceFromEyes, -0.5, distanceFromEyeCenter), eyeLocation.getYaw(), eyeLocation.getPitch());
-
+        Vector eyeOffset = VectorUtil.rotateVector(DEFAULT_EYE_ROTATION, eyeLocation.getYaw(), eyeLocation.getPitch());
         Location particleOrigin = eyeLocation.clone().add(eyeOffset);
 
         Bullet bullet = new Bullet(particleOrigin, eyeLocation.clone(),
                 VectorUtil.getRandomizedDirection(player, spread), range);
-        playSound(player, GunSoundType.SHOOT, soundDecrease ? 50 : 0);
+
         List<RaytraceHit> hits = bullet.invoke();
+
+        playSound(player, GunSoundType.SHOOT, soundDecrease ? 50 : 0);
         int damageReducePercentage = 0;
         for (RaytraceHit hit : hits) {
             if (hit instanceof RaytraceEntityHit entityHit) {
@@ -384,13 +397,9 @@ public class Gun extends SkinableItem {
             if (player.isSneaking()) {
                 if (!gunPlayer.isZooming()) {
                     gunPlayer.setZooming(true);
-                    if (type == GunType.SNIPER) {
-                        ItemStack zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(holder.getItem().getDisplayName()).build();
-                        gunPlayer.setZoomItem(zoomItem);
-                    }
                 }
                 if (type == GunType.SNIPER && !gunPlayer.isReloading()) {
-                    ItemUtil.sendFakeMainHeadEquipment(player, gunPlayer.getZoomItem());
+                    ItemUtil.sendFakeMainHeadEquipment(player, zoomItem);
                 }
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, zoom - 1, false, false));
             } else {

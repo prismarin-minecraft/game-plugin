@@ -3,6 +3,8 @@ package in.prismar.game.ffa.arsenal.frame;
 import in.prismar.api.user.User;
 import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.ffa.arsenal.ArsenalService;
+import in.prismar.game.item.impl.throwable.LethalItem;
+import in.prismar.game.item.impl.throwable.ThrowableItem;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.impl.armor.ArmorItem;
 import in.prismar.game.item.impl.gun.Gun;
@@ -37,6 +39,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     private static final int CHESTPLATE_SLOT = 20;
     private static final int LEGGINGS_SLOT = 29;
     private static final int BOOTS_SLOT = 38;
+    private static final int LETHAL_SLOT = 41;
 
     private final ArsenalService service;
     private Player player;
@@ -59,6 +62,8 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
         addButton(LEGGINGS_SLOT-1, createArrowRightItem("§dLeggings"));
         addButton(BOOTS_SLOT-1, createArrowRightItem("§dBoots"));
 
+        addButton(LETHAL_SLOT-1, createArrowRightItem("§3Lethal"));
+
         addArsenalItem(PRIMARY_SLOT, "primary", "§cEmpty");
         addArsenalItem(SECONDARY_SLOT, "secondary", "§cEmpty");
 
@@ -66,6 +71,8 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
         addArsenalItem(CHESTPLATE_SLOT, "chestplate", "§cEmpty");
         addArsenalItem(LEGGINGS_SLOT, "leggings", "§cEmpty");
         addArsenalItem(BOOTS_SLOT, "boots", "§cEmpty");
+
+        addArsenalItem(LETHAL_SLOT, "lethal", "§cEmpty");
 
         addButton(53, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to FFA menu").build(), (ClickFrameButtonEvent) (player1, event) -> {
             player.performCommand("ffa menu");
@@ -114,6 +121,9 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
                         }
                     } else if(item instanceof ArmorItem armor) {
                         service.setItem(user, armor.getType().name().toLowerCase(), stack.clone());
+                        reopen();
+                    } else if(item instanceof LethalItem) {
+                        service.setItem(user, "lethal", item.build(), item.getId());
                         reopen();
                     }
                 }

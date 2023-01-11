@@ -42,16 +42,16 @@ public class ExtractionChecker implements Runnable {
         final String current = dateFormat.format(new Date());
         if(!facade.isRunning()) {
             if(isOnTime(openingTime, current)) {
-                Bukkit.getScheduler().runTask(facade.getGame(), () -> {
+                /*Bukkit.getScheduler().runTask(facade.getGame(), () -> {
                     facade.open();
-                });
+                });*/
 
             }
         } else {
             if(isOnTime(endingTime, current)) {
-                Bukkit.getScheduler().runTask(facade.getGame(), () -> {
+                /*Bukkit.getScheduler().runTask(facade.getGame(), () -> {
                     facade.close();
-                });
+                });*/
             }
             for(String airDropTime : facade.getMapFile().getEntity().getAirdropTimes()) {
                 LocalTime time = LocalTime.parse(airDropTime);

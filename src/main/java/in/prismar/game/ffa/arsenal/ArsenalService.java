@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -41,9 +42,17 @@ public class ArsenalService {
         if(data.getArsenal() == null) {
             data.setArsenal(new HashMap<>());
         }
-        for(ArsenalItem item : data.getArsenal().values()) {
-            if(item.getItem() == null) {
-                item.setItem((ItemStack) BukkitObjectSerializer.getSerializer().deserialize(item.getValue()));
+        for(Map.Entry<String, ArsenalItem> entry : data.getArsenal().entrySet()) {
+            if(!entry.getKey().equals("lethal")) {
+                ArsenalItem item = entry.getValue();
+                if(item.getItem() == null) {
+                    item.setItem((ItemStack) BukkitObjectSerializer.getSerializer().deserialize(item.getValue()));
+                }
+            } else {
+                ArsenalItem item = entry.getValue();
+                if(item.getItem() == null) {
+                    item.setItem(itemRegistry.createItem(item.getValue()));
+                }
             }
         }
         return user;
@@ -57,13 +66,19 @@ public class ArsenalService {
 
         setItem(user, "primary", itemRegistry.createItem("vector"));
         setItem(user, "secondary", itemRegistry.createItem("glock17"));
+
+        setItem(user, "lethal", itemRegistry.createItem("Grenade"), "Grenade");
     }
 
     public void setItem(User user, String key, ItemStack item) {
+        setItem(user, key, item, BukkitObjectSerializer.getSerializer().serialize(item));
+    }
+
+    public void setItem(User user, String key, ItemStack item, String value) {
         SeasonData data = user.getSeasonData();
         ArsenalItem arsenalItem = new ArsenalItem();
         arsenalItem.setItem(item);
-        arsenalItem.setValue(BukkitObjectSerializer.getSerializer().serialize(item));
+        arsenalItem.setValue(value);
         data.getArsenal().put(key.toLowerCase(), arsenalItem);
         provider.saveAsync(user, true);
     }
