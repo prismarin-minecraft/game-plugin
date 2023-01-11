@@ -33,7 +33,13 @@ public class WebServer {
         this.basePath = basePath;
         this.gson = new GsonBuilder().create();
         this.routes = new ArrayList<>();
-        this.javalin = Javalin.create().start(port);
+        this.javalin = Javalin.create(config -> {
+            config.plugins.enableCors(cors -> {
+                cors.add(it -> {
+                    it.anyHost();
+                });
+            });
+        }).start(port);
     }
 
     public WebServer addRoute(WebRoute<?> route) {

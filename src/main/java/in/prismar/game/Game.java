@@ -12,6 +12,8 @@ import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.web.WebServer;
 import in.prismar.game.web.impl.ItemsRoute;
+import in.prismar.game.web.impl.PlayerRoute;
+import in.prismar.game.web.impl.VoteRoute;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
@@ -22,7 +24,6 @@ import in.prismar.library.spigot.meta.anno.AutoCommand;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import in.prismar.library.spigot.setup.SpigotSetup;
 import lombok.Getter;
-import org.bukkit.Particle;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -104,6 +105,8 @@ public class Game extends JavaPlugin {
         final int port = Integer.valueOf(store.getProperty("live.web.port"));
         this.webServer = new WebServer(store.getProperty("live.web.base.path"), port);
         this.webServer.addRoute(new ItemsRoute(itemRegistry));
+        this.webServer.addRoute(new PlayerRoute(mapFacade, extractionFacade));
+        this.webServer.addRoute(new VoteRoute());
         this.webServer.initializePaths();
         System.out.println("Live web server started on port: " + port);
     }

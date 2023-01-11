@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -40,6 +42,20 @@ public class BlockBreakEntityListener implements Listener {
             if(facade.isCurrentlyPlaying(remover)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        if(facade.isCurrentlyPlaying(event.getPlayer())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInteractEntity(PlayerInteractEntityEvent event) {
+        if(facade.isCurrentlyPlaying(event.getPlayer())) {
+            event.setCancelled(true);
         }
     }
 }
