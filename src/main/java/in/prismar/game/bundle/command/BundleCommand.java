@@ -1,12 +1,18 @@
 package in.prismar.game.bundle.command;
 
+import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.user.User;
+import in.prismar.api.user.UserProvider;
 import in.prismar.game.bundle.BundleFacade;
 import in.prismar.game.bundle.command.sub.*;
+import in.prismar.game.bundle.frame.BundleFrame;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
+import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpCommand;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 /**
@@ -24,7 +30,6 @@ public class BundleCommand extends HelpCommand<Player> {
     public BundleCommand() {
         super("bundle", "Bundle");
         setAliases("bundles");
-        setPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin");
         setSenders(Player.class);
         setBaseColor("§a");
     }
@@ -36,5 +41,20 @@ public class BundleCommand extends HelpCommand<Player> {
         addChild(new ListSubCommand(facade));
         addChild(new EditSubCommand(facade));
         addChild(new GetSubCommand(facade));
+    }
+
+    @Override
+    public boolean raw(Player player, SpigotArguments arguments) {
+        if(arguments.getLength() == 0) {
+            UserProvider<User> provider = PrismarinApi.getProvider(UserProvider.class);
+            BundleFrame frame = new BundleFrame(facade, provider.getUserByUUID(player.getUniqueId()));
+            frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.6f);
+            return false;
+        }
+        if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin")) {
+            player.sendMessage(PrismarinConstants.NO_PERMISSION_MESSAGE);
+            return false;
+        }
+        return true;
     }
 }

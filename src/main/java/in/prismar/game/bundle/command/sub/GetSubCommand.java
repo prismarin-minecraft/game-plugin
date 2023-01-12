@@ -2,6 +2,7 @@ package in.prismar.game.bundle.command.sub;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.bundle.BundleFacade;
+import in.prismar.game.bundle.model.Bundle;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -33,7 +34,9 @@ public class GetSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis bundle does exists");
                 return true;
             }
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bundlegive " + player.getName() + " " + id);
+            Bundle bundle = facade.getRepository().findById(id);
+            player.sendMessage(PrismarinConstants.PREFIX + "You received the " + bundle.getDisplayName() + " §7bundle");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "bundlegive " + player.getName() + " " + id + " false");
             return true;
         }
         return false;

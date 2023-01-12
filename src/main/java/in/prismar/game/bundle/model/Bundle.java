@@ -1,6 +1,7 @@
 package in.prismar.game.bundle.model;
 
 import in.prismar.library.common.repository.entity.StringRepositoryEntity;
+import in.prismar.library.spigot.item.container.ItemContainer;
 import in.prismar.library.spigot.item.container.ItemsContainer;
 import lombok.Data;
 
@@ -14,6 +15,10 @@ import lombok.Data;
 public class Bundle extends StringRepositoryEntity {
 
     private String displayName;
+    private boolean seasonal;
+
+    private ItemContainer icon;
+
     private ItemsContainer container;
 
     @Override

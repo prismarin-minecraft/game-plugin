@@ -5,7 +5,9 @@ import in.prismar.game.bundle.BundleFacade;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
+import in.prismar.library.spigot.item.ItemUtil;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -21,19 +23,28 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
         super("create");
         this.facade = facade;
         setDescription("Create a new bundle");
-        setUsage("<id> <display>");
+        setUsage("<id> <seasonal> <display>");
     }
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        if(arguments.getLength() >= 3) {
+        if(arguments.getLength() >= 4) {
             final String id = arguments.getString(1);
             if(facade.getRepository().existsById(id)) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis bundle already exists");
                 return true;
             }
-            final String display = arguments.getCombinedArgsFrom(2).replace("&", "§");
-            facade.getRepository().create(id, display);
+            final boolean seasonal = arguments.getBoolean(2);
+            ItemStack icon = null;
+            if(seasonal) {
+                if(!ItemUtil.hasItemInHandAndHasDisplayName(player, true)) {
+                    player.sendMessage(PrismarinConstants.PREFIX + "§cPlease hold an item with a display name in your hand.");
+                    return true;
+                }
+                icon = player.getInventory().getItemInMainHand();
+            }
+            final String display = arguments.getCombinedArgsFrom(3).replace("&", "§");
+            facade.getRepository().create(id, display, seasonal, icon);
             player.sendMessage(PrismarinConstants.PREFIX + "You successfully created the bundle §b" + id);
             return true;
         }
