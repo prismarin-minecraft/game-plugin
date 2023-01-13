@@ -17,6 +17,7 @@ public class Bundle extends StringRepositoryEntity {
     private String displayName;
     private boolean seasonal;
 
+    private double balance;
     private ItemContainer icon;
 
     private ItemsContainer container;

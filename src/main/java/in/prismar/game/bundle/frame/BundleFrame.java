@@ -6,6 +6,7 @@ import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.bundle.BundleFacade;
 import in.prismar.game.bundle.model.Bundle;
+import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.spigot.inventory.Frame;
 import in.prismar.library.spigot.inventory.button.event.ClickFrameButtonEvent;
 import in.prismar.library.spigot.item.ItemBuilder;
@@ -70,6 +71,12 @@ public class BundleFrame extends Frame {
                         return;
                     }
                     user.getSeasonData().getAttachments().put("bundles." + bundle.getId(), true);
+                    if(bundle.getBalance() > 0) {
+                        user.getSeasonData().setBalance(user.getSeasonData().getBalance() + bundle.getBalance());
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1);
+                        player.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" +
+                                NumberFormatter.formatDoubleToThousands(bundle.getBalance()) + " $ §7for redeeming the bundle " + bundle.getDisplayName());
+                    }
                     UserProvider<User> provider = PrismarinApi.getProvider(UserProvider.class);
                     provider.saveAsync(user, true);
                     player.closeInventory();

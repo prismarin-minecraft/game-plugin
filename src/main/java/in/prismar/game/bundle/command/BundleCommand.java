@@ -40,6 +40,8 @@ public class BundleCommand extends HelpCommand<Player> {
         addChild(new DeleteSubCommand(facade));
         addChild(new ListSubCommand(facade));
         addChild(new EditSubCommand(facade));
+        addChild(new SetBalanceSubCommand(facade));
+        addChild(new ResetSubCommand(facade));
         addChild(new GetSubCommand(facade));
     }
 
