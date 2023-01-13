@@ -25,8 +25,8 @@ public class SuppressorAttachmentItem extends Attachment {
         registerApplier(AttachmentModifier.RANGE, new DoublePercentageAttachmentApplier(15, ApplierOperation.SUBTRACT));
 
         addLore("§c");
-        addLore(" §7Sound suppression");
-        addLore(" §7Range§8: §c-25%");
+        addLore(" §8╔ §7Sound suppression");
+        addLore(" §8╚ §7Range§8: §c-25%");
         addAllowedTypesLore();
         addLore("§c");
     }

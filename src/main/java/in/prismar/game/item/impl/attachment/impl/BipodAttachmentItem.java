@@ -22,7 +22,7 @@ public class BipodAttachmentItem extends GripAttachment {
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.SUBTRACT));
 
         addLore("§c");
-        addLore(" §7Sneak spread§8: §a-25%");
+        addLore(" §8═ §7Sneak spread§8: §a-25%");
         addAllowedTypesLore();
         addLore("§c");
     }

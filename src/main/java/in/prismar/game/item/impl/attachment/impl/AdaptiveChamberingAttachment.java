@@ -25,9 +25,9 @@ public class AdaptiveChamberingAttachment extends Attachment {
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.ADD));
 
         addLore("§c");
-        addLore(" §7Fire rate§8: §a+25%");
-        addLore(" §7Spread§8: §c+30%");
-        addLore(" §7Sneak spread§8: §c+10%");
+        addLore(" §8╔ §7Fire rate§8: §a+25%");
+        addLore(" §8╠ §7Spread§8: §c+30%");
+        addLore(" §8╚ §7Sneak spread§8: §c+10%");
         addAllowedTypesLore();
         addLore("§c");
     }

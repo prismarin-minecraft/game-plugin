@@ -23,8 +23,8 @@ public class HorizontalGripAttachmentItem extends GripAttachment {
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.SUBTRACT));
 
         addLore("§c");
-        addLore(" §7Spread§8: §a-10%");
-        addLore(" §7Sneak spread§8: §a-10%");
+        addLore(" §8╔ §7Spread§8: §a-10%");
+        addLore(" §8╚ §7Sneak spread§8: §a-10%");
         addAllowedTypesLore();
         addLore("§c");
     }
