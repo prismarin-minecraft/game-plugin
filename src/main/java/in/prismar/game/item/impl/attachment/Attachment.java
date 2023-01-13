@@ -31,7 +31,7 @@ public class Attachment extends CustomItem {
     }
 
     protected void addAllowedTypesLore() {
-        addLore(" §7Gun types§8: §3" + Joiner.on("§8, §3").join(
+        addLore(" §8╚ §7Gun types§8: §3" + Joiner.on("§8, §3").join(
               allowedTypes.stream().map(type -> type.getDisplayName()).toList()
         ));
     }

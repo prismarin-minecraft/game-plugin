@@ -24,7 +24,7 @@ public class BarrelAttachmentItem extends Attachment {
 
         addLore("§c");
         addLore(" §8╔ §7Range§8: §a+25%");
-        addLore(" §8╚ §7Spread§8: §c+25%");
+        addLore(" §8╠ §7Spread§8: §c+25%");
         addAllowedTypesLore();
         addLore("§c");
     }

@@ -27,7 +27,7 @@ public class AdaptiveChamberingAttachment extends Attachment {
         addLore("§c");
         addLore(" §8╔ §7Fire rate§8: §a+25%");
         addLore(" §8╠ §7Spread§8: §c+30%");
-        addLore(" §8╚ §7Sneak spread§8: §c+10%");
+        addLore(" §8╠ §7Sneak spread§8: §c+10%");
         addAllowedTypesLore();
         addLore("§c");
     }

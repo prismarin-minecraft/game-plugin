@@ -24,7 +24,7 @@ public class HorizontalGripAttachmentItem extends GripAttachment {
 
         addLore("§c");
         addLore(" §8╔ §7Spread§8: §a-10%");
-        addLore(" §8╚ §7Sneak spread§8: §a-10%");
+        addLore(" §8╠ §7Sneak spread§8: §a-10%");
         addAllowedTypesLore();
         addLore("§c");
     }

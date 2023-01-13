@@ -26,7 +26,7 @@ public class SuppressorAttachmentItem extends Attachment {
 
         addLore("§c");
         addLore(" §8╔ §7Sound suppression");
-        addLore(" §8╚ §7Range§8: §c-25%");
+        addLore(" §8╠ §7Range§8: §c-25%");
         addAllowedTypesLore();
         addLore("§c");
     }

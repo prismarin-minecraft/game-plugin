@@ -22,7 +22,7 @@ public class VerticalGripAttachmentItem extends GripAttachment {
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.SUBTRACT));
 
         addLore("§c");
-        addLore(" §8═ §7Spread§8: §a-25%");
+        addLore(" §8╔ §7Spread§8: §a-25%");
         addAllowedTypesLore();
         addLore("§c");
     }

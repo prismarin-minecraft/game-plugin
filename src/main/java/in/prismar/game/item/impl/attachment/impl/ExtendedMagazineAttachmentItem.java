@@ -23,7 +23,7 @@ public class ExtendedMagazineAttachmentItem extends Attachment {
         registerApplier(AttachmentModifier.MAX_AMMO, new IntPercentageAttachmentApplier(25));
 
         addLore("§c");
-        addLore(" §8═ §7Max ammo§8: §a+25%");
+        addLore(" §8╔ §7Max ammo§8: §a+25%");
         addAllowedTypesLore();
         addLore("§c");
     }
