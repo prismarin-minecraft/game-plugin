@@ -18,7 +18,7 @@ public class BarrelAttachmentItem extends Attachment {
     public BarrelAttachmentItem() {
         super("Barrel", Material.LEVER, "§aBarrel");
         setCustomModelData(3);
-        addAllowedTypes(GunType.AR, GunType.SMG, GunType.PISTOL);
+        addAllowedTypes(GunType.AR, GunType.SMG, GunType.PISTOL, GunType.LMG);
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.ADD));
         registerApplier(AttachmentModifier.RANGE, new DoublePercentageAttachmentApplier(25, ApplierOperation.ADD));
 

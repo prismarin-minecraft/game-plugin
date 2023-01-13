@@ -6,6 +6,7 @@ import in.prismar.game.Game;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,6 +40,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        player.setGameMode(GameMode.ADVENTURE);
         Bukkit.getScheduler().runTaskLater(game, () -> {
             player.setResourcePack(url, hash, true);
         }, 20);

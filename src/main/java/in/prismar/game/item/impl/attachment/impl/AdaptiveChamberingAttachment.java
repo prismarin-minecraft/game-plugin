@@ -19,7 +19,7 @@ public class AdaptiveChamberingAttachment extends Attachment {
     public AdaptiveChamberingAttachment() {
         super("AdaptiveChambering", Material.LEVER, "§7Adaptive Chambering");
         setCustomModelData(2);
-        addAllowedTypes(GunType.AR, GunType.SMG, GunType.SHOTGUN);
+        addAllowedTypes(GunType.AR, GunType.SMG, GunType.SHOTGUN, GunType.LMG);
         registerApplier(AttachmentModifier.FIRE_RATE, new IntPercentageAttachmentApplier(25));
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(30, ApplierOperation.ADD));
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.ADD));

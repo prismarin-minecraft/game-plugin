@@ -18,7 +18,7 @@ public class BipodAttachmentItem extends GripAttachment {
     public BipodAttachmentItem() {
         super("Bipod", Material.LEVER, "§cBipod");
         setCustomModelData(6);
-        addAllowedTypes(GunType.AR, GunType.SNIPER);
+        addAllowedTypes(GunType.AR, GunType.SNIPER, GunType.LMG);
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.SUBTRACT));
 
         addLore("§c");
