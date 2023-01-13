@@ -78,6 +78,7 @@ public class GameMapRotator implements Runnable {
         return false;
     }
 
+
     public void callVote() {
         this.nextRotateVote = System.currentTimeMillis();
         this.nextRotate = System.currentTimeMillis() + Long.valueOf(store.getProperty("map.rotation.vote.time"));
@@ -238,6 +239,10 @@ public class GameMapRotator implements Runnable {
 
         VoteEntry winnerEntry = entries.get(0);
         return facade.getRepository().findById(winnerEntry.getId());
+    }
+
+    public boolean isVoteRunning() {
+        return !voting.isEmpty();
     }
 
     public boolean canVoteFor(GameMap map) {

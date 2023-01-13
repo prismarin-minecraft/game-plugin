@@ -1,8 +1,13 @@
 package in.prismar.game.ffa.command.sub;
 
+import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.configuration.ConfigStore;
+import in.prismar.api.user.User;
+import in.prismar.api.user.UserProvider;
 import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -30,6 +35,22 @@ public class CallVoteSubCommand extends HelpSubCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
+        if(facade.getRotator().isVoteRunning()) {
+            player.sendMessage(PrismarinConstants.PREFIX + "§cA vote is already running.");
+            return true;
+        }
+        if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "map.call.vote.bypass")) {
+            UserProvider<User> provider = PrismarinApi.getProvider(UserProvider.class);
+            User user = provider.getUserByUUID(player.getUniqueId());
+            if(!user.isTimestampAvailable("ffa.callvote")) {
+                long difference = user.getTimestamp("ffa.callvote") - System.currentTimeMillis();
+                player.sendMessage(PrismarinConstants.PREFIX + "§cYou must wait " + TimeUtil.convertToThreeDigits(difference / 1000) + " before you can call a vote.");
+                return true;
+            }
+            ConfigStore store = PrismarinApi.getProvider(ConfigStore.class);
+            int seconds = Integer.valueOf(store.getProperty("ffa.callvote.timer"));
+            user.setTimestamp("ffa.callvote", System.currentTimeMillis() + 1000 * seconds);
+        }
         facade.getRotator().callVote();
         return true;
     }

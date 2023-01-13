@@ -48,7 +48,7 @@ public class ResetSubCommand extends HelpSubCommand<Player> {
             final String name = arguments.getString(1);
             UserCacheProvider cacheProvider = PrismarinApi.getProvider(UserCacheProvider.class);
             UserProvider<User> provider = PrismarinApi.getProvider(UserProvider.class);
-            if(cacheProvider.existsByName(name)) {
+            if(!cacheProvider.existsByName(name)) {
                 throw new PlayerNotFoundException(name);
             }
             User user = provider.getUserByUUID(cacheProvider.getUUIDByName(name));
