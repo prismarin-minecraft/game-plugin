@@ -149,21 +149,29 @@ public class Gun extends SkinableItem {
     public List<String> buildDefaultLore(List<Attachment> attachments) {
         List<String> lore = new ArrayList<>();
         lore.add("§c ");
-        lore.add(" §7Type§8: §b" + type.getDisplayName());
-        lore.add(" §7Range§8: §b" + range);
-        lore.add(" §7RPM§8: §b" + fireRate);
-        lore.add(" §7Spread§8: §b" + spread);
-        lore.add(" §7Sneak Spread§8: §b" + sneakSpread);
-        lore.add(" §7Magazine§8: §b" + maxAmmo);
-        lore.add(" §7Reload time§8: §b" + reloadTimeInTicks / 20 + "s");
-        lore.add(" §7Damage§8: §b");
-        lore.add("   §8➥ §7Head§8: §b" + headDamage);
-        lore.add("   §8➥ §7Body§8: §b" + bodyDamage);
-        lore.add("   §8➥ §7Legs§8: §b" + legDamage);
-        lore.add(" §7Attachments §8(§3" + attachments.size() + "§8/§3" + getAttachmentSlots() + "§8)");
-        for (Attachment attachment : attachments) {
-            lore.add("   §8➥ §b" + attachment.getDisplayName());
+        lore.add(" §8╔══ §aGeneral");
+        lore.add(" §8╠ §7Type§8: §b" + type.getDisplayName());
+        lore.add(" §8╠ §7Magazine§8: §b" + maxAmmo);
+        lore.add(" §8╠══ §eStats");
+        lore.add(" §8╠ §7Range§8: §b" + range);
+        lore.add(" §8╠ §7RPM§8: §b" + fireRate);
+        lore.add(" §8╠ §7Spread§8: §b" + spread);
+        lore.add(" §8╠ §7Sneak Spread§8: §b" + sneakSpread);
+        lore.add(" §8╠ §7Reload time§8: §b" + reloadTimeInTicks / 20 + "s");
+        lore.add(" §8╠══ §cDamage");
+        lore.add(" §8╠ §7Head§8: §b" + headDamage);
+        lore.add(" §8╠ §7Body§8: §b" + bodyDamage);
+        lore.add(" §8╠ §7Legs§8: §b" + legDamage);
+        lore.add(" §8╠══ §3Attachments §8(§3" + attachments.size() + "§8/§3" + getAttachmentSlots() + "§8)");
+        for (int i = 0; i < attachmentSlots; i++) {
+            if(attachments.size() >= i+1) {
+                Attachment attachment = attachments.get(i);
+                lore.add(" §8╠ §b" + attachment.getDisplayName());
+            } else {
+                lore.add(" §8╠ §7§oEmpty");
+            }
         }
+        lore.add(" §8╚══");
         lore.add("§c ");
         return lore;
     }
