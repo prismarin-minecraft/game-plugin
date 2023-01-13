@@ -33,9 +33,12 @@ public class BundleFrame extends Frame {
     private final BundleFacade facade;
     private final User user;
 
+    private final Player player;
 
-    public BundleFrame(BundleFacade facade, User user) {
+
+    public BundleFrame(BundleFacade facade, User user, Player player) {
         super("§aBundles", 3);
+        this.player = player;
         this.facade = facade;
         this.user = user;
         if(user.getSeasonData().getAttachments() == null) {
@@ -46,22 +49,27 @@ public class BundleFrame extends Frame {
         int index = 0;
         for(Bundle bundle : facade.getRepository().findAll()) {
             if(bundle.isSeasonal()) {
-                int current = (int) user.getSeasonData().getAttachments().getOrDefault("bundles." + bundle.getId(), 0);
                 ItemBuilder builder = new ItemBuilder(bundle.getIcon().getItem())
-                        .addLore("§c")
-                        .addLore("§7Currently in possession§8: §b" + current)
                         .addLore("§c").allFlags();
-                if(current > 0) {
-                    builder.addLore("§7Click me to redeem");
+                if(player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "bundles." + bundle.getId())) {
+                    if(!user.getSeasonData().getAttachments().containsKey("bundles." + bundle.getId())) {
+                        builder.addLore("§7Click me to redeem");
+                    } else {
+                        builder.addLore("§cYou already redeemed this bundle");
+                    }
+                } else {
+                    builder.addLore("§cYou do not own this bundle");
                 }
-                addButton(SLOTS[index], builder.build(), (ClickFrameButtonEvent) (player, event) -> {
-                    int amount = (int) user.getSeasonData().getAttachments().getOrDefault("bundles." + bundle.getId(), 0);
-                    if(amount == 0) {
+                addButton(SLOTS[index], builder.build(), (ClickFrameButtonEvent) (player1, event) -> {
+                    if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "bundles." + bundle.getId())) {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cYou don't have any bundles of this type in possession.");
                         return;
                     }
-                    amount--;
-                    user.getSeasonData().getAttachments().put("bundles." + bundle.getId(), amount);
+                    if(user.getSeasonData().getAttachments().containsKey("bundles." + bundle.getId())) {
+                        player.sendMessage(PrismarinConstants.PREFIX + "§cYou already redeemed this bundle.");
+                        return;
+                    }
+                    user.getSeasonData().getAttachments().put("bundles." + bundle.getId(), true);
                     UserProvider<User> provider = PrismarinApi.getProvider(UserProvider.class);
                     provider.saveAsync(user, true);
                     player.closeInventory();

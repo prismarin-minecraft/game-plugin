@@ -47,7 +47,7 @@ public class BundleCommand extends HelpCommand<Player> {
     public boolean raw(Player player, SpigotArguments arguments) {
         if(arguments.getLength() == 0) {
             UserProvider<User> provider = PrismarinApi.getProvider(UserProvider.class);
-            BundleFrame frame = new BundleFrame(facade, provider.getUserByUUID(player.getUniqueId()));
+            BundleFrame frame = new BundleFrame(facade, provider.getUserByUUID(player.getUniqueId()), player);
             frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.6f);
             return false;
         }
