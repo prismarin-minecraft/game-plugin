@@ -29,9 +29,10 @@ public class ArmorItem extends CustomItem {
 
     protected void generateDefaultLore(){
         addLore("§c ");
-        addLore(" §7Protection§8: §b");
-        addLore("   §8➥ §7Head§8: §b" + headProtection + "%");
-        addLore("   §8➥ §7Body§8: §b" + bodyProtection + "%");
+        addLore(" §8╔══ §dProtection");
+        addLore(" §8╠ §7Head§8: §b" + headProtection + "%");
+        addLore(" §8╠ §7Body§8: §b" + bodyProtection + "%");
+        addLore(" §8╚══");
         addLore("§c ");
     }
 
