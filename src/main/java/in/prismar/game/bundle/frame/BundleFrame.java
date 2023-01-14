@@ -29,7 +29,7 @@ import java.util.LinkedHashMap;
  **/
 public class BundleFrame extends Frame {
 
-    private static final int[] SLOTS = {11, 13, 14, 15, 17};
+    private static final int[] SLOTS = {11, 13, 14, 15, 16};
 
     private final BundleFacade facade;
     private final User user;
