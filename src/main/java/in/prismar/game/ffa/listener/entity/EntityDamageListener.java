@@ -121,6 +121,10 @@ public class EntityDamageListener implements Listener {
                     damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §6" + NumberFormatter.formatNumberToThousands(streakMoney) + "$ §7for having a §c" + killstreak + " §7killstreak");
                 }
 
+                if(killstreak == 10) {
+                    damager.getInventory().addItem(facade.getItemRegistry().createItem("Airstrike"));
+                }
+
                 displayStreak(map, damager, killstreak);
 
 
