@@ -64,7 +64,7 @@ public class ArsenalService {
         setItem(user, "leggings", itemRegistry.createItem("RecruitLeggings"));
         setItem(user, "boots", itemRegistry.createItem("RecruitBoots"));
 
-        setItem(user, "primary", itemRegistry.createItem("vector"));
+        setItem(user, "primary", itemRegistry.createItem("ump45"));
         setItem(user, "secondary", itemRegistry.createItem("glock17"));
 
         setItem(user, "lethal", itemRegistry.createItem("Grenade"), "Grenade");
