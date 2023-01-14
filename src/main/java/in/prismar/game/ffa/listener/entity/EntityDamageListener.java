@@ -139,7 +139,7 @@ public class EntityDamageListener implements Listener {
         if(event.getEntity() instanceof Player player) {
             if(facade.isCurrentlyPlaying(player)) {
                 if(event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
-                    double damage = 4;
+                    double damage = 6;
                     double nextHealth = player.getHealth() - damage;
                     if(nextHealth <= 0.0) {
                         player.setFireTicks(1);
