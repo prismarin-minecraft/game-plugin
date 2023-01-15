@@ -1,6 +1,7 @@
 package in.prismar.game.stats;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.PrismarinConstants;
 import in.prismar.api.battlepass.BattlePassProvider;
 import in.prismar.api.booster.BoosterProvider;
 import in.prismar.api.booster.BoosterType;
@@ -8,11 +9,14 @@ import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.api.user.data.SeasonData;
+import in.prismar.game.ffa.model.GameMap;
+import in.prismar.game.ffa.model.GameMapPlayer;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.meta.anno.Service;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -33,6 +37,29 @@ public class GameStatsDistributor {
     public GameStatsDistributor() {
         this.provider = PrismarinApi.getProvider(UserProvider.class);
         this.store = PrismarinApi.getProvider(ConfigStore.class);
+    }
+
+    public void displayStreak(Player player, int streak, Consumer<String> consumer) {
+        String[] messages = store.getProperty("killstreak.messages").split("/");
+        String chosenMessage = null;
+        for(String message : messages) {
+            if(message.contains("{" + streak + "}")) {
+                chosenMessage = message;
+                break;
+            }
+        }
+        if(chosenMessage != null) {
+            chosenMessage = chosenMessage.replace("{" + streak + "}", "")
+                    .replace("{player}", player.getName()).replace("&", "§");
+            consumer.accept(chosenMessage);
+        }
+    }
+
+    public String getRandomDeathMessage(Player killer, Player target) {
+        String[] messages = store.getProperty("death.messages").split("/");
+        String random = messages[MathUtil.random(messages.length - 1)];
+        return random.replace("&", "§").replace("{killer}", killer.getName())
+                .replace("{target}", target.getName());
     }
 
     public int addFFABattlePassEXP(Player player) {
@@ -136,6 +163,22 @@ public class GameStatsDistributor {
         checkForNullStats(user);
         SeasonData data = user.getSeasonData();
         data.getStats().put("deaths.extraction", getCurrentValue(data, "deaths.extraction") + 1);
+        provider.saveAsync(user, true);
+    }
+
+    public void addHardpointKill(Player player) {
+        User user = provider.getUserByUUID(player.getUniqueId());
+        checkForNullStats(user);
+        SeasonData data = user.getSeasonData();
+        data.getStats().put("kills.hardpoint", getCurrentValue(data, "kills.hardpoit") + 1);
+        provider.saveAsync(user, true);
+    }
+
+    public void addHardpointDeath(Player player) {
+        User user = provider.getUserByUUID(player.getUniqueId());
+        checkForNullStats(user);
+        SeasonData data = user.getSeasonData();
+        data.getStats().put("deaths.hardpoint", getCurrentValue(data, "deaths.hardpoint") + 1);
         provider.saveAsync(user, true);
     }
 

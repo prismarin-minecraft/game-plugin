@@ -43,7 +43,6 @@ public class FFACommand extends HelpCommand<Player> {
         addChild(new JoinSubCommand(facade));
         addChild(new LeaveSubCommand(facade));
         addChild(new EditIconSubCommand(facade));
-        addChild(new MenuSubCommand(facade));
         addChild(new OpenSubCommand(facade));
         addChild(new CloseSubCommand(facade));
     }

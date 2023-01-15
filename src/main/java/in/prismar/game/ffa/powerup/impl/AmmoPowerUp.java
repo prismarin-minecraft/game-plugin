@@ -25,7 +25,7 @@ public class AmmoPowerUp implements PowerUp {
     public void onPickUp(Player player) {
         player.sendMessage(PrismarinConstants.PREFIX + "§7You picked up a §aAmmo §7powerup");
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 2);
-        game.getMapFacade().fillAmmo(player);
+        game.getMapFacade().getArsenalService().fillAmmo(player);
     }
 
     @Override

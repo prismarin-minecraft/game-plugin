@@ -1,10 +1,9 @@
-package in.prismar.game.ffa.arsenal.frame;
+package in.prismar.game.arsenal.frame;
 
 import in.prismar.api.user.User;
 import in.prismar.api.user.data.ArsenalItem;
-import in.prismar.game.ffa.arsenal.ArsenalService;
+import in.prismar.game.arsenal.ArsenalService;
 import in.prismar.game.item.impl.throwable.LethalItem;
-import in.prismar.game.item.impl.throwable.ThrowableItem;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.impl.armor.ArmorItem;
 import in.prismar.game.item.impl.gun.Gun;

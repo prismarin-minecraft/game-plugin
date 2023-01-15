@@ -1,7 +1,7 @@
-package in.prismar.game.ffa.arsenal.command;
+package in.prismar.game.arsenal.command;
 
-import in.prismar.game.ffa.arsenal.ArsenalService;
-import in.prismar.game.ffa.arsenal.frame.ArsenalFrame;
+import in.prismar.game.arsenal.ArsenalService;
+import in.prismar.game.arsenal.frame.ArsenalFrame;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;

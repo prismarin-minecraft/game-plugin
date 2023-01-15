@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -74,7 +75,7 @@ public class EntityDamageListener implements Listener {
 
         if(damager != null) {
             int health = (int)damager.getHealth();
-            facade.sendMessage(PrismarinConstants.PREFIX + getRandomDeathMessage(damager, target) + " §8(§c"+health+"♥§8)");
+            facade.sendMessage(PrismarinConstants.PREFIX + statsDistributor.getRandomDeathMessage(damager, target) + " §8(§c"+health+"♥§8)");
             damager.setHealth(20);
         } else {
             facade.sendMessage(PrismarinConstants.PREFIX + "§c" + target.getName() + " §7just died.");
@@ -163,32 +164,14 @@ public class EntityDamageListener implements Listener {
     }
 
     private void displayStreak(GameMap map, Player player, int streak) {
-        String[] messages = store.getProperty("killstreak.messages").split("/");
-        String chosenMessage = null;
-        for(String message : messages) {
-            if(message.contains("{" + streak + "}")) {
-                chosenMessage = message;
-                break;
-            }
-        }
-        if(chosenMessage != null) {
-            chosenMessage = chosenMessage.replace("{" + streak + "}", "")
-                    .replace("{player}", player.getName()).replace("&", "§");
+        statsDistributor.displayStreak(player, streak, chosenMessage -> {
             for(GameMapPlayer mapPlayer : map.getPlayers().values()) {
                 mapPlayer.getPlayer().sendMessage(" ");
                 mapPlayer.getPlayer().sendMessage(PrismarinConstants.PREFIX + chosenMessage);
                 mapPlayer.getPlayer().sendMessage(" ");
             }
-        }
-
-
+        });
     }
 
-    public String getRandomDeathMessage(Player killer, Player target) {
-        String[] messages = store.getProperty("death.messages").split("/");
-        String random = messages[MathUtil.random(messages.length - 1)];
-        return random.replace("&", "§").replace("{killer}", killer.getName())
-                .replace("{target}", target.getName());
-    }
 
 }

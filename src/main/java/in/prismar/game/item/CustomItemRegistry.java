@@ -2,6 +2,7 @@ package in.prismar.game.item;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.impl.FFALeaveItem;
+import in.prismar.game.item.impl.HardpointLeaveItem;
 import in.prismar.game.item.impl.armor.heavy.HeavyBoots;
 import in.prismar.game.item.impl.armor.heavy.HeavyChestplate;
 import in.prismar.game.item.impl.armor.heavy.HeavyHelmet;
@@ -92,6 +93,7 @@ public class CustomItemRegistry {
         register(new AirdropItem());
 
         register(new FFALeaveItem());
+        register(new HardpointLeaveItem());
 
         register(new RecruitHelmet());
         register(new RecruitChestplate());

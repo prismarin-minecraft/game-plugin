@@ -64,7 +64,7 @@ public class Gun extends SkinableItem {
 
     private static final Vector DEFAULT_EYE_ROTATION = new Vector(-0.5, -0.5, 0.5);
 
-    private static final Cache<ItemStack, List<Attachment>> ATTACHMENT_CACHE = CacheBuilder.newBuilder()
+    public static final Cache<ItemStack, List<Attachment>> ATTACHMENT_CACHE = CacheBuilder.newBuilder()
             .expireAfterWrite(30, TimeUnit.MINUTES).build();
 
     //----------------------------------------------------------------------------------
@@ -164,7 +164,7 @@ public class Gun extends SkinableItem {
         lore.add(" §8╠ §7Legs§8: §b" + legDamage);
         lore.add(" §8╠══ §3Attachments §8(§3" + attachments.size() + "§8/§3" + getAttachmentSlots() + "§8)");
         for (int i = 0; i < attachmentSlots; i++) {
-            if(attachments.size() >= i+1) {
+            if (attachments.size() >= i + 1) {
                 Attachment attachment = attachments.get(i);
                 lore.add(" §8╠ §b" + attachment.getDisplayName());
             } else {
@@ -193,10 +193,10 @@ public class Gun extends SkinableItem {
             GunSound sound = sounds.get(type);
             if (type.isSurrounding()) {
                 float decrease = (sound.getVolume() / 100.0f) * soundDecreasePercentage;
-                if(soundDecreasePercentage == 0) {
+                if (soundDecreasePercentage == 0) {
                     decrease = 0;
                 }
-                if(sound.getSound() == null) {
+                if (sound.getSound() == null) {
                     location.getWorld().playSound(location, sound.getSoundName(), sound.getVolume() - decrease, sound.getPitch());
                 } else {
                     location.getWorld().playSound(location, sound.getSound(), sound.getVolume() - decrease, sound.getPitch());
@@ -226,10 +226,13 @@ public class Gun extends SkinableItem {
     }
 
 
-    public List<Attachment> getAttachments(Game game, ItemStack stack) {
-        if(ATTACHMENT_CACHE.asMap().containsKey(stack)) {
-            return ATTACHMENT_CACHE.asMap().get(stack);
+    public List<Attachment> getAttachments(Game game, ItemStack stack, boolean cached) {
+        if (cached) {
+            if (Gun.ATTACHMENT_CACHE.asMap().containsKey(stack)) {
+                return ATTACHMENT_CACHE.getIfPresent(stack);
+            }
         }
+
         List<Attachment> attachments = new ArrayList<>();
         final String value = PersistentItemDataUtil.getString(game, stack, ATTACHMENTS_KEY);
         for (String id : value.split(",")) {
@@ -240,7 +243,9 @@ public class Gun extends SkinableItem {
                 }
             }
         }
-        ATTACHMENT_CACHE.put(stack, attachments);
+        if(cached) {
+            ATTACHMENT_CACHE.put(stack, attachments);
+        }
         return attachments;
     }
 
@@ -261,7 +266,7 @@ public class Gun extends SkinableItem {
         double sneakSpread = this.sneakSpread;
         double range = this.range;
         boolean soundDecrease = true;
-        for (Attachment attachment : getAttachments(game, stack)) {
+        for (Attachment attachment : getAttachments(game, stack, true)) {
             normalSpread = attachment.apply(AttachmentModifier.SPREAD, normalSpread);
             sneakSpread = attachment.apply(AttachmentModifier.SNEAK_SPREAD, sneakSpread);
             range = attachment.apply(AttachmentModifier.RANGE, range);
@@ -353,7 +358,7 @@ public class Gun extends SkinableItem {
         if (gunPlayer.isReloading()) {
             return;
         }
-        List<Attachment> attachments = getAttachments(game, stack);
+        List<Attachment> attachments = getAttachments(game, stack, true);
         int maxAmmo = this.maxAmmo;
         for (Attachment attachment : attachments) {
             maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
@@ -426,7 +431,7 @@ public class Gun extends SkinableItem {
             currentUpdateTick = 0;
         }
         int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
-        List<Attachment> attachments = getAttachments(game, holder.getStack());
+        List<Attachment> attachments = getAttachments(game, holder.getStack(), true);
         int fireRate = this.fireRate;
         int maxAmmo = this.maxAmmo;
         for (Attachment attachment : attachments) {

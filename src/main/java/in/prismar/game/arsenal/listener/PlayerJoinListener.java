@@ -1,4 +1,4 @@
-package in.prismar.game.ffa.arsenal.listener;
+package in.prismar.game.arsenal.listener;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;

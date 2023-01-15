@@ -3,11 +3,13 @@ package in.prismar.game;
 import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
+import in.prismar.api.hardpoint.HardpointProvider;
 import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
 import in.prismar.api.region.RegionProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.extraction.ExtractionFacade;
+import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.web.WebServer;
@@ -49,6 +51,9 @@ public class Game extends JavaPlugin {
     private GameMapFacade mapFacade;
 
     @Inject
+    private HardpointFacade hardpointFacade;
+
+    @Inject
     private CustomItemRegistry itemRegistry;
 
     @Inject
@@ -71,6 +76,7 @@ public class Game extends JavaPlugin {
     @Override
     public void onDisable() {
         mapFacade.close();
+        hardpointFacade.close();
         airDropRegistry.despawnAll();
     }
 
@@ -98,6 +104,7 @@ public class Game extends JavaPlugin {
     private void initApi() {
         PrismarinApi.registerProvider(GameMapProvider.class, mapFacade);
         PrismarinApi.registerProvider(ExtractionProvider.class, extractionFacade);
+        PrismarinApi.registerProvider(HardpointProvider.class, hardpointFacade);
     }
 
     private void initializeWebServer() {

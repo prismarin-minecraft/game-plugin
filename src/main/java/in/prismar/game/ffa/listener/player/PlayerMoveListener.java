@@ -104,7 +104,7 @@ public class PlayerMoveListener implements Listener {
             if (player.getInventory().getChestplate() != null) {
                 if (player.getInventory().getChestplate().getType() == Material.ELYTRA) {
                     User user = provider.getUserByUUID(player.getUniqueId());
-                    boolean success = facade.giveArsenalChestplate(user, player);
+                    boolean success = facade.getArsenalService().giveArsenalChestplate(user, player);
                     if(!success) {
                         player.getInventory().setChestplate(new ItemStack(Material.AIR));
                     }

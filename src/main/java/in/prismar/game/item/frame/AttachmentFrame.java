@@ -59,9 +59,14 @@ public class AttachmentFrame extends Frame {
             frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.7f);
         });
 
+
+
         addButton(12, createArrowRightItem("§bGun"));
 
         if(item != null) {
+            if (Gun.ATTACHMENT_CACHE.asMap().containsKey(item)) {
+                Gun.ATTACHMENT_CACHE.invalidate(item);
+            }
             CustomItem customItem = registry.getItemByStack(item);
             if(customItem instanceof Gun gun) {
                 this.gun = gun;
@@ -70,7 +75,7 @@ public class AttachmentFrame extends Frame {
                     frame.openInventory(player, Sound.BLOCK_PISTON_CONTRACT, 0.7F);
                 });
 
-                List<Attachment> attachments = gun.getAttachments(registry.getGame(), item);
+                List<Attachment> attachments = gun.getAttachments(registry.getGame(), item, false);
                 for (int i = 0; i < SLOTS.length; i++) {
                     if(i+1 <= gun.getAttachmentSlots()) {
                         if(i+1 <= attachments.size()) {
@@ -114,7 +119,7 @@ public class AttachmentFrame extends Frame {
                             event.getEvent().setCurrentItem(new ItemStack(Material.AIR));
                         } else if(customItem instanceof Attachment attachment) {
                             if(gun != null) {
-                                List<Attachment> attachments = gun.getAttachments(registry.getGame(), item);
+                                List<Attachment> attachments = gun.getAttachments(registry.getGame(), item, false);
                                 if(attachments.size() >= gun.getAttachmentSlots()) {
                                     return;
                                 }

@@ -7,15 +7,9 @@ import in.prismar.api.placeholder.PlaceholderStore;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
-import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.Game;
-import in.prismar.game.ffa.arsenal.ArsenalService;
-import in.prismar.game.item.model.CustomItem;
+import in.prismar.game.arsenal.ArsenalService;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.impl.attachment.Attachment;
-import in.prismar.game.item.impl.attachment.AttachmentModifier;
-import in.prismar.game.item.impl.gun.Gun;
-import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.ffa.model.GameMap;
 import in.prismar.game.ffa.model.GameMapPlayer;
 import in.prismar.game.ffa.powerup.PowerUpRegistry;
@@ -27,14 +21,12 @@ import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.tuple.Tuple;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
-import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.*;
@@ -179,104 +171,22 @@ public class GameMapFacade implements GameMapProvider {
     }
 
 
-    public void fillAmmo(Player player) {
-        for (int i = 9; i < 12; i++) {
-            ItemStack item = AmmoType.AR.getItem().clone();
-            item.setAmount(64);
-            player.getInventory().setItem(i, item);
-        }
-        for (int i = 12; i < 13; i++) {
-            ItemStack item = AmmoType.SNIPER.getItem().clone();
-            item.setAmount(64);
-            player.getInventory().setItem(i, item);
-        }
-        for (int i = 13; i < 14; i++) {
-            ItemStack item = AmmoType.SHOTGUN.getItem().clone();
-            item.setAmount(64);
-            player.getInventory().setItem(i, item);
-        }
-        for (int i = 14; i < 17; i++) {
-            ItemStack item = AmmoType.SMG.getItem().clone();
-            item.setAmount(64);
-            player.getInventory().setItem(i, item);
-        }
-        for (int i = 17; i < 18; i++) {
-            ItemStack item = AmmoType.PISTOL.getItem().clone();
-            item.setAmount(64);
-            player.getInventory().setItem(i, item);
-        }
-    }
+
 
     public void respawn(Player player) {
         player.teleport(rotator.getCurrentMap().getRandomSpawn());
         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.65f, 1);
         resetPlayer(player, GameMode.ADVENTURE);
 
-        fillAmmo(player);
+        arsenalService.fillAmmo(player);
 
-        User user = arsenalService.manage(player);
-        ItemStack primary = createArsenalItem(user, "primary");
-        if (primary != null) {
-            player.getInventory().setItem(0, primary);
-        }
-        ItemStack secondary = createArsenalItem(user, "secondary");
-        if (secondary != null) {
-            player.getInventory().setItem(1, secondary);
-        }
-
-        ItemStack helmet = createArsenalItem(user, "helmet");
-        if (helmet != null) {
-            player.getInventory().setHelmet(helmet);
-        }
-        giveArsenalChestplate(user, player);
-
-
-        ItemStack leggings = createArsenalItem(user, "leggings");
-        if (leggings != null) {
-            player.getInventory().setLeggings(leggings);
-        }
-
-        ItemStack boots = createArsenalItem(user, "boots");
-        if (boots != null) {
-            player.getInventory().setBoots(boots);
-        }
-        ItemStack lethal = createArsenalItem(user, "lethal");
-        if(lethal == null) {
-            player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
-        } else {
-            player.getInventory().setItem(3, lethal.clone());
-        }
+        arsenalService.giveLoadout(player);
 
         player.getInventory().setItem(8, itemRegistry.createItem("FFALeave"));
     }
 
-    public boolean giveArsenalChestplate(User user, Player player) {
-        ItemStack chestplate = createArsenalItem(user, "chestplate");
-        if (chestplate != null) {
-            player.getInventory().setChestplate(chestplate);
-            return true;
-        }
-        return false;
-    }
 
-    private ItemStack createArsenalItem(User user, String key) {
-        ArsenalItem item = arsenalService.getItem(user, key);
-        if (item != null) {
-            ItemStack stack = item.getItem().clone();
-            CustomItem customItem = itemRegistry.getItemByStack(stack);
-            if (customItem != null) {
-                if(customItem instanceof Gun gun) {
-                    int maxAmmo = gun.getMaxAmmo();
-                    for(Attachment attachment : gun.getAttachments(game, stack)) {
-                        maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
-                    }
-                    PersistentItemDataUtil.setInteger(game, stack, Gun.AMMO_KEY, maxAmmo);
-                }
-            }
-            return stack;
-        }
-        return null;
-    }
+
 
     public void join(Player player) {
         rotator.getCurrentMap().getPlayers().put(player.getUniqueId(), new GameMapPlayer(player));
