@@ -101,7 +101,14 @@ public class GameMapRotator implements Runnable {
         placeholderStore.setPlaceholder("map.rotation.current", currentMap.getIcon().getItem().getItemMeta().getDisplayName());
     }
     public void createVoteSurvey() {
+        int playersSize = Bukkit.getOnlinePlayers().size();
+        int needed = Integer.valueOf(store.getProperty("map.rotation.apex.players"));
         for(GameMap map : facade.getRepository().findAll()) {
+            if(map.getId().equalsIgnoreCase(store.getProperty("map.rotation.worldsedge.id"))) {
+                if(playersSize < needed) {
+                    continue;
+                }
+            }
             this.voting.put(map.getId(), new HashSet<>());
         }
         displayVoteSurvey();

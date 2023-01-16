@@ -1,8 +1,13 @@
 package in.prismar.game.item;
 
 import in.prismar.game.Game;
+import in.prismar.game.hardpoint.HardpointTeam;
 import in.prismar.game.item.impl.FFALeaveItem;
 import in.prismar.game.item.impl.HardpointLeaveItem;
+import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
+import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
+import in.prismar.game.item.impl.armor.hardpoint.HardpointHelmet;
+import in.prismar.game.item.impl.armor.hardpoint.HardpointLeggings;
 import in.prismar.game.item.impl.armor.heavy.HeavyBoots;
 import in.prismar.game.item.impl.armor.heavy.HeavyChestplate;
 import in.prismar.game.item.impl.armor.heavy.HeavyHelmet;
@@ -114,6 +119,13 @@ public class CustomItemRegistry {
         register(new JuggernautChestplate());
         register(new JuggernautLeggings());
         register(new JuggernautBoots());
+
+        for(HardpointTeam team : HardpointTeam.values()) {
+            register(new HardpointHelmet(team.getFancyName(), team.getColor()));
+            register(new HardpointChestplate(team.getFancyName(), team.getColor()));
+            register(new HardpointLeggings(team.getFancyName(), team.getColor()));
+            register(new HardpointBoots(team.getFancyName(), team.getColor()));
+        }
 
         reader.apply(this);
 

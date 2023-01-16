@@ -74,7 +74,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
         addArsenalItem(LETHAL_SLOT, "lethal", "§cEmpty");
 
         addButton(53, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to FFA menu").build(), (ClickFrameButtonEvent) (player1, event) -> {
-            player.performCommand("ffa menu");
+            player.performCommand("game");
         });
 
 

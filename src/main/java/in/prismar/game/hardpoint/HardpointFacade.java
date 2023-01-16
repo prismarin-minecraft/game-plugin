@@ -79,14 +79,9 @@ public class HardpointFacade implements HardpointProvider {
         Bukkit.getScheduler().runTaskTimer(game, new HardpointTask(this), 5, 5);
     }
 
-    @SafeInitialize
-    private void initialize() {
-        for(HardpointTeam team : HardpointTeam.values()) {
-            itemRegistry.register(new HardpointHelmet(team.getFancyName(), team.getColor()));
-            itemRegistry.register(new HardpointChestplate(team.getFancyName(), team.getColor()));
-            itemRegistry.register(new HardpointLeggings(team.getFancyName(), team.getColor()));
-            itemRegistry.register(new HardpointBoots(team.getFancyName(), team.getColor()));
-        }
+    @Override
+    public int getTeamSize(String team) {
+        return session.getPlayers().get(HardpointTeam.valueOf(team)).size();
     }
 
     public int getCurrentlyPlayingCount() {

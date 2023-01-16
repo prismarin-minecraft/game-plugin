@@ -104,6 +104,7 @@ public class EntityDamageListener implements Listener {
         HardpointSessionPlayer targetMapPlayer = facade.getSessionPlayerByPlayer(target);
 
         if (!samePlayer) {
+            facade.getArsenalService().fillAmmo(damager);
             HardpointSessionPlayer damagerMapPlayer = facade.getSessionPlayerByPlayer(damager);
             damagerMapPlayer.setKills(damagerMapPlayer.getKills() + 1);
             statsDistributor.addKill(damager);
