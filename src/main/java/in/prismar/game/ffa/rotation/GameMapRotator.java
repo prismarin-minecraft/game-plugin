@@ -144,13 +144,21 @@ public class GameMapRotator implements Runnable {
             player.sendMessage(" ");
             player.sendMessage("§8» §7Vote for the next map");
             player.sendMessage(" ");
+
+            int playersSize = Bukkit.getOnlinePlayers().size();
+            int needed = Integer.valueOf(store.getProperty("map.rotation.apex.players"));
             for(GameMap map : facade.getRepository().findAll()) {
+                if(map.getId().equalsIgnoreCase(store.getProperty("map.rotation.worldsedge.id"))) {
+                    if(playersSize < needed) {
+                        continue;
+                    }
+                }
                 InteractiveTextBuilder textBuilder = new InteractiveTextBuilder();
                 textBuilder.addText("§8» §b" + map.getIcon().getItem().getItemMeta().getDisplayName() , "/ffa vote " + map.getId(),
                         "§7Vote for this map");
                 player.spigot().sendMessage(textBuilder.build());
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.65f, 1);
             }
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.85f, 1);
 
             player.sendMessage(" ");
             player.sendMessage(PrismarinConstants.BORDER);

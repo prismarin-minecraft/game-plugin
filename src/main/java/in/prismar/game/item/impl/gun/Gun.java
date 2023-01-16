@@ -265,12 +265,12 @@ public class Gun extends SkinableItem {
         double normalSpread = this.spread;
         double sneakSpread = this.sneakSpread;
         double range = this.range;
-        boolean soundDecrease = true;
+        //boolean soundDecrease = true;
         for (Attachment attachment : getAttachments(game, stack, true)) {
             normalSpread = attachment.apply(AttachmentModifier.SPREAD, normalSpread);
             sneakSpread = attachment.apply(AttachmentModifier.SNEAK_SPREAD, sneakSpread);
             range = attachment.apply(AttachmentModifier.RANGE, range);
-            soundDecrease = attachment.apply(AttachmentModifier.SOUND, soundDecrease);
+            //soundDecrease = attachment.apply(AttachmentModifier.SOUND, soundDecrease);
         }
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
         Location eyeLocation = player.getEyeLocation();
@@ -282,7 +282,7 @@ public class Gun extends SkinableItem {
 
         List<RaytraceHit> hits = bullet.invoke();
 
-        playSound(player, GunSoundType.SHOOT, soundDecrease ? 50 : 0);
+
         int damageReducePercentage = 0;
         for (RaytraceHit hit : hits) {
             if (hit instanceof RaytraceEntityHit entityHit) {
@@ -462,6 +462,7 @@ public class Gun extends SkinableItem {
                 for (int i = 0; i < bulletsPerShot; i++) {
                     shoot(game, player, holder.getStack());
                 }
+                playSound(player, GunSoundType.SHOOT, 0);
                 ammo--;
                 PersistentItemDataUtil.setInteger(game, holder.getStack(), AMMO_KEY, ammo);
                 currentUpdateTick = 0;
