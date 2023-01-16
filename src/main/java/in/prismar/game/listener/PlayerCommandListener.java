@@ -5,6 +5,7 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Bukkit;
@@ -30,6 +31,9 @@ public class PlayerCommandListener implements Listener {
     @Inject
     private ExtractionFacade extractionFacade;
 
+    @Inject
+    private HardpointFacade hardpointFacade;
+
     public PlayerCommandListener() {
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
     }
@@ -44,7 +48,7 @@ public class PlayerCommandListener implements Listener {
                 final String[] disabledCommands;
                 if(extractionFacade.isIn(player) && !extractionFacade.isInSafeZone(player)) {
                     disabledCommands = configStore.getProperty("extraction.disabled.commands").split(",");
-                } else if(mapFacade.isInMap(player.getUniqueId())) {
+                } else if(mapFacade.isInMap(player.getUniqueId()) || hardpointFacade.isCurrentlyPlaying(player)) {
                     disabledCommands = configStore.getProperty("ffa.disabled.commands").split(",");
                 } else {
                     disabledCommands = new String[0];

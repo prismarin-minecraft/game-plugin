@@ -40,11 +40,14 @@ public class EntityDamageListener implements Listener {
     @Inject
     private GameStatsDistributor statsDistributor;
 
+    private ConfigStore configStore;
+
 
     private Map<UUID, Player> lastDamager;
 
     public EntityDamageListener() {
         this.lastDamager = new HashMap<>();
+        this.configStore = PrismarinApi.getProvider(ConfigStore.class);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -105,14 +108,20 @@ public class EntityDamageListener implements Listener {
 
         if (!samePlayer) {
             facade.getArsenalService().fillAmmo(damager);
+            HardpointTeam damagerTeam = facade.getTeamByPlayer(damager);
             HardpointSessionPlayer damagerMapPlayer = facade.getSessionPlayerByPlayer(damager);
+
+
             damagerMapPlayer.setKills(damagerMapPlayer.getKills() + 1);
             statsDistributor.addKill(damager);
             int exp = statsDistributor.addFFABattlePassEXP(damager);
             statsDistributor.addHardpointKill(damager);
 
             int money = statsDistributor.addFFAKillMoney(damager);
+            int points = Integer.valueOf(configStore.getProperty("hardpoint.kill.points"));
 
+            facade.getSession().getTeamPoints().put(damagerTeam, facade.getSession().getTeamPoints().get(damagerTeam) + points);
+            damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §2"+points+" team points §7for killing §c" + target.getName());
             damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatNumberToThousands(exp) + " EXP §7for killing §c" + target.getName());
             damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §6" + NumberFormatter.formatNumberToThousands(money) + "$ §7for killing §c" + target.getName());
 
