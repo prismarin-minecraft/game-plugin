@@ -170,7 +170,7 @@ public class GameStatsDistributor {
         User user = provider.getUserByUUID(player.getUniqueId());
         checkForNullStats(user);
         SeasonData data = user.getSeasonData();
-        data.getStats().put("kills.hardpoint", getCurrentValue(data, "kills.hardpoit") + 1);
+        data.getStats().put("kills.hardpoint", getCurrentValue(data, "kills.hardpoint") + 1);
         provider.saveAsync(user, true);
     }
 

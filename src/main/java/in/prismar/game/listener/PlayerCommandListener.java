@@ -49,7 +49,7 @@ public class PlayerCommandListener implements Listener {
                 if(extractionFacade.isIn(player) && !extractionFacade.isInSafeZone(player)) {
                     disabledCommands = configStore.getProperty("extraction.disabled.commands").split(",");
                 } else if(mapFacade.isInMap(player.getUniqueId()) || hardpointFacade.isCurrentlyPlaying(player)) {
-                    disabledCommands = configStore.getProperty("ffa.disabled.commands").split(",");
+                    disabledCommands = configStore.getProperty("game.disabled.commands").split(",");
                 } else {
                     disabledCommands = new String[0];
                 }
