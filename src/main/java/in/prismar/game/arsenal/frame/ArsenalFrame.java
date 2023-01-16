@@ -41,14 +41,15 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     private static final int LETHAL_SLOT = 41;
 
     private final ArsenalService service;
+
     private Player player;
     private User user;
 
-    public ArsenalFrame(Player player, ArsenalService service) {
+    public ArsenalFrame(Player player, User user, ArsenalService service) {
         super("§6Loadout", 6);
         this.service = service;
         this.player = player;
-        this.user = service.manage(player);
+        this.user = user;
 
         this.getEventBus().subscribe(FrameClickEvent.class, this);
         fill();
@@ -76,8 +77,6 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
         addButton(53, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to FFA menu").build(), (ClickFrameButtonEvent) (player1, event) -> {
             player.performCommand("game");
         });
-
-
 
         build();
     }
@@ -107,6 +106,9 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     public void onEvent(FrameClickEvent event) {
         if(event.getEvent().getClickedInventory() != null) {
             if(event.getEvent().getClickedInventory().getType() == InventoryType.PLAYER) {
+                if(!player.getUniqueId().toString().equals(user.getData().getId())) {
+                    return;
+                }
                 ItemStack stack = event.getEvent().getCurrentItem();
                 CustomItem item = service.getItemRegistry().getItemByStack(stack);
                 if(item != null) {
@@ -131,7 +133,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     }
 
     public void reopen() {
-        ArsenalFrame frame = new ArsenalFrame(player, service);
+        ArsenalFrame frame = new ArsenalFrame(player, user, service);
         frame.openInventory(player, Sound.BLOCK_PISTON_CONTRACT, 0.7f);
     }
 }

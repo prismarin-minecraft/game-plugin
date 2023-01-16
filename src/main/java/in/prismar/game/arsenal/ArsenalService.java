@@ -48,6 +48,10 @@ public class ArsenalService {
 
     public User manage(Player player) {
         User user = provider.getUserByUUID(player.getUniqueId());
+        return manage(user);
+    }
+
+    public User manage(User user) {
         SeasonData data = user.getSeasonData();
         if(data.getArsenal() == null) {
             data.setArsenal(new HashMap<>());
