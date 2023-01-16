@@ -108,14 +108,18 @@ public class Game extends JavaPlugin {
     }
 
     private void initializeWebServer() {
-        ConfigStore store = PrismarinApi.getProvider(ConfigStore.class);
-        final int port = Integer.valueOf(store.getProperty("live.web.port"));
-        this.webServer = new WebServer(store.getProperty("live.web.base.path"), port);
-        this.webServer.addRoute(new ItemsRoute(itemRegistry));
-        this.webServer.addRoute(new PlayerRoute(mapFacade, extractionFacade));
-        this.webServer.addRoute(new VoteRoute());
-        this.webServer.initializePaths();
-        System.out.println("Live web server started on port: " + port);
+        try {
+            ConfigStore store = PrismarinApi.getProvider(ConfigStore.class);
+            final int port = Integer.valueOf(store.getProperty("live.web.port"));
+            this.webServer = new WebServer(store.getProperty("live.web.base.path"), port);
+            this.webServer.addRoute(new ItemsRoute(itemRegistry));
+            this.webServer.addRoute(new PlayerRoute(mapFacade, extractionFacade));
+            this.webServer.addRoute(new VoteRoute());
+            this.webServer.initializePaths();
+        }catch (Exception exception) {
+            System.out.println("Cannot start web server: " + exception.getMessage());
+        }
+
     }
 
     public String getDefaultDirectory() {
