@@ -66,6 +66,10 @@ public class HardpointTask implements Runnable {
                 }
             }
             updateBlocks(session, Material.WHITE_WOOL);
+
+            facade.executeForAll(sessionPlayer -> {
+                facade.updateCompass(sessionPlayer.getPlayer());
+            });
         }
         if(System.currentTimeMillis() >= session.getPointUntil()) {
             updateBlocks(session, Material.WHITE_WOOL);

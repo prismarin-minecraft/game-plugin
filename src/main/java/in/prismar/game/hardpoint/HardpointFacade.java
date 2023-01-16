@@ -2,10 +2,10 @@ package in.prismar.game.hardpoint;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.compass.CompassProvider;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.hardpoint.HardpointProvider;
 import in.prismar.api.scoreboard.ScoreboardProvider;
-import in.prismar.api.user.User;
 import in.prismar.game.Game;
 import in.prismar.game.arsenal.ArsenalService;
 import in.prismar.game.hardpoint.config.HardpointConfigFile;
@@ -14,14 +14,9 @@ import in.prismar.game.hardpoint.session.HardpointSessionPlayer;
 import in.prismar.game.hardpoint.session.HardpointSessionState;
 import in.prismar.game.hardpoint.task.HardpointTask;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
-import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
-import in.prismar.game.item.impl.armor.hardpoint.HardpointHelmet;
-import in.prismar.game.item.impl.armor.hardpoint.HardpointLeggings;
 import in.prismar.game.stats.GameStatsDistributor;
 import in.prismar.library.common.random.UniqueRandomizer;
 import in.prismar.library.meta.anno.Inject;
-import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
 import lombok.Setter;
@@ -70,18 +65,27 @@ public class HardpointFacade implements HardpointProvider {
     @Inject
     private ConfigStore configStore;
 
+    @Inject
+    private CompassProvider compassProvider;
+
 
     public HardpointFacade(Game game) {
         this.game = game;
         this.configFile = new HardpointConfigFile(game.getDefaultDirectory());
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
         this.session = new HardpointSession();
+        this.compassProvider = PrismarinApi.getProvider(CompassProvider.class);
         Bukkit.getScheduler().runTaskTimer(game, new HardpointTask(this), 5, 5);
     }
 
     @Override
     public int getTeamSize(String team) {
         return session.getPlayers().get(HardpointTeam.valueOf(team)).size();
+    }
+
+    public void updateCompass(Player player) {
+        compassProvider.removeAllEntries(player);
+        compassProvider.addEntry(player, session.getPoint().getLocation(), "Point", "WHITE");
     }
 
     public int getCurrentlyPlayingCount() {
@@ -146,6 +150,8 @@ public class HardpointFacade implements HardpointProvider {
         provider.recreateTablist(player);
         provider.recreateSidebar(player);
 
+        updateCompass(player);
+
         sendMessage(PrismarinConstants.PREFIX + "§b" + player.getName() + " §7joined Team " + team.getFancyName());
     }
 
@@ -181,6 +187,8 @@ public class HardpointFacade implements HardpointProvider {
 
         player.getInventory().setArmorContents(sessionPlayer.getArmor());
         player.getInventory().setStorageContents(sessionPlayer.getContent());
+
+        compassProvider.removeAllEntries(player);
 
     }
 
