@@ -52,7 +52,7 @@ public class ArsenalCommand extends SpigotCommand<Player> {
                 throw new PlayerNotFoundException(name);
             }
             UUID uuid = userCacheProvider.getUUIDByName(name);
-            user = userProvider.getUserByUUID(uuid);
+            user = service.manage(userProvider.getUserByUUID(uuid));
         } else {
             user = service.manage(player);
         }

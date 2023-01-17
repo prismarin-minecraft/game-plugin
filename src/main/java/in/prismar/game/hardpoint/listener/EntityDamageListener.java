@@ -79,20 +79,16 @@ public class EntityDamageListener implements Listener {
         target.sendTitle("§4You died", "", 5, 20, 5);
         facade.respawn(target);
 
-        if (damager != null) {
-            int health = (int) damager.getHealth();
-            facade.sendMessage(PrismarinConstants.PREFIX + statsDistributor.getRandomDeathMessage(damager, target) + " §8(§c" + health + "♥§8)");
-            damager.setHealth(20);
-        } else {
-            facade.sendMessage(PrismarinConstants.PREFIX + "§c" + target.getName() + " §7just died.");
-
-        }
 
 
         statsDistributor.resetKillstreak(target);
 
         boolean samePlayer = damager == null ? true : damager.getUniqueId().equals(target.getUniqueId());
         if (!samePlayer) {
+            int health = (int) damager.getHealth();
+            facade.sendMessage(PrismarinConstants.PREFIX + statsDistributor.getRandomDeathMessage(damager, target) + " §8(§c" + health + "♥§8)");
+            damager.setHealth(20);
+
             int streak = statsDistributor.addKillstreak(damager);
             StringBuilder skulls = new StringBuilder();
             for (int i = 0; i < streak; i++) {
@@ -102,7 +98,11 @@ public class EntityDamageListener implements Listener {
             }
 
             damager.sendTitle(skulls.toString().trim(), "", 5, 20, 5);
+        } else {
+            facade.sendMessage(PrismarinConstants.PREFIX + "§c" + target.getName() + " §7just died.");
         }
+
+        lastDamager.remove(target.getUniqueId());
 
         HardpointSessionPlayer targetMapPlayer = facade.getSessionPlayerByPlayer(target);
 
