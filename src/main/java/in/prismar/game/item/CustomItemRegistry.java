@@ -21,9 +21,7 @@ import in.prismar.game.item.impl.armor.lightweight.LightweightChestplate;
 import in.prismar.game.item.impl.armor.lightweight.LightweightHelmet;
 import in.prismar.game.item.impl.armor.lightweight.LightweightLeggings;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
-import in.prismar.game.item.impl.throwable.AirdropItem;
-import in.prismar.game.item.impl.throwable.AirstrikeItem;
-import in.prismar.game.item.impl.throwable.MolotovItem;
+import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.impl.armor.recruit.RecruitBoots;
 import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
@@ -32,7 +30,6 @@ import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
-import in.prismar.game.item.impl.throwable.GrenadeItem;
 import in.prismar.game.item.impl.gun.impl.*;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
@@ -82,6 +79,7 @@ public class CustomItemRegistry {
 
         register(new GrenadeItem());
         register(new MolotovItem());
+        register(new GasGrenadeItem());
 
         register(new AdaptiveChamberingAttachment());
         register(new VerticalGripAttachmentItem());
