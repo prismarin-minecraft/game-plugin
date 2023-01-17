@@ -122,6 +122,8 @@ public class EntityDamageListener implements Listener {
 
                 if(killstreak == 10) {
                     damager.getInventory().addItem(facade.getItemRegistry().createItem("Airstrike"));
+                } else if(killstreak == 5) {
+                    damager.getInventory().addItem(facade.getItemRegistry().createItem("UAV"));
                 }
 
                 displayStreak(map, damager, killstreak);
