@@ -4,6 +4,7 @@ import in.prismar.game.Game;
 import in.prismar.game.hardpoint.HardpointTeam;
 import in.prismar.game.item.impl.FFALeaveItem;
 import in.prismar.game.item.impl.HardpointLeaveItem;
+import in.prismar.game.item.impl.UAVItem;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointHelmet;
@@ -66,7 +67,6 @@ public class CustomItemRegistry {
         load();
 
         Bukkit.getScheduler().runTaskTimer(game, new CustomItemUpdater(game, this), 1, 1);
-       // Bukkit.getScheduler().runTaskTimer(game, new GunStackTask(), 1, 1);
     }
 
     public void load() {
@@ -80,6 +80,7 @@ public class CustomItemRegistry {
         register(new GrenadeItem());
         register(new MolotovItem());
         register(new GasGrenadeItem());
+        register(new UAVItem());
 
         register(new AdaptiveChamberingAttachment());
         register(new VerticalGripAttachmentItem());

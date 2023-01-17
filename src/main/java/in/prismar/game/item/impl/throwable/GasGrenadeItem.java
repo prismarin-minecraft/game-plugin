@@ -28,7 +28,7 @@ public class GasGrenadeItem extends LethalItem {
 
     public GasGrenadeItem() {
         super("GasGrenade", Material.STICK, "§2Gas Grenade");
-        setCustomModelData(2);
+        setCustomModelData(5);
         allFlags();
     }
 

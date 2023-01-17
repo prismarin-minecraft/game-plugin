@@ -26,6 +26,7 @@ import in.prismar.library.spigot.meta.anno.AutoCommand;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import in.prismar.library.spigot.setup.SpigotSetup;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -120,6 +121,10 @@ public class Game extends JavaPlugin {
             System.out.println("Cannot start web server: " + exception.getMessage());
         }
 
+    }
+
+    public boolean isCurrentlyInGame(Player player) {
+        return mapFacade.isCurrentlyPlaying(player) || hardpointFacade.isCurrentlyPlaying(player) || extractionFacade.isIn(player);
     }
 
     public String getDefaultDirectory() {
