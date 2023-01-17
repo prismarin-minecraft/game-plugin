@@ -11,6 +11,7 @@ import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -122,8 +123,10 @@ public class EntityDamageListener implements Listener {
 
                 if(killstreak == 10) {
                     damager.getInventory().addItem(facade.getItemRegistry().createItem("Airstrike"));
+                    damager.getPlayer().playSound(damager.getLocation(), Sound.ITEM_TOTEM_USE, 0.45F, 1);
                 } else if(killstreak == 5) {
                     damager.getInventory().addItem(facade.getItemRegistry().createItem("UAV"));
+                    damager.getPlayer().playSound(damager.getLocation(), Sound.ITEM_TOTEM_USE, 0.45F, 1);
                 }
 
                 displayStreak(map, damager, killstreak);
