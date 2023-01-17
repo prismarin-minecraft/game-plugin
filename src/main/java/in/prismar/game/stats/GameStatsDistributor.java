@@ -118,6 +118,12 @@ public class GameStatsDistributor {
         User user = provider.getUserByUUID(player.getUniqueId());
         int next = getKillstreak(player) + 1;
         user.setTag(KILLSTREAK_TAG, next);
+
+        long currentHighestStreak = user.getSeasonData().getStats().getOrDefault("highest.killstreak", 0l);
+        if(next > currentHighestStreak) {
+            user.getSeasonData().getStats().put("highest.killstreak", (long)next);
+        }
+
         return next;
     }
 
