@@ -122,7 +122,7 @@ public class RailgunItem extends CustomItem {
         private static final int DURATION_IN_TICKS = 300;
         private static final double RADIUS = 1.5D;
         private static final double ROTATION_DEGREES_PER_TICK = 20;
-        private static final double TRAVEL_DISTANCE_PER_TICK = 1.5D;
+        private static final double TRAVEL_DISTANCE_PER_TICK = 1D;
 
         private int ticks = 0;
 
