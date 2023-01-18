@@ -12,6 +12,7 @@ import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.party.PartyRegistry;
 import in.prismar.game.web.WebServer;
 import in.prismar.game.web.impl.ItemsRoute;
 import in.prismar.game.web.impl.PlayerRoute;
@@ -50,6 +51,9 @@ public class Game extends JavaPlugin {
 
     @Inject
     private GameMapFacade mapFacade;
+
+    @Inject
+    private PartyRegistry partyRegistry;
 
     @Inject
     private HardpointFacade hardpointFacade;
