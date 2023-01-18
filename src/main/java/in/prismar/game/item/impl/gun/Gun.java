@@ -18,6 +18,7 @@ import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.model.SkinableItem;
+import in.prismar.game.tracer.BulletTracer;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.item.ItemUtil;
@@ -326,17 +327,22 @@ public class Gun extends SkinableItem {
                     blockHit.getTarget().getWorld().spawnParticle(Particle.BLOCK_DUST, blockHit.getPoint(), 2,
                             blockHit.getTarget().getBlockData());
                     playSound(player, blockHit.getPoint(), GunSoundType.BULLET_IMPACT);
-                    spawnParticle(particleOrigin, blockHit.getPoint());
+                    spawnParticle(game, gunPlayer, particleOrigin, blockHit.getPoint());
                     return;
                 }
                 damageReducePercentage += wallbangTypes.get(blockHit.getTarget().getType());
             }
         }
-        spawnParticle(particleOrigin, bullet.getEndPoint());
+        spawnParticle(game, gunPlayer, particleOrigin, bullet.getEndPoint());
     }
 
-    private void spawnParticle(Location particleOrigin, Location location) {
-        ParticleUtil.spawnParticleAlongLine(particleOrigin, location, shootParticle, 20, 0);
+    private void spawnParticle(Game game, GunPlayer gunPlayer, Location particleOrigin, Location location) {
+        BulletTracer tracer = game.getTracerRegistry().getByUser(gunPlayer.getUser());
+        if(tracer == null) {
+            ParticleUtil.spawnParticleAlongLine(particleOrigin, location, shootParticle, 20, 0);
+        } else {
+            tracer.play(particleOrigin, location);
+        }
     }
 
     private GunDamageType getHitType(Entity target, Location hitPoint) {
@@ -424,8 +430,6 @@ public class Gun extends SkinableItem {
 
             }
         }
-
-
         long currentUpdateTick = gunPlayer.getCurrentUpdateTick();
         if (currentUpdateTick >= Integer.MAX_VALUE) {
             currentUpdateTick = 0;

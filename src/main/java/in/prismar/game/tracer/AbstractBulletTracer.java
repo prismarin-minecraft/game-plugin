@@ -1,7 +1,8 @@
-package in.prismar.game.item.reader;
+package in.prismar.game.tracer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -11,11 +12,8 @@ import lombok.Getter;
  **/
 @Getter
 @AllArgsConstructor
-public enum CustomItemReaderType {
+public abstract class AbstractBulletTracer implements BulletTracer {
 
-    GUNS("guns"),
-    MEELE("meele");
-
-    private final String path;
+    private final ItemStack icon;
 
 }

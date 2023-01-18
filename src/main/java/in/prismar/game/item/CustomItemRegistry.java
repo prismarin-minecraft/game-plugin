@@ -2,6 +2,8 @@ package in.prismar.game.item;
 
 import in.prismar.game.Game;
 import in.prismar.game.hardpoint.HardpointTeam;
+import in.prismar.game.item.holder.CustomItemHolder;
+import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.FFALeaveItem;
 import in.prismar.game.item.impl.HardpointLeaveItem;
 import in.prismar.game.item.impl.UAVItem;
@@ -21,17 +23,14 @@ import in.prismar.game.item.impl.armor.lightweight.LightweightBoots;
 import in.prismar.game.item.impl.armor.lightweight.LightweightChestplate;
 import in.prismar.game.item.impl.armor.lightweight.LightweightHelmet;
 import in.prismar.game.item.impl.armor.lightweight.LightweightLeggings;
-import in.prismar.game.item.impl.medical.MedicalSyringeItem;
-import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.impl.armor.recruit.RecruitBoots;
 import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.gun.Gun;
-import in.prismar.game.item.holder.CustomItemHolder;
-import in.prismar.game.item.holder.CustomItemHoldingType;
-import in.prismar.game.item.impl.gun.impl.*;
+import in.prismar.game.item.impl.medical.MedicalSyringeItem;
+import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
 import in.prismar.library.meta.anno.Service;
@@ -80,6 +79,7 @@ public class CustomItemRegistry {
         register(new GrenadeItem());
         register(new MolotovItem());
         register(new GasGrenadeItem());
+        register(new ImpactGrenadeItem());
         register(new UAVItem());
 
         register(new AdaptiveChamberingAttachment());
@@ -118,6 +118,7 @@ public class CustomItemRegistry {
         register(new JuggernautChestplate());
         register(new JuggernautLeggings());
         register(new JuggernautBoots());
+
 
         for(HardpointTeam team : HardpointTeam.values()) {
             register(new HardpointHelmet(team.getFancyName(), team.getColor()));

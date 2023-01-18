@@ -69,6 +69,9 @@ public class ArsenalService {
                 }
             }
         }
+        if(!data.getArsenal().containsKey("melee")) {
+            setItem(user, "melee", itemRegistry.createItem("knife"));
+        }
         return user;
     }
 
@@ -116,12 +119,16 @@ public class ArsenalService {
         } else {
             player.getInventory().setItem(3, lethal.clone());
         }
+        ItemStack melee = createArsenalItem(user, "melee");
+        if(melee == null) {
+            player.getInventory().setItem(2, itemRegistry.createItem("knife"));
+        } else {
+            player.getInventory().setItem(2, melee.clone());
+        }
     }
 
     public void giveLoadout(Player player) {
         User user = manage(player);
-
-
         ItemStack helmet = createArsenalItem(user, "helmet");
         if (helmet != null) {
             player.getInventory().setHelmet(helmet);
@@ -182,6 +189,7 @@ public class ArsenalService {
         setItem(user, "secondary", itemRegistry.createItem("glock17"));
 
         setItem(user, "lethal", itemRegistry.createItem("Grenade"), "Grenade");
+        setItem(user, "melee", itemRegistry.createItem("knife"));
     }
 
     public void setItem(User user, String key, ItemStack item) {

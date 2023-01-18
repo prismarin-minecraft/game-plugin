@@ -35,6 +35,9 @@ public class CustomItemEntityDamageListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCall(EntityDamageByEntityEvent event) {
+        if(event.getDamager() instanceof Player damager) {
+            registry.publishEvent(damager, event);
+        }
         if(event.getEntity() instanceof Player player) {
             List<CustomItemHolder> holders = registry.publishEvent(player, event);
             int headProtection = 0;

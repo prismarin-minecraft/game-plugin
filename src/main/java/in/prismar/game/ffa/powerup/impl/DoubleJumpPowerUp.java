@@ -28,7 +28,7 @@ public class DoubleJumpPowerUp implements PowerUp {
         player.sendMessage(PrismarinConstants.PREFIX + "§7You picked up a §cDouble Jump §7powerup");
         player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1f, 2);
         User user = provider.getUserByUUID(player.getUniqueId());
-        user.setTag("doubleJump", System.currentTimeMillis() + 1000 * 15);
+        user.setTag("doubleJump", System.currentTimeMillis() + 1000 * 10);
     }
 
     @Override

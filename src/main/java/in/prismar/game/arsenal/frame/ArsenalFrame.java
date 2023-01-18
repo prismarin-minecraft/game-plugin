@@ -3,6 +3,7 @@ package in.prismar.game.arsenal.frame;
 import in.prismar.api.user.User;
 import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.arsenal.ArsenalService;
+import in.prismar.game.item.impl.melee.MeleeItem;
 import in.prismar.game.item.impl.throwable.LethalItem;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.impl.armor.ArmorItem;
@@ -33,7 +34,8 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     private static final ItemStack ARROW_RIGHT = new CustomSkullBuilder("https://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e").build();
 
     private static final int PRIMARY_SLOT = 22;
-    private static final int SECONDARY_SLOT = 24;
+    private static final int SECONDARY_SLOT = 23;
+    private static final int MELEE_SLOT = 25;
     private static final int HELMET_SLOT = 11;
     private static final int CHESTPLATE_SLOT = 20;
     private static final int LEGGINGS_SLOT = 29;
@@ -56,6 +58,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
         addButton(PRIMARY_SLOT-9, createArrowDownItem("§cPrimary"));
         addButton(SECONDARY_SLOT-9, createArrowDownItem("§eSecondary"));
+        addButton(MELEE_SLOT-9, createArrowDownItem("§6Melee"));
 
         addButton(HELMET_SLOT-1, createArrowRightItem("§dHelmet"));
         addButton(CHESTPLATE_SLOT-1, createArrowRightItem("§dChestplate"));
@@ -66,6 +69,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
         addArsenalItem(PRIMARY_SLOT, "primary", "§cEmpty");
         addArsenalItem(SECONDARY_SLOT, "secondary", "§cEmpty");
+        addArsenalItem(MELEE_SLOT, "melee", "§cEmpty");
 
         addArsenalItem(HELMET_SLOT, "helmet", "§cEmpty");
         addArsenalItem(CHESTPLATE_SLOT, "chestplate", "§cEmpty");
@@ -125,6 +129,9 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
                         reopen();
                     } else if(item instanceof LethalItem) {
                         service.setItem(user, "lethal", item.build(), item.getId());
+                        reopen();
+                    } else if(item instanceof MeleeItem) {
+                        service.setItem(user, "melee", item.build(), item.getId());
                         reopen();
                     }
                 }
