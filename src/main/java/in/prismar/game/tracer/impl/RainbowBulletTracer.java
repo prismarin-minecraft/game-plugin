@@ -30,6 +30,13 @@ public class RainbowBulletTracer extends AbstractBulletTracer {
     public RainbowBulletTracer() {
         super(new ItemBuilder(Material.MAGENTA_WOOL).setName("§2R§6a§di§bn§9b§ao§5w").build());
         this.options = new ArrayList<>();
+        this.options.add(new Particle.DustOptions(Color.RED, 1));
+        this.options.add(new Particle.DustOptions(Color.BLUE, 1));
+        this.options.add(new Particle.DustOptions(Color.YELLOW, 1));
+        this.options.add(new Particle.DustOptions(Color.LIME, 1));
+        this.options.add(new Particle.DustOptions(Color.NAVY, 1));
+        this.options.add(new Particle.DustOptions(Color.PURPLE, 1));
+        this.options.add(new Particle.DustOptions(Color.ORANGE, 1));
     }
 
     @Override

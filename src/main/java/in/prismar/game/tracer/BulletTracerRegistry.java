@@ -31,7 +31,11 @@ public class BulletTracerRegistry extends LocalMapRegistry<String, BulletTracer>
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
 
 
-        register("laser", new ColoredBulletTracer(new ItemBuilder(Material.REDSTONE).setName("§cLaser").build(), Color.RED, 1));
+        register("scouter", new ColoredBulletTracer(new ItemBuilder(Material.GREEN_WOOL).setName("§2Scouter").build(), Color.GREEN, 1));
+        register("runner", new ColoredBulletTracer(new ItemBuilder(Material.ORANGE_WOOL).setName("§6Runner").build(), Color.ORANGE, 1));
+        register("rogue", new ColoredBulletTracer(new ItemBuilder(Material.BLUE_WOOL).setName("§9Rogue").build(), Color.BLUE, 1));
+        register("predator", new ColoredBulletTracer(new ItemBuilder(Material.RED_WOOL).setName("§4Predator").build(), Color.RED, 1));
+        register("pink", new ColoredBulletTracer(new ItemBuilder(Material.PINK_WOOL).setName("§dPink").build(), Color.FUCHSIA, 1));
         register("rainbow", new RainbowBulletTracer());
     }
 

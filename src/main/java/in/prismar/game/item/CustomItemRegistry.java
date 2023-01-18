@@ -6,6 +6,7 @@ import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.FFALeaveItem;
 import in.prismar.game.item.impl.HardpointLeaveItem;
+import in.prismar.game.item.impl.RailgunItem;
 import in.prismar.game.item.impl.UAVItem;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
@@ -118,6 +119,8 @@ public class CustomItemRegistry {
         register(new JuggernautChestplate());
         register(new JuggernautLeggings());
         register(new JuggernautBoots());
+
+        register(new RailgunItem());
 
 
         for(HardpointTeam team : HardpointTeam.values()) {

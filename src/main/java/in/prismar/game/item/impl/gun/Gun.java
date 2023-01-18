@@ -115,7 +115,7 @@ public class Gun extends SkinableItem {
         this.zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(displayName).build();
 
         for (Material wallbangType : Material.values()) {
-            if (wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG")) {
+            if (wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG") || wallbangType.name().contains("PLANK")) {
                 addWallbangTypes(wallbangType, 25);
             } else if (wallbangType.name().contains("GLASS") || wallbangType.name().contains("LEAVES") || wallbangType == Material.BARRIER) {
                 addWallbangTypes(wallbangType, 0);

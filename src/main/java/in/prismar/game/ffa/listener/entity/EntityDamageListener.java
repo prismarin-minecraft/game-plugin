@@ -122,11 +122,15 @@ public class EntityDamageListener implements Listener {
                 }
 
                 if(killstreak == 10) {
-                    damager.sendTitle("§c", "§c+ Airstrike", 5, 20, 5);
+                    damager.sendTitle("§c", "§c+ Airstrike", 10, 20, 10);
                     damager.getInventory().addItem(facade.getItemRegistry().createItem("Airstrike"));
                     damager.getPlayer().playSound(damager.getLocation(), Sound.ITEM_TOTEM_USE, 0.45F, 1);
+                } else if(killstreak == 20) {
+                    damager.sendTitle("§c", "§4§l+ Railgun", 10, 20, 10);
+                    damager.getInventory().addItem(facade.getItemRegistry().createItem("Railgun"));
+                    damager.getPlayer().playSound(damager.getLocation(), Sound.ITEM_TOTEM_USE, 0.45F, 1);
                 } else if(killstreak == 5) {
-                    damager.sendTitle("§a", "§a+ UAV", 5, 20, 5);
+                    damager.sendTitle("§a", "§a+ UAV", 10, 20, 10);
                     damager.getInventory().addItem(facade.getItemRegistry().createItem("UAV"));
                     damager.getPlayer().playSound(damager.getLocation(), Sound.ITEM_TOTEM_USE, 0.45F, 1);
                 }

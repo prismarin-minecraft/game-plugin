@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 public class BulletTraceFrame extends Frame {
 
     private static final ItemStack DEFAULT = new ItemBuilder(Material.IRON_BARS).setName("§7Default").allFlags().build();
+    private static final ItemStack AIR = new ItemStack(Material.AIR);
 
     private static final int[] SLOTS = {
             3, 4, 5, 6,
@@ -46,11 +48,12 @@ public class BulletTraceFrame extends Frame {
         } else {
             addButton(10, new ItemBuilder(tracer.getIcon()).addLore("§c").addLore("§7Click me to unequip this tracer").build(), (ClickFrameButtonEvent) (player1, event) -> {
                 registry.removeTracer(user);
-
+                reopen(player);
             });
         }
 
         int index = 0;
+
 
         for(Map.Entry<String, BulletTracer> entry : registry.getLocal().entrySet()) {
             if(registry.hasTracer(player, entry.getKey())) {
@@ -61,6 +64,10 @@ public class BulletTraceFrame extends Frame {
                 });
                 index++;
             }
+        }
+
+        for (int i = index; i < SLOTS.length; i++) {
+            addButton(SLOTS[i], AIR);
         }
 
         build();
