@@ -24,7 +24,7 @@ public class GasGrenadeItem extends LethalItem {
 
     private static final Particle.DustOptions PARTICLE_OPTIONS = new Particle.DustOptions(Color.GREEN, 6);
     private static final double RANGE = 3.7;
-    private static final double DAMAGE = 3;
+    private static final double DAMAGE = 7;
 
     public GasGrenadeItem() {
         super("GasGrenade", Material.STICK, "§2Gas Grenade");

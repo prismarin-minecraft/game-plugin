@@ -30,7 +30,7 @@ import java.util.List;
 public class UAVItem extends CustomItem {
 
     private static final double RANGE = 350;
-    private static final long TIME_IN_TICKS = 20 * 10;
+    private static final long TIME_IN_TICKS = 20 * 25;
 
     public UAVItem() {
         super("UAV", Material.STICK, "§aUAV");
