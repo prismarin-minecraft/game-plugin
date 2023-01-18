@@ -32,10 +32,10 @@ import org.checkerframework.checker.units.qual.C;
  **/
 public class RailgunItem extends CustomItem {
 
-    private static final int MAX_AMMO = 3;
+    private static final int MAX_AMMO = 5;
 
-    private static final double DAMAGE = 30;
-    private static final double EXPLOSION_RANGE = 7;
+    private static final double DAMAGE = 32;
+    private static final double EXPLOSION_RANGE = 8;
 
     private static final long MAX_PROGRESS = 60;
     private static final long COUNTDOWN = 1000 * 4;
