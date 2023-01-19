@@ -4,6 +4,7 @@ import in.prismar.api.user.User;
 import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.arsenal.ArsenalService;
 import in.prismar.game.item.impl.melee.MeleeItem;
+import in.prismar.game.item.impl.placeable.PlaceableItem;
 import in.prismar.game.item.impl.throwable.LethalItem;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.impl.armor.ArmorItem;
@@ -78,8 +79,12 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
         addArsenalItem(LETHAL_SLOT, "lethal", "§cEmpty");
 
-        addButton(53, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to FFA menu").build(), (ClickFrameButtonEvent) (player1, event) -> {
+        addButton(53, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to menu").build(), (ClickFrameButtonEvent) (player1, event) -> {
             player.performCommand("game");
+        });
+
+        addButton(45, new ItemBuilder(Material.REDSTONE).setName("§6Bullet tracer").build(), (ClickFrameButtonEvent) (player1, event) -> {
+            player.performCommand("bullettracer");
         });
 
         build();
@@ -127,11 +132,11 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
                     } else if(item instanceof ArmorItem armor) {
                         service.setItem(user, armor.getType().name().toLowerCase(), stack.clone());
                         reopen();
-                    } else if(item instanceof LethalItem) {
+                    } else if(item instanceof LethalItem || item instanceof PlaceableItem) {
                         service.setItem(user, "lethal", item.build(), item.getId());
                         reopen();
                     } else if(item instanceof MeleeItem) {
-                        service.setItem(user, "melee", item.build(), item.getId());
+                        service.setItem(user, "melee", stack.clone());
                         reopen();
                     }
                 }

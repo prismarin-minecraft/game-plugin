@@ -31,6 +31,7 @@ import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
+import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
@@ -121,6 +122,8 @@ public class CustomItemRegistry {
         register(new JuggernautBoots());
 
         register(new RailgunItem());
+
+        register(new LandmineCustomItem());
 
 
         for(HardpointTeam team : HardpointTeam.values()) {

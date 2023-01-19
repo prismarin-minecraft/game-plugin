@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
  **/
 public class ImpactGrenadeItem extends LethalItem {
 
-    private static final double DAMAGE = 22;
+    private static final double DAMAGE = 24;
 
     public ImpactGrenadeItem() {
         super("ImpactGrenade", Material.STICK, "§cImpact Grenade");

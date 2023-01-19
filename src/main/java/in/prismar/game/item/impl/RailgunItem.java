@@ -34,7 +34,7 @@ public class RailgunItem extends CustomItem {
 
     private static final int MAX_AMMO = 5;
 
-    private static final double DAMAGE = 32;
+    private static final double DAMAGE = 40;
     private static final double EXPLOSION_RANGE = 8;
 
     private static final long MAX_PROGRESS = 60;
@@ -78,12 +78,11 @@ public class RailgunItem extends CustomItem {
         }
 
         long difference = System.currentTimeMillis() - gunPlayer.getLastInteract();
-        if(difference <= 210) {
+        if(difference <= 300) {
             if(gunPlayer.getCurrentUpdateTick() >= MAX_PROGRESS) {
-
                 gunPlayer.getUser().setTag("railgunCooldown", System.currentTimeMillis() + COUNTDOWN);
                 player.getWorld().playSound(player.getLocation(), "railgun.shoot", 1f, 1f);
-                new ParticleShooter(game, player.getEyeLocation(), player.getEyeLocation().getDirection(), location -> {
+                new ParticleShooter(game, player, player.getEyeLocation(), player.getEyeLocation().getDirection(), location -> {
                     location.getWorld().playSound(location, "grenade.explosion", 3f, 1f);
                     location.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, location, 1);
                     for(Entity near : location.getWorld().getNearbyEntities(location, EXPLOSION_RANGE, EXPLOSION_RANGE, EXPLOSION_RANGE)) {
@@ -127,14 +126,15 @@ public class RailgunItem extends CustomItem {
         private int ticks = 0;
 
         private final Vector dir;
+        private final Player shooter;
         private final Location currentLoc;
-
         private final Consumer<Location> consumer;
 
-        public ParticleShooter(Plugin plugin, Location origin, Vector dir, Consumer<Location> consumer) {
+        public ParticleShooter(Plugin plugin, Player player,  Location origin, Vector dir, Consumer<Location> consumer) {
             this.consumer = consumer;
             this.currentLoc = origin.clone();
             this.dir = dir.clone().normalize();
+            this.shooter = player;
 
             this.runTaskTimer(plugin, 0L, 1L);
         }
@@ -150,6 +150,17 @@ public class RailgunItem extends CustomItem {
                 consumer.accept(currentLoc);
                 cancel();
                 return;
+            }
+
+            for(Entity near : currentLoc.getWorld().getNearbyEntities(currentLoc, RADIUS, RADIUS, RADIUS)) {
+                if(near instanceof Player target) {
+                    if(!target.getUniqueId().equals(shooter.getUniqueId())) {
+                        consumer.accept(currentLoc);
+                        cancel();
+                        return;
+                    }
+
+                }
             }
 
             currentLoc.getWorld().spawnParticle(Particle.REDSTONE, currentLoc, 1, new Particle.DustOptions(Color.RED, 4));

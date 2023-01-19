@@ -17,7 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  **/
 public class GrenadeItem extends LethalItem {
 
-    private static final double DAMAGE = 25;
+    private static final double DAMAGE = 27;
 
     public GrenadeItem() {
         super("Grenade", Material.STICK, "§6Grenade");

@@ -42,6 +42,8 @@ public class BulletTraceFrame extends Frame {
 
         fill();
 
+        addButton(26, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to loadout").build(), (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("loadout"));
+
         BulletTracer tracer = registry.getByUser(user);
         if (tracer == null) {
             addButton(10, DEFAULT);

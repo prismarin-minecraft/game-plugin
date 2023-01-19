@@ -19,15 +19,15 @@ public class AdaptiveChamberingAttachment extends Attachment {
     public AdaptiveChamberingAttachment() {
         super("AdaptiveChambering", Material.LEVER, "§7Adaptive Chambering");
         setCustomModelData(2);
-        addAllowedTypes(GunType.AR, GunType.SMG, GunType.SHOTGUN, GunType.LMG);
+        addAllowedTypes(GunType.AR, GunType.SMG, GunType.LMG);
         registerApplier(AttachmentModifier.FIRE_RATE, new IntPercentageAttachmentApplier(25));
-        registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(30, ApplierOperation.ADD));
-        registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.ADD));
+        registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(35, ApplierOperation.ADD));
+        registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(20, ApplierOperation.ADD));
 
         addLore("§c");
         addLore(" §8╔ §7Fire rate§8: §a+25%");
-        addLore(" §8╠ §7Spread§8: §c+30%");
-        addLore(" §8╠ §7Sneak spread§8: §c+10%");
+        addLore(" §8╠ §7Spread§8: §c+35%");
+        addLore(" §8╠ §7Sneak spread§8: §c+20%");
         addAllowedTypesLore();
         addLore("§c");
     }
