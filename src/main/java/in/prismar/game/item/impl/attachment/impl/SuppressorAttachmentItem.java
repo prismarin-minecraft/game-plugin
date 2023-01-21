@@ -21,7 +21,7 @@ public class SuppressorAttachmentItem extends Attachment {
         super("Suppressor", Material.LEVER, "§dSuppressor");
         setCustomModelData(1);
         addAllowedTypes(GunType.AR, GunType.SMG, GunType.PISTOL, GunType.SNIPER);
-        registerApplier(AttachmentModifier.SOUND, new BooleanAttachmentApplier(false));
+        //registerApplier(AttachmentModifier.SOUND, new BooleanAttachmentApplier(false));
         registerApplier(AttachmentModifier.RANGE, new DoublePercentageAttachmentApplier(15, ApplierOperation.SUBTRACT));
 
         addLore("§c");

@@ -12,6 +12,7 @@ import in.prismar.game.item.impl.attachment.AttachmentModifier;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.model.CustomItem;
+import in.prismar.game.perk.Perk;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
@@ -115,10 +116,15 @@ public class ArsenalService {
         }
         ItemStack lethal = createArsenalItem(user, "lethal");
         if(lethal == null) {
-            player.getInventory().setItem(3, itemRegistry.createItem("Grenade"));
+            lethal = itemRegistry.createItem("Grenade");
         } else {
-            player.getInventory().setItem(3, lethal.clone());
+            lethal = lethal.clone();
         }
+        if(game.getPerkService().hasPerk(player, Perk.EXPERT)) {
+            lethal.setAmount(2);
+        }
+        player.getInventory().setItem(3, lethal);
+
         ItemStack melee = createArsenalItem(user, "melee");
         if(melee == null) {
             player.getInventory().setItem(2, itemRegistry.createItem("knife"));

@@ -49,7 +49,7 @@ public class HardpointConfigFile extends GsonFileWrapper<HardpointConfig> {
 
     public List<Location> generateCircle(Location loc) {
         List<Location> locations = new ArrayList<>();
-        int r = 5;
+        int r = 4;
         int cx = loc.getBlockX();
         int cy = loc.getBlockY();
         int cz = loc.getBlockZ();

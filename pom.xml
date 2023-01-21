@@ -83,8 +83,8 @@
 
     <repositories>
         <repository>
-            <id>prismarin-minecraft</id>
-            <url>https://nexus.prismar.in/repository/prismarin-minecraft/</url>
+            <id>minecraft</id>
+            <url>https://nexus.prismar.in/repository/minecraft/</url>
         </repository>
         <repository>
             <id>ranull-repo-external</id>

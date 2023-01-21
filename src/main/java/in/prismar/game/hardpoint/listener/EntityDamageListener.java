@@ -13,6 +13,7 @@ import in.prismar.game.stats.GameStatsDistributor;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -131,8 +132,10 @@ public class EntityDamageListener implements Listener {
                 damager.sendMessage(PrismarinConstants.PREFIX + "§7You received §6" + NumberFormatter.formatNumberToThousands(streakMoney) + "$ §7for having a §c" + killstreak + " §7killstreak");
             }
 
-            if (killstreak == 10) {
-                damager.getInventory().addItem(facade.getItemRegistry().createItem("Airstrike"));
+            if(killstreak == 5) {
+                damager.sendTitle("§a", "§a+ UAV", 10, 20, 10);
+                damager.getInventory().addItem(facade.getItemRegistry().createItem("UAV"));
+                damager.getPlayer().playSound(damager.getLocation(), Sound.ITEM_TOTEM_USE, 0.45F, 1);
             }
 
             displayStreak(damager, killstreak);

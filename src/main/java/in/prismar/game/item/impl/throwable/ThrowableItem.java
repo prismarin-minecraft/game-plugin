@@ -15,6 +15,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 /**
@@ -57,7 +58,9 @@ public abstract class ThrowableItem extends CustomItem {
 
         player.getWorld().playSound(player.getLocation(), launchSound, launchSoundVolume, 1);
         Vector vector = player.getLocation().getDirection().multiply(strength);
-        Item item = player.getWorld().dropItem(player.getEyeLocation(), event.getItem().clone());
+        ItemStack stack = event.getItem().clone();
+        stack.setAmount(1);
+        Item item = player.getWorld().dropItem(player.getEyeLocation(), stack);
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setVelocity(vector);
         ItemUtil.takeItemFromHand(player, true);

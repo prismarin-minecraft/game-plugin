@@ -32,7 +32,6 @@ public abstract class PlaceableItem extends CustomItem {
     public PlaceableItem(String id, Material material, String displayName) {
         super(id, material, displayName);
         allFlags();
-        this.placedItem = build();
     }
 
     @CustomItemEvent

@@ -30,11 +30,15 @@ import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.gun.Gun;
+import in.prismar.game.item.impl.medical.BandageItem;
+import in.prismar.game.item.impl.medical.MedicalItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
+import in.prismar.game.item.impl.medical.MedkitItem;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
+import in.prismar.library.common.event.EventBus;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import lombok.Getter;
@@ -60,8 +64,11 @@ public class CustomItemRegistry {
     private Map<String, CustomItem> items;
     private Map<UUID, List<CustomItemHolder>> holders;
 
+    private EventBus eventBus;
+
     public CustomItemRegistry(Game game) {
         this.game = game;
+        this.eventBus = new EventBus();
         this.items = new LinkedHashMap<>();
         this.reader = new CustomItemReader();
         this.holders = new HashMap<>();
@@ -94,6 +101,8 @@ public class CustomItemRegistry {
 
 
         register(new MedicalSyringeItem());
+        register(new BandageItem());
+        register(new MedkitItem());
 
         register(new AirstrikeItem());
         register(new AirdropItem());

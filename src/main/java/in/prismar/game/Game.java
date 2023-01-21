@@ -13,6 +13,7 @@ import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.party.PartyRegistry;
+import in.prismar.game.perk.PerkService;
 import in.prismar.game.tracer.BulletTracerRegistry;
 import in.prismar.game.web.WebServer;
 import in.prismar.game.web.impl.ItemsRoute;
@@ -52,6 +53,9 @@ public class Game extends JavaPlugin {
 
     @Inject
     private GameMapFacade mapFacade;
+
+    @Inject
+    private PerkService perkService;
 
     @Inject
     private BulletTracerRegistry tracerRegistry;
@@ -132,7 +136,11 @@ public class Game extends JavaPlugin {
     }
 
     public boolean isCurrentlyInGame(Player player) {
-        return mapFacade.isCurrentlyPlaying(player) || hardpointFacade.isCurrentlyPlaying(player) || extractionFacade.isIn(player);
+        return isCurrentlyPlayingAnyMode(player) || extractionFacade.isIn(player);
+    }
+
+    public boolean isCurrentlyPlayingAnyMode(Player player) {
+        return mapFacade.isCurrentlyPlaying(player) || hardpointFacade.isCurrentlyPlaying(player);
     }
 
     public String getDefaultDirectory() {

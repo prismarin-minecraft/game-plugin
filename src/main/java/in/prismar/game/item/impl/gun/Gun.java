@@ -6,6 +6,8 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEvent;
+import in.prismar.game.item.event.bus.GunReloadEvent;
+import in.prismar.game.item.event.bus.GunShootEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.attachment.Attachment;
@@ -258,20 +260,26 @@ public class Gun extends SkinableItem {
 
 
     public void shoot(Game game, Player player, ItemStack stack) {
-
         GunPlayer gunPlayer = GunPlayer.of(player);
+
+        GunShootEvent shootEvent = new GunShootEvent(gunPlayer,this, false);
+        game.getItemRegistry().getEventBus().publish(shootEvent);
+
+        if(shootEvent.isCancelled()) {
+            return;
+        }
+
         SeasonData seasonData = gunPlayer.getUser().getSeasonData();
         addStatsValue(seasonData, "shots");
 
         double normalSpread = this.spread;
         double sneakSpread = this.sneakSpread;
         double range = this.range;
-        //boolean soundDecrease = true;
+
         for (Attachment attachment : getAttachments(game, stack, true)) {
             normalSpread = attachment.apply(AttachmentModifier.SPREAD, normalSpread);
             sneakSpread = attachment.apply(AttachmentModifier.SNEAK_SPREAD, sneakSpread);
             range = attachment.apply(AttachmentModifier.RANGE, range);
-            //soundDecrease = attachment.apply(AttachmentModifier.SOUND, soundDecrease);
         }
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
         Location eyeLocation = player.getEyeLocation();
@@ -281,8 +289,9 @@ public class Gun extends SkinableItem {
         Bullet bullet = new Bullet(particleOrigin, eyeLocation.clone(),
                 VectorUtil.getRandomizedDirection(player, spread), range);
 
-        List<RaytraceHit> hits = bullet.invoke();
 
+
+        List<RaytraceHit> hits = bullet.invoke();
 
         int damageReducePercentage = 0;
         for (RaytraceHit hit : hits) {
@@ -380,6 +389,13 @@ public class Gun extends SkinableItem {
 
         int ammo = !unlimitedAmmo ? AmmoType.getAmmoInInventory(player, ammoType) : needed;
         if (ammo >= 1) {
+            GunReloadEvent reloadEvent = new GunReloadEvent(player, gunPlayer,this, this.reloadTimeInTicks, false);
+            game.getItemRegistry().getEventBus().publish(reloadEvent);
+            if(reloadEvent.isCancelled()) {
+                return;
+            }
+            int reloadTimeInTicks = reloadEvent.getReloadTimeInTicks();
+
             if (ammo < needed) {
                 AmmoType.takeAmmo(player, ammoType, ammo);
                 ammoToGive = current + ammo;

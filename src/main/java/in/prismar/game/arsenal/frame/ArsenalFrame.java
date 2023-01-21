@@ -36,12 +36,12 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
     private static final int PRIMARY_SLOT = 22;
     private static final int SECONDARY_SLOT = 23;
-    private static final int MELEE_SLOT = 25;
+    private static final int MELEE_SLOT = 24;
     private static final int HELMET_SLOT = 11;
     private static final int CHESTPLATE_SLOT = 20;
     private static final int LEGGINGS_SLOT = 29;
     private static final int BOOTS_SLOT = 38;
-    private static final int LETHAL_SLOT = 41;
+    private static final int LETHAL_SLOT = 25;
 
     private final ArsenalService service;
 
@@ -66,7 +66,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
         addButton(LEGGINGS_SLOT-1, createArrowRightItem("§dLeggings"));
         addButton(BOOTS_SLOT-1, createArrowRightItem("§dBoots"));
 
-        addButton(LETHAL_SLOT-1, createArrowRightItem("§3Lethal"));
+        addButton(LETHAL_SLOT-9, createArrowDownItem("§3Lethal"));
 
         addArsenalItem(PRIMARY_SLOT, "primary", "§cEmpty");
         addArsenalItem(SECONDARY_SLOT, "secondary", "§cEmpty");
@@ -83,8 +83,11 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
             player.performCommand("game");
         });
 
-        addButton(45, new ItemBuilder(Material.REDSTONE).setName("§6Bullet tracer").build(), (ClickFrameButtonEvent) (player1, event) -> {
+        addButton(41, new ItemBuilder(Material.REDSTONE).setName("§6Bullet tracer").build(), (ClickFrameButtonEvent) (player1, event) -> {
             player.performCommand("bullettracer");
+        });
+        addButton(42, new ItemBuilder(Material.BEACON).setName("§9Perks").build(), (ClickFrameButtonEvent) (player1, event) -> {
+            player.performCommand("perks");
         });
 
         build();

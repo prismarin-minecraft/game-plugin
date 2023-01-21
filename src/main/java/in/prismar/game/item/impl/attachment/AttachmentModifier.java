@@ -12,7 +12,5 @@ public enum AttachmentModifier {
     SPREAD,
     SNEAK_SPREAD,
     MAX_AMMO,
-    RANGE,
-
-    SOUND;
+    RANGE;
 }
