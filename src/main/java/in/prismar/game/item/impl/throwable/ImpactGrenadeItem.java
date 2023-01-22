@@ -36,7 +36,7 @@ public class ImpactGrenadeItem extends LethalItem {
             long ticks = 0;
             @Override
             public void run() {
-                if (!throwEvent.getPlayer().isOnline()) {
+                if (!throwEvent.getPlayer().isOnline() || ticks >= 20 * 60) {
                     if (!item.isDead()) {
                         item.remove();
                     }
