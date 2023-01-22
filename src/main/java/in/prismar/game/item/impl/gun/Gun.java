@@ -129,8 +129,9 @@ public class Gun extends SkinableItem {
 
         registerSound(GunSoundType.LOW_AMMO, "misc.lowammo", 0.8f, 1);
 
-        registerSound(GunSoundType.HIT, Sound.BLOCK_BASALT_HIT, 0.9f, 2F);
-        registerSound(GunSoundType.HEADSHOT, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 0.35f, 1f);
+
+        registerSound(GunSoundType.HIT, "gun.hit", 0.9f, 1f);
+        registerSound(GunSoundType.HEADSHOT, "gun.headshot", 0.5f, 1f);
 
         registerSound(GunSoundType.RELOAD_IN, Sound.BLOCK_PISTON_EXTEND, 0.65f, 0.7f);
 
