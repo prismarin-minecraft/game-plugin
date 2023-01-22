@@ -114,7 +114,10 @@ public class Gun extends SkinableItem {
         this.sounds = new HashMap<>();
         this.type = type;
         this.wallbangTypes = new HashMap<>();
-        this.zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(displayName).build();
+        if(type == GunType.SNIPER) {
+            this.zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(displayName).build();
+        }
+
 
         for (Material wallbangType : Material.values()) {
             if (wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG") || wallbangType.name().contains("PLANK")) {
@@ -183,26 +186,14 @@ public class Gun extends SkinableItem {
         playSound(player, player.getLocation(), type);
     }
 
-    public void playSound(Player player, GunSoundType type, float soundDecreasePercentage) {
-        playSound(player, player.getLocation(), type, soundDecreasePercentage);
-    }
-
     public void playSound(Player player, Location location, GunSoundType type) {
-        playSound(player, location, type, 0);
-    }
-
-    public void playSound(Player player, Location location, GunSoundType type, float soundDecreasePercentage) {
         if (sounds.containsKey(type)) {
             GunSound sound = sounds.get(type);
             if (type.isSurrounding()) {
-                float decrease = (sound.getVolume() / 100.0f) * soundDecreasePercentage;
-                if (soundDecreasePercentage == 0) {
-                    decrease = 0;
-                }
                 if (sound.getSound() == null) {
-                    location.getWorld().playSound(location, sound.getSoundName(), sound.getVolume() - decrease, sound.getPitch());
+                    location.getWorld().playSound(location, sound.getSoundName(), sound.getVolume(), sound.getPitch());
                 } else {
-                    location.getWorld().playSound(location, sound.getSound(), sound.getVolume() - decrease, sound.getPitch());
+                    location.getWorld().playSound(location, sound.getSound(), sound.getVolume(), sound.getPitch());
                 }
             } else {
                 if (sound.getSound() == null) {
@@ -433,7 +424,7 @@ public class Gun extends SkinableItem {
                 if (!gunPlayer.isZooming()) {
                     gunPlayer.setZooming(true);
                 }
-                if (type == GunType.SNIPER && !gunPlayer.isReloading()) {
+                if (!gunPlayer.isReloading() && zoomItem != null) {
                     ItemUtil.sendFakeMainHeadEquipment(player, zoomItem);
                 }
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, zoom - 1, false, false));
@@ -482,7 +473,7 @@ public class Gun extends SkinableItem {
                 for (int i = 0; i < bulletsPerShot; i++) {
                     shoot(game, player, holder.getStack());
                 }
-                playSound(player, GunSoundType.SHOOT, 0);
+                playSound(player, GunSoundType.SHOOT);
                 ammo--;
                 PersistentItemDataUtil.setInteger(game, holder.getStack(), AMMO_KEY, ammo);
                 currentUpdateTick = 0;

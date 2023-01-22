@@ -44,7 +44,7 @@ public class EntityDamageListener implements Listener {
         if(event.getEntity() instanceof Player player) {
             if(service.hasPerkAndAllowedToUse(player, Perk.ESCAPE)) {
                 User user = service.getUserProvider().getUserByUUID(player.getUniqueId());
-                if(user.isLocalTimestampAvailable(Perk.ESCAPE.name(), System.currentTimeMillis() + 1000 * 6)) {
+                if(user.isLocalTimestampAvailable(Perk.ESCAPE.name(), System.currentTimeMillis() + 1000 * 8)) {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 1, false, false));
                 }
             } else if(service.hasPerkAndAllowedToUse(player, Perk.DEADEYE)) {
@@ -57,11 +57,12 @@ public class EntityDamageListener implements Listener {
                         @Override
                         public void run() {
                             try {
+
                                 game.getGlowingEntities().unsetGlowing(event.getDamager(), player);
                                 scoreboardProvider.recreateTablist(player);
                             } catch (ReflectiveOperationException e) {}
                         }
-                    }.runTaskTimer(game, 20 * 2, 20 * 2);
+                    }.runTaskLater(game, 20 * 2);
 
                 }
             } else if(service.hasPerkAndAllowedToUse(player, Perk.FASTHANDS)) {
