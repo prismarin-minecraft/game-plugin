@@ -130,13 +130,11 @@ public class Gun extends SkinableItem {
         registerSound(GunSoundType.LOW_AMMO, "misc.lowammo", 0.8f, 1);
 
 
-        registerSound(GunSoundType.HIT, "gun.hit", 0.9f, 1f);
-        registerSound(GunSoundType.HEADSHOT, "gun.headshot", 0.5f, 1f);
+        registerSound(GunSoundType.HIT, "impact.hit", 0.9f, 1f);
+        registerSound(GunSoundType.HEADSHOT, "impact.headshot", 0.5f, 1f);
 
         registerSound(GunSoundType.RELOAD_IN, Sound.BLOCK_PISTON_EXTEND, 0.65f, 0.7f);
 
-        GunSound impactSound = registerSound(GunSoundType.BULLET_IMPACT, Sound.BLOCK_STONE_HIT, 0.65f, 1);
-        impactSound.setSurroundingDistance(10);
 
         setUnbreakable(true);
 
@@ -327,9 +325,15 @@ public class Gun extends SkinableItem {
                 if (!wallbangTypes.containsKey(blockHit.getTarget().getType())) {
                     blockHit.getTarget().getWorld().spawnParticle(Particle.BLOCK_DUST, blockHit.getPoint(), 2,
                             blockHit.getTarget().getBlockData());
-                    playSound(player, blockHit.getPoint(), GunSoundType.BULLET_IMPACT);
+                    blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.cement", 0.8f, 1);
                     spawnParticle(game, gunPlayer, particleOrigin, blockHit.getPoint());
                     return;
+                }
+                if(blockHit.getTarget().getType().name().contains("GLASS") || blockHit.getTarget().getType() == Material.GLASS) {
+                    System.out.println("glass PLAYING");
+                    blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.glass", 0.8f, 1);
+                } else if(blockHit.getTarget().getType().name().contains("LOG") || blockHit.getTarget().getType().name().contains("PLANKS")) {
+                    blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.tree", 0.8f, 1);
                 }
                 damageReducePercentage += wallbangTypes.get(blockHit.getTarget().getType());
             }

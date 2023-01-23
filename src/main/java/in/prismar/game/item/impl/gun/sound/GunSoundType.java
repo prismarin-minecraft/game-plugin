@@ -19,8 +19,6 @@ public enum GunSoundType {
     HIT(false),
     HEADSHOT(false),
 
-    BULLET_IMPACT(true),
-
     LOW_AMMO(false);
 
     private final boolean surrounding;

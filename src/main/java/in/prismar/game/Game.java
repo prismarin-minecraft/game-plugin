@@ -3,6 +3,7 @@ package in.prismar.game;
 import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
+import in.prismar.api.game.GameProvider;
 import in.prismar.api.hardpoint.HardpointProvider;
 import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
@@ -42,7 +43,7 @@ import java.io.File;
  **/
 @Getter
 @Service(autoRegister = false)
-public class Game extends JavaPlugin {
+public class Game extends JavaPlugin implements GameProvider {
 
     private SpigotSetup setup;
 
@@ -118,6 +119,7 @@ public class Game extends JavaPlugin {
         PrismarinApi.registerProvider(GameMapProvider.class, mapFacade);
         PrismarinApi.registerProvider(ExtractionProvider.class, extractionFacade);
         PrismarinApi.registerProvider(HardpointProvider.class, hardpointFacade);
+        PrismarinApi.registerProvider(GameProvider.class, this);
     }
 
     private void initializeWebServer() {
@@ -135,10 +137,12 @@ public class Game extends JavaPlugin {
 
     }
 
+    @Override
     public boolean isCurrentlyInGame(Player player) {
         return isCurrentlyPlayingAnyMode(player) || extractionFacade.isIn(player);
     }
 
+    @Override
     public boolean isCurrentlyPlayingAnyMode(Player player) {
         return mapFacade.isCurrentlyPlaying(player) || hardpointFacade.isCurrentlyPlaying(player);
     }
