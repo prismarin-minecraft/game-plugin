@@ -330,7 +330,6 @@ public class Gun extends SkinableItem {
                     return;
                 }
                 if(blockHit.getTarget().getType().name().contains("GLASS") || blockHit.getTarget().getType() == Material.GLASS) {
-                    System.out.println("glass PLAYING");
                     blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.glass", 0.8f, 1);
                 } else if(blockHit.getTarget().getType().name().contains("LOG") || blockHit.getTarget().getType().name().contains("PLANKS")) {
                     blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.tree", 0.8f, 1);
