@@ -29,7 +29,7 @@ import java.util.*;
  **/
 public class UAVItem extends CustomItem {
 
-    private static Set<UUID> UAV_ACTIVE = new HashSet<>();
+    public static Set<UUID> UAV_ACTIVE = new HashSet<>();
     private static final double RANGE = 350;
     private static final long TIME_IN_TICKS = 20 * 25;
 

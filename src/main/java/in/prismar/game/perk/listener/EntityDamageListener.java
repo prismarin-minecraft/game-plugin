@@ -4,6 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.api.user.User;
 import in.prismar.game.Game;
+import in.prismar.game.item.impl.UAVItem;
 import in.prismar.game.perk.Perk;
 import in.prismar.game.perk.PerkService;
 import in.prismar.library.meta.anno.Inject;
@@ -49,7 +50,7 @@ public class EntityDamageListener implements Listener {
                 }
             } else if(service.hasPerkAndAllowedToUse(player, Perk.DEADEYE)) {
                 User user = service.getUserProvider().getUserByUUID(player.getUniqueId());
-                if(user.isLocalTimestampAvailable(Perk.ESCAPE.name(), System.currentTimeMillis() + 1000 * 4)) {
+                if(user.isLocalTimestampAvailable(Perk.ESCAPE.name(), System.currentTimeMillis() + 1000 * 4) && !UAVItem.UAV_ACTIVE.contains(player.getUniqueId())) {
                     try {
                         game.getGlowingEntities().setGlowing(event.getDamager(), player, ChatColor.RED);
                     }catch (Exception ex) {}
