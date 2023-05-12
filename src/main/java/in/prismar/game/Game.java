@@ -20,6 +20,7 @@ import in.prismar.game.web.WebServer;
 import in.prismar.game.web.impl.ItemsRoute;
 import in.prismar.game.web.impl.PlayerRoute;
 import in.prismar.game.web.impl.VoteRoute;
+import in.prismar.game.web.impl.banner.BannerRoute;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
@@ -130,6 +131,7 @@ public class Game extends JavaPlugin implements GameProvider {
             this.webServer.addRoute(new ItemsRoute(itemRegistry));
             this.webServer.addRoute(new PlayerRoute(mapFacade, extractionFacade));
             this.webServer.addRoute(new VoteRoute());
+            this.webServer.addRoute(new BannerRoute(this, webServer));
             this.webServer.initializePaths();
         }catch (Exception exception) {
             System.out.println("Cannot start web server: " + exception.getMessage());

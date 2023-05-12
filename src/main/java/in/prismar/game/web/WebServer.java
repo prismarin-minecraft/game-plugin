@@ -5,10 +5,12 @@ import com.google.gson.GsonBuilder;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.web.route.GetWebRoute;
+import in.prismar.game.web.route.PostWebRoute;
 import in.prismar.game.web.route.WebRoute;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.List;
  * Proprietary and confidential
  * Written by Maga
  **/
+@Getter
 public class WebServer {
 
     private String basePath;
@@ -51,6 +54,11 @@ public class WebServer {
         for(WebRoute<?> route : this.routes) {
             if(route instanceof GetWebRoute<?>) {
                 javalin.get("/"+ basePath + route.getPath(), context -> {
+                    context.header("Content-Type", "application/json");
+                    context.result(gson.toJson(route.onRoute(context)));
+                });
+            } else if(route instanceof PostWebRoute<?>) {
+                javalin.post("/" + basePath + route.getPath(), context -> {
                     context.header("Content-Type", "application/json");
                     context.result(gson.toJson(route.onRoute(context)));
                 });
