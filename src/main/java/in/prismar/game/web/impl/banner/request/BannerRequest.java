@@ -1,11 +1,7 @@
 package in.prismar.game.web.impl.banner.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.PatternType;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -13,10 +9,9 @@ import org.bukkit.block.banner.PatternType;
  * Proprietary and confidential
  * Written by Maga
  **/
-@NoArgsConstructor
-@Getter @Setter
-public class BannerPattern {
+@Getter
+@Setter
+public class BannerRequest {
 
-    private DyeColor color;
-    private PatternType pattern;
+    private String id;
 }
