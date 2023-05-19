@@ -82,8 +82,8 @@ public class AirstrikeItem extends ThrowableItem {
                                     armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.5f, 1.5f);
                                 }
                             }
-                            if(getCurrentTicks() % 5 == 0) {
-                                for (int i = 0; i < 1; i++) {
+                            if(getCurrentTicks() % 4 == 0) {
+                                for (int i = 0; i < 2; i++) {
                                     Location location = start.clone().add(MathUtil.random(-20, 20), y, MathUtil.random(-20, 20));
                                     spawned.add(spawnMissile(stack, location));
                                 }

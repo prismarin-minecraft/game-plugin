@@ -1,4 +1,4 @@
-package in.prismar.game.item.impl;
+package in.prismar.game.item.impl.misc;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;

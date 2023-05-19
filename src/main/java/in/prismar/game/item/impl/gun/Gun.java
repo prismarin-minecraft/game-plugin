@@ -122,7 +122,7 @@ public class Gun extends SkinableItem {
         for (Material wallbangType : Material.values()) {
             if (wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG") || wallbangType.name().contains("PLANK")) {
                 addWallbangTypes(wallbangType, 25);
-            } else if (wallbangType.name().contains("GLASS") || wallbangType.name().contains("LEAVES") || wallbangType == Material.BARRIER) {
+            } else if (wallbangType.name().contains("GLASS") || wallbangType.name().contains("LEAVES")) {
                 addWallbangTypes(wallbangType, 0);
             }
         }

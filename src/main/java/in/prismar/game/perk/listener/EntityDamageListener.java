@@ -4,7 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.api.user.User;
 import in.prismar.game.Game;
-import in.prismar.game.item.impl.UAVItem;
+import in.prismar.game.item.impl.misc.UAVItem;
 import in.prismar.game.perk.Perk;
 import in.prismar.game.perk.PerkService;
 import in.prismar.library.meta.anno.Inject;
