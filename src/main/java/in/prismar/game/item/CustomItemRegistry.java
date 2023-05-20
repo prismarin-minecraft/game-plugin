@@ -37,7 +37,6 @@ import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
 import in.prismar.library.common.event.EventBus;
 import in.prismar.library.meta.anno.Service;
-import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -260,7 +259,10 @@ public class CustomItemRegistry {
     }
 
     public ItemStack createItem(String id) {
-        return getItemById(id.toLowerCase()).build();
+        CustomItem item = getItemById(id.toLowerCase());
+        ItemStack stack = item.build();
+        item.onBuild(game, stack);
+        return stack;
     }
 
     public ItemStack createGunItem(String id) {
@@ -268,8 +270,7 @@ public class CustomItemRegistry {
         if (customItem instanceof Gun gun) {
 
             ItemStack item = getItemById(id.toLowerCase()).build();
-
-            PersistentItemDataUtil.setInteger(game, item, Gun.AMMO_KEY, gun.getMaxAmmo());
+            game.getItemAmmoProvider().setAmmo(item, gun.getMaxAmmo());
             return item;
         }
         return customItem.build();

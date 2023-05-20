@@ -1,5 +1,6 @@
 package in.prismar.game.item.model;
 
+import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEventBus;
 import lombok.Data;
 import org.bukkit.Material;
@@ -82,4 +83,6 @@ public class CustomItem {
         stack.setItemMeta(meta);
         return stack;
     }
+
+    public void onBuild(Game game, ItemStack stack) {}
 }

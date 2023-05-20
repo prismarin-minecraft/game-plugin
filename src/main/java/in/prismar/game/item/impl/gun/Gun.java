@@ -517,5 +517,8 @@ public class Gun extends SkinableItem {
         }
     }
 
-
+    @Override
+    public void onBuild(Game game, ItemStack stack) {
+        game.getItemAmmoProvider().setAmmo(stack, 0);
+    }
 }
