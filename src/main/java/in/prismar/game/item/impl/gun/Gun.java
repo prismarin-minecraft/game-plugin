@@ -274,7 +274,7 @@ public class Gun extends SkinableItem {
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
         Location eyeLocation = player.getEyeLocation();
         Vector eyeOffset = VectorUtil.rotateVector(DEFAULT_EYE_ROTATION, eyeLocation.getYaw(), eyeLocation.getPitch());
-        Location particleOrigin = eyeLocation.clone().add(eyeOffset);
+        Location particleOrigin = eyeLocation.clone().add(eyeOffset).add(eyeLocation.getDirection().normalize().multiply(2));
 
         Bullet bullet = new Bullet(particleOrigin, eyeLocation.clone(),
                 VectorUtil.getRandomizedDirection(player, spread), range);
@@ -341,6 +341,7 @@ public class Gun extends SkinableItem {
     }
 
     private void spawnParticle(Game game, GunPlayer gunPlayer, Location particleOrigin, Location location) {
+        //particleOrigin.getWorld().spawnParticle(Particle.SWEEP_ATTACK, particleOrigin, 0);
         BulletTracer tracer = game.getTracerRegistry().getByUser(gunPlayer.getUser());
         if(tracer == null) {
             ParticleUtil.spawnParticleAlongLine(particleOrigin, location, shootParticle, 20, 0);
@@ -403,7 +404,7 @@ public class Gun extends SkinableItem {
                 if (!gunPlayer.isReloading()) {
                     return;
                 }
-                PersistentItemDataUtil.setInteger(game, stack, AMMO_KEY, finalAmmoToGive);
+                game.getItemAmmoProvider().setAmmo(stack, finalAmmoToGive);
                 gunPlayer.setReloading(false);
                 playSound(player, GunSoundType.RELOAD_IN);
             }, reloadTimeInTicks);
@@ -445,7 +446,7 @@ public class Gun extends SkinableItem {
         if (currentUpdateTick >= Integer.MAX_VALUE) {
             currentUpdateTick = 0;
         }
-        int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
+        int ammo = game.getItemAmmoProvider().getAmmo(holder.getStack());
         List<Attachment> attachments = getAttachments(game, holder.getStack(), true);
         int fireRate = this.fireRate;
         int maxAmmo = this.maxAmmo;
@@ -479,7 +480,7 @@ public class Gun extends SkinableItem {
                 }
                 playSound(player, GunSoundType.SHOOT);
                 ammo--;
-                PersistentItemDataUtil.setInteger(game, holder.getStack(), AMMO_KEY, ammo);
+                game.getItemAmmoProvider().setAmmo(holder.getStack(), ammo);
                 currentUpdateTick = 0;
             }
         }
@@ -504,7 +505,7 @@ public class Gun extends SkinableItem {
                     player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
                     return;
                 }
-                int ammo = PersistentItemDataUtil.getInteger(game, holder.getStack(), AMMO_KEY);
+                int ammo = game.getItemAmmoProvider().getAmmo(holder.getStack());
                 if (ammo <= 0) {
                     playSound(player, GunSoundType.LOW_AMMO);
                     return;

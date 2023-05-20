@@ -2,16 +2,12 @@ package in.prismar.game.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import in.prismar.api.PrismarinApi;
-import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.web.route.GetWebRoute;
 import in.prismar.game.web.route.PostWebRoute;
 import in.prismar.game.web.route.WebRoute;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
-import io.javalin.http.Handler;
+import io.javalin.plugin.bundled.CorsPluginConfig;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +34,7 @@ public class WebServer {
         this.routes = new ArrayList<>();
         this.javalin = Javalin.create(config -> {
             config.plugins.enableCors(cors -> {
-                cors.add(it -> {
-                    it.anyHost();
-                });
+                cors.add(CorsPluginConfig::anyHost);
             });
         }).start(port);
     }

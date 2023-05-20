@@ -5,10 +5,7 @@ import in.prismar.game.hardpoint.HardpointTeam;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.deployable.SandbagItem;
-import in.prismar.game.item.impl.misc.FFALeaveItem;
-import in.prismar.game.item.impl.misc.HardpointLeaveItem;
-import in.prismar.game.item.impl.misc.RailgunItem;
-import in.prismar.game.item.impl.misc.UAVItem;
+import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointHelmet;
@@ -135,6 +132,8 @@ public class CustomItemRegistry {
         register(new LandmineCustomItem());
 
         register(new SandbagItem());
+
+        register(new GrapplingGunItem());
 
 
         for(HardpointTeam team : HardpointTeam.values()) {

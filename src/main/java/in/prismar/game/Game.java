@@ -9,8 +9,10 @@ import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
 import in.prismar.api.region.RegionProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
+import in.prismar.game.database.RedisContext;
 import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
+import in.prismar.game.item.CustomItemAmmoProvider;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.party.PartyRegistry;
@@ -66,6 +68,12 @@ public class Game extends JavaPlugin implements GameProvider {
     private PartyRegistry partyRegistry;
 
     @Inject
+    private RedisContext redisContext;
+
+    @Inject
+    private CustomItemAmmoProvider itemAmmoProvider;
+
+    @Inject
     private HardpointFacade hardpointFacade;
 
     @Inject
@@ -93,6 +101,7 @@ public class Game extends JavaPlugin implements GameProvider {
         mapFacade.close();
         hardpointFacade.close();
         airDropRegistry.despawnAll();
+        redisContext.disconnect();
     }
 
     private void initialize() {
