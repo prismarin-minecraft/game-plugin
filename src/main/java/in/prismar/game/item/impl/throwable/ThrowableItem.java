@@ -1,6 +1,9 @@
 package in.prismar.game.item.impl.throwable;
 
+import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.user.User;
+import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
@@ -18,6 +21,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * Copyright (c) Maga, All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -30,13 +38,17 @@ public abstract class ThrowableItem extends CustomItem {
     private Sound launchSound = Sound.ENTITY_FIREWORK_ROCKET_LAUNCH;
     private float launchSoundVolume = 0.8f;
     private double strength = 1.4;
+    private final Set<UUID> interactions;
 
     public ThrowableItem(String id, Material material, String display) {
         super(id, material, display);
         allFlags();
+
+        this.interactions = new HashSet<>();
+
     }
 
-    public boolean isAllowedToThrow(Player player, Game game){
+    public boolean isAllowedToThrow(Player player, Game game) {
         return true;
     }
 
@@ -48,17 +60,22 @@ public abstract class ThrowableItem extends CustomItem {
             return;
         }
         event.setCancelled(true);
-        if(game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
+        if (game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
-           return;
-        }
-        if(!isAllowedToThrow(player, game)) {
             return;
         }
+        if (!isAllowedToThrow(player, game)) {
+            return;
+        }
+        if(interactions.contains(player.getUniqueId())) {
+            interactions.remove(player.getUniqueId());
+            return;
+        }
+        interactions.add(player.getUniqueId());
 
         player.getWorld().playSound(player.getLocation(), launchSound, launchSoundVolume, 1);
         Vector vector = player.getLocation().getDirection().multiply(strength);
-        ItemStack stack = event.getItem().clone();
+        ItemStack stack = build();
         stack.setAmount(1);
         Item item = player.getWorld().dropItem(player.getEyeLocation(), stack);
         item.setPickupDelay(Integer.MAX_VALUE);
