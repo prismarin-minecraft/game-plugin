@@ -375,7 +375,7 @@ public class Gun extends SkinableItem {
             maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
         }
 
-        int current = game.getItemAmmoProvider().getAmmo(stack);
+        int current = game.getItemAmmoProvider().getAmmo(player, stack);
         if (current >= maxAmmo) {
             return;
         }
@@ -404,7 +404,7 @@ public class Gun extends SkinableItem {
                 if (!gunPlayer.isReloading()) {
                     return;
                 }
-                game.getItemAmmoProvider().setAmmo(stack, finalAmmoToGive);
+                game.getItemAmmoProvider().setAmmo(player, stack, finalAmmoToGive);
                 gunPlayer.setReloading(false);
                 playSound(player, GunSoundType.RELOAD_IN);
             }, reloadTimeInTicks);
@@ -446,7 +446,7 @@ public class Gun extends SkinableItem {
         if (currentUpdateTick >= Integer.MAX_VALUE) {
             currentUpdateTick = 0;
         }
-        int ammo = game.getItemAmmoProvider().getAmmo(holder.getStack());
+        int ammo = game.getItemAmmoProvider().getAmmo(player, holder.getStack());
         List<Attachment> attachments = getAttachments(game, holder.getStack(), true);
         int fireRate = this.fireRate;
         int maxAmmo = this.maxAmmo;
@@ -480,7 +480,7 @@ public class Gun extends SkinableItem {
                 }
                 playSound(player, GunSoundType.SHOOT);
                 ammo--;
-                game.getItemAmmoProvider().setAmmo(holder.getStack(), ammo);
+                game.getItemAmmoProvider().setAmmo(player, holder.getStack(), ammo);
                 currentUpdateTick = 0;
             }
         }
@@ -505,7 +505,7 @@ public class Gun extends SkinableItem {
                     player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
                     return;
                 }
-                int ammo = game.getItemAmmoProvider().getAmmo(holder.getStack());
+                int ammo = game.getItemAmmoProvider().getAmmo(player, holder.getStack());
                 if (ammo <= 0) {
                     playSound(player, GunSoundType.LOW_AMMO);
                     return;
@@ -517,8 +517,4 @@ public class Gun extends SkinableItem {
         }
     }
 
-    @Override
-    public void onBuild(Game game, ItemStack stack) {
-        game.getItemAmmoProvider().setAmmo(stack, 0);
-    }
 }

@@ -84,5 +84,4 @@ public class CustomItem {
         return stack;
     }
 
-    public void onBuild(Game game, ItemStack stack) {}
 }

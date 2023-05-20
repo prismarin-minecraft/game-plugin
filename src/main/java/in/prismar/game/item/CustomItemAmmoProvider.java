@@ -9,6 +9,7 @@ import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.redisson.api.RMap;
 
@@ -32,11 +33,13 @@ public class CustomItemAmmoProvider {
     private Game game;
 
     private Map<String, Integer> cache;
+    private Map<String, Integer> tempCache;
     private RMap<String, Integer> redisMap;
     private DelayedOperationExecutor<DelayedOperation> executor;
 
     public CustomItemAmmoProvider() {
         this.cache = new HashMap<>();
+        this.tempCache = new HashMap<>();
         this.executor = new DelayedOperationExecutor<>("CustomItemAmmo");
     }
 
@@ -54,27 +57,39 @@ public class CustomItemAmmoProvider {
         return id;
     }
 
-    public int getAmmo(ItemStack stack) {
+    public int getAmmo(Player player, ItemStack stack) {
         String id = getId(stack);
-        if (!cache.containsKey(id)) {
-            int ammo = 0;
-            if (redisMap.containsKey(id)) {
-                ammo = redisMap.get(id);
-                System.out.println("Found ammo: " + ammo);
-            } else {
-                redisMap.put(id, ammo);
+        if(isTempCache(player)) {
+            if(!tempCache.containsKey(id)) {
+                tempCache.put(id, 0);
             }
-            cache.put(id, ammo);
+            return tempCache.get(id);
+        } else {
+            if (!cache.containsKey(id)) {
+                int ammo = 0;
+                if (redisMap.containsKey(id)) {
+                    ammo = redisMap.get(id);
+                }
+                cache.put(id, ammo);
+            }
+            return cache.get(id);
         }
-        return cache.get(id);
     }
 
-    public void setAmmo(ItemStack stack, int ammo) {
+    public void setAmmo(Player player, ItemStack stack, int ammo) {
         String id = getId(stack);
+        if(isTempCache(player)) {
+            tempCache.put(id, ammo);
+            return;
+        }
         cache.put(id, ammo);
         executor.addTask(id, 30000, () -> {
-           redisMap.put(id, getAmmo(stack));
+           redisMap.put(id, getAmmo(player, stack));
         });
+    }
+
+    private boolean isTempCache(Player player) {
+        return game.isCurrentlyPlayingAnyMode(player);
     }
 
 }

@@ -38,12 +38,7 @@ public class GetSubCommand extends HelpSubCommand<Player> {
                 return true;
             }
             CustomItem customItem = registry.getItemById(id);
-            ItemStack stack = customItem.build();
-            if(arguments.getLength() >= 3) {
-                if(customItem instanceof Gun gun) {
-                    PersistentItemDataUtil.setString(registry.getGame(), stack, Gun.ATTACHMENTS_KEY, "AdaptiveChambering");
-                }
-            }
+            ItemStack stack = registry.createItem(id);
 
             player.getInventory().addItem(stack);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You received the item §a" + customItem.getDisplayName());

@@ -105,15 +105,15 @@ public class ArsenalService {
 
     public void giveHotbarLoadout(Player player) {
         User user = manage(player);
-        ItemStack primary = createArsenalItem(user, "primary");
+        ItemStack primary = createArsenalItem(player, user, "primary");
         if (primary != null) {
             player.getInventory().setItem(0, primary);
         }
-        ItemStack secondary = createArsenalItem(user, "secondary");
+        ItemStack secondary = createArsenalItem(player, user, "secondary");
         if (secondary != null) {
             player.getInventory().setItem(1, secondary);
         }
-        ItemStack lethal = createArsenalItem(user, "lethal");
+        ItemStack lethal = createArsenalItem(player, user, "lethal");
         if(lethal == null) {
             lethal = itemRegistry.createItem("Grenade");
         } else {
@@ -124,7 +124,7 @@ public class ArsenalService {
         }
         player.getInventory().setItem(3, lethal);
 
-        ItemStack melee = createArsenalItem(user, "melee");
+        ItemStack melee = createArsenalItem(player, user, "melee");
         if(melee == null) {
             player.getInventory().setItem(2, itemRegistry.createItem("knife"));
         } else {
@@ -134,19 +134,19 @@ public class ArsenalService {
 
     public void giveLoadout(Player player) {
         User user = manage(player);
-        ItemStack helmet = createArsenalItem(user, "helmet");
+        ItemStack helmet = createArsenalItem(player, user, "helmet");
         if (helmet != null) {
             player.getInventory().setHelmet(helmet);
         }
         giveArsenalChestplate(user, player);
 
 
-        ItemStack leggings = createArsenalItem(user, "leggings");
+        ItemStack leggings = createArsenalItem(player, user, "leggings");
         if (leggings != null) {
             player.getInventory().setLeggings(leggings);
         }
 
-        ItemStack boots = createArsenalItem(user, "boots");
+        ItemStack boots = createArsenalItem(player, user, "boots");
         if (boots != null) {
             player.getInventory().setBoots(boots);
         }
@@ -156,7 +156,7 @@ public class ArsenalService {
     }
 
     public boolean giveArsenalChestplate(User user, Player player) {
-        ItemStack chestplate = createArsenalItem(user, "chestplate");
+        ItemStack chestplate = createArsenalItem(player, user, "chestplate");
         if (chestplate != null) {
             player.getInventory().setChestplate(chestplate);
             return true;
@@ -164,7 +164,7 @@ public class ArsenalService {
         return false;
     }
 
-    private ItemStack createArsenalItem(User user, String key) {
+    private ItemStack createArsenalItem(Player player, User user, String key) {
         ArsenalItem item = getItem(user, key);
         if (item != null) {
             ItemStack stack = item.getItem().clone();
@@ -175,7 +175,7 @@ public class ArsenalService {
                     for(Attachment attachment : gun.getAttachments(game, stack, true)) {
                         maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
                     }
-                    game.getItemAmmoProvider().setAmmo(stack, maxAmmo);
+                    game.getItemAmmoProvider().setAmmo(player, stack, maxAmmo);
                 }
             }
             return stack;

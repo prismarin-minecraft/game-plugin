@@ -261,19 +261,7 @@ public class CustomItemRegistry {
     public ItemStack createItem(String id) {
         CustomItem item = getItemById(id.toLowerCase());
         ItemStack stack = item.build();
-        item.onBuild(game, stack);
         return stack;
     }
 
-    public ItemStack createGunItem(String id) {
-        CustomItem customItem = getItemById(id.toLowerCase());
-        if (customItem instanceof Gun gun) {
-
-            ItemStack item = getItemById(id.toLowerCase()).build();
-            game.getItemAmmoProvider().setAmmo(item, gun.getMaxAmmo());
-            return item;
-        }
-        return customItem.build();
-
-    }
 }
