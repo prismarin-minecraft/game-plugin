@@ -60,6 +60,8 @@ public class GunPlayer {
 
     private GunDamageType lastDamageReceived;
 
+    private boolean shielded;
+
 
 
 }

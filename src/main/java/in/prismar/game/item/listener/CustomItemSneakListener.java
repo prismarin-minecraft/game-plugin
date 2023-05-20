@@ -2,6 +2,7 @@ package in.prismar.game.item.listener;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItemRegistry;
+import in.prismar.game.item.impl.gun.player.GunPlayer;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,8 @@ public class CustomItemSneakListener implements Listener {
 
     @EventHandler
     public void onCall(PlayerToggleSneakEvent event) {
+        GunPlayer gunPlayer = GunPlayer.of(event.getPlayer());
+        gunPlayer.setShielded(false);
         registry.publishEvent(event.getPlayer(), event);
     }
 }

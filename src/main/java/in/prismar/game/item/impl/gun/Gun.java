@@ -114,7 +114,7 @@ public class Gun extends SkinableItem {
         this.sounds = new HashMap<>();
         this.type = type;
         this.wallbangTypes = new HashMap<>();
-        if(type == GunType.SNIPER) {
+        if (type == GunType.SNIPER) {
             this.zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(displayName).build();
         }
 
@@ -236,7 +236,7 @@ public class Gun extends SkinableItem {
                 }
             }
         }
-        if(cached) {
+        if (cached) {
             ATTACHMENT_CACHE.put(stack, attachments);
         }
         return attachments;
@@ -248,20 +248,7 @@ public class Gun extends SkinableItem {
         return current;
     }
 
-
-    public void shoot(Game game, Player player, ItemStack stack) {
-        GunPlayer gunPlayer = GunPlayer.of(player);
-
-        GunShootEvent shootEvent = new GunShootEvent(gunPlayer,this, false);
-        game.getItemRegistry().getEventBus().publish(shootEvent);
-
-        if(shootEvent.isCancelled()) {
-            return;
-        }
-
-        SeasonData seasonData = gunPlayer.getUser().getSeasonData();
-        addStatsValue(seasonData, "shots");
-
+    protected void rawShoot(Game game, Player player, GunPlayer gunPlayer, SeasonData seasonData, ItemStack stack) {
         double normalSpread = this.spread;
         double sneakSpread = this.sneakSpread;
         double range = this.range;
@@ -280,13 +267,24 @@ public class Gun extends SkinableItem {
                 VectorUtil.getRandomizedDirection(player, spread), range);
 
 
-
         List<RaytraceHit> hits = bullet.invoke();
 
         int damageReducePercentage = 0;
         for (RaytraceHit hit : hits) {
             if (hit instanceof RaytraceEntityHit entityHit) {
                 if (!entityHit.getTarget().getName().equals(player.getName())) {
+                    if(entityHit.getTarget() instanceof Player targetPlayer) {
+                        GunPlayer target = GunPlayer.of(targetPlayer);
+                        if(target.isShielded()) {
+                            double angle = getAngleBetweenPoints(targetPlayer.getLocation(), player.getLocation());
+                            if(angle <= 1.1) {
+                                targetPlayer.getWorld().playSound(targetPlayer.getLocation(), Sound.ITEM_SHIELD_BLOCK, 1f, 1);
+                                spawnParticle(game, gunPlayer, particleOrigin, entityHit.getPoint());
+                                return;
+                            }
+                        }
+                    }
+
                     double damage = 0;
                     GunDamageType damageType = getHitType(entityHit.getTarget(), entityHit.getPoint());
                     if (damageType == GunDamageType.LEGS) {
@@ -329,9 +327,9 @@ public class Gun extends SkinableItem {
                     spawnParticle(game, gunPlayer, particleOrigin, blockHit.getPoint());
                     return;
                 }
-                if(blockHit.getTarget().getType().name().contains("GLASS")) {
+                if (blockHit.getTarget().getType().name().contains("GLASS")) {
                     blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.glass", 0.35f, 1);
-                } else if(blockHit.getTarget().getType().name().contains("LOG") || blockHit.getTarget().getType().name().contains("PLANKS")) {
+                } else if (blockHit.getTarget().getType().name().contains("LOG") || blockHit.getTarget().getType().name().contains("PLANKS")) {
                     blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.tree", 0.35f, 1);
                 }
                 damageReducePercentage += wallbangTypes.get(blockHit.getTarget().getType());
@@ -340,10 +338,32 @@ public class Gun extends SkinableItem {
         spawnParticle(game, gunPlayer, particleOrigin, bullet.getEndPoint());
     }
 
+
+    public void shoot(Game game, Player player, ItemStack stack) {
+        GunPlayer gunPlayer = GunPlayer.of(player);
+
+        GunShootEvent shootEvent = new GunShootEvent(gunPlayer, this, false);
+        game.getItemRegistry().getEventBus().publish(shootEvent);
+
+        if (shootEvent.isCancelled()) {
+            return;
+        }
+        SeasonData seasonData = gunPlayer.getUser().getSeasonData();
+        addStatsValue(seasonData, "shots");
+
+        rawShoot(game, player, gunPlayer, seasonData, stack);
+    }
+
+    private double getAngleBetweenPoints(Location source, Location target) {
+        Vector inBetween = target.clone().subtract(source).toVector();
+        Vector forward = source.getDirection();
+        return forward.angle(inBetween);
+    }
+
     private void spawnParticle(Game game, GunPlayer gunPlayer, Location particleOrigin, Location location) {
         //TODO: muzzle flash particleOrigin.getWorld().spawnParticle(Particle.SWEEP_ATTACK, particleOrigin, 0);
         BulletTracer tracer = game.getTracerRegistry().getByUser(gunPlayer.getUser());
-        if(tracer == null) {
+        if (tracer == null) {
             ParticleUtil.spawnParticleAlongLine(particleOrigin, location, shootParticle, 20, 0);
         } else {
             tracer.play(particleOrigin, location);
@@ -385,9 +405,9 @@ public class Gun extends SkinableItem {
 
         int ammo = !unlimitedAmmo ? AmmoType.getAmmoInInventory(player, ammoType) : needed;
         if (ammo >= 1) {
-            GunReloadEvent reloadEvent = new GunReloadEvent(player, gunPlayer,this, this.reloadTimeInTicks, false);
+            GunReloadEvent reloadEvent = new GunReloadEvent(player, gunPlayer, this, this.reloadTimeInTicks, false);
             game.getItemRegistry().getEventBus().publish(reloadEvent);
-            if(reloadEvent.isCancelled()) {
+            if (reloadEvent.isCancelled()) {
                 return;
             }
             int reloadTimeInTicks = reloadEvent.getReloadTimeInTicks();
@@ -423,6 +443,9 @@ public class Gun extends SkinableItem {
             return;
         }
         GunPlayer gunPlayer = GunPlayer.of(player);
+        if(gunPlayer.isShielded() && type != GunType.PISTOL) {
+            return;
+        }
 
         if (zoom > 0) {
             if (player.isSneaking()) {

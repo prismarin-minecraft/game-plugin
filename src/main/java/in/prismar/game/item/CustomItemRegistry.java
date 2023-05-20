@@ -134,6 +134,8 @@ public class CustomItemRegistry {
 
         register(new GrapplingGunItem());
 
+        register(new RiotShieldItem());
+
 
         for(HardpointTeam team : HardpointTeam.values()) {
             register(new HardpointHelmet(team.getFancyName(), team.getColor()));
