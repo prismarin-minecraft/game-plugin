@@ -15,7 +15,6 @@ import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.perk.Perk;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
-import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import in.prismar.library.spigot.serializer.BukkitObjectSerializer;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -176,7 +175,7 @@ public class ArsenalService {
                     for(Attachment attachment : gun.getAttachments(game, stack, true)) {
                         maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
                     }
-                    PersistentItemDataUtil.setInteger(game, stack, Gun.AMMO_KEY, maxAmmo);
+                    game.getItemAmmoProvider().setAmmo(stack, maxAmmo);
                 }
             }
             return stack;

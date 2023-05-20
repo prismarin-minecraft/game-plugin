@@ -341,7 +341,7 @@ public class Gun extends SkinableItem {
     }
 
     private void spawnParticle(Game game, GunPlayer gunPlayer, Location particleOrigin, Location location) {
-        //particleOrigin.getWorld().spawnParticle(Particle.SWEEP_ATTACK, particleOrigin, 0);
+        //TODO: muzzle flash particleOrigin.getWorld().spawnParticle(Particle.SWEEP_ATTACK, particleOrigin, 0);
         BulletTracer tracer = game.getTracerRegistry().getByUser(gunPlayer.getUser());
         if(tracer == null) {
             ParticleUtil.spawnParticleAlongLine(particleOrigin, location, shootParticle, 20, 0);
