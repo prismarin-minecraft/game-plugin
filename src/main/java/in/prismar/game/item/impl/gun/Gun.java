@@ -375,7 +375,7 @@ public class Gun extends SkinableItem {
             maxAmmo = attachment.apply(AttachmentModifier.MAX_AMMO, maxAmmo);
         }
 
-        int current = PersistentItemDataUtil.getInteger(game, stack, AMMO_KEY);
+        int current = game.getItemAmmoProvider().getAmmo(stack);
         if (current >= maxAmmo) {
             return;
         }
