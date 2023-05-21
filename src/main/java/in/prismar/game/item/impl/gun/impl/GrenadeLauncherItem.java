@@ -24,7 +24,6 @@ import org.bukkit.util.Vector;
  **/
 public class GrenadeLauncherItem extends Gun {
 
-    private static final double DAMAGE = 24;
     private static final double SHOOT_STRENGTH = 2;
 
     public GrenadeLauncherItem() {
@@ -32,9 +31,9 @@ public class GrenadeLauncherItem extends Gun {
         setCustomModelData(2);
         setAmmoType(AmmoType.GRENADE_LAUNCHER);
         setMaxAmmo(16);
-        setHeadDamage(15);
-        setBodyDamage(15);
-        setLegDamage(15);
+        setHeadDamage(24);
+        setBodyDamage(24);
+        setLegDamage(24);
         setSmallLore(true);
 
         setFireRate(200);
@@ -73,7 +72,7 @@ public class GrenadeLauncherItem extends Gun {
                     item.getWorld().playSound(item.getLocation(), "grenade.explosion", 1.7f, 1f);
                     for (Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
                         if (near instanceof Player target) {
-                            double damage = DAMAGE - target.getLocation().distance(item.getLocation());
+                            double damage = getBodyDamage() - target.getLocation().distance(item.getLocation());
                             target.damage(damage, player);
                         }
                     }
