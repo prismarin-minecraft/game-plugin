@@ -100,6 +100,8 @@ public class Gun extends SkinableItem {
 
     private int attachmentSlots = 3;
 
+    private boolean smallLore;
+
     private int zoom;
 
     private ItemStack zoomItem;
@@ -157,27 +159,31 @@ public class Gun extends SkinableItem {
         lore.add(" §8╔══ §aGeneral");
         lore.add(" §8╠ §7Type§8: §b" + type.getDisplayName());
         lore.add(" §8╠ §7Magazine§8: §b" + maxAmmo);
-        lore.add(" §8╠══ §eStats");
-        lore.add(" §8╠ §7Range§8: §b" + range);
-        lore.add(" §8╠ §7RPM§8: §b" + fireRate);
-        lore.add(" §8╠ §7Spread§8: §b" + spread);
-        lore.add(" §8╠ §7Sneak Spread§8: §b" + sneakSpread);
-        lore.add(" §8╠ §7Reload time§8: §b" + reloadTimeInTicks / 20 + "s");
-        lore.add(" §8╠══ §cDamage");
-        lore.add(" §8╠ §7Head§8: §b" + headDamage);
-        lore.add(" §8╠ §7Body§8: §b" + bodyDamage);
-        lore.add(" §8╠ §7Legs§8: §b" + legDamage);
-        lore.add(" §8╠══ §3Attachments §8(§3" + attachments.size() + "§8/§3" + getAttachmentSlots() + "§8)");
-        for (int i = 0; i < attachmentSlots; i++) {
-            if (attachments.size() >= i + 1) {
-                Attachment attachment = attachments.get(i);
-                lore.add(" §8╠ §b" + attachment.getDisplayName());
-            } else {
-                lore.add(" §8╠ §7§oEmpty");
+        if (!smallLore) {
+            lore.add(" §8╠══ §eStats");
+            lore.add(" §8╠ §7Range§8: §b" + range);
+            lore.add(" §8╠ §7RPM§8: §b" + fireRate);
+            lore.add(" §8╠ §7Spread§8: §b" + spread);
+            lore.add(" §8╠ §7Sneak Spread§8: §b" + sneakSpread);
+            lore.add(" §8╠ §7Reload time§8: §b" + reloadTimeInTicks / 20 + "s");
+            lore.add(" §8╠══ §cDamage");
+            lore.add(" §8╠ §7Head§8: §b" + headDamage);
+            lore.add(" §8╠ §7Body§8: §b" + bodyDamage);
+            lore.add(" §8╠ §7Legs§8: §b" + legDamage);
+            lore.add(" §8╠══ §3Attachments §8(§3" + attachments.size() + "§8/§3" + getAttachmentSlots() + "§8)");
+            for (int i = 0; i < attachmentSlots; i++) {
+                if (attachments.size() >= i + 1) {
+                    Attachment attachment = attachments.get(i);
+                    lore.add(" §8╠ §b" + attachment.getDisplayName());
+                } else {
+                    lore.add(" §8╠ §7§oEmpty");
+                }
             }
         }
         lore.add(" §8╚══");
         lore.add("§c ");
+
+
         return lore;
     }
 
@@ -273,11 +279,11 @@ public class Gun extends SkinableItem {
         for (RaytraceHit hit : hits) {
             if (hit instanceof RaytraceEntityHit entityHit) {
                 if (!entityHit.getTarget().getName().equals(player.getName())) {
-                    if(entityHit.getTarget() instanceof Player targetPlayer) {
+                    if (entityHit.getTarget() instanceof Player targetPlayer) {
                         GunPlayer target = GunPlayer.of(targetPlayer);
-                        if(target.isShielded()) {
+                        if (target.isShielded()) {
                             double angle = getAngleBetweenPoints(targetPlayer.getLocation(), player.getLocation());
-                            if(angle <= 1.1) {
+                            if (angle <= 1.1) {
                                 targetPlayer.getWorld().playSound(targetPlayer.getLocation(), Sound.ITEM_SHIELD_BLOCK, 1f, 1);
                                 spawnParticle(game, gunPlayer, particleOrigin, entityHit.getPoint());
                                 return;
@@ -443,7 +449,7 @@ public class Gun extends SkinableItem {
             return;
         }
         GunPlayer gunPlayer = GunPlayer.of(player);
-        if(gunPlayer.isShielded() && type != GunType.PISTOL) {
+        if (gunPlayer.isShielded() && type != GunType.PISTOL) {
             return;
         }
 

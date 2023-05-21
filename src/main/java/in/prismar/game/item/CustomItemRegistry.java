@@ -5,6 +5,7 @@ import in.prismar.game.hardpoint.HardpointTeam;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.deployable.SandbagItem;
+import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
 import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
@@ -135,6 +136,7 @@ public class CustomItemRegistry {
         register(new GrapplingGunItem());
 
         register(new RiotShieldItem());
+        register(new GrenadeLauncherItem());
 
 
         for(HardpointTeam team : HardpointTeam.values()) {

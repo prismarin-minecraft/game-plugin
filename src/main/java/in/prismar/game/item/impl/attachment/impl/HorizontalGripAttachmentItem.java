@@ -7,6 +7,8 @@ import in.prismar.game.item.impl.attachment.template.GripAttachment;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
 
+import java.util.Arrays;
+
 /**
  * Copyright (c) Maga, All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -18,7 +20,7 @@ public class HorizontalGripAttachmentItem extends GripAttachment {
     public HorizontalGripAttachmentItem() {
         super("HorizontalGrip", Material.LEVER, "§cHorizontal Grip");
         setCustomModelData(4);
-        addAllowedTypes(GunType.values());
+        addAllowedTypes(Arrays.stream(GunType.values()).filter(type -> type != GunType.SPECIAL).toList().toArray(new GunType[0]));
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.SUBTRACT));
         registerApplier(AttachmentModifier.SNEAK_SPREAD, new DoublePercentageAttachmentApplier(10, ApplierOperation.SUBTRACT));
 

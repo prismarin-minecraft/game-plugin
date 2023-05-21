@@ -23,7 +23,8 @@ public enum AmmoType {
     SNIPER(new ItemBuilder(Material.ARROW).setCustomModelData(3).setName("§cSniper Ammo").build()),
     SHOTGUN(new ItemBuilder(Material.ARROW).setCustomModelData(4).setName("§fShotgun Ammo").build()),
 
-    SMG(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build());
+    SMG(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build()),
+    GRENADE_LAUNCHER(new ItemBuilder(Material.STICK).setCustomModelData(6).setName("§cImpact Grenade").build());
 
     private final ItemStack item;
 
