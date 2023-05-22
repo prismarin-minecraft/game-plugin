@@ -7,6 +7,7 @@ import in.prismar.api.game.GameProvider;
 import in.prismar.api.hardpoint.HardpointProvider;
 import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
+import in.prismar.api.party.PartyProvider;
 import in.prismar.api.region.RegionProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.database.RedisContext;
@@ -130,6 +131,7 @@ public class Game extends JavaPlugin implements GameProvider {
         PrismarinApi.registerProvider(ExtractionProvider.class, extractionFacade);
         PrismarinApi.registerProvider(HardpointProvider.class, hardpointFacade);
         PrismarinApi.registerProvider(GameProvider.class, this);
+        PrismarinApi.registerProvider(PartyProvider.class, partyRegistry);
     }
 
     private void initializeWebServer() {

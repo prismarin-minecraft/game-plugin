@@ -24,7 +24,7 @@ public enum AmmoType {
     SHOTGUN(new ItemBuilder(Material.ARROW).setCustomModelData(4).setName("§fShotgun Ammo").build()),
 
     SMG(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build()),
-    GRENADE_LAUNCHER(new ItemBuilder(Material.STICK).setCustomModelData(6).setName("§cImpact Grenade").build());
+    GRENADE_LAUNCHER(new ItemBuilder(Material.STICK).setCustomModelData(6).setName("§cImpact Grenade").allFlags().build());
 
     private final ItemStack item;
 

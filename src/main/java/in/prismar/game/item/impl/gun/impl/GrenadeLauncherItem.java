@@ -27,7 +27,7 @@ public class GrenadeLauncherItem extends Gun {
     private static final double SHOOT_STRENGTH = 2;
 
     public GrenadeLauncherItem() {
-        super("GrenadeLauncher", GunType.LMG, Material.DIAMOND_AXE, "§cGrenade Launcher");
+        super("GrenadeLauncher", GunType.SPECIAL, Material.DIAMOND_AXE, "§cGrenade Launcher");
         setCustomModelData(2);
         setAmmoType(AmmoType.GRENADE_LAUNCHER);
         setMaxAmmo(16);

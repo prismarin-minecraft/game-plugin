@@ -2,8 +2,10 @@ package in.prismar.game.party;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
+import in.prismar.api.party.PartyProvider;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.game.Game;
+import in.prismar.library.common.event.EventBus;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.registry.LocalMapRegistry;
 import in.prismar.library.meta.anno.Inject;
@@ -15,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -25,14 +28,12 @@ import java.util.UUID;
  **/
 @Getter
 @Service
-public class PartyRegistry extends LocalMapRegistry<String, Party> {
+public class PartyRegistry extends LocalMapRegistry<String, Party> implements PartyProvider {
 
     @Inject
     private Game game;
 
     private final ConfigStore store;
-
-
 
     public PartyRegistry() {
         super(false, false);
@@ -171,8 +172,30 @@ public class PartyRegistry extends LocalMapRegistry<String, Party> {
         return false;
     }
 
+    @Override
     public boolean hasParty(Player player) {
         return getPartyByPlayer(player) != null;
     }
 
+    @Override
+    public boolean isOwnerOfParty(Player player) {
+        if(hasParty(player)) {
+            Party party = getPartyByPlayer(player);
+            if(party.getOwner().getUniqueId().equals(player.getUniqueId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public List<Player> getPartyMembers(Player player) {
+        return null;
+    }
+
+    @Override
+    public EventBus getEventBus() {
+        return null;
+    }
 }
