@@ -129,12 +129,12 @@ public class ExtractionFacade implements ExtractionProvider {
     }
 
     private void changeNPCText(String text) {
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("PlayerNPC");
+        /*Plugin plugin = Bukkit.getPluginManager().getPlugin("PlayerNPC");
         if(plugin != null) {
             NPC.Global npc = NPCLib.getInstance().getGlobalNPC(plugin, "extraction");
             npc.setText("§4§lEXTRACTION", text);
             npc.forceUpdate();
-        }
+        }*/
 
     }
 
