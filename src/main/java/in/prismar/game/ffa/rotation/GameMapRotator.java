@@ -140,6 +140,9 @@ public class GameMapRotator implements Runnable {
 
     public void displayVoteSurvey() {
         for(Player player : Bukkit.getOnlinePlayers()) {
+            if(!getFacade().isCurrentlyPlaying(player)) {
+                continue;
+            }
             player.sendMessage(PrismarinConstants.BORDER);
             player.sendMessage(" ");
             player.sendMessage("§8» §7Vote for the next map");
@@ -230,7 +233,7 @@ public class GameMapRotator implements Runnable {
                 }
 
                 registerCurrentMapPlaceholder();
-                Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§7Map changed to " + winner.getIcon().getItem().getItemMeta().getDisplayName());
+                Bukkit.broadcastMessage(PrismarinConstants.PREFIX + "§7FFA map changed to " + winner.getIcon().getItem().getItemMeta().getDisplayName());
                 nextRotateTimer();
                 voting.clear();
                 return;
