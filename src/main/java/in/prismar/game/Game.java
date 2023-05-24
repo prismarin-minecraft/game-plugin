@@ -9,6 +9,7 @@ import in.prismar.api.map.ExtractionProvider;
 import in.prismar.api.map.GameMapProvider;
 import in.prismar.api.party.PartyProvider;
 import in.prismar.api.region.RegionProvider;
+import in.prismar.api.warzone.WarzoneProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.database.RedisContext;
 import in.prismar.game.extraction.ExtractionFacade;
@@ -19,6 +20,7 @@ import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.party.PartyRegistry;
 import in.prismar.game.perk.PerkService;
 import in.prismar.game.tracer.BulletTracerRegistry;
+import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.web.WebServer;
 import in.prismar.game.web.impl.ItemsRoute;
 import in.prismar.game.web.impl.PlayerRoute;
@@ -86,6 +88,9 @@ public class Game extends JavaPlugin implements GameProvider {
     @Inject
     private AirDropRegistry airDropRegistry;
 
+    @Inject
+    private WarzoneService warzoneService;
+
 
     private RegionProvider regionProvider;
     private WebServer webServer;
@@ -132,6 +137,7 @@ public class Game extends JavaPlugin implements GameProvider {
         PrismarinApi.registerProvider(HardpointProvider.class, hardpointFacade);
         PrismarinApi.registerProvider(GameProvider.class, this);
         PrismarinApi.registerProvider(PartyProvider.class, partyRegistry);
+        PrismarinApi.registerProvider(WarzoneProvider.class, warzoneService);
     }
 
     private void initializeWebServer() {
