@@ -22,8 +22,8 @@ public class Type02Hitbox implements RaytraceHitbox {
 
     public Type02Hitbox(Entity entity) {
         this.entity = entity;
-        this.minVector = entity.getLocation().toVector().subtract(new Vector(5f, 0f, 5f));
-        this.maxVector = entity.getLocation().toVector().add(new Vector(5f, 7f, 5f));
+        this.minVector = entity.getLocation().toVector().subtract(new Vector(4f, 0f, 4f));
+        this.maxVector = entity.getLocation().toVector().add(new Vector(4f, 7f, 4f));
     }
 
     @Override
