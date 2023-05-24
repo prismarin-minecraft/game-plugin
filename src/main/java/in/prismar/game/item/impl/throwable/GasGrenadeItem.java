@@ -5,6 +5,7 @@ import in.prismar.library.common.math.MathUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -58,7 +59,7 @@ public class GasGrenadeItem extends LethalItem {
                     }
                     if (saveTimer % 10 == 0) {
                         for (Entity entity : item.getNearbyEntities(RANGE, RANGE, RANGE)) {
-                            if (entity instanceof Player target) {
+                            if (entity instanceof LivingEntity target) {
                                 target.damage(DAMAGE, throwEvent.getPlayer());
                                 target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 1));
                                 target.setVelocity(new Vector());

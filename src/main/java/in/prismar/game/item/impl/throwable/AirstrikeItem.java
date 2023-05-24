@@ -6,10 +6,7 @@ import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.scheduler.Scheduler;
 import in.prismar.library.spigot.scheduler.SchedulerRunnable;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -73,7 +70,7 @@ public class AirstrikeItem extends ThrowableItem {
                                     armorStand.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, armorStand.getLocation(), 1);
                                     armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 3f, 1);
                                     for(Entity near : item.getWorld().getNearbyEntities(armorStand.getLocation(), 7, 7, 7)) {
-                                        if(near instanceof Player target) {
+                                        if(near instanceof LivingEntity target) {
                                             double damage = 30 - target.getLocation().distance(armorStand.getLocation());
                                             target.damage(damage, player);
                                         }

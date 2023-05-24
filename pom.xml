@@ -90,10 +90,23 @@
             <id>ranull-repo-external</id>
             <url>https://repo.ranull.com/maven/external/</url>
         </repository>
+        <repository>
+            <id>nexus</id>
+            <name>Lumine Releases</name>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
+
     </repositories>
 
 
     <dependencies>
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.2.1</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>

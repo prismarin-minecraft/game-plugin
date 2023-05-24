@@ -1,7 +1,6 @@
 package in.prismar.game.item.frame;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;

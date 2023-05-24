@@ -6,6 +6,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -37,7 +38,7 @@ public class GrenadeItem extends LethalItem {
                 if(timer <= 0) {
                     item.getWorld().playSound(item.getLocation(), "grenade.explosion", 2f, 1);
                     for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
-                        if(near instanceof Player target) {
+                        if(near instanceof LivingEntity target) {
                             double damage = DAMAGE - target.getLocation().distance(item.getLocation());
                             target.damage(damage, player);
                         }

@@ -5,6 +5,7 @@ import in.prismar.library.common.math.MathUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -47,7 +48,7 @@ public class ImpactGrenadeItem extends LethalItem {
                     item.remove();
                     item.getWorld().playSound(item.getLocation(), "grenade.explosion", 1.7f, 1f);
                     for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
-                        if(near instanceof Player target) {
+                        if(near instanceof LivingEntity target) {
                             double damage = DAMAGE - target.getLocation().distance(item.getLocation());
                             target.damage(damage, throwEvent.getPlayer());
                         }
