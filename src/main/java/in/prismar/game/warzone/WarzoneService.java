@@ -28,6 +28,10 @@ public class WarzoneService implements WarzoneProvider {
         warpProvider.teleport(player, WARP_NAME);
     }
 
+    public Location getWarzoneLocation() {
+        return warpProvider.getWarp(WARP_NAME);
+    }
+
     @Override
     public boolean isInWarzone(Player player) {
         Location location = warpProvider.getWarp(WARP_NAME);

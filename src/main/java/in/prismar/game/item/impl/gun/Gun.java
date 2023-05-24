@@ -448,6 +448,7 @@ public class Gun extends SkinableItem {
         if (event.getHoldingType() != CustomItemHoldingType.RIGHT_HAND) {
             return;
         }
+
         GunPlayer gunPlayer = GunPlayer.of(player);
         if (gunPlayer.isShielded() && type != GunType.PISTOL) {
             return;
