@@ -10,6 +10,7 @@ import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.hologram.Hologram;
 import in.prismar.library.spigot.hologram.line.HologramLineType;
 import in.prismar.library.spigot.item.ItemBuilder;
+import in.prismar.library.spigot.location.LocationUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -59,21 +60,23 @@ public class WarzoneService implements WarzoneProvider {
             }
         }
 
-        final int checkDown = 10;
 
-        Location location = player.getLocation().clone();
+        final int checkDown = 20;
+
+        Location start = player.getLocation().clone().add(0, 2, 0).getBlock().getLocation();
+        Location location = start.clone();
         for (int i = 0; i < checkDown; i++) {
-            location = location.subtract(0, i, 0);
+            location = start.clone().subtract(0, i, 0);
             if(location.getBlock().getType().isSolid()) {
                 break;
             }
         }
 
         Tombstone tombstone = new Tombstone();
-        tombstone.setDespawnTimestamp(System.currentTimeMillis() + (1000 * 30));
+        tombstone.setDespawnTimestamp(System.currentTimeMillis() + (1000 * 60 * 2));
         tombstone.setInventory(Bukkit.createInventory(null,9 * 4, player.getName()));
         tombstone.getInventory().setContents(cleared.toArray(new ItemStack[0]));
-        Hologram hologram = new Hologram(location.add(0, 0.6,0));
+        Hologram hologram = new Hologram(LocationUtil.getCenterOfBlock(location.getBlock().getLocation().clone().add(0, 1,0)));
         hologram.addLine(HologramLineType.TEXT, "§c" + player.getName(), false);
         hologram.addLine(HologramLineType.TEXT, "§8[§c" + getFormattedTombstoneTime(tombstone) + "§8]");
         hologram.addLine(HologramLineType.ITEM_HEAD, new ItemBuilder(Material.LEAD).setCustomModelData(4).build());
