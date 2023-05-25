@@ -37,6 +37,9 @@ public class BossTask implements Runnable {
             if(boss.getMythicMob() == null) {
                 boss.setMythicMob(MythicBukkit.inst().getMobManager().getMythicMob(boss.getId()).orElse(null));
             }
+            if(boss.getMythicMob() == null) {
+                continue;
+            }
             for (ActiveMob mob : MythicBukkit.inst().getMobManager().getActiveMobs()) {
                 if(!mob.getName().equals(boss.getMythicMob().getDisplayName().get())) {
                     continue;
