@@ -39,6 +39,28 @@ import java.util.Map;
 @AutoCommand
 public class GameCommand extends SpigotCommand<Player> {
 
+    private static final int[] FFA_SLOTS = {
+            0, 1, 2, 3,
+            9, 10, 11, 12,
+            18, 19, 20, 21,
+            27, 28, 29, 30,
+            36, 37, 38, 39
+    };
+
+    private static final int[] HARDPOINT_SLOTS = {
+            5, 6, 7, 8,
+            14, 15, 16, 17,
+            23, 24, 25, 26,
+            32, 33, 34, 35,
+            41, 42, 43, 44
+    };
+    private static final int[] LOADOUT_SLOTS = {
+            45, 46, 47, 48
+    };
+    private static final int[] STATS_SLOTS = {
+            50, 51, 52, 53
+    };
+
     @Inject
     private GameMapFacade mapFacade;
 
@@ -57,35 +79,43 @@ public class GameCommand extends SpigotCommand<Player> {
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou are already playing");
             return true;
         }
-        Frame frame = new Frame("§bFFA", 3);
-        frame.fill();
+        Frame frame = new Frame("§f七七七七七七七七十", 6);
 
-        frame.addButton(10, new ItemBuilder(Material.WOODEN_PICKAXE).setName("§6Loadout").allFlags()
-                .setCustomModelData(2).addLore("§c").addLore("§7Click me to open your loadout").build(), (ClickFrameButtonEvent) (player1, event) -> {
-            player.performCommand("loadout");
-        });
+        for (int slot : FFA_SLOTS) {
+            frame.addButton(slot, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName("§e§lFFA")
+                            .addLore("§C")
+                            .addLore(PrismarinConstants.ARROW_RIGHT + " §7Current map§8: §b" + mapFacade.getRotator().getCurrentMap().getFancyName())
+                            .addLore(PrismarinConstants.ARROW_RIGHT + " §7Currently playing§8: §b" + mapFacade.getRotator().getCurrentMap().getPlayers().size())
+                            .addLore("§c")
+                            .addLore("§7Click me to play")
+                            .build()
+                    , (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("ffa join"));
+        }
 
-        frame.addButton(12, new ItemBuilder(mapFacade.getRotator().getCurrentMap().getIcon().getItem().getType()).glow().setName("§a§lFFA")
-                        .addLore("§C")
-                        .addLore(PrismarinConstants.ARROW_RIGHT + " §7Current map§8: §b" + mapFacade.getRotator().getCurrentMap().getFancyName())
-                        .addLore(PrismarinConstants.ARROW_RIGHT + " §7Currently playing§8: §b" + mapFacade.getRotator().getCurrentMap().getPlayers().size())
-                        .addLore("§c")
-                        .addLore("§7Click me to play")
-                        .build()
-                , (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("ffa join"));
+        for(int slot : LOADOUT_SLOTS) {
+            frame.addButton(slot, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName("§cLoadout").build(), (ClickFrameButtonEvent) (player1, event) -> {
+                player.performCommand("loadout");
+            });
+        }
 
-        frame.addButton(14, new ItemBuilder(Material.WHITE_WOOL).glow().setName("§6§lHARDPOINT")
-                        .addLore("§C")
-                        .addLore(PrismarinConstants.ARROW_RIGHT + " §7Currently playing§8: §b" + hardpointFacade.getCurrentlyPlayingCount())
-                        .addLore("§c")
-                        .addLore("§7Click me to play")
-                        .build()
-                , (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("hardpoint join"));
 
-        frame.addButton(16, new ItemBuilder(Material.PAPER).setName("§cStats")
-                .addLore("§C").addLore("§7Click me to view your statistics").build(), (ClickFrameButtonEvent) (player1, event) -> {
-            player.performCommand("stats");
-        });
+
+        for(int slot : HARDPOINT_SLOTS) {
+            frame.addButton(slot, new ItemBuilder(Material.MAP).setCustomModelData(105).setName("§c ").allFlags().setName("§b§lHARDPOINT")
+                            .addLore("§C")
+                            .addLore(PrismarinConstants.ARROW_RIGHT + " §7Currently playing§8: §b" + hardpointFacade.getCurrentlyPlayingCount())
+                            .addLore("§c")
+                            .addLore("§7Click me to play")
+                            .build()
+                    , (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("hardpoint join"));
+        }
+
+        for(int slot : STATS_SLOTS) {
+            frame.addButton(slot, new ItemBuilder(Material.MAP).setCustomModelData(105).setName("§dStats").allFlags().build(), (ClickFrameButtonEvent) (player1, event) -> {
+                player.performCommand("stats");
+            });
+        }
+
         frame.build();
         frame.openInventory(player, Sound.BLOCK_PISTON_CONTRACT, 0.5f);
         return true;

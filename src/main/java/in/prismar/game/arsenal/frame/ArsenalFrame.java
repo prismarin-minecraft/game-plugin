@@ -34,14 +34,17 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     private static final ItemStack ARROW_DOWN = new CustomSkullBuilder("https://textures.minecraft.net/texture/72431911f4178b4d2b413aa7f5c78ae4447fe9246943c31df31163c0e043e0d6").build();
     private static final ItemStack ARROW_RIGHT = new CustomSkullBuilder("https://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e").build();
 
-    private static final int PRIMARY_SLOT = 22;
-    private static final int SECONDARY_SLOT = 23;
-    private static final int MELEE_SLOT = 24;
-    private static final int HELMET_SLOT = 11;
-    private static final int CHESTPLATE_SLOT = 20;
-    private static final int LEGGINGS_SLOT = 29;
-    private static final int BOOTS_SLOT = 38;
-    private static final int LETHAL_SLOT = 25;
+    private static final int PRIMARY_SLOT = 29;
+    private static final int SECONDARY_SLOT = 30;
+    private static final int MELEE_SLOT = 32;
+    private static final int HELMET_SLOT = 12;
+    private static final int CHESTPLATE_SLOT = 12+9;
+    private static final int LEGGINGS_SLOT = 14;
+    private static final int BOOTS_SLOT = 14+9;
+    private static final int LETHAL_SLOT = 33;
+
+    private static final int[] PERKS_SLOTS = {46, 47, 48};
+    private static final int[] TRACERS_SLOTS = {50, 51, 52};
 
     private final ArsenalService service;
 
@@ -49,24 +52,12 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
     private User user;
 
     public ArsenalFrame(Player player, User user, ArsenalService service) {
-        super("§6Loadout", 6);
+        super("§f七七七七七七七七日", 6);
         this.service = service;
         this.player = player;
         this.user = user;
 
         this.getEventBus().subscribe(FrameClickEvent.class, this);
-        fill();
-
-        addButton(PRIMARY_SLOT-9, createArrowDownItem("§cPrimary"));
-        addButton(SECONDARY_SLOT-9, createArrowDownItem("§eSecondary"));
-        addButton(MELEE_SLOT-9, createArrowDownItem("§6Melee"));
-
-        addButton(HELMET_SLOT-1, createArrowRightItem("§dHelmet"));
-        addButton(CHESTPLATE_SLOT-1, createArrowRightItem("§dChestplate"));
-        addButton(LEGGINGS_SLOT-1, createArrowRightItem("§dLeggings"));
-        addButton(BOOTS_SLOT-1, createArrowRightItem("§dBoots"));
-
-        addButton(LETHAL_SLOT-9, createArrowDownItem("§3Lethal"));
 
         addArsenalItem(PRIMARY_SLOT, "primary", "§cEmpty");
         addArsenalItem(SECONDARY_SLOT, "secondary", "§cEmpty");
@@ -79,16 +70,24 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
         addArsenalItem(LETHAL_SLOT, "lethal", "§cEmpty");
 
-        addButton(53, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to menu").build(), (ClickFrameButtonEvent) (player1, event) -> {
-            player.performCommand("game");
-        });
+        for (int i = 0; i <= 1; i++) {
+            addButton(i, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName("§cBack").build(), (ClickFrameButtonEvent) (player1, event) -> {
+                player.performCommand("game");
+            });
+        }
 
-        addButton(41, new ItemBuilder(Material.REDSTONE).setName("§6Bullet tracer").build(), (ClickFrameButtonEvent) (player1, event) -> {
-            player.performCommand("bullettracer");
-        });
-        addButton(42, new ItemBuilder(Material.BEACON).setName("§9Perks").build(), (ClickFrameButtonEvent) (player1, event) -> {
-            player.performCommand("perks");
-        });
+        for(int slot : PERKS_SLOTS) {
+            addButton(slot, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName("§9Perks").build(), (ClickFrameButtonEvent) (player1, event) -> {
+                player.performCommand("perks");
+            });
+        }
+
+        for(int slot : TRACERS_SLOTS) {
+            addButton(slot, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName("§6Tracers").build(), (ClickFrameButtonEvent) (player1, event) -> {
+                player.performCommand("bullettracer");
+            });
+        }
+
 
         build();
     }
