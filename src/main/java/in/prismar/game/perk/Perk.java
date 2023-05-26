@@ -28,7 +28,7 @@ public enum Perk {
             .addLore("§7")
             .addLore(PrismarinConstants.BORDER)
             .allFlags()
-            .build(), 0),
+            .build(), 0, "§f七七七七七七七七败"),
     EXPERT(new ItemBuilder(Material.STICK).setName("§6Expert")
             .setCustomModelData(2)
             .addLore(PrismarinConstants.BORDER)
@@ -38,7 +38,7 @@ public enum Perk {
             .addLore("§7")
             .addLore(PrismarinConstants.BORDER)
             .allFlags()
-            .build(), 150000),
+            .build(), 150000, "§f七七七七七七七七敗"),
     DEADEYE(new ItemBuilder(Material.SPYGLASS).setName("§6Deadeye")
             .addLore(PrismarinConstants.BORDER)
             .addLore("§7")
@@ -51,7 +51,7 @@ public enum Perk {
             .addLore("§7")
             .addLore(PrismarinConstants.BORDER)
             .allFlags()
-            .build(), 150000),
+            .build(), 150000, "§f七七七七七七七七折"),
     FASTHANDS(new ItemBuilder(Material.BEACON).setName("§6§lFast Hands")
             .addLore(PrismarinConstants.BORDER)
             .addLore("§7")
@@ -64,7 +64,7 @@ public enum Perk {
             .addLore("§7")
             .addLore(PrismarinConstants.BORDER)
             .allFlags()
-            .build(), 0),
+            .build(), 0, "§f七七七七七七七七象"),
     FORTIFY(new ItemBuilder(Material.NETHERITE_CHESTPLATE).setName("§6§lFortify")
             .addLore(PrismarinConstants.BORDER)
             .addLore("§7")
@@ -76,8 +76,9 @@ public enum Perk {
             .addLore("§7")
             .addLore(PrismarinConstants.BORDER)
             .allFlags()
-            .build(), 0);
+            .build(), 0, "§f七七七七七七七七子");
 
     private final ItemStack icon;
     private final double buyPrice;
+    private final String title;
 }

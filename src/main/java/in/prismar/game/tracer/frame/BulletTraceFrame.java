@@ -27,28 +27,27 @@ public class BulletTraceFrame extends Frame {
     private static final ItemStack AIR = new ItemStack(Material.AIR);
 
     private static final int[] SLOTS = {
-            3, 4, 5, 6,
-            12, 13, 14, 15,
-            21, 22, 23, 24
+             4, 5, 6, 7,
+             13, 14, 15, 16,
+             22, 23, 24, 25
     };
 
     private final BulletTracerRegistry registry;
     private final User user;
 
     public BulletTraceFrame(BulletTracerRegistry registry, Player player, User user) {
-        super("§dBullet Tracers", 3);
+        super("§f七七七七七七七七见", 3);
         this.registry = registry;
         this.user = user;
 
-        fill();
 
-        addButton(26, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to loadout").build(), (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("loadout"));
+        addButton(0, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName("§cBack to loadout").build(), (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("loadout"));
 
         BulletTracer tracer = registry.getByUser(user);
         if (tracer == null) {
-            addButton(10, DEFAULT);
+            addButton(11, DEFAULT);
         } else {
-            addButton(10, new ItemBuilder(tracer.getIcon()).addLore("§c").addLore("§7Click me to unequip this tracer").build(), (ClickFrameButtonEvent) (player1, event) -> {
+            addButton(11, new ItemBuilder(tracer.getIcon()).addLore("§c").addLore("§7Click me to unequip this tracer").build(), (ClickFrameButtonEvent) (player1, event) -> {
                 registry.removeTracer(user);
                 reopen(player);
             });

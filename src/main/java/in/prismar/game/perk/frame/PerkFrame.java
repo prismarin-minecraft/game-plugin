@@ -26,15 +26,14 @@ public class PerkFrame extends Frame {
     private final Player player;
 
     public PerkFrame(PerkService service, Player player) {
-        super("§9Perks", 3);
+        super(service.getPerk(player).getTitle(), 6);
         this.service = service;
         this.player = player;
-        fill();
 
-        addButton(26, new ItemBuilder(Material.OAK_DOOR).setName("§cBack to loadout").build(), (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("loadout"));
+        addButton(0, new ItemBuilder(Material.MAP).setCustomModelData(105).setName("§cBack to loadout").allFlags().build(), (ClickFrameButtonEvent) (player12, event) -> player12.performCommand("loadout"));
 
 
-        int slot = 11;
+        int slot = 38;
         for (Perk perk : Perk.values()) {
             ItemBuilder builder = new ItemBuilder(perk.getIcon()).addLore("§c");
             if (service.hasPerk(player, perk)) {
