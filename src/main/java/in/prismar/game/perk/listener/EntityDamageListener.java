@@ -50,7 +50,7 @@ public class EntityDamageListener implements Listener {
                 }
             } else if(service.hasPerkAndAllowedToUse(player, Perk.DEADEYE)) {
                 User user = service.getUserProvider().getUserByUUID(player.getUniqueId());
-                if(user.isLocalTimestampAvailable(Perk.ESCAPE.name(), System.currentTimeMillis() + 1000 * 4) && !UAVItem.UAV_ACTIVE.contains(player.getUniqueId())) {
+                if(user.isLocalTimestampAvailable(Perk.DEADEYE.name(), System.currentTimeMillis() + 1000 * 7) && !UAVItem.UAV_ACTIVE.contains(player.getUniqueId())) {
                     try {
                         game.getGlowingEntities().setGlowing(event.getDamager(), player, ChatColor.RED);
                     }catch (Exception ex) {}
@@ -63,12 +63,9 @@ public class EntityDamageListener implements Listener {
                                 scoreboardProvider.recreateTablist(player);
                             } catch (ReflectiveOperationException e) {}
                         }
-                    }.runTaskLater(game, 20 * 2);
+                    }.runTaskLater(game, 20 * 5);
 
                 }
-            } else if(service.hasPerkAndAllowedToUse(player, Perk.FASTHANDS)) {
-                double damage = (event.getDamage() / 100.0) * 20;
-                event.setDamage(event.getDamage() + damage);
             } else if(service.hasPerkAndAllowedToUse(player, Perk.FORTIFY)) {
                 double damage = (event.getDamage() / 100.0) * 20;
                 double next = event.getDamage() - damage;

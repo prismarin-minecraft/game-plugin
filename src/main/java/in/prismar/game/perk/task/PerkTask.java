@@ -23,7 +23,7 @@ public class PerkTask implements Runnable{
     public void run() {
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(service.hasPerkAndAllowedToUse(player, Perk.FASTHANDS)) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30, 0, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30, 1, false, false));
             } else if(service.hasPerkAndAllowedToUse(player, Perk.FORTIFY)) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 1, false, false));
             }
