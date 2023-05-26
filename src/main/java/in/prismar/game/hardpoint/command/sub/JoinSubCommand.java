@@ -3,6 +3,7 @@ package in.prismar.game.hardpoint.command.sub;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.hardpoint.HardpointTeam;
+import in.prismar.game.hardpoint.config.Hardpoint;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -23,7 +24,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
  **/
 public class JoinSubCommand extends HelpSubCommand<Player> {
 
-    private static final int[] SLOTS = {11, 15};
+    private static final int[] RED_SLOTS = {2, 3, 11, 12, 20, 21};
+    private static final int[] BLUE_SLOTS = {6, 7, 15, 16, 24, 25};
 
     private final HardpointFacade facade;
 
@@ -35,40 +37,46 @@ public class JoinSubCommand extends HelpSubCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        if(facade.isCurrentlyPlaying(player)) {
+        if (facade.isCurrentlyPlaying(player)) {
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou are already playing");
             return true;
         }
-        if(!facade.isOpen() && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX +"hardpoint.join.bypass")) {
+        if (!facade.isOpen() && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "hardpoint.join.bypass")) {
             player.sendMessage(PrismarinConstants.PREFIX + "§cHardpoint is closed!");
             return true;
         }
-        Frame frame = new Frame("§6Hardpoint", 3);
-        frame.fill();
+        Frame frame = new Frame("§f七七七七七七七七以", 3);
 
-        int index = 0;
-        for (HardpointTeam team : HardpointTeam.values()) {
-            frame.addButton(SLOTS[index], new ItemBuilder(team.getIcon()).addLore("§c")
-                    .addLore(PrismarinConstants.ARROW_RIGHT+" §7In team§8: §a" + facade.getSession().getPlayers().get(team).size())
-                            .addLore("§c")
-                    .addLore("§7Click to join this team").build(), (ClickFrameButtonEvent) (player12, event) -> {
-                player.closeInventory();
-                if(!facade.hasEnoughSpace(team)) {
-                    player.sendMessage(PrismarinConstants.PREFIX + "§cThis team is already full.");
-                    return;
-                }
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1);
-                facade.join(team, player);
-            });
-            index++;
+
+        for (int slot : RED_SLOTS) {
+            addTeamButton(frame, slot, HardpointTeam.RED);
+        }
+
+        for (int slot : BLUE_SLOTS) {
+            addTeamButton(frame, slot, HardpointTeam.BLUE);
         }
 
 
-        frame.addButton(26 - 8, new ItemBuilder(Material.OAK_DOOR).setName("§cLeave").build(), (ClickFrameButtonEvent) (player1, event) -> {
+        frame.addButton(0, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName("§cBack").build(), (ClickFrameButtonEvent) (player1, event) -> {
             player1.performCommand("game");
         });
         frame.build();
         frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.5f);
         return true;
+    }
+
+    private void addTeamButton(Frame frame, int slot, HardpointTeam team) {
+        frame.addButton(slot, new ItemBuilder(Material.MAP).setCustomModelData(105).allFlags().setName(team.getFancyName()).addLore("§c")
+                .addLore(PrismarinConstants.ARROW_RIGHT + " §7In team§8: §a" + facade.getSession().getPlayers().get(team).size())
+                .addLore("§c")
+                .addLore("§7Click to join this team").build(), (ClickFrameButtonEvent) (player, event) -> {
+            player.closeInventory();
+            if (!facade.hasEnoughSpace(team)) {
+                player.sendMessage(PrismarinConstants.PREFIX + "§cThis team is already full.");
+                return;
+            }
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1);
+            facade.join(team, player);
+        });
     }
 }

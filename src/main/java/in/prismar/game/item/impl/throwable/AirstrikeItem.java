@@ -32,6 +32,7 @@ public class AirstrikeItem extends ThrowableItem {
         Game game = throwEvent.getGame();
         Item item = throwEvent.getItem();
         Player player = throwEvent.getPlayer();
+        player.playSound(player.getLocation(), "misc.airstrike.request", 0.8f, 1);
         ItemStack stack = new ItemBuilder(Material.CLOCK).setCustomModelData(3).build();
         final double y = 70;
         new BukkitRunnable() {
