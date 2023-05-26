@@ -22,7 +22,7 @@ public class HardpointLeggings extends ArmorItem {
         super("HardpointLeggings" + name, Material.LEATHER_LEGGINGS, name + " Leggings", ArmorType.LEGGINGS);
         this.color = color;
         setHeadProtection(0);
-        setBodyProtection(3);
+        setBodyProtection(6);
 
         generateDefaultLore();
     }

@@ -22,7 +22,7 @@ public class HardpointChestplate extends ArmorItem {
         super("HardpointChestplate" + name, Material.LEATHER_CHESTPLATE, name + " Chestplate", ArmorType.CHESTPLATE);
         this.color = color;
         setHeadProtection(0);
-        setBodyProtection(5);
+        setBodyProtection(10);
 
         generateDefaultLore();
     }

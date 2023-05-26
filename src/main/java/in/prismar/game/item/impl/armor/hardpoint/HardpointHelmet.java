@@ -21,7 +21,7 @@ public class HardpointHelmet extends ArmorItem {
     public HardpointHelmet(String name, Color color) {
         super("HardpointHelmet" + name, Material.LEATHER_HELMET, name + " Helmet", ArmorType.HELMET);
         this.color = color;
-        setHeadProtection(10);
+        setHeadProtection(20);
         setBodyProtection(0);
 
         generateDefaultLore();
