@@ -5,6 +5,7 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.battlepass.BattlePassProvider;
 import in.prismar.api.booster.BoosterProvider;
 import in.prismar.api.booster.BoosterType;
+import in.prismar.api.clan.ClanStatsProvider;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
@@ -30,6 +31,8 @@ public class GameStatsDistributor {
     private static final String KILLSTREAK_TAG = "killstreak";
 
     private final UserProvider<User> provider;
+
+    private ClanStatsProvider clanStatsProvider;
 
 
     private final ConfigStore store;
@@ -137,6 +140,7 @@ public class GameStatsDistributor {
         checkForNullStats(user);
         SeasonData data = user.getSeasonData();
         data.getStats().put("kills", getCurrentValue(data, "kills") + 1);
+        getClanStatsProvider().addKill(player);
         provider.saveAsync(user, true);
     }
 
@@ -145,6 +149,7 @@ public class GameStatsDistributor {
         checkForNullStats(user);
         SeasonData data = user.getSeasonData();
         data.getStats().put("deaths", getCurrentValue(data, "deaths") + 1);
+        getClanStatsProvider().addDeath(player);
         provider.saveAsync(user, true);
     }
 
@@ -177,6 +182,23 @@ public class GameStatsDistributor {
         checkForNullStats(user);
         SeasonData data = user.getSeasonData();
         data.getStats().put("kills.hardpoint", getCurrentValue(data, "kills.hardpoint") + 1);
+        getClanStatsProvider().addKill(player);
+        provider.saveAsync(user, true);
+    }
+
+    public void addWarzoneKill(Player player) {
+        User user = provider.getUserByUUID(player.getUniqueId());
+        checkForNullStats(user);
+        SeasonData data = user.getSeasonData();
+        data.getStats().put("kills.warzone", getCurrentValue(data, "kills.warzone") + 1);
+        provider.saveAsync(user, true);
+    }
+
+    public void addWarzoneDeath(Player player) {
+        User user = provider.getUserByUUID(player.getUniqueId());
+        checkForNullStats(user);
+        SeasonData data = user.getSeasonData();
+        data.getStats().put("deaths.warzone", getCurrentValue(data, "deaths.warzone") + 1);
         provider.saveAsync(user, true);
     }
 
@@ -185,6 +207,7 @@ public class GameStatsDistributor {
         checkForNullStats(user);
         SeasonData data = user.getSeasonData();
         data.getStats().put("deaths.hardpoint", getCurrentValue(data, "deaths.hardpoint") + 1);
+        getClanStatsProvider().addDeath(player);
         provider.saveAsync(user, true);
     }
 
@@ -204,5 +227,12 @@ public class GameStatsDistributor {
         if(user.getSeasonData().getStats() == null) {
             user.getSeasonData().setStats(new HashMap<>());
         }
+    }
+
+    public ClanStatsProvider getClanStatsProvider() {
+        if(clanStatsProvider == null) {
+            clanStatsProvider = PrismarinApi.getProvider(ClanStatsProvider.class);
+        }
+        return clanStatsProvider;
     }
 }
