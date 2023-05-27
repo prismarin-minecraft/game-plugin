@@ -23,7 +23,7 @@ public class FlashbangItem extends LethalItem {
 
     public FlashbangItem() {
         super("FlashbangItem", Material.STICK, "§fFlashbang");
-        setCustomModelData(5);
+        setCustomModelData(8);
         allFlags();
     }
 
