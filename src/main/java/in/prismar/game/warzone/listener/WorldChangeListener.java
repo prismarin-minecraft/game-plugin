@@ -33,12 +33,15 @@ public class WorldChangeListener implements Listener {
     public void onChange(PlayerChangedWorldEvent event) {
         Location location = warzoneService.getWarzoneLocation();
         Player player = event.getPlayer();
-        if(event.getFrom().getName().equals(location.getWorld().getName())) {
-            scoreboardProvider.recreateTablist(player);
-            return;
+        if(location != null) {
+            if(event.getFrom().getName().equals(location.getWorld().getName())) {
+                scoreboardProvider.recreateTablist(player);
+                return;
+            }
+            if(warzoneService.isInWarzone(player)) {
+                scoreboardProvider.recreateTablist(player);
+            }
         }
-        if(warzoneService.isInWarzone(player)) {
-            scoreboardProvider.recreateTablist(player);
-        }
+
     }
 }

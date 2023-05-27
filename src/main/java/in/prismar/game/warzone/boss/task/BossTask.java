@@ -71,32 +71,6 @@ public class BossTask implements Runnable {
                 long maxHealth = (long)boss.getMythicMob().getHealth().get();
                 bossBar.setTitle(mob.getDisplayName() + " " + PROGRESS.show(health, maxHealth));
             }
-            /*if (boss.isSpawned()) {
-                Location location = boss.getMob().getLocation().toPosition().toLocation();
-                for (Player player : location.getWorld().getPlayers()) {
-                    if (player.getLocation().distanceSquared(location) <= BOSS_BAR_DISTANCE) {
-                        boss.getBossBar().addPlayer(player);
-                    }
-                }
-                Iterator<Player> iterator = boss.getBossBar().getPlayers().iterator();
-                while (iterator.hasNext()) {
-                    Player player = iterator.next();
-                    if(!player.getWorld().getName().equals(location.getWorld().getName())) {
-                        boss.getBossBar().removePlayer(player);
-                        continue;
-                    }
-                    if (player.getLocation().distanceSquared(location) > BOSS_BAR_DISTANCE) {
-                        boss.getBossBar().removePlayer(player);
-                    }
-                }
-                long health = (long)boss.getMob().getEntity().getHealth();
-                long maxHealth = (long)boss.getMythicMob().getHealth().get();
-                boss.getBossBar().setTitle(boss.getMob().getDisplayName() + " " + PROGRESS.show(health, maxHealth));
-            } else {
-                if(System.currentTimeMillis() >= boss.getNextRespawnTimestamp()) {
-                    service.spawn(boss);
-                }
-            }*/
         }
     }
 }
