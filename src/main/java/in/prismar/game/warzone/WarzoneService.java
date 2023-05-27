@@ -45,6 +45,8 @@ public class WarzoneService implements WarzoneProvider {
 
     private List<Tombstone> tombstones;
 
+    private AirdropTask airdropTask;
+
     public WarzoneService(Game game) {
         this.game = game;
         this.warpProvider = PrismarinApi.getProvider(WarpProvider.class);
@@ -52,7 +54,7 @@ public class WarzoneService implements WarzoneProvider {
         this.config = new WarzoneConfig(game.getDefaultDirectory());
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, new TombstoneTask(this), 20, 20);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(game, new AirdropTask(this), 20 * 5, 20 * 5);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(game, airdropTask = new AirdropTask(this), 20 * 5, 20 * 5);
     }
 
     public Tombstone createTombstone(Player player, List<ItemStack> stacks) {

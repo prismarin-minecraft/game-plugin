@@ -3,6 +3,7 @@ package in.prismar.game.warzone.command;
 import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.warzone.command.sub.AddAirdropSubCommand;
 import in.prismar.game.warzone.command.sub.RemoveAirdropSubCommand;
+import in.prismar.game.warzone.command.sub.ResetAirdropTimerSubCommand;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.spigot.command.exception.CommandException;
@@ -38,6 +39,7 @@ public class WarzoneCommand extends HelpCommand<Player> {
     private void initialize() {
         addChild(new AddAirdropSubCommand(service));
         addChild(new RemoveAirdropSubCommand(service));
+        addChild(new ResetAirdropTimerSubCommand(service));
     }
 
     @Override

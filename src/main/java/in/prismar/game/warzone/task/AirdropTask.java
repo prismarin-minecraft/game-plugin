@@ -4,6 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.warzone.WarzoneService;
 import in.prismar.library.common.random.UniqueRandomizer;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -27,7 +28,7 @@ public class AirdropTask implements Runnable {
         resetNextAirdropSpawn();
     }
 
-    private void resetNextAirdropSpawn() {
+    public void resetNextAirdropSpawn() {
         final int seconds = Integer.parseInt(configStore.getProperty("warzone.airdrop.timer"));
         this.nextAirdropSpawn = System.currentTimeMillis() + (1000L * seconds);
     }

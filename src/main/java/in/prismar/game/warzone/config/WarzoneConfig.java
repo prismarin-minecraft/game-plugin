@@ -15,7 +15,7 @@ import java.util.ArrayList;
  **/
 public class WarzoneConfig extends GsonFileWrapper<WarzoneConfigData> {
     public WarzoneConfig(String dir) {
-        super(dir.concat("warzone.json"), WarzoneConfig.class);
+        super(dir.concat("warzone.json"), WarzoneConfigData.class);
         load();
         if(getEntity() == null) {
             WarzoneConfigData data = new WarzoneConfigData();
