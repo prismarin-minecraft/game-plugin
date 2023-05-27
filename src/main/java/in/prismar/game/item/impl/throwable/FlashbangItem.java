@@ -1,6 +1,7 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -45,10 +46,12 @@ public class FlashbangItem extends LethalItem {
                 if (item.isOnGround()) {
                     item.remove();
                     item.getWorld().playSound(item.getLocation(), "grenade.flashbang", 1.7f, 1f);
-                    for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
+                    for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 10, 10, 10)) {
                         if(near instanceof Player target) {
-                            int time = TIME - ((int)target.getLocation().distance(item.getLocation()) * 4);
-                            target.sendTitle("§f語", "", 0, time, 50);
+                            int time = TIME - ((int)target.getLocation().distance(item.getLocation()) * 7);
+                            if(time > 0) {
+                                target.sendTitle("§f語", "", 0, time, 50);
+                            }
                         }
                     }
                     item.getWorld().spawnParticle(Particle.CLOUD, item.getLocation(), 2);
