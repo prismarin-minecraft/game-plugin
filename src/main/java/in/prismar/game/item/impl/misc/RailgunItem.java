@@ -13,6 +13,7 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -86,7 +87,7 @@ public class RailgunItem extends CustomItem {
                     location.getWorld().playSound(location, "grenade.explosion", 3f, 1f);
                     location.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, location, 1);
                     for(Entity near : location.getWorld().getNearbyEntities(location, EXPLOSION_RANGE, EXPLOSION_RANGE, EXPLOSION_RANGE)) {
-                        if(near instanceof Player target) {
+                        if(near instanceof LivingEntity target) {
                             double damage = DAMAGE - target.getLocation().distance(location);
                             target.damage(damage, player);
                         }
