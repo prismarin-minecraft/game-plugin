@@ -138,6 +138,8 @@ public class CustomItemRegistry {
         register(new RiotShieldItem());
         register(new GrenadeLauncherItem());
 
+        register(new FlashbangItem());
+
 
         for(HardpointTeam team : HardpointTeam.values()) {
             register(new HardpointHelmet(team.getFancyName(), team.getColor()));

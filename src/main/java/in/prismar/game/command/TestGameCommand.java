@@ -2,6 +2,8 @@ package in.prismar.game.command;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
+import in.prismar.game.item.impl.drone.Drone;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
@@ -22,7 +24,8 @@ import org.bukkit.inventory.ItemStack;
 public class TestGameCommand extends SpigotCommand<Player> {
 
 
-    private Hologram hologram;
+    @Inject
+    private Game game;
 
     public TestGameCommand(Game game) {
         super("testgame");
@@ -33,6 +36,8 @@ public class TestGameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
+        Drone drone = new Drone(game, player.getLocation(), 10, 10);
+        drone.start();
         return true;
     }
 
