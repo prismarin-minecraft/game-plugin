@@ -539,6 +539,7 @@ public class Gun extends SkinableItem {
                 if(stack.getItemMeta().hasDisplayName()) {
                     if(stack.getItemMeta().getDisplayName().equals(getDisplayName())) {
                         playSound(player, GunSoundType.EQUIP);
+                        updateStateInventory(player, stack);
                     }
                 }
             }
