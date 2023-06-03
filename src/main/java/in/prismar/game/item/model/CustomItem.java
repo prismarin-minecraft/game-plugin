@@ -4,6 +4,8 @@ import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEventBus;
 import lombok.Data;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

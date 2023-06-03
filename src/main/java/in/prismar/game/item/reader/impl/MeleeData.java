@@ -1,5 +1,6 @@
 package in.prismar.game.item.reader.impl;
 
+import in.prismar.game.item.impl.melee.MeleeAttackSpeed;
 import in.prismar.game.item.model.Skin;
 import in.prismar.game.item.reader.BaseReaderData;
 import lombok.Data;

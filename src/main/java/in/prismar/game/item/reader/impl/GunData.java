@@ -47,6 +47,8 @@ public class GunData extends BaseReaderData {
     private double bodyDamage;
     private double headDamage;
 
+   // private double recoil;
+
     private int zoom;
 
     private String previewImage;

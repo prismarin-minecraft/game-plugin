@@ -42,7 +42,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         player.setGameMode(GameMode.ADVENTURE);
         Bukkit.getScheduler().runTaskLater(game, () -> {
-            player.setResourcePack(url, hash, false);
+            //player.setResourcePack(url, hash, false);
         }, 20);
     }
 

@@ -53,6 +53,8 @@ public class UAVItem extends CustomItem {
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou have currently an UAV running.");
             return;
         }
+        player.playSound(player.getLocation(), "uav", 0.8f, 1);
+
         ItemUtil.takeItemFromHand(player, true);
         List<Player> players = new ArrayList<>();
         Party party = game.getPartyRegistry().getPartyByPlayer(player);
@@ -73,7 +75,6 @@ public class UAVItem extends CustomItem {
             }
         }
         UAV_ACTIVE.add(player.getUniqueId());
-        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.5f, 2);
         new BukkitRunnable() {
             long ticks = 0;
             @Override

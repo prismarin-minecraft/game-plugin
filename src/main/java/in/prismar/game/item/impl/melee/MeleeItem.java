@@ -5,13 +5,14 @@ import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
+import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.model.SkinableItem;
-import in.prismar.game.item.reader.impl.MeleeAttackSpeed;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -39,6 +40,20 @@ public class MeleeItem extends SkinableItem {
         super(id, material, displayName);
         allFlags();
         setUnbreakable(true);
+    }
+
+    @CustomItemEvent
+    public void onChangeSlot(Player player, Game game, CustomItemHolder holder, PlayerItemHeldEvent event) {
+        final ItemStack stack = player.getInventory().getItem(event.getNewSlot());
+        if(stack != null) {
+            if(stack.hasItemMeta()) {
+                if(stack.getItemMeta().hasDisplayName()) {
+                    if(stack.getItemMeta().getDisplayName().equals(getDisplayName())) {
+                        player.playSound(player.getLocation(), "equip.melee", 0.6f, 1f);
+                    }
+                }
+            }
+        }
     }
 
     @CustomItemEvent

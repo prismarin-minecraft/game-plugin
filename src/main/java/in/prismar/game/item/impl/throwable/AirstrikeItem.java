@@ -32,7 +32,7 @@ public class AirstrikeItem extends ThrowableItem {
         Game game = throwEvent.getGame();
         Item item = throwEvent.getItem();
         Player player = throwEvent.getPlayer();
-        player.playSound(player.getLocation(), "misc.airstrike.request", 0.8f, 1);
+        player.playSound(player.getLocation(), "airstrike.request", 0.8f, 1);
         ItemStack stack = new ItemBuilder(Material.CLOCK).setCustomModelData(3).build();
         final double y = 70;
         new BukkitRunnable() {
@@ -42,8 +42,6 @@ public class AirstrikeItem extends ThrowableItem {
                     cancel();
                     Location start = item.getLocation().clone();
                     item.remove();
-                    item.getWorld().playSound(item.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 3f, 1);
-
                     List<ArmorStand> spawned = new ArrayList<>();
                     final Particle.DustOptions options = new Particle.DustOptions(Color.YELLOW, 1);
                     Scheduler.runTimerFor(10, 10, 20 * 20, new SchedulerRunnable() {
@@ -69,19 +67,18 @@ public class AirstrikeItem extends ThrowableItem {
                                     armorStand.remove();
                                     iterator.remove();
                                     armorStand.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, armorStand.getLocation(), 1);
-                                    armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 3f, 1);
+                                    armorStand.getLocation().getWorld()
+                                            .playSound(armorStand.getLocation(), "airstrike.impact", 10f, 1);
                                     for(Entity near : item.getWorld().getNearbyEntities(armorStand.getLocation(), 7, 7, 7)) {
                                         if(near instanceof LivingEntity target) {
                                             double damage = 30 - target.getLocation().distance(armorStand.getLocation());
                                             target.damage(damage, player);
                                         }
                                     }
-                                } else {
-                                    armorStand.getLocation().getWorld().playSound(armorStand.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.5f, 1.5f);
                                 }
                             }
-                            if(getCurrentTicks() % 4 == 0) {
-                                for (int i = 0; i < 2; i++) {
+                            if(getCurrentTicks() % 2 == 0) {
+                                for (int i = 0; i < 1; i++) {
                                     Location location = start.clone().add(MathUtil.random(-20, 20), y, MathUtil.random(-20, 20));
                                     spawned.add(spawnMissile(stack, location));
                                 }

@@ -1,4 +1,4 @@
-package in.prismar.game.item.reader.impl;
+package in.prismar.game.item.impl.melee;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

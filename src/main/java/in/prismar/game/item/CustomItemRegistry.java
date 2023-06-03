@@ -2,10 +2,12 @@ package in.prismar.game.item;
 
 import in.prismar.game.Game;
 import in.prismar.game.hardpoint.HardpointTeam;
+import in.prismar.game.item.event.bus.GunPreShootEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.deployable.SandbagItem;
 import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
+import in.prismar.game.item.impl.gun.impl.TestGun;
 import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
@@ -28,15 +30,17 @@ import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
-import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.medical.BandageItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.medical.MedkitItem;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.throwable.*;
+import in.prismar.game.item.listener.GunPreShootListener;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
+import in.prismar.api.configuration.node.event.ConfigRefreshEvent;
 import in.prismar.library.common.event.EventBus;
+import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -67,8 +71,11 @@ public class CustomItemRegistry {
         this.game = game;
         this.eventBus = new EventBus();
         this.items = new LinkedHashMap<>();
-        this.reader = new CustomItemReader();
+        this.reader = new CustomItemReader(game);
         this.holders = new HashMap<>();
+
+        this.eventBus.subscribe(GunPreShootEvent.class, new GunPreShootListener(game));
+
         load();
 
         Bukkit.getScheduler().runTaskTimer(game, new CustomItemUpdater(game, this), 1, 1);
@@ -80,7 +87,7 @@ public class CustomItemRegistry {
 
 
 
-        //register(new TestGun());
+      //  register(new TestGun());
 
         register(new GrenadeItem());
         register(new MolotovItem());
@@ -148,8 +155,19 @@ public class CustomItemRegistry {
             register(new HardpointBoots(team.getFancyName(), team.getColor()));
         }
 
+
+
+    }
+
+    @SafeInitialize
+    private void initialize() {
+        reader.load();
         reader.apply(this);
 
+        game.getConfigNodeFile().getEventBus().subscribe(ConfigRefreshEvent.class, event -> {
+            load();
+            reader.apply(this);
+        });
     }
 
 

@@ -1,6 +1,4 @@
-package in.prismar.game.item.model;
-
-import lombok.Data;
+package in.prismar.game.web.config.model;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -8,12 +6,7 @@ import lombok.Data;
  * Proprietary and confidential
  * Written by Maga
  **/
-@Data
-public class Skin {
+public enum ConfigNodeType {
 
-    private String displayName;
-    private String previewImage;
-    private int data;
-
-
+    ENTRY, CATEGORY, DELETED
 }

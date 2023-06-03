@@ -67,6 +67,7 @@ public class Bullet {
                 Vector targetDirection = new Vector(deltaX, deltaY, deltaZ).normalize();
                 double dot = targetDirection.dot(direction);
                 if (dot > minDotProduct) {
+                    //System.out.println(entity.getType().name());
                     if(livingEntity.getType() == EntityType.HUSK) {
                         hitboxes.add(new Type02Hitbox(entity));
                     } else if(livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {

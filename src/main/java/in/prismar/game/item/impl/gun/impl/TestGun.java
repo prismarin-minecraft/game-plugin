@@ -15,30 +15,35 @@ import org.bukkit.Material;
 public class TestGun extends Gun {
 
     public TestGun() {
-        super("Test", GunType.SNIPER, Material.DIAMOND_HOE, "§7Test");
-        setCustomModelData(1);
-        setBulletsPerShot(2);
-        setZoom(8);
-        setAmmoType(AmmoType.SNIPER);
+        super("Test", GunType.PISTOL, Material.WOODEN_HOE, "§7Test");
+        setCustomModelData(4);
+        setBulletsPerShot(1);
+        setZoom(3);
+        setAmmoType(AmmoType.PISTOL);
         setSpread(0);
         setSneakSpread(0);
-        setRange(175);
+        setRange(30);
+
+        setRecoil(0.35);
 
         setLegDamage(4);
         setBodyDamage(4);
         setHeadDamage(4);
 
-        setFireRate(60);
+        setFireRate(600);
 
         setUnlimitedAmmo(true);
         setMaxAmmo(100);
 
-        setReloadTimeInTicks(10);
+        setReloadTimeInTicks(20 * 5);
 
         registerSound(GunSoundType.SHOOT, "shoot.pistol", 1, 1);
+        registerSound(GunSoundType.RELOAD_IN, "reload.pistol.clipin", 1, 1);
+        registerSound(GunSoundType.RELOAD_OUT, "reload.pistol.clipout", 1, 1);
 
         generateDefaultLore();
 
 
+        buildStateItems();
     }
 }

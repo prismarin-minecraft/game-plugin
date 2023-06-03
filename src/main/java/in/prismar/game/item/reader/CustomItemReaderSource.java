@@ -15,4 +15,6 @@ public interface CustomItemReaderSource {
 
     List<CustomItem> read(CustomItemRegistry registry);
 
+    default void load() {}
+
 }

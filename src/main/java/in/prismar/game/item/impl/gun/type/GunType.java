@@ -2,6 +2,7 @@ package in.prismar.game.item.impl.gun.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.Material;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -13,15 +14,25 @@ import lombok.Getter;
 @Getter
 public enum GunType {
 
-    PISTOL("Pistol"),
-    SMG("SMG"),
-    SHOTGUN("Shotgun"),
-    AR("Assault Rifle"),
-    SNIPER("Sniper"),
+    PISTOL("Pistol", Material.WOODEN_HOE),
+    SMG("SMG", Material.WOODEN_AXE),
+    SHOTGUN("Shotgun", Material.WOODEN_SHOVEL),
+    AR("Assault Rifle", Material.WOODEN_PICKAXE),
+    SNIPER("Sniper", Material.DIAMOND_HOE),
 
-    LMG("LMG"),
+    LMG("LMG", Material.STONE_AXE),
 
-    SPECIAL("Special");
+    SPECIAL("Special", Material.DIAMOND_AXE);
 
     private final String displayName;
+    private final Material material;
+
+    public static GunType getGunTypeByDisplayName(String text) {
+        for(GunType type : GunType.values()) {
+            if(type.getDisplayName().equalsIgnoreCase(text.replace("_", " "))) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

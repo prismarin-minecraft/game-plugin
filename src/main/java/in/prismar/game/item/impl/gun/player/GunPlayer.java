@@ -3,12 +3,11 @@ package in.prismar.game.item.impl.gun.player;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
+import in.prismar.game.item.impl.gun.recoil.RecoilTask;
 import in.prismar.game.item.impl.gun.type.GunDamageType;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -47,9 +46,7 @@ public class GunPlayer {
     private User user;
 
 
-    private boolean reloading;
-
-    private boolean zooming;
+    private GunPlayerState state = GunPlayerState.IDLE;
 
     private String reloadingGunId = "";
 
@@ -62,6 +59,14 @@ public class GunPlayer {
 
     private boolean shielded;
 
+    private RecoilTask recoilTask;
 
 
+    public boolean isReloading() {
+        return state == GunPlayerState.RELOADING;
+    }
+
+    public boolean isAiming() {
+        return state == GunPlayerState.AIMING;
+    }
 }

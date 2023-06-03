@@ -45,6 +45,7 @@ public class FileGunReaderSource implements CustomItemReaderSource {
                 gun.setBodyDamage(data.getBodyDamage());
                 gun.setHeadDamage(data.getHeadDamage());
                 gun.setZoom(data.getZoom());
+               // gun.setRecoil(data.getRecoil());
 
                 if(!data.getSounds().isEmpty()) {
                     for(GunSoundData soundData : data.getSounds()) {
@@ -55,6 +56,7 @@ public class FileGunReaderSource implements CustomItemReaderSource {
                     }
                 }
                 gun.generateDefaultLore();
+                gun.buildStateItems();
                 items.add(gun);
             }
         }

@@ -3,6 +3,7 @@ package in.prismar.game;
 import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
+import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.api.game.GameProvider;
 import in.prismar.api.hardpoint.HardpointProvider;
 import in.prismar.api.map.ExtractionProvider;
@@ -22,10 +23,14 @@ import in.prismar.game.perk.PerkService;
 import in.prismar.game.tracer.BulletTracerRegistry;
 import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.web.WebServer;
+import in.prismar.game.web.config.file.ConfigNodeFile;
 import in.prismar.game.web.impl.ItemsRoute;
 import in.prismar.game.web.impl.PlayerRoute;
 import in.prismar.game.web.impl.VoteRoute;
 import in.prismar.game.web.impl.banner.BannerRoute;
+import in.prismar.game.web.impl.config.GetConfigRoute;
+import in.prismar.game.web.impl.config.GetConfigTemplateRoute;
+import in.prismar.game.web.impl.config.PostConfigRoute;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
@@ -91,6 +96,9 @@ public class Game extends JavaPlugin implements GameProvider {
     @Inject
     private WarzoneService warzoneService;
 
+    @Inject
+    private ConfigNodeFile configNodeFile;
+
 
     private RegionProvider regionProvider;
     private WebServer webServer;
@@ -138,6 +146,7 @@ public class Game extends JavaPlugin implements GameProvider {
         PrismarinApi.registerProvider(GameProvider.class, this);
         PrismarinApi.registerProvider(PartyProvider.class, partyRegistry);
         PrismarinApi.registerProvider(WarzoneProvider.class, warzoneService);
+        PrismarinApi.registerProvider(ConfigNodeProvider.class, configNodeFile);
     }
 
     private void initializeWebServer() {
@@ -149,6 +158,9 @@ public class Game extends JavaPlugin implements GameProvider {
             this.webServer.addRoute(new PlayerRoute(mapFacade, extractionFacade));
             this.webServer.addRoute(new VoteRoute());
             this.webServer.addRoute(new BannerRoute(this, webServer));
+            this.webServer.addRoute(new GetConfigRoute(this));
+            this.webServer.addRoute(new GetConfigTemplateRoute(this));
+            this.webServer.addRoute(new PostConfigRoute(this));
             this.webServer.initializePaths();
         }catch (Exception exception) {
             System.out.println("Cannot start web server: " + exception.getMessage());

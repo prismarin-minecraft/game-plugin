@@ -19,7 +19,12 @@ public enum GunSoundType {
     HIT(false),
     HEADSHOT(false),
 
-    LOW_AMMO(false);
+    LOW_AMMO(false),
+
+    AIM_IN(false),
+    AIM_OUT(false),
+
+    EQUIP(false);
 
     private final boolean surrounding;
 }

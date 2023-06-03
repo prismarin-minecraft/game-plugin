@@ -13,4 +13,8 @@ public interface WebRoute<T> {
     String getPath();
 
     T onRoute(Context context);
+
+    default String[] isSecured() {
+        return new String[]{};
+    }
 }

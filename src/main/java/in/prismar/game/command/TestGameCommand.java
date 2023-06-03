@@ -1,6 +1,9 @@
 package in.prismar.game.command;
 
+import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.configuration.node.ConfigNode;
+import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.game.Game;
 import in.prismar.game.item.impl.drone.Drone;
 import in.prismar.library.meta.anno.Inject;
@@ -36,8 +39,6 @@ public class TestGameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        Drone drone = new Drone(game, player.getLocation(), 10, 10);
-        drone.start();
         return true;
     }
 

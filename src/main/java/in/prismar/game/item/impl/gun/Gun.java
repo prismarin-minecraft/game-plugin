@@ -6,6 +6,7 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEvent;
+import in.prismar.game.item.event.bus.GunPreShootEvent;
 import in.prismar.game.item.event.bus.GunReloadEvent;
 import in.prismar.game.item.event.bus.GunShootEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
@@ -13,6 +14,8 @@ import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.attachment.Attachment;
 import in.prismar.game.item.impl.attachment.AttachmentModifier;
 import in.prismar.game.item.impl.gun.player.GunPlayer;
+import in.prismar.game.item.impl.gun.player.GunPlayerState;
+import in.prismar.game.item.impl.gun.recoil.RecoilTask;
 import in.prismar.game.item.impl.gun.sound.GunSound;
 import in.prismar.game.item.impl.gun.sound.GunSoundType;
 import in.prismar.game.item.impl.gun.type.AmmoType;
@@ -21,7 +24,6 @@ import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.model.SkinableItem;
 import in.prismar.game.tracer.BulletTracer;
-import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.item.ItemUtil;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
@@ -34,14 +36,21 @@ import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -98,11 +107,17 @@ public class Gun extends SkinableItem {
     private double bodyDamage = 3;
     private double headDamage = 5;
 
+    private double recoil = 0.35;
+
     private int attachmentSlots = 3;
 
     private boolean smallLore;
 
     private int zoom;
+
+    private ItemStack aimItem;
+
+    private ItemStack reloadItem;
 
     private ItemStack zoomItem;
 
@@ -110,17 +125,23 @@ public class Gun extends SkinableItem {
 
     private Map<GunSoundType, GunSound> sounds;
 
+    private Map<Integer, ItemStack> skinnedStateItems;
+
 
     public Gun(String id, GunType type, Material material, String displayName) {
         super(id, material, displayName);
         this.sounds = new HashMap<>();
         this.type = type;
         this.wallbangTypes = new HashMap<>();
+        this.skinnedStateItems = new HashMap<>();
+
         if (type == GunType.SNIPER) {
             this.zoomItem = new ItemBuilder(Material.PAPER).setCustomModelData(1).setName(displayName).build();
+            registerSound(GunSoundType.AIM_IN, "aim.sniper", 0.8f, 1);
+        } else {
+            registerSound(GunSoundType.AIM_IN, "aim.in", 0.8f, 1);
+            registerSound(GunSoundType.AIM_OUT, "aim.out", 0.8f, 1);
         }
-
-
         for (Material wallbangType : Material.values()) {
             if (wallbangType.name().contains("WOOD") || wallbangType.name().contains("LOG") || wallbangType.name().contains("PLANK")) {
                 addWallbangTypes(wallbangType, 25);
@@ -130,18 +151,73 @@ public class Gun extends SkinableItem {
         }
 
         registerSound(GunSoundType.LOW_AMMO, "misc.lowammo", 0.8f, 1);
-
-
         registerSound(GunSoundType.HIT, "impact.hit", 0.9f, 1f);
         registerSound(GunSoundType.HEADSHOT, "impact.headshot", 0.5f, 1f);
 
-        registerSound(GunSoundType.RELOAD_IN, Sound.BLOCK_PISTON_EXTEND, 0.65f, 0.7f);
+        registerSound(GunSoundType.RELOAD_IN, "reload." + type.name().toLowerCase() + ".clipin", 1f, 1f);
+        registerSound(GunSoundType.RELOAD_OUT, "reload." + type.name().toLowerCase() + ".clipout", 1f, 1f);
+
+        registerSound(GunSoundType.SHOOT, "shoot." + type.name().toLowerCase(), 1f, 1f);
+
+        registerSound(GunSoundType.EQUIP, "equip.guns." + type.name().toLowerCase(), 0.7f, 1f);
 
 
         setUnbreakable(true);
 
         allFlags();
+    }
 
+    public ItemStack getCurrentReloadItem(ItemStack stack) {
+        int data = getSkinDataByItem(stack);
+        if(data == -1) {
+            return reloadItem;
+        }
+        int nextData = data + 1;
+        if(!skinnedStateItems.containsKey(nextData)) {
+            skinnedStateItems.put(nextData, new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(nextData).build());
+        }
+        return skinnedStateItems.get(nextData);
+    }
+
+    public ItemStack getCurrentAimItem(ItemStack stack) {
+        int data = getSkinDataByItem(stack);
+        if(data == -1) {
+            return aimItem;
+        }
+        int nextData = data + 2;
+        if(!skinnedStateItems.containsKey(nextData)) {
+            skinnedStateItems.put(nextData, new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(nextData).build());
+        }
+        return skinnedStateItems.get(nextData);
+    }
+
+
+    public void buildStateItems() {
+        if(reloadItem == null) {
+            this.reloadItem = new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(getCustomModelData() + 1).build();
+        }
+        if(aimItem == null) {
+            this.aimItem = new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(getCustomModelData() + 2).build();
+        }
+    }
+
+    public void updateStateInventory(Player player, ItemStack stack) {
+        GunPlayer gunPlayer = GunPlayer.of(player);
+        ItemMeta meta = stack.getItemMeta();
+        int skin = getSkinDataByItem(stack);
+        switch (gunPlayer.getState()) {
+            case AIMING:
+                meta.setCustomModelData(skin == -1 ? getCustomModelData() + 2 : skin + 2);
+                break;
+            case RELOADING:
+                meta.setCustomModelData(skin == -1 ? getCustomModelData() + 1 : skin + 1);
+                break;
+            case IDLE:
+                meta.setCustomModelData(skin == -1 ? getCustomModelData() : skin);
+                break;
+        }
+        stack.setItemMeta(meta);
+        player.updateInventory();
     }
 
     public Gun addWallbangTypes(Material material, int reduce) {
@@ -231,7 +307,6 @@ public class Gun extends SkinableItem {
                 return ATTACHMENT_CACHE.getIfPresent(stack);
             }
         }
-
         List<Attachment> attachments = new ArrayList<>();
         final String value = PersistentItemDataUtil.getString(game, stack, ATTACHMENTS_KEY);
         for (String id : value.split(",")) {
@@ -266,8 +341,14 @@ public class Gun extends SkinableItem {
         }
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
         Location eyeLocation = player.getEyeLocation();
-        Vector eyeOffset = VectorUtil.rotateVector(DEFAULT_EYE_ROTATION, eyeLocation.getYaw(), eyeLocation.getPitch());
-        Location particleOrigin = eyeLocation.clone().add(eyeOffset).add(eyeLocation.getDirection().normalize().multiply(2));
+        Location particleOrigin = eyeLocation.clone();
+        if(gunPlayer.getState() != GunPlayerState.AIMING) {
+            Vector eyeOffset = VectorUtil.rotateVector(DEFAULT_EYE_ROTATION, eyeLocation.getYaw(), eyeLocation.getPitch());
+            particleOrigin = particleOrigin.add(eyeOffset);
+        } else {
+            particleOrigin = particleOrigin.subtract(0, 0.2, 0);
+        }
+        particleOrigin = particleOrigin.add(eyeLocation.getDirection().normalize().multiply(2));
 
         Bullet bullet = new Bullet(particleOrigin, eyeLocation.clone(),
                 VectorUtil.getRandomizedDirection(player, spread), range);
@@ -358,6 +439,8 @@ public class Gun extends SkinableItem {
         addStatsValue(seasonData, "shots");
 
         rawShoot(game, player, gunPlayer, seasonData, stack);
+
+
     }
 
     private double getAngleBetweenPoints(Location source, Location target) {
@@ -410,6 +493,9 @@ public class Gun extends SkinableItem {
         int ammoToGive;
 
         int ammo = !unlimitedAmmo ? AmmoType.getAmmoInInventory(player, ammoType) : needed;
+        if(player.getGameMode() == GameMode.CREATIVE) {
+            ammo = needed;
+        }
         if (ammo >= 1) {
             GunReloadEvent reloadEvent = new GunReloadEvent(player, gunPlayer, this, this.reloadTimeInTicks, false);
             game.getItemRegistry().getEventBus().publish(reloadEvent);
@@ -431,16 +517,32 @@ public class Gun extends SkinableItem {
                     return;
                 }
                 game.getItemAmmoProvider().setAmmo(player, stack, finalAmmoToGive);
-                gunPlayer.setReloading(false);
+                gunPlayer.setState(GunPlayerState.IDLE);
+                player.updateInventory();
                 playSound(player, GunSoundType.RELOAD_IN);
+                updateStateInventory(player, stack);
             }, reloadTimeInTicks);
-            gunPlayer.setReloading(true);
+            gunPlayer.setState(GunPlayerState.RELOADING);
+            updateStateInventory(player, stack);
             gunPlayer.setReloadingGunId(getId());
             gunPlayer.setReloadingEndTimestamp(System.currentTimeMillis() + 50 * reloadTimeInTicks);
             playSound(player, GunSoundType.RELOAD_OUT);
         }
 
 
+    }
+    @CustomItemEvent
+    public void onChangeSlot(Player player, Game game, CustomItemHolder holder, PlayerItemHeldEvent event) {
+        final ItemStack stack = player.getInventory().getItem(event.getNewSlot());
+        if(stack != null) {
+            if(stack.hasItemMeta()) {
+                if(stack.getItemMeta().hasDisplayName()) {
+                    if(stack.getItemMeta().getDisplayName().equals(getDisplayName())) {
+                        playSound(player, GunSoundType.EQUIP);
+                    }
+                }
+            }
+        }
     }
 
     @CustomItemEvent
@@ -456,20 +558,26 @@ public class Gun extends SkinableItem {
 
         if (zoom > 0) {
             if (player.isSneaking()) {
-                if (!gunPlayer.isZooming()) {
-                    gunPlayer.setZooming(true);
+                if(!gunPlayer.isReloading()) {
+                    if (!gunPlayer.isAiming()) {
+                        gunPlayer.setState(GunPlayerState.AIMING);
+                        playSound(player, GunSoundType.AIM_IN);
+                        if(zoomItem == null) {
+                            updateStateInventory(player, holder.getStack());
+                        }
+                    }
+                    if(zoomItem != null) {
+                        ItemUtil.sendFakeMainHeadEquipment(player, zoomItem);
+                    }
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, zoom - 1, false, false));
                 }
-                if (!gunPlayer.isReloading() && zoomItem != null) {
-                    ItemUtil.sendFakeMainHeadEquipment(player, zoomItem);
-                }
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, zoom - 1, false, false));
             } else {
-                if (gunPlayer.isZooming()) {
-                    gunPlayer.setZooming(false);
-                    player.updateInventory();
+                if (gunPlayer.isAiming()) {
+                    playSound(player, GunSoundType.AIM_OUT);
+                    gunPlayer.setState(GunPlayerState.IDLE);
                     player.removePotionEffect(PotionEffectType.SLOW);
+                    updateStateInventory(player, holder.getStack());
                 }
-
             }
         }
         long currentUpdateTick = gunPlayer.getCurrentUpdateTick();
@@ -486,7 +594,8 @@ public class Gun extends SkinableItem {
         }
         if (gunPlayer.isReloading()) {
             if (!gunPlayer.getReloadingGunId().equals(getId())) {
-                gunPlayer.setReloading(false);
+                gunPlayer.setState(GunPlayerState.IDLE);
+                player.updateInventory();
                 return;
             }
             long max = gunPlayer.getReloadingEndTimestamp();
@@ -507,6 +616,14 @@ public class Gun extends SkinableItem {
             if (ammo >= 1) {
                 for (int i = 0; i < bulletsPerShot; i++) {
                     shoot(game, player, holder.getStack());
+                }
+                if(gunPlayer.getState() == GunPlayerState.AIMING) {
+                    if(gunPlayer.getRecoilTask() == null) {
+                        RecoilTask task = new RecoilTask(this, player, 15);
+                        new Timer().schedule(task, 15, 15);
+                        gunPlayer.setRecoilTask(task);
+                    }
+                    gunPlayer.getRecoilTask().setTickCounter(0);
                 }
                 playSound(player, GunSoundType.SHOOT);
                 ammo--;
@@ -529,10 +646,11 @@ public class Gun extends SkinableItem {
             }
             if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 reload(event.getPlayer(), game, holder.getStack());
-                player.updateInventory();
             } else if (allowedInteract) {
-                if (game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
-                    player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
+                GunPreShootEvent preShootEvent = new GunPreShootEvent(player, GunPlayer.of(player), this, false);
+                game.getItemRegistry().getEventBus().publish(preShootEvent);
+                if(preShootEvent.isCancelled()) {
+                    player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this gun here.");
                     return;
                 }
                 int ammo = game.getItemAmmoProvider().getAmmo(player, holder.getStack());
@@ -546,5 +664,21 @@ public class Gun extends SkinableItem {
 
         }
     }
+
+    @Override
+    public ItemStack build() {
+        ItemStack stack = super.build();
+        ItemMeta meta = stack.getItemMeta();
+        meta.addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier("generic_attac_speed", 10, AttributeModifier.Operation.ADD_NUMBER));
+        stack.setItemMeta(meta);
+        return stack;
+    }
+
+
+
+
+
+
+
 
 }
