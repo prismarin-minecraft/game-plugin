@@ -28,7 +28,7 @@ public class ModificationsFrame extends Frame {
                     frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.7f);
                 });
 
-        addButton(15, new ItemBuilder(Material.WOODEN_PICKAXE).setCustomModelData(10500).setName("§6Skins")
+        addButton(15, new ItemBuilder(Material.WOODEN_PICKAXE).setCustomModelData(10017).setName("§6Skins")
                 .addLore("§c").addLore("§7Click me to open skins table").build(), (ClickFrameButtonEvent) (player, event) -> {
             SkinsFrame frame = new SkinsFrame(registry, player,null);
             frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.7f);
