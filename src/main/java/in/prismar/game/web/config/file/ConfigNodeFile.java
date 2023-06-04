@@ -92,7 +92,7 @@ public class ConfigNodeFile extends GsonFileWrapper<Map<String, ConfigNode>> imp
                 deleteNode(current);
                 return;
             }
-            if (current.getType() == ConfigNodeType.CATEGORY) {
+            if (current.getType() == ConfigNodeType.CATEGORY && node.getChildren() != null) {
                 for (ConfigNode child : node.getChildren().values()) {
                     updateNode(child);
                 }
