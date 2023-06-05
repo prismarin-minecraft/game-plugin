@@ -36,6 +36,7 @@ public class PlayerDeathListener implements Listener {
     public void onCall(PlayerDeathEvent event) {
         Player player = event.getEntity();
         if(service.isInWarzone(player)) {
+            event.setDeathMessage(null);
             if(isWorth(event.getDrops())) {
                 service.createTombstone(player, event.getDrops());
                 event.getDrops().clear();
