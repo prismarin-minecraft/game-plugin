@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.web.WebAuthenticator;
+import in.prismar.game.web.route.DeleteWebRoute;
 import in.prismar.game.web.route.GetWebRoute;
 import in.prismar.game.web.route.PostWebRoute;
 import in.prismar.game.web.route.WebRoute;
@@ -61,9 +62,17 @@ public class WebServer {
                 });
             } else if(route instanceof PostWebRoute<?>) {
                 javalin.post("/" + basePath + route.getPath(), context -> {
-                    /*if(!isAuth(authenticator, route, context)) {
+                    if(!isAuth(authenticator, route, context)) {
                         return;
-                    }*/
+                    }
+                    context.header("Content-Type", "application/json");
+                    context.result(gson.toJson(route.onRoute(context)));
+                });
+            } else if(route instanceof DeleteWebRoute<?>) {
+                javalin.delete("/" + basePath + route.getPath(), context -> {
+                    if(!isAuth(authenticator, route, context)) {
+                        return;
+                    }
                     context.header("Content-Type", "application/json");
                     context.result(gson.toJson(route.onRoute(context)));
                 });
