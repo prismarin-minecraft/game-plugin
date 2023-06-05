@@ -27,7 +27,6 @@ public class CustomItemUnleashListener implements Listener {
 
     @EventHandler
     public void onCall(EntityUnleashEvent event) {
-        System.out.println(event.getReason().name());
         //registry.publishEvent(event.getPlayer(), event);
     }
 }
