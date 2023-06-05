@@ -526,6 +526,7 @@ public class Gun extends SkinableItem {
             updateStateInventory(player, stack);
             gunPlayer.setReloadingGunId(getId());
             gunPlayer.setReloadingEndTimestamp(System.currentTimeMillis() + 50 * reloadTimeInTicks);
+            player.removePotionEffect(PotionEffectType.SLOW);
             playSound(player, GunSoundType.RELOAD_OUT);
         }
 
@@ -570,7 +571,7 @@ public class Gun extends SkinableItem {
                     if(zoomItem != null) {
                         ItemUtil.sendFakeMainHeadEquipment(player, zoomItem);
                     }
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, zoom - 1, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, zoom - 1, false, false));
                 }
             } else {
                 if (gunPlayer.isAiming()) {
