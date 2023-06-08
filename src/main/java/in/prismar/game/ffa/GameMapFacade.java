@@ -71,7 +71,7 @@ public class GameMapFacade implements GameMapProvider {
         this.repository = new FileGameMapRepository(game.getDefaultDirectory());
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
         this.placeholderStore = PrismarinApi.getProvider(PlaceholderStore.class);
-        Bukkit.getScheduler().runTaskTimer(game, rotator = new GameMapRotator(this), 5, 5);
+        Bukkit.getScheduler().runTaskTimer(game, rotator = new GameMapRotator(this), 1, 1);
     }
 
     public void close() {

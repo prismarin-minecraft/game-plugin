@@ -12,15 +12,13 @@ import in.prismar.game.ffa.model.GameMapPowerUp;
 import in.prismar.game.ffa.powerup.PowerUp;
 import in.prismar.library.spigot.hologram.Hologram;
 import in.prismar.library.spigot.hologram.line.HologramLineType;
+import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.text.InteractiveTextBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -171,7 +169,7 @@ public class GameMapRotator implements Runnable {
     private Hologram spawnPowerUpHologram(Location location, PowerUp powerUp) {
         Hologram hologram = new Hologram(location);
         hologram.addLine(HologramLineType.TEXT, powerUp.getDisplayName(), true);
-        hologram.addLine(HologramLineType.ITEM_HEAD, new ItemStack(powerUp.getMaterial()), true);
+        hologram.addLine(HologramLineType.ITEM_HEAD, new ItemBuilder(Material.SUGAR).setCustomModelData(powerUp.getCustomModelData()).build(), true);
         hologram.enable();
         return hologram;
     }
@@ -186,6 +184,9 @@ public class GameMapRotator implements Runnable {
                     mapPowerUp.setHologram(spawnPowerUpHologram(mapPowerUp.getLocation(), powerUp));
                 } else {
                     if(mapPowerUp.getHologram() != null) {
+                        Location holoLoc = mapPowerUp.getHologram().getLocation().clone();
+                        holoLoc.setYaw(holoLoc.getYaw() + 2);
+                        mapPowerUp.getHologram().teleport(holoLoc);
                         for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
                             Player player = mapPlayer.getPlayer();
                             if(!player.getWorld().getName().equalsIgnoreCase(mapPowerUp.getLocation().getWorld().getName())) {

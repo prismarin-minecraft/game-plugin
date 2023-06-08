@@ -27,8 +27,8 @@ public class HealPowerUp implements PowerUp {
     }
 
     @Override
-    public Material getMaterial() {
-        return Material.LIME_WOOL;
+    public int getCustomModelData() {
+        return 5;
     }
 
     @Override

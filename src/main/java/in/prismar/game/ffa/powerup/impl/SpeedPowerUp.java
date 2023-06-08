@@ -30,8 +30,8 @@ public class SpeedPowerUp implements PowerUp {
     }
 
     @Override
-    public Material getMaterial() {
-        return Material.WHITE_WOOL;
+    public int getCustomModelData() {
+        return 2;
     }
 
     @Override

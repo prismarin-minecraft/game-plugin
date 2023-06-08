@@ -34,8 +34,8 @@ public class AmmoPowerUp implements PowerUp {
     }
 
     @Override
-    public Material getMaterial() {
-        return Material.BLUE_WOOL;
+    public int getCustomModelData() {
+        return 4;
     }
 
     @Override

@@ -15,7 +15,8 @@ public interface PowerUp {
 
     String getDisplayName();
 
-    Material getMaterial();
+
+    int getCustomModelData();
 
     long getRespawnTime();
 }

@@ -37,8 +37,8 @@ public class DoubleJumpPowerUp implements PowerUp {
     }
 
     @Override
-    public Material getMaterial() {
-        return Material.RED_WOOL;
+    public int getCustomModelData() {
+        return 3;
     }
 
     @Override
