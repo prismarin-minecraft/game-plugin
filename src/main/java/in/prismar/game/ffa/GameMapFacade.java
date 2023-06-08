@@ -176,7 +176,7 @@ public class GameMapFacade implements GameMapProvider {
     public void respawn(Player player) {
         player.teleport(rotator.getCurrentMap().getRandomSpawn());
         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.65f, 1);
-        resetPlayer(player, GameMode.ADVENTURE);
+        resetPlayer(player);
 
         arsenalService.fillAmmo(player);
 
@@ -200,7 +200,7 @@ public class GameMapFacade implements GameMapProvider {
 
     public void leave(Player player) {
         GameMapPlayer mapPlayer = rotator.getCurrentMap().getPlayers().remove(player.getUniqueId());
-        resetPlayer(player, GameMode.ADVENTURE);
+        resetPlayer(player);
         statsDistributor.resetKillstreak(player);
         player.performCommand("spawn");
         ScoreboardProvider provider = PrismarinApi.getProvider(ScoreboardProvider.class);
@@ -212,11 +212,10 @@ public class GameMapFacade implements GameMapProvider {
         player.getInventory().setStorageContents(mapPlayer.getContent());
     }
 
-    private void resetPlayer(Player player, GameMode mode) {
+    private void resetPlayer(Player player) {
         player.getInventory().clear();
         player.setAllowFlight(false);
         player.setFlying(false);
-        player.setGameMode(mode);
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
         }

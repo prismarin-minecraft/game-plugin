@@ -180,6 +180,7 @@ public class Game extends JavaPlugin implements GameProvider {
         return mapFacade.isCurrentlyPlaying(player) || hardpointFacade.isCurrentlyPlaying(player);
     }
 
+
     public String getDefaultDirectory() {
         return new StringBuilder("plugins").append(File.separator).append(getDescription().getName()).append(File.separator).toString();
     }
