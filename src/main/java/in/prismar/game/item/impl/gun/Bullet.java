@@ -1,5 +1,6 @@
 package in.prismar.game.item.impl.gun;
 
+import in.prismar.game.item.impl.gun.hitbox.Kindletron2Hitbox;
 import in.prismar.game.item.impl.gun.hitbox.Type02Hitbox;
 import in.prismar.game.item.impl.gun.hitbox.ZakuHitbox;
 import in.prismar.library.spigot.raytrace.Raytrace;
@@ -73,13 +74,21 @@ public class Bullet {
                 if (dot > minDotProduct) {
                     if(livingEntity.getType() == EntityType.HUSK) {
                         ActiveMob activeMob = MythicBukkit.inst().getMobManager().getActiveMob(livingEntity.getUniqueId()).orElse(null);
-                        if(activeMob == null) {
+                        if (activeMob == null) {
                             continue;
                         }
-                        if(activeMob.getType().getInternalName().equals("toro_type02")) {
+                        if (activeMob.getType().getInternalName().equals("toro_type02")) {
                             hitboxes.add(new Type02Hitbox(entity));
-                        } else if(activeMob.getType().getInternalName().equals("zaku")) {
+                        } else if (activeMob.getType().getInternalName().equals("zaku")) {
                             hitboxes.add(new ZakuHitbox(entity));
+                        }
+                    } else if(livingEntity.getType() == EntityType.IRON_GOLEM) {
+                        ActiveMob activeMob = MythicBukkit.inst().getMobManager().getActiveMob(livingEntity.getUniqueId()).orElse(null);
+                        if (activeMob == null) {
+                            continue;
+                        }
+                        if (activeMob.getType().getInternalName().equals("kindletron_2")) {
+                            hitboxes.add(new Kindletron2Hitbox(entity));
                         }
                     } else if(livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {
                         hitboxes.add(new RaytraceEntityHitbox(entity));

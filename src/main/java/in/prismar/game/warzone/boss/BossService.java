@@ -34,6 +34,7 @@ public class BossService {
 
         register("toro_type02");
         register("zaku");
+        register("kindletron_2");
         Bukkit.getScheduler().runTaskTimer(game, new BossTask(this), 20, 20);
     }
 

@@ -14,16 +14,16 @@ import org.bukkit.util.Vector;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class ZakuHitbox implements RaytraceHitbox {
+public class Kindletron2Hitbox implements RaytraceHitbox {
     private Entity entity;
 
     private Vector minVector;
     private Vector maxVector;
 
-    public ZakuHitbox(Entity entity) {
+    public Kindletron2Hitbox(Entity entity) {
         this.entity = entity;
-        this.minVector = entity.getLocation().toVector().subtract(new Vector(2.3f, 0f, 2.3f));
-        this.maxVector = entity.getLocation().toVector().add(new Vector(2.3f, 5f, 2.3f));
+        this.minVector = entity.getLocation().toVector().subtract(new Vector(3f, 0f, 3f));
+        this.maxVector = entity.getLocation().toVector().add(new Vector(3f, 5f, 3f));
     }
 
     @Override
