@@ -11,6 +11,7 @@ import org.bukkit.Material;
 public class MedicalSyringeItem extends MedicalItem {
     public MedicalSyringeItem() {
         super("MedicalSyringe", Material.FEATHER, "§cMedical Syringe");
+        setHealingTicks(30);
         setCustomModelData(1);
     }
 }
