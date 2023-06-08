@@ -1,12 +1,16 @@
 package in.prismar.game.item.impl.gun;
 
 import in.prismar.game.item.impl.gun.hitbox.Type02Hitbox;
+import in.prismar.game.item.impl.gun.hitbox.ZakuHitbox;
 import in.prismar.library.spigot.raytrace.Raytrace;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceEntityHitbox;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceHitbox;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceHitboxHelper;
 import in.prismar.library.spigot.raytrace.result.RaytraceHit;
 import in.prismar.library.spigot.raytrace.result.RaytraceResult;
+import io.lumine.mythic.api.mobs.MythicMob;
+import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.core.mobs.ActiveMob;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -67,9 +71,16 @@ public class Bullet {
                 Vector targetDirection = new Vector(deltaX, deltaY, deltaZ).normalize();
                 double dot = targetDirection.dot(direction);
                 if (dot > minDotProduct) {
-                    //System.out.println(entity.getType().name());
                     if(livingEntity.getType() == EntityType.HUSK) {
-                        hitboxes.add(new Type02Hitbox(entity));
+                        ActiveMob activeMob = MythicBukkit.inst().getMobManager().getActiveMob(livingEntity.getUniqueId()).orElse(null);
+                        if(activeMob == null) {
+                            continue;
+                        }
+                        if(activeMob.getType().getInternalName().equals("toro_type02")) {
+                            hitboxes.add(new Type02Hitbox(entity));
+                        } else if(activeMob.getType().getInternalName().equals("zaku")) {
+                            hitboxes.add(new ZakuHitbox(entity));
+                        }
                     } else if(livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {
                         hitboxes.add(new RaytraceEntityHitbox(entity));
                     }

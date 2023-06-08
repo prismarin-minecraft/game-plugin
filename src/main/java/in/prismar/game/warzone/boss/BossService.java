@@ -33,6 +33,7 @@ public class BossService {
         this.bosses = new ArrayList<>();
 
         register("toro_type02");
+        register("zaku");
         Bukkit.getScheduler().runTaskTimer(game, new BossTask(this), 20, 20);
     }
 

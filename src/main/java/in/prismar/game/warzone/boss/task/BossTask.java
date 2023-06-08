@@ -27,7 +27,7 @@ import java.util.Optional;
 public class BossTask implements Runnable {
 
     private static final double BOSS_BAR_DISTANCE = 60 * 60;
-    private static final Progress PROGRESS = new Progress("§8[§7█§7█§7█§7█§7█§7█§7█§7█§7█§7█§7█§7█§7█§7█§7█§8]", 15, "§7█", "§c█", false);
+    private static final Progress PROGRESS = new Progress("§8<§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§7▬§8>", 45, "§7▬", "§c▬", false);
 
     private final BossService service;
 
