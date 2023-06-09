@@ -5,6 +5,7 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
+import in.prismar.game.item.event.bus.ThrowableDeployEvent;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
@@ -60,15 +61,14 @@ public abstract class ThrowableItem extends CustomItem {
         if(event.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        if (game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
-            player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
+        ThrowableDeployEvent deployEvent = new ThrowableDeployEvent(player, this, false);
+        game.getItemRegistry().getEventBus().publish(deployEvent);
+        if(deployEvent.isCancelled()) {
             return;
         }
         if (!isAllowedToThrow(player, game)) {
             return;
         }
-
-
         player.getWorld().playSound(player.getLocation(), launchSound, launchSoundVolume, 1);
         Vector vector = player.getLocation().getDirection().multiply(strength);
         ItemStack stack = build();

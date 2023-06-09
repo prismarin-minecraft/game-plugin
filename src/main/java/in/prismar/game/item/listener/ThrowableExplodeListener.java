@@ -2,9 +2,11 @@ package in.prismar.game.item.listener;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.GunPreShootEvent;
+import in.prismar.game.item.event.bus.ThrowableDeployEvent;
+import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import in.prismar.library.common.event.EventSubscriber;
 import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -13,15 +15,14 @@ import lombok.AllArgsConstructor;
  * Written by Maga
  **/
 @AllArgsConstructor
-public class GunPreShootListener implements EventSubscriber<GunPreShootEvent> {
+public class ThrowableExplodeListener implements EventSubscriber<ThrowableExplodeEvent> {
 
     private final Game game;
 
     @Override
-    public void onEvent(GunPreShootEvent event) {
-        if (game.getRegionProvider().isInRegionWithFlag(event.getPlayer().getLocation(), "pvp")) {
+    public void onEvent(ThrowableExplodeEvent event) {
+        if (game.getRegionProvider().isInRegionWithFlag(event.getLocation(), "pvp")) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this gun here.");
         }
     }
 }

@@ -1,4 +1,4 @@
-package in.prismar.game.item.listener;
+package in.prismar.game.item.listener.custom;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItemRegistry;
@@ -6,8 +6,9 @@ import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.entity.EntityUnleashEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerUnleashEntityEvent;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -16,7 +17,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
  * Written by Maga
  **/
 @AutoListener
-public class CustomItemSlotChangeListener implements Listener {
+public class CustomItemUnleashListener implements Listener {
 
     @Inject
     private CustomItemRegistry registry;
@@ -25,8 +26,7 @@ public class CustomItemSlotChangeListener implements Listener {
     private Game game;
 
     @EventHandler
-    public void onCall(PlayerItemHeldEvent event) {
-        registry.scan(event.getPlayer());
-        registry.publishEvent(event.getPlayer(), event);
+    public void onCall(EntityUnleashEvent event) {
+        //registry.publishEvent(event.getPlayer(), event);
     }
 }

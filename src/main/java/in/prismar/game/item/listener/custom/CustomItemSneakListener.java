@@ -1,4 +1,4 @@
-package in.prismar.game.item.listener;
+package in.prismar.game.item.listener.custom;
 
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItemRegistry;

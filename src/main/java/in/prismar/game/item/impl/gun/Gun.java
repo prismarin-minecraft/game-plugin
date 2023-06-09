@@ -652,7 +652,6 @@ public class Gun extends SkinableItem {
                 GunPreShootEvent preShootEvent = new GunPreShootEvent(player, GunPlayer.of(player), this, false);
                 game.getItemRegistry().getEventBus().publish(preShootEvent);
                 if(preShootEvent.isCancelled()) {
-                    player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this gun here.");
                     return;
                 }
                 int ammo = game.getItemAmmoProvider().getAmmo(player, holder.getStack());

@@ -1,6 +1,8 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
+import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
+import in.prismar.game.item.model.CustomItem;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,6 +28,8 @@ public class MolotovItem extends LethalItem {
     public void onThrow(ThrowEvent throwEvent) {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
+
+        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
             int saveTimer = 160;
             boolean spawned = false;
@@ -47,6 +51,13 @@ public class MolotovItem extends LethalItem {
                 if(item.isOnGround() && !spawned) {
                     item.remove();
                     spawned = true;
+                    ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
+                    game.getItemRegistry().getEventBus().publish(explodeEvent);
+                    if(explodeEvent.isCancelled()) {
+                        cancel();
+                        return;
+                    }
+
                     item.getWorld().playSound(item.getLocation(), Sound.ENTITY_SPLASH_POTION_BREAK, 1f, 1);
                     for (int x = -3; x <= 3; x++) {
                         for (int z = -3; z <= 3; z++) {

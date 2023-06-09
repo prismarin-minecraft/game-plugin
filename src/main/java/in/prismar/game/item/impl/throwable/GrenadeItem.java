@@ -1,6 +1,7 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
+import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -31,11 +32,21 @@ public class GrenadeItem extends LethalItem {
         Player player = throwEvent.getPlayer();
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
+
+        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
             int timer = 35;
             @Override
             public void run() {
                 if(timer <= 0) {
+                    item.remove();
+                    cancel();
+
+                    ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
+                    game.getItemRegistry().getEventBus().publish(explodeEvent);
+                    if(explodeEvent.isCancelled()) {
+                        return;
+                    }
                     item.getWorld().playSound(item.getLocation(), "grenade.explosion", 2f, 1);
                     for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
                         if(near instanceof LivingEntity target) {
@@ -44,8 +55,7 @@ public class GrenadeItem extends LethalItem {
                         }
                     }
                     item.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, item.getLocation(), 2);
-                    item.remove();
-                    cancel();
+
                     return;
                 }
                 if(timer % 2 == 0) {

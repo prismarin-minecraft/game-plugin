@@ -3,6 +3,8 @@ package in.prismar.game.item;
 import in.prismar.game.Game;
 import in.prismar.game.hardpoint.HardpointTeam;
 import in.prismar.game.item.event.bus.GunPreShootEvent;
+import in.prismar.game.item.event.bus.ThrowableDeployEvent;
+import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.deployable.SandbagItem;
@@ -36,6 +38,8 @@ import in.prismar.game.item.impl.medical.MedkitItem;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.listener.GunPreShootListener;
+import in.prismar.game.item.listener.ThrowableDeployListener;
+import in.prismar.game.item.listener.ThrowableExplodeListener;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
 import in.prismar.api.configuration.node.event.ConfigRefreshEvent;
@@ -75,6 +79,8 @@ public class CustomItemRegistry {
         this.holders = new HashMap<>();
 
         this.eventBus.subscribe(GunPreShootEvent.class, new GunPreShootListener(game));
+        this.eventBus.subscribe(ThrowableDeployEvent.class, new ThrowableDeployListener(game));
+        this.eventBus.subscribe(ThrowableExplodeEvent.class, new ThrowableExplodeListener(game));
 
         load();
 

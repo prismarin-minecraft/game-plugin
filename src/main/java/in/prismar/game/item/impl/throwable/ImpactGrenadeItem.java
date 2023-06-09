@@ -1,6 +1,7 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
+import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import in.prismar.library.common.math.MathUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -32,6 +33,8 @@ public class ImpactGrenadeItem extends LethalItem {
     public void onThrow(ThrowEvent throwEvent) {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
+
+        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
 
             long ticks = 0;
@@ -46,6 +49,12 @@ public class ImpactGrenadeItem extends LethalItem {
                 }
                 if (item.isOnGround()) {
                     item.remove();
+                    ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
+                    game.getItemRegistry().getEventBus().publish(explodeEvent);
+                    if(explodeEvent.isCancelled()) {
+                        cancel();
+                        return;
+                    }
                     item.getWorld().playSound(item.getLocation(), "grenade.explosion", 1.7f, 1f);
                     for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 7, 7, 7)) {
                         if(near instanceof LivingEntity target) {

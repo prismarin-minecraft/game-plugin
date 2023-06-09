@@ -1,6 +1,7 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
+import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import in.prismar.library.common.math.MathUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -37,6 +38,7 @@ public class GasGrenadeItem extends LethalItem {
     public void onThrow(ThrowEvent throwEvent) {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
+        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
             int saveTimer = 180;
             boolean spawned = false;
@@ -53,6 +55,12 @@ public class GasGrenadeItem extends LethalItem {
                 if (item.isOnGround()) {
                     if (!spawned) {
                         item.remove();
+                        ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
+                        game.getItemRegistry().getEventBus().publish(explodeEvent);
+                        if(explodeEvent.isCancelled()) {
+                            cancel();
+                            return;
+                        }
                         spawned = true;
                         item.getWorld().playSound(item.getLocation(), "grenade.gas", 2f, 1f);
                         return;
