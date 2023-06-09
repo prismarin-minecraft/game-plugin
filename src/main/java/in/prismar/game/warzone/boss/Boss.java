@@ -1,5 +1,6 @@
 package in.prismar.game.warzone.boss;
 
+import in.prismar.api.clan.ClanBuff;
 import io.lumine.mythic.api.mobs.MythicMob;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,11 @@ import java.util.UUID;
 public class Boss {
 
     private String id;
+    private ClanBuff buff;
 
     private transient MythicMob mythicMob;
     private transient Map<UUID, BossBar> bossBars;
+    private transient Map<UUID, Map<UUID, BossDamager>> damagers;
+
 
 }

@@ -1,6 +1,7 @@
 package in.prismar.game.warzone;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.clan.ClanStatsProvider;
 import in.prismar.api.warp.WarpProvider;
 import in.prismar.api.warzone.WarzoneProvider;
 import in.prismar.game.Game;
@@ -46,6 +47,8 @@ public class WarzoneService implements WarzoneProvider {
     private List<Tombstone> tombstones;
 
     private AirdropTask airdropTask;
+
+    private ClanStatsProvider clanStatsProvider;
 
     public WarzoneService(Game game) {
         this.game = game;
@@ -136,5 +139,12 @@ public class WarzoneService implements WarzoneProvider {
             return player.getWorld().getName().equals(location.getWorld().getName());
         }
         return false;
+    }
+
+    public ClanStatsProvider getClanStatsProvider() {
+        if (clanStatsProvider == null) {
+            clanStatsProvider = PrismarinApi.getProvider(ClanStatsProvider.class);
+        }
+        return clanStatsProvider;
     }
 }

@@ -5,6 +5,8 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
+import in.prismar.game.Game;
+import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.warzone.boss.Boss;
 import in.prismar.game.warzone.boss.BossService;
 import in.prismar.library.common.math.MathUtil;
@@ -24,6 +26,9 @@ import org.bukkit.event.Listener;
  **/
 @AutoListener
 public class MobDeathListener implements Listener {
+
+    @Inject
+    private WarzoneService warzoneService;
 
     private ConfigStore configStore;
     private UserProvider<User> userProvider;
@@ -45,6 +50,7 @@ public class MobDeathListener implements Listener {
                 user.getSeasonData().setBalance(user.getSeasonData().getBalance() + money);
                 player.sendMessage(PrismarinConstants.PREFIX + "§7You received §6" + NumberFormatter.formatDoubleToThousands(money) + "$ §7for killing a §c" + event.getMob().getDisplayName());
                 userProvider.saveAsync(user, true);
+                warzoneService.getClanStatsProvider().addMobKills(player);
             }
         }
 

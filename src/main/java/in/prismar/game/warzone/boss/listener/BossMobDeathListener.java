@@ -25,6 +25,7 @@ public class BossMobDeathListener implements Listener {
         Boss boss = service.getBossById(event.getMobType().getInternalName());
         if(boss != null) {
             service.deleteBossbar(boss, event.getMob().getUniqueId());
+            service.handleBossDeath(boss, event.getMob());
         }
     }
 }
