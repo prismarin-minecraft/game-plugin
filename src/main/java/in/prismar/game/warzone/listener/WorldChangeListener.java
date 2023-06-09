@@ -3,6 +3,7 @@ package in.prismar.game.warzone.listener;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.game.warzone.WarzoneService;
+import in.prismar.game.warzone.combatlog.CombatLogService;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Location;
@@ -23,6 +24,9 @@ public class WorldChangeListener implements Listener {
     @Inject
     private WarzoneService warzoneService;
 
+    @Inject
+    private CombatLogService combatLogService;
+
     private final ScoreboardProvider scoreboardProvider;
 
     public WorldChangeListener() {
@@ -40,6 +44,7 @@ public class WorldChangeListener implements Listener {
             }
             if(warzoneService.isInWarzone(player)) {
                 scoreboardProvider.recreateTablist(player);
+                combatLogService.removeCombatLog(player);
             }
         }
 
