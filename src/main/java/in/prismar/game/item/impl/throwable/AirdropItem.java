@@ -24,8 +24,8 @@ public class AirdropItem extends ThrowableItem {
 
     @Override
     public boolean isAllowedToThrow(Player player, Game game) {
-        if(!game.getExtractionFacade().isIn(player)) {
-            player.sendMessage(PrismarinConstants.PREFIX + "§cYou can only call an airdrop inside extraction.");
+        if(!game.getWarzoneService().isInWarzone(player)) {
+            player.sendMessage(PrismarinConstants.PREFIX + "§cYou can only call an airdrop inside warzone.");
             return false;
         }
         return true;

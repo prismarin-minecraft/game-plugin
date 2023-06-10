@@ -32,7 +32,6 @@ public class FlashbangItem extends LethalItem {
     public void onThrow(ThrowEvent throwEvent) {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
-        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
 
             long ticks = 0;
@@ -48,9 +47,7 @@ public class FlashbangItem extends LethalItem {
                 if (item.isOnGround()) {
                     item.remove();
                     cancel();
-                    ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
-                    game.getItemRegistry().getEventBus().publish(explodeEvent);
-                    if(explodeEvent.isCancelled()) {
+                    if(callExplodeEvent(throwEvent, item.getLocation())) {
                         return;
                     }
                     item.getWorld().playSound(item.getLocation(), "grenade.flashbang", 1.7f, 1f);

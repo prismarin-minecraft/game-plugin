@@ -28,8 +28,6 @@ public class MolotovItem extends LethalItem {
     public void onThrow(ThrowEvent throwEvent) {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
-
-        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
             int saveTimer = 160;
             boolean spawned = false;
@@ -51,9 +49,7 @@ public class MolotovItem extends LethalItem {
                 if(item.isOnGround() && !spawned) {
                     item.remove();
                     spawned = true;
-                    ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
-                    game.getItemRegistry().getEventBus().publish(explodeEvent);
-                    if(explodeEvent.isCancelled()) {
+                    if(callExplodeEvent(throwEvent, item.getLocation())) {
                         cancel();
                         return;
                     }

@@ -34,7 +34,6 @@ public class ImpactGrenadeItem extends LethalItem {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
 
-        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
 
             long ticks = 0;
@@ -49,10 +48,8 @@ public class ImpactGrenadeItem extends LethalItem {
                 }
                 if (item.isOnGround()) {
                     item.remove();
-                    ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
-                    game.getItemRegistry().getEventBus().publish(explodeEvent);
-                    if(explodeEvent.isCancelled()) {
-                        cancel();
+                    cancel();
+                    if(callExplodeEvent(throwEvent, item.getLocation())) {
                         return;
                     }
                     item.getWorld().playSound(item.getLocation(), "grenade.explosion", 1.7f, 1f);
@@ -63,7 +60,6 @@ public class ImpactGrenadeItem extends LethalItem {
                         }
                     }
                     item.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, item.getLocation(), 2);
-                    cancel();
                     return;
                 }
                 if (ticks % 2 == 0 && !item.isOnGround()) {

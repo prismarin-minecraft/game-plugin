@@ -19,17 +19,15 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
  * Written by Maga
  **/
 @AutoListener
-public class WorldChangeListener implements Listener {
+public class PlayerWorldChangeListener implements Listener {
 
     @Inject
     private WarzoneService warzoneService;
 
-    @Inject
-    private CombatLogService combatLogService;
 
     private final ScoreboardProvider scoreboardProvider;
 
-    public WorldChangeListener() {
+    public PlayerWorldChangeListener() {
         this.scoreboardProvider = PrismarinApi.getProvider(ScoreboardProvider.class);
     }
 
@@ -44,7 +42,6 @@ public class WorldChangeListener implements Listener {
             }
             if(warzoneService.isInWarzone(player)) {
                 scoreboardProvider.recreateTablist(player);
-                combatLogService.removeCombatLog(player);
             }
         }
 

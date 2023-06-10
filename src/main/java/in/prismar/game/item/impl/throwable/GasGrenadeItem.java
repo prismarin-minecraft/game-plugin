@@ -38,7 +38,6 @@ public class GasGrenadeItem extends LethalItem {
     public void onThrow(ThrowEvent throwEvent) {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
-        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
             int saveTimer = 180;
             boolean spawned = false;
@@ -55,9 +54,7 @@ public class GasGrenadeItem extends LethalItem {
                 if (item.isOnGround()) {
                     if (!spawned) {
                         item.remove();
-                        ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
-                        game.getItemRegistry().getEventBus().publish(explodeEvent);
-                        if(explodeEvent.isCancelled()) {
+                        if(callExplodeEvent(throwEvent, item.getLocation())) {
                             cancel();
                             return;
                         }

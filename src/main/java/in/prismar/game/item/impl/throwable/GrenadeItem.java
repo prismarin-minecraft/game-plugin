@@ -33,7 +33,6 @@ public class GrenadeItem extends LethalItem {
         Item item = throwEvent.getItem();
         Game game = throwEvent.getGame();
 
-        final ThrowableItem throwableItem = this;
         new BukkitRunnable() {
             int timer = 35;
             @Override
@@ -41,10 +40,7 @@ public class GrenadeItem extends LethalItem {
                 if(timer <= 0) {
                     item.remove();
                     cancel();
-
-                    ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(throwEvent.getPlayer(), throwableItem, item.getLocation(), false);
-                    game.getItemRegistry().getEventBus().publish(explodeEvent);
-                    if(explodeEvent.isCancelled()) {
+                    if(callExplodeEvent(throwEvent, item.getLocation())) {
                         return;
                     }
                     item.getWorld().playSound(item.getLocation(), "grenade.explosion", 2f, 1);

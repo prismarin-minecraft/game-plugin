@@ -6,6 +6,7 @@ import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
 import in.prismar.game.item.event.bus.ThrowableDeployEvent;
+import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
@@ -14,6 +15,7 @@ import in.prismar.library.spigot.item.ItemUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Item;
@@ -51,6 +53,15 @@ public abstract class ThrowableItem extends CustomItem {
     }
 
     public abstract void onThrow(ThrowEvent throwEvent);
+
+    public boolean callExplodeEvent(ThrowEvent event, Location location) {
+        ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(event.getPlayer(), this, location, false);
+        event.getGame().getItemRegistry().getEventBus().publish(explodeEvent);
+        if(explodeEvent.isCancelled()) {
+            return true;
+        }
+        return false;
+    }
 
     @CustomItemEvent
     public void onCall(Player player, Game game, CustomItemHolder holder, PlayerInteractEvent event) {
