@@ -7,6 +7,7 @@ import in.prismar.api.warzone.WarzoneProvider;
 import in.prismar.game.Game;
 import in.prismar.game.warzone.config.WarzoneConfig;
 import in.prismar.game.warzone.task.AirdropTask;
+import in.prismar.game.warzone.task.WarzoneAmbienceTask;
 import in.prismar.game.warzone.tombstone.Tombstone;
 import in.prismar.game.warzone.tombstone.TombstoneTask;
 import in.prismar.library.meta.anno.Service;
@@ -56,6 +57,7 @@ public class WarzoneService implements WarzoneProvider {
         this.tombstones = new CopyOnWriteArrayList<>();
         this.config = new WarzoneConfig(game.getDefaultDirectory());
 
+        Bukkit.getScheduler().runTaskTimer(game, new WarzoneAmbienceTask(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, new TombstoneTask(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, airdropTask = new AirdropTask(this), 20 * 5, 20 * 5);
     }
