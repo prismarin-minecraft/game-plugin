@@ -78,6 +78,7 @@ public class EntityDamageListener implements Listener {
 
     private void handleDeath(Player target, Player damager) {
         target.sendTitle("§4You died", "", 5, 20, 5);
+        target.getPlayer().playSound(target.getLocation(), "game.death", 1f, 1);
         facade.respawn(target);
 
 
