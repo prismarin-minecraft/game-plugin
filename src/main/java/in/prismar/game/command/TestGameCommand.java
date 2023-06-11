@@ -6,6 +6,7 @@ import in.prismar.api.configuration.node.ConfigNode;
 import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.game.Game;
 import in.prismar.game.item.impl.drone.Drone;
+import in.prismar.game.keycode.KeyCode;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
@@ -34,11 +35,20 @@ public class TestGameCommand extends SpigotCommand<Player> {
         super("testgame");
         setAliases("tg");
         setSenders(Player.class);
-        setPermission(PrismarinConstants.PERMISSION_PREFIX + "testgame");
+       // setPermission(PrismarinConstants.PERMISSION_PREFIX + "testgame");
     }
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
+        final KeyCode code = new KeyCode((player1, code1) -> {
+            if(code1.equals("05071")) {
+                player.closeInventory();
+                player.sendMessage(PrismarinConstants.PREFIX + "§aSheesh");
+                return true;
+            }
+            return false;
+        });
+        code.openInventory(player);
         return true;
     }
 
