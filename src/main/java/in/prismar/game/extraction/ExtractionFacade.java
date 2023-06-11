@@ -80,7 +80,7 @@ public class ExtractionFacade implements ExtractionProvider {
         this.regionProvider = PrismarinApi.getProvider(RegionProvider.class);
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
         this.compassProvider = PrismarinApi.getProvider(CompassProvider.class);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(game, checker = new ExtractionChecker(this), 20, 20);
+       // Bukkit.getScheduler().runTaskTimerAsynchronously(game, checker = new ExtractionChecker(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, new ExtractionCorpseDespawner(this), 20, 20);
 
         compassProvider.getEventBus().subscribe(CompassEntryReachEvent.class, entity -> {
