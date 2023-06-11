@@ -3,7 +3,6 @@ package in.prismar.game.listener;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.library.meta.anno.Inject;
@@ -28,8 +27,8 @@ public class PlayerCommandListener implements Listener {
     @Inject
     private GameMapFacade mapFacade;
 
-    @Inject
-    private ExtractionFacade extractionFacade;
+   /* @Inject
+    private ExtractionFacade extractionFacade;*/
 
     @Inject
     private HardpointFacade hardpointFacade;
@@ -46,9 +45,7 @@ public class PlayerCommandListener implements Listener {
         if (Bukkit.getServer().getHelpMap().getHelpTopic(arguments[0]) != null) {
             if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "disabledcommands.bypass")) {
                 final String[] disabledCommands;
-                if(extractionFacade.isIn(player) && !extractionFacade.isInSafeZone(player)) {
-                    disabledCommands = configStore.getProperty("extraction.disabled.commands").split(",");
-                } else if(mapFacade.isInMap(player.getUniqueId()) || hardpointFacade.isCurrentlyPlaying(player)) {
+                if(mapFacade.isInMap(player.getUniqueId()) || hardpointFacade.isCurrentlyPlaying(player)) {
                     disabledCommands = configStore.getProperty("game.disabled.commands").split(",");
                 } else {
                     disabledCommands = new String[0];
