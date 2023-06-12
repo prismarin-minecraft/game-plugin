@@ -218,10 +218,10 @@ public class ExtractionFacade implements ExtractionProvider {
 
     @Override
     public boolean isIn(Player player) {
-       if(!getMapFile().getEntity().getSpawns().isEmpty()) {
+       /*if(!getMapFile().getEntity().getSpawns().isEmpty()) {
            final Location location = getMapFile().getEntity().getSpawns().get(0);
            return player.getWorld().getName().equals(location.getWorld().getName());
-       }
+       }*/
        return false;
     }
 
