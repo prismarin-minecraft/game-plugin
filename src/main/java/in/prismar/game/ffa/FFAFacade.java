@@ -1,8 +1,8 @@
 package in.prismar.game.ffa;
 
 import in.prismar.api.PrismarinApi;
-import in.prismar.api.map.GameMapLeaderboardEntry;
-import in.prismar.api.map.GameMapProvider;
+import in.prismar.api.game.ffa.FFAMapLeaderboardEntry;
+import in.prismar.api.game.ffa.FFAMapProvider;
 import in.prismar.api.placeholder.PlaceholderStore;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.api.user.User;
@@ -38,7 +38,7 @@ import java.util.*;
  **/
 @Service
 @Getter
-public class FFAFacade implements GameMapProvider {
+public class FFAFacade implements FFAMapProvider {
 
     private final UserProvider<User> userProvider;
 
@@ -95,7 +95,7 @@ public class FFAFacade implements GameMapProvider {
     }
 
     public void updateLeaderboard(FFAMap map) {
-        List<GameMapLeaderboardEntry> list = new ArrayList<>();
+        List<FFAMapLeaderboardEntry> list = new ArrayList<>();
         List<Tuple<Player, Integer>> entries = new ArrayList<>();
         for (FFAMapPlayer mapPlayer : map.getPlayers().values()) {
             entries.add(new Tuple<>(mapPlayer.getPlayer(), mapPlayer.getKills()));
@@ -103,7 +103,7 @@ public class FFAFacade implements GameMapProvider {
         entries.sort((o1, o2) -> Integer.compare(o2.getSecond(), o1.getSecond()));
 
         for (Tuple<Player, Integer> entry : entries) {
-            list.add(new GameMapLeaderboardEntry(entry.getFirst().getUniqueId(), entry.getFirst().getName(), entry.getSecond()));
+            list.add(new FFAMapLeaderboardEntry(entry.getFirst().getUniqueId(), entry.getFirst().getName(), entry.getSecond()));
         }
         map.setLeaderboard(list);
     }
@@ -129,7 +129,7 @@ public class FFAFacade implements GameMapProvider {
     }
 
     @Override
-    public List<GameMapLeaderboardEntry> getLeaderboard() {
+    public List<FFAMapLeaderboardEntry> getLeaderboard() {
         if (getRotator().getCurrentMap() != null) {
             return getLeaderboard(getRotator().getCurrentMap().getId());
         }
@@ -137,7 +137,7 @@ public class FFAFacade implements GameMapProvider {
     }
 
     @Override
-    public List<GameMapLeaderboardEntry> getLeaderboard(String id) {
+    public List<FFAMapLeaderboardEntry> getLeaderboard(String id) {
         FFAMap map = getRepository().findById(id);
         if (map != null) {
             if (map.getLeaderboard() != null) {

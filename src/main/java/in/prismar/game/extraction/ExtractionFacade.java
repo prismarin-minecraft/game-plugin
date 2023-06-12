@@ -5,7 +5,7 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.compass.CompassEntryReachEvent;
 import in.prismar.api.compass.CompassProvider;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.api.map.ExtractionProvider;
+import in.prismar.api.game.ffa.ExtractionProvider;
 import in.prismar.api.region.RegionProvider;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;

@@ -5,9 +5,9 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.api.game.GameProvider;
-import in.prismar.api.hardpoint.HardpointProvider;
-import in.prismar.api.map.ExtractionProvider;
-import in.prismar.api.map.GameMapProvider;
+import in.prismar.api.game.hardpoint.HardpointProvider;
+import in.prismar.api.game.ffa.ExtractionProvider;
+import in.prismar.api.game.ffa.FFAMapProvider;
 import in.prismar.api.party.PartyProvider;
 import in.prismar.api.region.RegionProvider;
 import in.prismar.api.warzone.WarzoneProvider;
@@ -141,7 +141,7 @@ public class Game extends JavaPlugin implements GameProvider {
     }
 
     private void initApi() {
-        PrismarinApi.registerProvider(GameMapProvider.class, mapFacade);
+        PrismarinApi.registerProvider(FFAMapProvider.class, mapFacade);
         PrismarinApi.registerProvider(ExtractionProvider.class, extractionFacade);
         PrismarinApi.registerProvider(HardpointProvider.class, hardpointFacade);
         PrismarinApi.registerProvider(GameProvider.class, this);

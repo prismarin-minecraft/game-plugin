@@ -1,6 +1,6 @@
 package in.prismar.game.ffa.model;
 
-import in.prismar.api.map.GameMapLeaderboardEntry;
+import in.prismar.api.game.ffa.FFAMapLeaderboardEntry;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.repository.entity.StringRepositoryEntity;
 import in.prismar.library.spigot.item.container.ItemContainer;
@@ -25,7 +25,7 @@ public class FFAMap extends StringRepositoryEntity {
 
     private List<FFAMapPowerUp> powerUps;
 
-    private transient List<GameMapLeaderboardEntry> leaderboard;
+    private transient List<FFAMapLeaderboardEntry> leaderboard;
 
     private transient Map<UUID, FFAMapPlayer> players;
 

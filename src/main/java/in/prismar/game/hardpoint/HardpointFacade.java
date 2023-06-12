@@ -4,7 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.compass.CompassProvider;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.api.hardpoint.HardpointProvider;
+import in.prismar.api.game.hardpoint.HardpointProvider;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.game.Game;
 import in.prismar.game.arsenal.ArsenalService;

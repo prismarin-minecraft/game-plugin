@@ -1,6 +1,5 @@
 package in.prismar.game.item.impl.deployable;
 
-import in.prismar.api.map.GameMapProvider;
 import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
@@ -10,7 +9,6 @@ import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.item.ItemUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.block.Block;
