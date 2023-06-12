@@ -1,6 +1,6 @@
 package in.prismar.game.ffa.command;
 
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.ffa.command.sub.*;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.spigot.command.spigot.template.help.HelpCommand;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class FFACommand extends HelpCommand<Player> {
 
     @Inject
-    private GameMapFacade facade;
+    private FFAFacade facade;
 
     public FFACommand() {
         super("ffa", "FFA");

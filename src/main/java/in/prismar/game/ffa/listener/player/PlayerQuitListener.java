@@ -1,6 +1,6 @@
 package in.prismar.game.ffa.listener.player;
 
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerQuitListener implements Listener {
 
     @Inject
-    private GameMapFacade facade;
+    private FFAFacade facade;
 
     @EventHandler
     public void onCall(PlayerQuitEvent event) {

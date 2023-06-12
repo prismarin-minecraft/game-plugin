@@ -1,4 +1,4 @@
-package in.prismar.game.web.impl;
+package in.prismar.game.web.impl.items;
 
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;

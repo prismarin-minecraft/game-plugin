@@ -1,9 +1,9 @@
 package in.prismar.game.ffa.command.sub;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.model.FFAMap;
+import in.prismar.game.ffa.repository.FFAMapRepository;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -20,10 +20,10 @@ import org.bukkit.inventory.ItemStack;
  **/
 public class EditIconSubCommand extends HelpSubCommand<Player> {
 
-    private final GameMapFacade facade;
-    private final GameMapRepository repository;
+    private final FFAFacade facade;
+    private final FFAMapRepository repository;
 
-    public EditIconSubCommand(GameMapFacade facade) {
+    public EditIconSubCommand(FFAFacade facade) {
         super("editIcon");
         setPermission(PrismarinConstants.PERMISSION_PREFIX + "map.admin");
         setDescription("Edit icon of map");
@@ -40,7 +40,7 @@ public class EditIconSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis map does not exist");
                 return true;
             }
-            GameMap map = repository.findById(id);
+            FFAMap map = repository.findById(id);
             if(!ItemUtil.hasItemInHandAndHasDisplayName(player, true)) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cPlease hold an item in your hand");
                 return true;

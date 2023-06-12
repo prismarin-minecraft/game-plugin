@@ -15,7 +15,7 @@ import org.bukkit.Location;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GameMapPowerUp {
+public class FFAMapPowerUp {
 
     private String id;
     private Location location;
@@ -23,7 +23,7 @@ public class GameMapPowerUp {
     private transient long respawnTime;
     private transient Hologram hologram;
 
-    public GameMapPowerUp(String id, Location location) {
+    public FFAMapPowerUp(String id, Location location) {
         this.id = id;
         this.location = location;
     }

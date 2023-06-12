@@ -2,16 +2,8 @@ package in.prismar.game.web.impl;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.report.ReportProvider;
-import in.prismar.game.extraction.ExtractionFacade;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.web.impl.response.PlayerResponse;
 import in.prismar.game.web.route.DeleteWebRoute;
-import in.prismar.game.web.route.GetWebRoute;
 import io.javalin.http.Context;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 /**
  * Copyright (c) Maga, All Rights Reserved

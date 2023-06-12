@@ -1,8 +1,8 @@
 package in.prismar.game.ffa.command.sub;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.repository.FFAMapRepository;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -16,10 +16,10 @@ import org.bukkit.entity.Player;
  **/
 public class JoinSubCommand extends HelpSubCommand<Player> {
 
-    private final GameMapFacade facade;
-    private final GameMapRepository repository;
+    private final FFAFacade facade;
+    private final FFAMapRepository repository;
 
-    public JoinSubCommand(GameMapFacade facade) {
+    public JoinSubCommand(FFAFacade facade) {
         super("join");
         setDescription("Join the current map");
         this.facade = facade;

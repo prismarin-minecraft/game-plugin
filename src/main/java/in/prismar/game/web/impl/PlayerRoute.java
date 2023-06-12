@@ -1,7 +1,7 @@
 package in.prismar.game.web.impl;
 
 import in.prismar.game.extraction.ExtractionFacade;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.web.impl.response.PlayerResponse;
 import in.prismar.game.web.route.GetWebRoute;
 import io.javalin.http.Context;
@@ -18,10 +18,10 @@ import java.util.UUID;
  **/
 public class PlayerRoute extends GetWebRoute<PlayerResponse> {
 
-    private final GameMapFacade mapFacade;
+    private final FFAFacade mapFacade;
     private final ExtractionFacade extractionFacade;
 
-    public PlayerRoute(GameMapFacade mapFacade, ExtractionFacade extractionFacade) {
+    public PlayerRoute(FFAFacade mapFacade, ExtractionFacade extractionFacade) {
         super("player/{id}");
         this.mapFacade = mapFacade;
         this.extractionFacade = extractionFacade;

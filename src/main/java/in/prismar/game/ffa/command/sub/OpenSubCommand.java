@@ -1,12 +1,11 @@
 package in.prismar.game.ffa.command.sub;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.repository.FFAMapRepository;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
-import in.prismar.library.spigot.text.CenteredMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -19,10 +18,10 @@ import org.bukkit.entity.Player;
  **/
 public class OpenSubCommand extends HelpSubCommand<Player> {
 
-    private final GameMapFacade facade;
-    private final GameMapRepository repository;
+    private final FFAFacade facade;
+    private final FFAMapRepository repository;
 
-    public OpenSubCommand(GameMapFacade facade) {
+    public OpenSubCommand(FFAFacade facade) {
         super("open");
         setDescription("Open ffa");
         setPermission(PrismarinConstants.PERMISSION_PREFIX + "ffa.open");

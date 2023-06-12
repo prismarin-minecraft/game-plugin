@@ -1,7 +1,7 @@
 package in.prismar.game.ffa.powerup;
 
 import in.prismar.game.Game;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.ffa.powerup.impl.AmmoPowerUp;
 import in.prismar.game.ffa.powerup.impl.DoubleJumpPowerUp;
 import in.prismar.game.ffa.powerup.impl.HealPowerUp;
@@ -20,7 +20,7 @@ import in.prismar.library.meta.anno.Service;
 public class PowerUpRegistry extends LocalMapRegistry<String, PowerUp> {
 
     @Inject
-    private GameMapFacade facade;
+    private FFAFacade facade;
 
     public PowerUpRegistry(Game game) {
         super(false, false);

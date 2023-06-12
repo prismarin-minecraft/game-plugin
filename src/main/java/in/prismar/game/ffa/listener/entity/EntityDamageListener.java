@@ -3,11 +3,10 @@ package in.prismar.game.ffa.listener.entity;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.model.GameMapPlayer;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.model.FFAMap;
+import in.prismar.game.ffa.model.FFAMapPlayer;
 import in.prismar.game.stats.GameStatsDistributor;
-import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -35,7 +33,7 @@ import java.util.function.Consumer;
 public class EntityDamageListener implements Listener {
 
     @Inject
-    private GameMapFacade facade;
+    private FFAFacade facade;
 
     @Inject
     private GameStatsDistributor statsDistributor;
@@ -99,13 +97,13 @@ public class EntityDamageListener implements Listener {
         lastDamager.remove(target.getUniqueId());
 
 
-        Optional<GameMap> mapOptional = facade.getMapByPlayer(target);
+        Optional<FFAMap> mapOptional = facade.getMapByPlayer(target);
         if(mapOptional.isPresent()) {
-            GameMap map = mapOptional.get();
-            GameMapPlayer targetMapPlayer = map.getPlayers().get(target.getUniqueId());
+            FFAMap map = mapOptional.get();
+            FFAMapPlayer targetMapPlayer = map.getPlayers().get(target.getUniqueId());
 
             if(!samePlayer) {
-                GameMapPlayer damagerMapPlayer = map.getPlayers().get(damager.getUniqueId());
+                FFAMapPlayer damagerMapPlayer = map.getPlayers().get(damager.getUniqueId());
                 damagerMapPlayer.setKills(damagerMapPlayer.getKills() + 1);
                 statsDistributor.addKill(damager);
                 int exp = statsDistributor.addFFABattlePassEXP(damager);
@@ -173,9 +171,9 @@ public class EntityDamageListener implements Listener {
         }
     }
 
-    private void displayStreak(GameMap map, Player player, int streak) {
+    private void displayStreak(FFAMap map, Player player, int streak) {
         statsDistributor.displayStreak(player, streak, chosenMessage -> {
-            for(GameMapPlayer mapPlayer : map.getPlayers().values()) {
+            for(FFAMapPlayer mapPlayer : map.getPlayers().values()) {
                 mapPlayer.getPlayer().sendMessage(" ");
                 mapPlayer.getPlayer().sendMessage(PrismarinConstants.PREFIX + chosenMessage);
                 mapPlayer.getPlayer().sendMessage(" ");

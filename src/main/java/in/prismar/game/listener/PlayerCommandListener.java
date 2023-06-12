@@ -3,7 +3,7 @@ package in.prismar.game.listener;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
@@ -25,7 +25,7 @@ public class PlayerCommandListener implements Listener {
     private final ConfigStore configStore;
 
     @Inject
-    private GameMapFacade mapFacade;
+    private FFAFacade mapFacade;
 
    /* @Inject
     private ExtractionFacade extractionFacade;*/

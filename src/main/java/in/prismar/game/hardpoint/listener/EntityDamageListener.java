@@ -3,9 +3,6 @@ package in.prismar.game.hardpoint.listener;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.model.GameMapPlayer;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.hardpoint.HardpointTeam;
 import in.prismar.game.hardpoint.session.HardpointSessionPlayer;
@@ -23,7 +20,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 /**

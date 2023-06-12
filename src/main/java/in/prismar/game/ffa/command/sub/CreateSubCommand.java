@@ -1,8 +1,8 @@
 package in.prismar.game.ffa.command.sub;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.repository.FFAMapRepository;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -18,10 +18,10 @@ import org.bukkit.inventory.ItemStack;
  **/
 public class CreateSubCommand extends HelpSubCommand<Player> {
 
-    private final GameMapFacade facade;
-    private final GameMapRepository repository;
+    private final FFAFacade facade;
+    private final FFAMapRepository repository;
 
-    public CreateSubCommand(GameMapFacade facade) {
+    public CreateSubCommand(FFAFacade facade) {
         super("create");
         setPermission(PrismarinConstants.PERMISSION_PREFIX + "map.admin");
         setDescription("Create a map");

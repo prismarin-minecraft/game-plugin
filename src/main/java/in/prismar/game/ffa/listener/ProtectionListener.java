@@ -1,7 +1,7 @@
 package in.prismar.game.ffa.listener;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.ArmorStand;
@@ -32,7 +32,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class ProtectionListener implements Listener {
 
     @Inject
-    private GameMapFacade facade;
+    private FFAFacade facade;
 
     @EventHandler
     public void onBreak(BlockBreakEvent event) {

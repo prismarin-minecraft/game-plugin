@@ -7,9 +7,8 @@ import in.prismar.api.user.User;
 import in.prismar.api.user.UserCacheProvider;
 import in.prismar.api.user.UserProvider;
 import in.prismar.api.user.data.SeasonData;
-import in.prismar.game.Game;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.model.GameMap;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.model.FFAMap;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
@@ -23,11 +22,9 @@ import in.prismar.library.spigot.meta.anno.AutoCommand;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -43,7 +40,7 @@ public class StatsCommand extends SpigotCommand<Player> {
     private static final ItemStack GLASS = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("§c ").build();
 
     @Inject
-    private GameMapFacade mapFacade;
+    private FFAFacade mapFacade;
 
     public StatsCommand() {
         super("stats");
@@ -173,12 +170,12 @@ public class StatsCommand extends SpigotCommand<Player> {
         }
         final String dot = PrismarinConstants.LISTING_DOT + " §7";
         int slot = 0;
-        for (GameMap gameMap : mapFacade.getRepository().findAll()) {
-            ItemStack map = new ItemBuilder(Material.MAP).setName("§b" + gameMap.getFancyName())
+        for (FFAMap ffaMap : mapFacade.getRepository().findAll()) {
+            ItemStack map = new ItemBuilder(Material.MAP).setName("§b" + ffaMap.getFancyName())
                     .addLore("§c")
-                    .addLore(dot + "Kills§8: §b" + getStatsValue(user, season, "kills.map." + gameMap.getId()))
-                    .addLore(dot + "Deaths§8: §b" + getStatsValue(user, season, "deaths.map." + gameMap.getId()))
-                    .addLore(dot + "K/D§8: §b" + getKD(user, season, "kills.map." + gameMap.getId(), "deaths.map." + gameMap.getId()))
+                    .addLore(dot + "Kills§8: §b" + getStatsValue(user, season, "kills.map." + ffaMap.getId()))
+                    .addLore(dot + "Deaths§8: §b" + getStatsValue(user, season, "deaths.map." + ffaMap.getId()))
+                    .addLore(dot + "K/D§8: §b" + getKD(user, season, "kills.map." + ffaMap.getId(), "deaths.map." + ffaMap.getId()))
                     .addLore("§c").allFlags()
                     .build();
             frame.addButton(slot, map);

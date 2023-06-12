@@ -1,6 +1,6 @@
 package in.prismar.game.ffa.repository;
 
-import in.prismar.game.ffa.model.GameMap;
+import in.prismar.game.ffa.model.FFAMap;
 import in.prismar.library.common.repository.Repository;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
  * Proprietary and confidential
  * Written by Maga
  **/
-public interface GameMapRepository extends Repository<String, GameMap> {
+public interface FFAMapRepository extends Repository<String, FFAMap> {
 
-    GameMap create(String id, ItemStack icon);
+    FFAMap create(String id, ItemStack icon);
 }

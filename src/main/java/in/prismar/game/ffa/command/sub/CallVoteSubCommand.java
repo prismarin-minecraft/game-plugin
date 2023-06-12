@@ -5,8 +5,8 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.repository.FFAMapRepository;
 import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
@@ -21,10 +21,10 @@ import org.bukkit.entity.Player;
  **/
 public class CallVoteSubCommand extends HelpSubCommand<Player> {
 
-    private final GameMapFacade facade;
-    private final GameMapRepository repository;
+    private final FFAFacade facade;
+    private final FFAMapRepository repository;
 
-    public CallVoteSubCommand(GameMapFacade facade) {
+    public CallVoteSubCommand(FFAFacade facade) {
         super("callvote");
         setPermission(PrismarinConstants.PERMISSION_PREFIX + "map.call.vote");
         setAliases("callvote");

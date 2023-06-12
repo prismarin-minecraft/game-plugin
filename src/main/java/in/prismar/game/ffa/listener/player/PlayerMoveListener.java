@@ -3,7 +3,7 @@ package in.prismar.game.ffa.listener.player;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Location;
@@ -30,7 +30,7 @@ import java.util.UUID;
 public class PlayerMoveListener implements Listener {
 
     @Inject
-    private GameMapFacade facade;
+    private FFAFacade facade;
 
     private final UserProvider<User> provider;
 

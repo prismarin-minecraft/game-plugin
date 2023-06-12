@@ -2,33 +2,18 @@ package in.prismar.game.command;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.library.meta.anno.Inject;
-import in.prismar.library.spigot.entity.GlowingEntities;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
 import in.prismar.library.spigot.inventory.Frame;
 import in.prismar.library.spigot.inventory.button.event.ClickFrameButtonEvent;
 import in.prismar.library.spigot.item.ItemBuilder;
-import in.prismar.library.spigot.location.LocationUtil;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
-import in.prismar.library.spigot.scheduler.Scheduler;
-import in.prismar.library.spigot.scheduler.SchedulerRunnable;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -62,7 +47,7 @@ public class GameCommand extends SpigotCommand<Player> {
     };
 
     @Inject
-    private GameMapFacade mapFacade;
+    private FFAFacade mapFacade;
 
     @Inject
     private HardpointFacade hardpointFacade;

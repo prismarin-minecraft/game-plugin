@@ -1,9 +1,9 @@
 package in.prismar.game.ffa.command.sub;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.model.FFAMap;
+import in.prismar.game.ffa.repository.FFAMapRepository;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -17,10 +17,10 @@ import org.bukkit.entity.Player;
  **/
 public class RemoveSpawnSubCommand extends HelpSubCommand<Player> {
 
-    private final GameMapFacade facade;
-    private final GameMapRepository repository;
+    private final FFAFacade facade;
+    private final FFAMapRepository repository;
 
-    public RemoveSpawnSubCommand(GameMapFacade facade) {
+    public RemoveSpawnSubCommand(FFAFacade facade) {
         super("removespawn");
         setPermission(PrismarinConstants.PERMISSION_PREFIX + "map.admin");
         setDescription("Remove latest spawn location");
@@ -37,7 +37,7 @@ public class RemoveSpawnSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis map does not exists");
                 return true;
             }
-            GameMap map = repository.findById(id);
+            FFAMap map = repository.findById(id);
             if(map.getSpawns().isEmpty()) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cNothing to remove");
                 return true;

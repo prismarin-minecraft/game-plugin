@@ -1,7 +1,6 @@
 package in.prismar.game.stats;
 
 import in.prismar.api.PrismarinApi;
-import in.prismar.api.PrismarinConstants;
 import in.prismar.api.battlepass.BattlePassProvider;
 import in.prismar.api.booster.BoosterProvider;
 import in.prismar.api.booster.BoosterType;
@@ -10,8 +9,6 @@ import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.api.user.data.SeasonData;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.model.GameMapPlayer;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.meta.anno.Service;
 import org.bukkit.entity.Player;

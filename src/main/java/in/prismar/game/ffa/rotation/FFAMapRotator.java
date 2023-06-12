@@ -5,10 +5,10 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.placeholder.PlaceholderStore;
 import in.prismar.api.scoreboard.ScoreboardProvider;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.model.GameMapPlayer;
-import in.prismar.game.ffa.model.GameMapPowerUp;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.model.FFAMap;
+import in.prismar.game.ffa.model.FFAMapPlayer;
+import in.prismar.game.ffa.model.FFAMapPowerUp;
 import in.prismar.game.ffa.powerup.PowerUp;
 import in.prismar.library.spigot.hologram.Hologram;
 import in.prismar.library.spigot.hologram.line.HologramLineType;
@@ -20,7 +20,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -32,9 +31,9 @@ import java.util.*;
  **/
 @Getter
 @Setter
-public class GameMapRotator implements Runnable {
+public class FFAMapRotator implements Runnable {
 
-    private final GameMapFacade facade;
+    private final FFAFacade facade;
 
     private final ConfigStore store;
 
@@ -43,7 +42,7 @@ public class GameMapRotator implements Runnable {
 
     private Map<String, Set<UUID>> voting;
 
-    private GameMap currentMap;
+    private FFAMap currentMap;
 
     private long nextRotate;
 
@@ -51,7 +50,7 @@ public class GameMapRotator implements Runnable {
 
 
 
-    public GameMapRotator(GameMapFacade facade) {
+    public FFAMapRotator(FFAFacade facade) {
         this.facade = facade;
         this.voting = new HashMap<>();
         this.store = PrismarinApi.getProvider(ConfigStore.class);
@@ -101,7 +100,7 @@ public class GameMapRotator implements Runnable {
     public void createVoteSurvey() {
         int playersSize = Bukkit.getOnlinePlayers().size();
         int needed = Integer.valueOf(store.getProperty("map.rotation.apex.players"));
-        for(GameMap map : facade.getRepository().findAll()) {
+        for(FFAMap map : facade.getRepository().findAll()) {
             if(map.getId().equalsIgnoreCase(store.getProperty("map.rotation.worldsedge.id"))) {
                 if(playersSize < needed) {
                     continue;
@@ -119,7 +118,7 @@ public class GameMapRotator implements Runnable {
         if (currentMap.getLeaderboard().isEmpty()) {
             return;
         }
-        for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+        for(FFAMapPlayer mapPlayer : currentMap.getPlayers().values()) {
             Player player = mapPlayer.getPlayer();
             player.sendMessage(PrismarinConstants.BORDER);
             player.sendMessage(" ");
@@ -148,7 +147,7 @@ public class GameMapRotator implements Runnable {
 
             int playersSize = Bukkit.getOnlinePlayers().size();
             int needed = Integer.valueOf(store.getProperty("map.rotation.apex.players"));
-            for(GameMap map : facade.getRepository().findAll()) {
+            for(FFAMap map : facade.getRepository().findAll()) {
                 if(map.getId().equalsIgnoreCase(store.getProperty("map.rotation.worldsedge.id"))) {
                     if(playersSize < needed) {
                         continue;
@@ -178,7 +177,7 @@ public class GameMapRotator implements Runnable {
     public void run() {
         long now = System.currentTimeMillis();
         if(currentMap != null) {
-            for(GameMapPowerUp mapPowerUp : currentMap.getPowerUps()) {
+            for(FFAMapPowerUp mapPowerUp : currentMap.getPowerUps()) {
                 PowerUp powerUp = facade.getPowerUpRegistry().getById(mapPowerUp.getId());
                 if(now >= mapPowerUp.getRespawnTime() && mapPowerUp.getHologram() == null) {
                     mapPowerUp.setHologram(spawnPowerUpHologram(mapPowerUp.getLocation(), powerUp));
@@ -187,7 +186,7 @@ public class GameMapRotator implements Runnable {
                         Location holoLoc = mapPowerUp.getHologram().getLocation().clone();
                         holoLoc.setYaw(holoLoc.getYaw() + 2);
                         mapPowerUp.getHologram().teleport(holoLoc);
-                        for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                        for(FFAMapPlayer mapPlayer : currentMap.getPlayers().values()) {
                             Player player = mapPlayer.getPlayer();
                             if(!player.getWorld().getName().equalsIgnoreCase(mapPowerUp.getLocation().getWorld().getName())) {
                                 continue;
@@ -214,8 +213,8 @@ public class GameMapRotator implements Runnable {
         if(facade.getRepository().findAll().size() >= 1) {
             if(now >= nextRotate) {
                 displayWinners();
-                GameMap winner = findVoteWinner();
-                for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                FFAMap winner = findVoteWinner();
+                for(FFAMapPlayer mapPlayer : currentMap.getPlayers().values()) {
                     mapPlayer.setKills(0);
                     mapPlayer.setDeaths(0);
                     winner.getPlayers().put(mapPlayer.getPlayer().getUniqueId(), mapPlayer);
@@ -227,7 +226,7 @@ public class GameMapRotator implements Runnable {
                 this.currentMap = winner;
                 facade.updateLeaderboard(currentMap);
                 ScoreboardProvider provider = PrismarinApi.getProvider(ScoreboardProvider.class);
-                for(GameMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                for(FFAMapPlayer mapPlayer : currentMap.getPlayers().values()) {
                     facade.getStatsDistributor().resetKillstreak(mapPlayer.getPlayer());
                     facade.respawn(mapPlayer.getPlayer());
                     provider.recreateSidebar(mapPlayer.getPlayer());
@@ -249,7 +248,7 @@ public class GameMapRotator implements Runnable {
 
     }
 
-    public GameMap findVoteWinner() {
+    public FFAMap findVoteWinner() {
         List<VoteEntry> entries = new ArrayList<>();
         for(Map.Entry<String, Set<UUID>> entry : voting.entrySet()) {
             entries.add(new VoteEntry(entry.getKey(), entry.getValue().size()));
@@ -264,11 +263,11 @@ public class GameMapRotator implements Runnable {
         return !voting.isEmpty();
     }
 
-    public boolean canVoteFor(GameMap map) {
+    public boolean canVoteFor(FFAMap map) {
         return voting.containsKey(map.getId());
     }
 
-    public void voteForMap(GameMap map, UUID uuid) {
+    public void voteForMap(FFAMap map, UUID uuid) {
         if(!voting.containsKey(map.getId())) {
             voting.put(map.getId(), new HashSet<>());
         }

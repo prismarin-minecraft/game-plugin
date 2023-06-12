@@ -3,7 +3,7 @@ package in.prismar.game.ffa.powerup.listener;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.GameMode;
@@ -24,7 +24,7 @@ import org.bukkit.event.player.PlayerToggleFlightEvent;
 public class PlayerDoubleJumpListener implements Listener {
 
     @Inject
-    private GameMapFacade facade;
+    private FFAFacade facade;
 
     private final UserProvider<User> provider;
 

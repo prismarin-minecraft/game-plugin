@@ -1,10 +1,10 @@
 package in.prismar.game.ffa.command.sub;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.model.GameMapPowerUp;
-import in.prismar.game.ffa.repository.GameMapRepository;
+import in.prismar.game.ffa.FFAFacade;
+import in.prismar.game.ffa.model.FFAMap;
+import in.prismar.game.ffa.model.FFAMapPowerUp;
+import in.prismar.game.ffa.repository.FFAMapRepository;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -19,10 +19,10 @@ import org.bukkit.entity.Player;
  **/
 public class AddPowerUpSubCommand extends HelpSubCommand<Player> {
 
-    private final GameMapFacade facade;
-    private final GameMapRepository repository;
+    private final FFAFacade facade;
+    private final FFAMapRepository repository;
 
-    public AddPowerUpSubCommand(GameMapFacade facade) {
+    public AddPowerUpSubCommand(FFAFacade facade) {
         super("addpowerup");
         setPermission(PrismarinConstants.PERMISSION_PREFIX + "map.admin");
         setDescription("Add power up");
@@ -44,8 +44,8 @@ public class AddPowerUpSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis powerup does not exists. /map powerups");
                 return true;
             }
-            GameMap map = repository.findById(id);
-            map.getPowerUps().add(new GameMapPowerUp(powerUp.toLowerCase(), LocationUtil.getCenterOfBlock(player.getLocation())));
+            FFAMap map = repository.findById(id);
+            map.getPowerUps().add(new FFAMapPowerUp(powerUp.toLowerCase(), LocationUtil.getCenterOfBlock(player.getLocation())));
             repository.save(map);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You have added a powerup to the map §b" + id);
             return true;

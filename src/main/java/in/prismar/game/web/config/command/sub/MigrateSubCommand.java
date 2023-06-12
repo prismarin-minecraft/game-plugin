@@ -7,6 +7,7 @@ import in.prismar.game.web.config.builder.ConfigNodeBuilder;
 import in.prismar.game.web.config.file.ConfigNodeFile;
 import in.prismar.game.web.config.model.ConfigNode;
 import in.prismar.game.web.config.model.ConfigNodeType;
+import in.prismar.game.web.impl.items.GunData;
 import in.prismar.library.common.EnumUtil;
 import in.prismar.library.file.toml.TomlConfig;
 import in.prismar.library.spigot.command.exception.CommandException;
@@ -102,12 +103,9 @@ public class MigrateSubCommand extends HelpSubCommand<CommandSender> {
             }
             file.refreshNodeIds();
             sender.sendMessage(PrismarinConstants.PREFIX + "§aFinished migrating.");
-        }).exceptionally(new Function<Throwable, Void>() {
-            @Override
-            public Void apply(Throwable throwable) {
-                throwable.printStackTrace();
-                return null;
-            }
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
         });
         return true;
     }

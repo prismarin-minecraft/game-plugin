@@ -18,16 +18,16 @@ import java.util.UUID;
  * Written by Maga
  **/
 @Data
-public class GameMap extends StringRepositoryEntity {
+public class FFAMap extends StringRepositoryEntity {
 
     private ItemContainer icon;
     private List<Location> spawns;
 
-    private List<GameMapPowerUp> powerUps;
+    private List<FFAMapPowerUp> powerUps;
 
     private transient List<GameMapLeaderboardEntry> leaderboard;
 
-    private transient Map<UUID, GameMapPlayer> players;
+    private transient Map<UUID, FFAMapPlayer> players;
 
     @Override
     public String toString() {

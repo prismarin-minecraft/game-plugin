@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
  * Written by Maga
  **/
 @Getter
-public class GameMapPlayer {
+public class FFAMapPlayer {
 
     private final Player player;
 
@@ -26,7 +26,7 @@ public class GameMapPlayer {
 
     private final ItemStack[] armor;
 
-    public GameMapPlayer(Player player) {
+    public FFAMapPlayer(Player player) {
         this.player = player;
         this.content = player.getInventory().getStorageContents();
         this.armor = player.getInventory().getArmorContents();

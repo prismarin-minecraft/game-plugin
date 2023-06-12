@@ -2,7 +2,7 @@ package in.prismar.game.ffa.repository;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import in.prismar.game.ffa.model.GameMap;
+import in.prismar.game.ffa.model.FFAMap;
 import in.prismar.library.file.gson.GsonFileWrapper;
 import in.prismar.library.spigot.file.GsonLocationAdapter;
 import in.prismar.library.spigot.item.container.ItemContainer;
@@ -17,16 +17,16 @@ import java.util.*;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class FileGameMapRepository extends GsonFileWrapper<Map<String, GameMap>> implements GameMapRepository {
+public class FileFFAMapRepository extends GsonFileWrapper<Map<String, FFAMap>> implements FFAMapRepository {
 
 
-    public FileGameMapRepository(String directory) {
-        super(directory.concat("maps.json"), new TypeToken<Map<String, GameMap>>(){}.getType());
+    public FileFFAMapRepository(String directory) {
+        super(directory.concat("maps.json"), new TypeToken<Map<String, FFAMap>>(){}.getType());
         load();
         if(getEntity() == null) {
             setEntity(new HashMap<>());
         } else {
-            for(GameMap map : getEntity().values()) {
+            for(FFAMap map : getEntity().values()) {
                 map.getIcon().deserialize();
                 map.setPlayers(new HashMap<>());
             }
@@ -39,8 +39,8 @@ public class FileGameMapRepository extends GsonFileWrapper<Map<String, GameMap>>
     }
 
     @Override
-    public GameMap create(String id, ItemStack icon) {
-        GameMap map = new GameMap();
+    public FFAMap create(String id, ItemStack icon) {
+        FFAMap map = new FFAMap();
         map.setId(id);
         map.setIcon(new ItemContainer(icon));
         map.setSpawns(new ArrayList<>());
@@ -50,7 +50,7 @@ public class FileGameMapRepository extends GsonFileWrapper<Map<String, GameMap>>
     }
 
     @Override
-    public GameMap create(GameMap map) {
+    public FFAMap create(FFAMap map) {
         map.setId(map.getId().toLowerCase());
         getEntity().put(map.getId(), map);
         save();
@@ -58,17 +58,17 @@ public class FileGameMapRepository extends GsonFileWrapper<Map<String, GameMap>>
     }
 
     @Override
-    public GameMap findById(String id) {
+    public FFAMap findById(String id) {
         return getEntity().get(id.toLowerCase());
     }
 
     @Override
-    public Optional<GameMap> findByIdOptional(String s) {
+    public Optional<FFAMap> findByIdOptional(String s) {
         return Optional.empty();
     }
 
     @Override
-    public Collection<GameMap> findAll() {
+    public Collection<FFAMap> findAll() {
         return getEntity().values();
     }
 
@@ -78,21 +78,21 @@ public class FileGameMapRepository extends GsonFileWrapper<Map<String, GameMap>>
     }
 
     @Override
-    public GameMap save(GameMap map) {
+    public FFAMap save(FFAMap map) {
         save();
         return map;
     }
 
     @Override
-    public GameMap delete(GameMap map) {
+    public FFAMap delete(FFAMap map) {
         getEntity().remove(map.getId());
         return map;
     }
 
     @Override
-    public GameMap deleteById(String id) {
+    public FFAMap deleteById(String id) {
         if(getEntity().containsKey(id.toLowerCase())) {
-            GameMap map = getEntity().get(id.toLowerCase());
+            FFAMap map = getEntity().get(id.toLowerCase());
             getEntity().remove(map.getId());
             return map;
         }

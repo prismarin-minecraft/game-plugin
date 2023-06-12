@@ -17,14 +17,14 @@ import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemAmmoProvider;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.ffa.GameMapFacade;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.party.PartyRegistry;
 import in.prismar.game.perk.PerkService;
 import in.prismar.game.tracer.BulletTracerRegistry;
 import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.web.WebServer;
 import in.prismar.game.web.config.file.ConfigNodeFile;
-import in.prismar.game.web.impl.ItemsRoute;
+import in.prismar.game.web.impl.items.ItemsRoute;
 import in.prismar.game.web.impl.PlayerRoute;
 import in.prismar.game.web.impl.ReportsRoute;
 import in.prismar.game.web.impl.VoteRoute;
@@ -65,7 +65,7 @@ public class Game extends JavaPlugin implements GameProvider {
 
 
     @Inject
-    private GameMapFacade mapFacade;
+    private FFAFacade mapFacade;
 
     @Inject
     private PerkService perkService;

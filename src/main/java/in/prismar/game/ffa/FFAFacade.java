@@ -10,12 +10,12 @@ import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
 import in.prismar.game.arsenal.ArsenalService;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.ffa.model.GameMap;
-import in.prismar.game.ffa.model.GameMapPlayer;
+import in.prismar.game.ffa.model.FFAMap;
+import in.prismar.game.ffa.model.FFAMapPlayer;
 import in.prismar.game.ffa.powerup.PowerUpRegistry;
-import in.prismar.game.ffa.repository.FileGameMapRepository;
-import in.prismar.game.ffa.repository.GameMapRepository;
-import in.prismar.game.ffa.rotation.GameMapRotator;
+import in.prismar.game.ffa.repository.FileFFAMapRepository;
+import in.prismar.game.ffa.repository.FFAMapRepository;
+import in.prismar.game.ffa.rotation.FFAMapRotator;
 import in.prismar.game.stats.GameStatsDistributor;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.tuple.Tuple;
@@ -24,7 +24,6 @@ import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -39,7 +38,7 @@ import java.util.*;
  **/
 @Service
 @Getter
-public class GameMapFacade implements GameMapProvider {
+public class FFAFacade implements GameMapProvider {
 
     private final UserProvider<User> userProvider;
 
@@ -57,8 +56,8 @@ public class GameMapFacade implements GameMapProvider {
     @Inject
     private PowerUpRegistry powerUpRegistry;
 
-    private final GameMapRepository repository;
-    private final GameMapRotator rotator;
+    private final FFAMapRepository repository;
+    private final FFAMapRotator rotator;
 
 
     private final Game game;
@@ -66,18 +65,18 @@ public class GameMapFacade implements GameMapProvider {
     @Setter
     private boolean open = true;
 
-    public GameMapFacade(Game game) {
+    public FFAFacade(Game game) {
         this.game = game;
-        this.repository = new FileGameMapRepository(game.getDefaultDirectory());
+        this.repository = new FileFFAMapRepository(game.getDefaultDirectory());
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
         this.placeholderStore = PrismarinApi.getProvider(PlaceholderStore.class);
-        Bukkit.getScheduler().runTaskTimer(game, rotator = new GameMapRotator(this), 1, 1);
+        Bukkit.getScheduler().runTaskTimer(game, rotator = new FFAMapRotator(this), 1, 1);
     }
 
     public void close() {
-        Iterator<GameMapPlayer> iterator = new ArrayList<>(getRotator().getCurrentMap().getPlayers().values()).iterator();
+        Iterator<FFAMapPlayer> iterator = new ArrayList<>(getRotator().getCurrentMap().getPlayers().values()).iterator();
         while (iterator.hasNext()) {
-            GameMapPlayer player = iterator.next();
+            FFAMapPlayer player = iterator.next();
             leave(player.getPlayer());
         }
         this.open = false;
@@ -89,16 +88,16 @@ public class GameMapFacade implements GameMapProvider {
         }
     }
 
-    public void sendMessage(GameMap map, String message) {
-        for (GameMapPlayer player : map.getPlayers().values()) {
+    public void sendMessage(FFAMap map, String message) {
+        for (FFAMapPlayer player : map.getPlayers().values()) {
             player.getPlayer().sendMessage(message);
         }
     }
 
-    public void updateLeaderboard(GameMap map) {
+    public void updateLeaderboard(FFAMap map) {
         List<GameMapLeaderboardEntry> list = new ArrayList<>();
         List<Tuple<Player, Integer>> entries = new ArrayList<>();
-        for (GameMapPlayer mapPlayer : map.getPlayers().values()) {
+        for (FFAMapPlayer mapPlayer : map.getPlayers().values()) {
             entries.add(new Tuple<>(mapPlayer.getPlayer(), mapPlayer.getKills()));
         }
         entries.sort((o1, o2) -> Integer.compare(o2.getSecond(), o1.getSecond()));
@@ -121,7 +120,7 @@ public class GameMapFacade implements GameMapProvider {
 
     @Override
     public Optional<String> getMapByPlayer(UUID uuid) {
-        for (GameMap map : repository.findAll()) {
+        for (FFAMap map : repository.findAll()) {
             if (map.getPlayers().containsKey(uuid)) {
                 return Optional.of(map.getId());
             }
@@ -139,7 +138,7 @@ public class GameMapFacade implements GameMapProvider {
 
     @Override
     public List<GameMapLeaderboardEntry> getLeaderboard(String id) {
-        GameMap map = getRepository().findById(id);
+        FFAMap map = getRepository().findById(id);
         if (map != null) {
             if (map.getLeaderboard() != null) {
                 return map.getLeaderboard();
@@ -156,8 +155,8 @@ public class GameMapFacade implements GameMapProvider {
         return "None";
     }
 
-    public Optional<GameMap> getMapByPlayer(Player player) {
-        for (GameMap map : repository.findAll()) {
+    public Optional<FFAMap> getMapByPlayer(Player player) {
+        for (FFAMap map : repository.findAll()) {
             if (map.getPlayers().containsKey(player.getUniqueId())) {
                 return Optional.of(map);
             }
@@ -189,7 +188,7 @@ public class GameMapFacade implements GameMapProvider {
 
 
     public void join(Player player) {
-        rotator.getCurrentMap().getPlayers().put(player.getUniqueId(), new GameMapPlayer(player));
+        rotator.getCurrentMap().getPlayers().put(player.getUniqueId(), new FFAMapPlayer(player));
         respawn(player);
 
         ScoreboardProvider provider = PrismarinApi.getProvider(ScoreboardProvider.class);
@@ -199,7 +198,7 @@ public class GameMapFacade implements GameMapProvider {
     }
 
     public void leave(Player player) {
-        GameMapPlayer mapPlayer = rotator.getCurrentMap().getPlayers().remove(player.getUniqueId());
+        FFAMapPlayer mapPlayer = rotator.getCurrentMap().getPlayers().remove(player.getUniqueId());
         resetPlayer(player);
         statsDistributor.resetKillstreak(player);
         player.performCommand("spawn");
@@ -226,8 +225,8 @@ public class GameMapFacade implements GameMapProvider {
         user.removeTag("doubleJump");
     }
 
-    public GameMap getRandomMap() {
-        GameMap[] maps = getRepository().findAll().toArray(new GameMap[0]);
+    public FFAMap getRandomMap() {
+        FFAMap[] maps = getRepository().findAll().toArray(new FFAMap[0]);
         return maps[MathUtil.random(maps.length - 1)];
     }
 
@@ -242,7 +241,7 @@ public class GameMapFacade implements GameMapProvider {
     @Override
     public boolean isInMap(UUID uuid, String name) {
         if (repository.existsById(name)) {
-            GameMap map = repository.findById(name);
+            FFAMap map = repository.findById(name);
             return map.getPlayers().containsKey(uuid);
         }
         return false;

@@ -1,7 +1,6 @@
 package in.prismar.game.hardpoint.listener;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.ffa.GameMapFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
