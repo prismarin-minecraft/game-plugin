@@ -32,11 +32,11 @@ import java.util.Optional;
 @Service
 public class AirDropRegistry {
 
-    private List<AirDrop> airDrops;
-    private AirDropLootTable lootTable;
-    private ConfigStore configStore;
+    private final List<AirDrop> airDrops;
+    private final AirDropLootTable lootTable;
+    private final ConfigStore configStore;
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
 
     public AirDropRegistry(Game game) {
         this.eventBus = new EventBus();

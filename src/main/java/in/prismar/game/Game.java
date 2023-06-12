@@ -182,7 +182,7 @@ public class Game extends JavaPlugin implements GameProvider {
 
 
     public String getDefaultDirectory() {
-        return new StringBuilder("plugins").append(File.separator).append(getDescription().getName()).append(File.separator).toString();
+        return "plugins" + File.separator + getDescription().getName() + File.separator;
     }
 
 }

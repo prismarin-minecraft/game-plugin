@@ -65,7 +65,7 @@ public class MedicalItem extends CustomItem {
         event.setCancelled(true);
         onStartHealingSound(player);
         CURRENTLY_HEALING.add(player.getUniqueId());
-        long end = System.currentTimeMillis() + (50 * healingTicks);
+        long end = System.currentTimeMillis() + (50L * healingTicks);
         Scheduler.runTimerFor(1, 1, healingTicks, new SchedulerRunnable() {
             @Override
             public void run() {
@@ -91,9 +91,7 @@ public class MedicalItem extends CustomItem {
                 onAbort(player);
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
                         new TextComponent("§cHealing aborted"));
-                if(CURRENTLY_HEALING.contains(player.getUniqueId())) {
-                    CURRENTLY_HEALING.remove(player.getUniqueId());
-                }
+                CURRENTLY_HEALING.remove(player.getUniqueId());
                 cancel();
             }
         });

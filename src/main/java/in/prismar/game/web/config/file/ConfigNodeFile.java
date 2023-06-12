@@ -39,9 +39,9 @@ public class ConfigNodeFile extends GsonFileWrapper<Map<String, ConfigNode>> imp
     private final Game game;
     private Map<String, ConfigNode> nodeIds;
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
 
-    private DelayedOperationExecutor<DelayedOperation> executor;
+    private final DelayedOperationExecutor<DelayedOperation> executor;
     public ConfigNodeFile(Game game) {
         super(game.getDefaultDirectory().concat("config_nodes.json"), new TypeToken<Map<String, ConfigNode>>(){}.getType());
         load();

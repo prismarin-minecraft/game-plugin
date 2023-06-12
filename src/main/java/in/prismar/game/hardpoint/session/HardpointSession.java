@@ -36,7 +36,7 @@ public class HardpointSession {
         this.players = new HashMap<>();
         this.teamPoints = new HashMap<>();
         for(HardpointTeam team : HardpointTeam.values()) {
-            teamPoints.put(team, 0l);
+            teamPoints.put(team, 0L);
             players.put(team, new HashMap<>());
         }
     }

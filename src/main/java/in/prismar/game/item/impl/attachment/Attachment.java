@@ -17,7 +17,7 @@ import java.util.*;
 public class Attachment extends CustomItem {
 
     private final Map<AttachmentModifier, List<AttachmentApplier>> appliers;
-    private Set<GunType> allowedTypes;
+    private final Set<GunType> allowedTypes;
 
     public Attachment(String id, Material material, String displayName) {
         super(id, material, displayName);

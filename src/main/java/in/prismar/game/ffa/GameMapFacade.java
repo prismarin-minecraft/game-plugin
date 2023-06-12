@@ -57,8 +57,8 @@ public class GameMapFacade implements GameMapProvider {
     @Inject
     private PowerUpRegistry powerUpRegistry;
 
-    private GameMapRepository repository;
-    private GameMapRotator rotator;
+    private final GameMapRepository repository;
+    private final GameMapRotator rotator;
 
 
     private final Game game;

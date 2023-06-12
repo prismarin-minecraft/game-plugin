@@ -32,10 +32,10 @@ public class CustomItemAmmoProvider {
     @Inject
     private Game game;
 
-    private Map<String, Integer> cache;
-    private Map<String, Integer> tempCache;
+    private final Map<String, Integer> cache;
+    private final Map<String, Integer> tempCache;
     private RMap<String, Integer> redisMap;
-    private DelayedOperationExecutor<DelayedOperation> executor;
+    private final DelayedOperationExecutor<DelayedOperation> executor;
 
     public CustomItemAmmoProvider() {
         this.cache = new HashMap<>();

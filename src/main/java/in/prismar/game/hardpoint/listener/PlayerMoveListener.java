@@ -28,11 +28,7 @@ public class PlayerMoveListener implements Listener {
         if(facade.isCurrentlyPlaying(player) && !facade.getSession().isAllowedToMove()) {
             Location to = event.getTo();
             Location from = event.getFrom();
-            if(from.getBlockX() == to.getBlockX() && from.getBlockY() == to.getBlockY() && from.getBlockZ() == to.getBlockZ()) {
-                event.setCancelled(false);
-            } else {
-                event.setCancelled(true);
-            }
+            event.setCancelled(from.getBlockX() != to.getBlockX() || from.getBlockY() != to.getBlockY() || from.getBlockZ() != to.getBlockZ());
 
         }
     }

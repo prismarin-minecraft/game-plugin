@@ -181,9 +181,7 @@ public class PartyRegistry extends LocalMapRegistry<String, Party> implements Pa
     public boolean isOwnerOfParty(Player player) {
         if(hasParty(player)) {
             Party party = getPartyByPlayer(player);
-            if(party.getOwner().getUniqueId().equals(player.getUniqueId())) {
-                return true;
-            }
+            return party.getOwner().getUniqueId().equals(player.getUniqueId());
         }
         return false;
     }

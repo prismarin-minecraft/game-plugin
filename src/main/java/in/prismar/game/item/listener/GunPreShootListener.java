@@ -2,9 +2,11 @@ package in.prismar.game.item.listener;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.GunPreShootEvent;
-import in.prismar.library.common.event.EventSubscriber;
-import lombok.AllArgsConstructor;
+import in.prismar.game.item.event.spigot.GunPreShootEvent;
+import in.prismar.library.meta.anno.Inject;
+import in.prismar.library.spigot.meta.anno.AutoListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -12,12 +14,13 @@ import lombok.AllArgsConstructor;
  * Proprietary and confidential
  * Written by Maga
  **/
-@AllArgsConstructor
-public class GunPreShootListener implements EventSubscriber<GunPreShootEvent> {
+@AutoListener
+public class GunPreShootListener implements Listener {
 
-    private final Game game;
+    @Inject
+    private Game game;
 
-    @Override
+    @EventHandler
     public void onEvent(GunPreShootEvent event) {
         if (game.getRegionProvider().isInRegionWithFlag(event.getPlayer().getLocation(), "pvp")) {
             event.setCancelled(true);

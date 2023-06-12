@@ -1,16 +1,10 @@
 package in.prismar.game.item;
 
+import in.prismar.api.configuration.node.event.ConfigRefreshEvent;
 import in.prismar.game.Game;
 import in.prismar.game.hardpoint.HardpointTeam;
-import in.prismar.game.item.event.bus.GunPreShootEvent;
-import in.prismar.game.item.event.bus.ThrowableDeployEvent;
-import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
-import in.prismar.game.item.impl.deployable.SandbagItem;
-import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
-import in.prismar.game.item.impl.gun.impl.TestGun;
-import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointBoots;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointChestplate;
 import in.prismar.game.item.impl.armor.hardpoint.HardpointHelmet;
@@ -32,17 +26,16 @@ import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
+import in.prismar.game.item.impl.deployable.SandbagItem;
+import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
 import in.prismar.game.item.impl.medical.BandageItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.medical.MedkitItem;
+import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.throwable.*;
-import in.prismar.game.item.listener.GunPreShootListener;
-import in.prismar.game.item.listener.ThrowableDeployListener;
-import in.prismar.game.item.listener.ThrowableExplodeListener;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
-import in.prismar.api.configuration.node.event.ConfigRefreshEvent;
 import in.prismar.library.common.event.EventBus;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
@@ -65,22 +58,17 @@ public class CustomItemRegistry {
 
     private final Game game;
 
-    private CustomItemReader reader;
-    private Map<String, CustomItem> items;
-    private Map<UUID, List<CustomItemHolder>> holders;
+    private final CustomItemReader reader;
+    private final Map<String, CustomItem> items;
+    private final Map<UUID, List<CustomItemHolder>> holders;
 
-    private EventBus eventBus;
 
     public CustomItemRegistry(Game game) {
         this.game = game;
-        this.eventBus = new EventBus();
         this.items = new LinkedHashMap<>();
         this.reader = new CustomItemReader(game);
         this.holders = new HashMap<>();
 
-        this.eventBus.subscribe(GunPreShootEvent.class, new GunPreShootListener(game));
-        this.eventBus.subscribe(ThrowableDeployEvent.class, new ThrowableDeployListener(game));
-        this.eventBus.subscribe(ThrowableExplodeEvent.class, new ThrowableExplodeListener(game));
 
         load();
 

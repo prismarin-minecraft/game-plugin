@@ -1,20 +1,15 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import in.prismar.library.common.math.MathUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Copyright (c) Maga, All Rights Reserved

@@ -8,5 +8,5 @@ package in.prismar.game.item.impl.gun.player;
  **/
 public enum GunPlayerState {
 
-    IDLE, RELOADING, AIMING;
+    IDLE, RELOADING, AIMING
 }

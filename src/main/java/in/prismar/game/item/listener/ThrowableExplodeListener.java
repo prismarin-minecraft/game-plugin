@@ -1,12 +1,11 @@
 package in.prismar.game.item.listener;
 
-import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.ThrowableDeployEvent;
-import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
-import in.prismar.library.common.event.EventSubscriber;
-import lombok.AllArgsConstructor;
-import org.bukkit.entity.Player;
+import in.prismar.game.item.event.spigot.ThrowableExplodeEvent;
+import in.prismar.library.meta.anno.Inject;
+import in.prismar.library.spigot.meta.anno.AutoListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -14,12 +13,13 @@ import org.bukkit.entity.Player;
  * Proprietary and confidential
  * Written by Maga
  **/
-@AllArgsConstructor
-public class ThrowableExplodeListener implements EventSubscriber<ThrowableExplodeEvent> {
+@AutoListener
+public class ThrowableExplodeListener implements Listener {
 
-    private final Game game;
+    @Inject
+    private Game game;
 
-    @Override
+    @EventHandler
     public void onEvent(ThrowableExplodeEvent event) {
         if (game.getRegionProvider().isInRegionWithFlag(event.getLocation(), "pvp")) {
             event.setCancelled(true);

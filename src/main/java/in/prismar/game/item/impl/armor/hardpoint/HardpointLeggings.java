@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
  **/
 public class HardpointLeggings extends ArmorItem {
 
-    private Color color;
+    private final Color color;
 
     public HardpointLeggings(String name, Color color) {
         super("HardpointLeggings" + name, Material.LEATHER_LEGGINGS, name + " Leggings", ArmorType.LEGGINGS);

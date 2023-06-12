@@ -25,11 +25,11 @@ import java.util.function.BiConsumer;
 @Getter
 public class Corpse {
 
-    private Player player;
-    private Inventory inventory;
-    private long timeToLive;
+    private final Player player;
+    private final Inventory inventory;
+    private final long timeToLive;
 
-    private NPC.Global npc;
+    private final NPC.Global npc;
 
     public Corpse(Plugin plugin, Player player, long ttl) {
         this.player = player;

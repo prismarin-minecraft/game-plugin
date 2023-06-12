@@ -51,7 +51,7 @@ public class HardpointFacade implements HardpointProvider {
     @Setter
     private boolean open = true;
 
-    private HardpointSession session;
+    private final HardpointSession session;
 
     @Inject
     private ArsenalService arsenalService;
@@ -63,10 +63,10 @@ public class HardpointFacade implements HardpointProvider {
     private GameStatsDistributor statsDistributor;
 
     @Inject
-    private ConfigStore configStore;
+    private final ConfigStore configStore;
 
     @Inject
-    private CompassProvider compassProvider;
+    private final CompassProvider compassProvider;
 
 
     public HardpointFacade(Game game) {
@@ -120,7 +120,7 @@ public class HardpointFacade implements HardpointProvider {
                     sessionPlayer.getPlayer().playSound(sessionPlayer.getPlayer().getLocation(), Sound.ITEM_TOTEM_USE, 0.4f, 1);
                 });
                 for(HardpointTeam all : HardpointTeam.values()) {
-                    session.getTeamPoints().put(all, 0l);
+                    session.getTeamPoints().put(all, 0L);
                 }
                 return team;
             }

@@ -30,8 +30,8 @@ public class MobDeathListener implements Listener {
     @Inject
     private WarzoneService warzoneService;
 
-    private ConfigStore configStore;
-    private UserProvider<User> userProvider;
+    private final ConfigStore configStore;
+    private final UserProvider<User> userProvider;
 
     public MobDeathListener() {
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);

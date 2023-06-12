@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  **/
 public class AddSpawnSubCommand extends HelpSubCommand<Player> {
 
-    private ExtractionFacade facade;
+    private final ExtractionFacade facade;
 
     public AddSpawnSubCommand(ExtractionFacade facade) {
         super("addspawn");

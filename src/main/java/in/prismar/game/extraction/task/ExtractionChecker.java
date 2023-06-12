@@ -1,15 +1,9 @@
 package in.prismar.game.extraction.task;
 
-import in.prismar.api.PrismarinApi;
-import in.prismar.api.PrismarinConstants;
-import in.prismar.api.warp.WarpProvider;
 import in.prismar.game.airdrop.AirDrop;
 import in.prismar.game.extraction.ExtractionFacade;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -25,10 +19,10 @@ public class ExtractionChecker implements Runnable {
 
     private final ExtractionFacade facade;
 
-    private SimpleDateFormat dateFormat;
+    private final SimpleDateFormat dateFormat;
 
-    private LocalTime openingTime;
-    private LocalTime endingTime;
+    private final LocalTime openingTime;
+    private final LocalTime endingTime;
 
     public ExtractionChecker(ExtractionFacade facade) {
         this.facade = facade;
@@ -81,9 +75,6 @@ public class ExtractionChecker implements Runnable {
         if(target.equals(start)) {
             return true;
         }
-        if(target.isAfter(start) && target.isBefore(start.plusSeconds(10))) {
-            return true;
-        }
-        return false;
+        return target.isAfter(start) && target.isBefore(start.plusSeconds(10));
     }
 }

@@ -23,7 +23,7 @@ import java.util.Map;
 public class CustomItemEventBus {
 
     private final CustomItem item;
-    private Map<Class<?>, List<Method>> subscribers;
+    private final Map<Class<?>, List<Method>> subscribers;
 
     public CustomItemEventBus(CustomItem item) {
         this.item = item;

@@ -1,14 +1,10 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

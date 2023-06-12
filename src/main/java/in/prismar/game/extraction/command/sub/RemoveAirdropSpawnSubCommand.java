@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  **/
 public class RemoveAirdropSpawnSubCommand extends HelpSubCommand<Player> {
 
-    private ExtractionFacade facade;
+    private final ExtractionFacade facade;
 
     public RemoveAirdropSpawnSubCommand(ExtractionFacade facade) {
         super("removeairdropspawn");

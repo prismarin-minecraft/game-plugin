@@ -89,7 +89,7 @@ public class ConfigGunReaderSource implements CustomItemReaderSource {
                     }
                 }
                 gun.generateDefaultLore();
-                gun.buildStateItems();;
+                gun.buildStateItems();
                 items.add(gun);
             }
         }

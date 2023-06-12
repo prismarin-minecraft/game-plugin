@@ -19,18 +19,18 @@ import org.bukkit.util.Vector;
  **/
 public class Drone {
 
-    private Location startLocation;
+    private final Location startLocation;
     private final double maxSpeed;
 
-    private double y;
+    private final double y;
     private DroneState state;
     private double currentSpeed;
 
     @Setter
     private Location destination;
-    private BukkitTask task;
+    private final BukkitTask task;
 
-    private Hologram hologram;
+    private final Hologram hologram;
 
     public Drone(Plugin plugin, Location startLocation, double y, double maxSpeed) {
         this.startLocation = startLocation;

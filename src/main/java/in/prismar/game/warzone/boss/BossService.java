@@ -35,7 +35,7 @@ import java.util.*;
 public class BossService {
 
     private final Game game;
-    private List<Boss> bosses;
+    private final List<Boss> bosses;
 
     public BossService(Game game) {
         this.game = game;

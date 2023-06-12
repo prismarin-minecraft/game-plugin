@@ -10,7 +10,7 @@ import in.prismar.game.item.impl.attachment.AttachmentApplier;
  **/
 public class BooleanAttachmentApplier implements AttachmentApplier<Boolean> {
 
-    private boolean state;
+    private final boolean state;
 
     public BooleanAttachmentApplier(boolean state) {
         this.state = state;

@@ -45,9 +45,9 @@ public class WarzoneService implements WarzoneProvider {
 
     private final WarzoneConfig config;
 
-    private List<Tombstone> tombstones;
+    private final List<Tombstone> tombstones;
 
-    private AirdropTask airdropTask;
+    private final AirdropTask airdropTask;
 
     private ClanStatsProvider clanStatsProvider;
 

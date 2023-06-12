@@ -86,7 +86,7 @@ public class StatsCommand extends SpigotCommand<Player> {
                 .addLore(dot + "Playtime§8: §b" + playtimeProvider.getOverallTimeInHours(user) + "h")
                 .addLore(dot + "Balance§8: §b" + NumberFormatter.formatDoubleToThousands(data.getBalance()) + " $")
                 .addLore(dot + "Battlepass§8: §b" + data.getBattlePass().getLevel())
-                .addLore(dot + "Votes§8: §b" + data.getStats().getOrDefault("votes", 0l))
+                .addLore(dot + "Votes§8: §b" + data.getStats().getOrDefault("votes", 0L))
                 .addLore("§c")
                 .build();
         frame.addButton(12, general);
@@ -194,8 +194,8 @@ public class StatsCommand extends SpigotCommand<Player> {
 
     private String getKD(User user, String season, String killsKey, String deathsKey) {
         SeasonData data = user.getData().getSeasons().get(season);
-        long kills = data.getStats().getOrDefault(killsKey, 0l);
-        long deaths = data.getStats().getOrDefault(deathsKey, 0l);
+        long kills = data.getStats().getOrDefault(killsKey, 0L);
+        long deaths = data.getStats().getOrDefault(deathsKey, 0L);
         double kd;
         try {
             kd = (double) kills / (double) deaths;
@@ -207,8 +207,8 @@ public class StatsCommand extends SpigotCommand<Player> {
 
     private String getAccuracy(User user, String season, String shotsKey, String hitsKey) {
         SeasonData data = user.getData().getSeasons().get(season);
-        long shots = data.getStats().getOrDefault(shotsKey, 0l);
-        long hits = data.getStats().getOrDefault(hitsKey, 0l);
+        long shots = data.getStats().getOrDefault(shotsKey, 0L);
+        long hits = data.getStats().getOrDefault(hitsKey, 0L);
         double percentage;
         try {
             percentage = ((double) hits / (double) shots) * 100.0;
@@ -220,7 +220,7 @@ public class StatsCommand extends SpigotCommand<Player> {
 
     private String getStatsValue(User user, String season, String key) {
         SeasonData data = user.getData().getSeasons().get(season);
-        return NumberFormatter.formatNumberToThousands(data.getStats().getOrDefault(key, 0l));
+        return NumberFormatter.formatNumberToThousands(data.getStats().getOrDefault(key, 0L));
     }
 
 

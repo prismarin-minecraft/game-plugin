@@ -49,11 +49,7 @@ public class RiotShieldItem extends CustomItem {
             return;
         }
         GunPlayer gunPlayer = GunPlayer.of(player);
-        if(event.isSneaking()) {
-            gunPlayer.setShielded(true);
-        } else {
-            gunPlayer.setShielded(false);
-        }
+        gunPlayer.setShielded(event.isSneaking());
         updateItem(player, holder, gunPlayer.isShielded());
         player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_CHAIN, 0.6f, 1);
     }

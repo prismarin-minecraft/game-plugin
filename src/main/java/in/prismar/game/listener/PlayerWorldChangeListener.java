@@ -25,7 +25,7 @@ public class PlayerWorldChangeListener implements Listener {
     @Inject
     private Game game;
 
-    private WarpProvider warpProvider;
+    private final WarpProvider warpProvider;
 
     public PlayerWorldChangeListener() {
         this.warpProvider = PrismarinApi.getProvider(WarpProvider.class);

@@ -42,9 +42,9 @@ public class EntityDamageListener implements Listener {
 
 
 
-    private ConfigStore store;
+    private final ConfigStore store;
 
-    private Map<UUID, Player> lastDamager;
+    private final Map<UUID, Player> lastDamager;
 
     public EntityDamageListener() {
         this.store = PrismarinApi.getProvider(ConfigStore.class);
@@ -78,7 +78,7 @@ public class EntityDamageListener implements Listener {
 
         statsDistributor.resetKillstreak(target);
 
-        boolean samePlayer = damager == null ? true : damager.getUniqueId().equals(target.getUniqueId());
+        boolean samePlayer = damager == null || damager.getUniqueId().equals(target.getUniqueId());
         if(!samePlayer) {
             int health = (int)damager.getHealth();
             facade.sendMessage(PrismarinConstants.PREFIX + statsDistributor.getRandomDeathMessage(damager, target) + " §8(§c"+health+"♥§8)");

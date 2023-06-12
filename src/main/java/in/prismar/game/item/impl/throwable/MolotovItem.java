@@ -1,9 +1,10 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
-import in.prismar.game.item.model.CustomItem;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -31,7 +32,7 @@ public class MolotovItem extends LethalItem {
         new BukkitRunnable() {
             int saveTimer = 160;
             boolean spawned = false;
-            List<Location> locations = new ArrayList<>();
+            final List<Location> locations = new ArrayList<>();
             @Override
             public void run() {
                 if(saveTimer <= 0) {

@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  **/
 public class LeaveSubCommand extends HelpSubCommand<Player> {
 
-    private ExtractionFacade facade;
+    private final ExtractionFacade facade;
 
     public LeaveSubCommand(ExtractionFacade facade) {
         super("leave");

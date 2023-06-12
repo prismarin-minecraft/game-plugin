@@ -32,11 +32,11 @@ public class PlayerMoveListener implements Listener {
     @Inject
     private GameMapFacade facade;
 
-    private UserProvider<User> provider;
+    private final UserProvider<User> provider;
 
     private final double climbPitch = -1.0, climbSpeed = 0.6D;
 
-    private Set<UUID> wasOnLadder = new HashSet<>();
+    private final Set<UUID> wasOnLadder = new HashSet<>();
 
     public PlayerMoveListener() {
         this.provider = PrismarinApi.getProvider(UserProvider.class);
@@ -76,9 +76,7 @@ public class PlayerMoveListener implements Listener {
             }
             return;
         }
-        if (wasOnLadder.contains(player.getUniqueId())) {
-            wasOnLadder.remove(player.getUniqueId());
-        }
+        wasOnLadder.remove(player.getUniqueId());
     }
 
     private void handleBalloon(Player player) {

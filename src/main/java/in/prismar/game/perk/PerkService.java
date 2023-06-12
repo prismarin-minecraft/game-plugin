@@ -5,10 +5,8 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.GunReloadEvent;
 import in.prismar.game.perk.listener.GunReloadListener;
 import in.prismar.game.perk.task.PerkTask;
-import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
@@ -26,7 +24,7 @@ import javax.annotation.Nullable;
 @Service
 public class PerkService  {
 
-    private Game game;
+    private final Game game;
 
     @Getter
     private final UserProvider<User> userProvider;
@@ -36,11 +34,6 @@ public class PerkService  {
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
 
         Bukkit.getScheduler().runTaskTimer(game, new PerkTask(this), 20, 20);
-    }
-
-    @SafeInitialize
-    private void initialize() {
-        game.getItemRegistry().getEventBus().subscribe(GunReloadEvent.class, new GunReloadListener(this));
     }
 
     @Nullable
@@ -72,9 +65,7 @@ public class PerkService  {
 
     public boolean hasPerkAndAllowedToUse(Player player, Perk perk) {
         if(game.isCurrentlyPlayingAnyMode(player)) {
-            if(hasPerk(player, perk)) {
-                return true;
-            }
+            return hasPerk(player, perk);
         }
         return false;
     }
@@ -82,9 +73,7 @@ public class PerkService  {
     public boolean hasPerk(Player player, Perk perk) {
         User user = userProvider.getUserByUUID(player.getUniqueId());
         if(user.getSeasonData().getPerk() != null) {
-            if(user.getSeasonData().getPerk().equals(perk.name())) {
-                return true;
-            }
+            return user.getSeasonData().getPerk().equals(perk.name());
         }
         return false;
     }

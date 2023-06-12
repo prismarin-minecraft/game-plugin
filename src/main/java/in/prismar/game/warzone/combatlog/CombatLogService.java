@@ -28,7 +28,7 @@ public class CombatLogService {
 
     private final RegionProvider regionProvider;
 
-    private Map<UUID, CombatLog> combatLogs;
+    private final Map<UUID, CombatLog> combatLogs;
 
     public CombatLogService(Game game) {
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);

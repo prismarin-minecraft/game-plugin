@@ -1,7 +1,5 @@
 package in.prismar.game.extraction;
 
-import dev.sergiferry.playernpc.api.NPC;
-import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.compass.CompassEntryReachEvent;
@@ -21,7 +19,6 @@ import in.prismar.game.extraction.corpse.Corpse;
 import in.prismar.game.extraction.map.ExtractionMapFile;
 import in.prismar.game.extraction.task.ExtractionChecker;
 import in.prismar.game.extraction.task.ExtractionCorpseDespawner;
-import in.prismar.library.common.event.EventSubscriber;
 import in.prismar.library.common.random.UniqueRandomizer;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
@@ -34,11 +31,9 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -54,23 +49,23 @@ public class ExtractionFacade implements ExtractionProvider {
     @Inject
     private AirDropRegistry airDropRegistry;
 
-    private ExtractionMapFile mapFile;
+    private final ExtractionMapFile mapFile;
     private final Game game;
     private final RegionProvider regionProvider;
 
     private ExtractionChecker checker;
 
-    private List<Corpse> corpses;
+    private final List<Corpse> corpses;
 
-    private ConfigStore configStore;
+    private final ConfigStore configStore;
 
-    private UserProvider<User> userProvider;
+    private final UserProvider<User> userProvider;
 
-    private CompassProvider compassProvider;
+    private final CompassProvider compassProvider;
 
     @Setter
     private boolean running;
-    private int currentMapSpawnIndex = 0;
+    private final int currentMapSpawnIndex = 0;
 
     public ExtractionFacade(Game game) {
         this.game = game;

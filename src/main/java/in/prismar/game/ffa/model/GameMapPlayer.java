@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 @Getter
 public class GameMapPlayer {
 
-    private Player player;
+    private final Player player;
 
     @Setter
     private int kills;
@@ -22,9 +22,9 @@ public class GameMapPlayer {
     @Setter
     private int deaths;
 
-    private ItemStack[] content;
+    private final ItemStack[] content;
 
-    private ItemStack[] armor;
+    private final ItemStack[] armor;
 
     public GameMapPlayer(Player player) {
         this.player = player;

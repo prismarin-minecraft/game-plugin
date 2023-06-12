@@ -32,7 +32,7 @@ import java.util.function.Function;
 @Getter
 public class LeaderboardFacade {
 
-    private LeaderboardRepository repository;
+    private final LeaderboardRepository repository;
 
     public LeaderboardFacade(Game game) {
         this.repository = new FileLeaderboardRepository(game.getDefaultDirectory());

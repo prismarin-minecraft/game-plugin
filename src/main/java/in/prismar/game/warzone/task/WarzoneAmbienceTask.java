@@ -25,8 +25,8 @@ public class WarzoneAmbienceTask implements Runnable {
 
 
     private final WarzoneService warzoneService;
-    private Map<Player, Long> ambience;
-    private ConfigStore configStore;
+    private final Map<Player, Long> ambience;
+    private final ConfigStore configStore;
 
     public WarzoneAmbienceTask(WarzoneService warzoneService) {
         this.warzoneService = warzoneService;

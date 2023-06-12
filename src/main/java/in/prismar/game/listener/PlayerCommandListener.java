@@ -22,7 +22,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 @AutoListener
 public class PlayerCommandListener implements Listener {
 
-    private ConfigStore configStore;
+    private final ConfigStore configStore;
 
     @Inject
     private GameMapFacade mapFacade;

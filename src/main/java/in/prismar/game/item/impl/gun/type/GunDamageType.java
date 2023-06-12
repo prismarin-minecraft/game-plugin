@@ -10,5 +10,5 @@ public enum GunDamageType {
 
     HEADSHOT,
     BODY,
-    LEGS;
+    LEGS
 }

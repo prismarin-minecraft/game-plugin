@@ -41,10 +41,10 @@ public class EntityDamageListener implements Listener {
     @Inject
     private GameStatsDistributor statsDistributor;
 
-    private ConfigStore configStore;
+    private final ConfigStore configStore;
 
 
-    private Map<UUID, Player> lastDamager;
+    private final Map<UUID, Player> lastDamager;
 
     public EntityDamageListener() {
         this.lastDamager = new HashMap<>();
@@ -85,7 +85,7 @@ public class EntityDamageListener implements Listener {
 
         statsDistributor.resetKillstreak(target);
 
-        boolean samePlayer = damager == null ? true : damager.getUniqueId().equals(target.getUniqueId());
+        boolean samePlayer = damager == null || damager.getUniqueId().equals(target.getUniqueId());
         if (!samePlayer) {
             int health = (int) damager.getHealth();
             facade.sendMessage(PrismarinConstants.PREFIX + statsDistributor.getRandomDeathMessage(damager, target) + " §8(§c" + health + "♥§8)");

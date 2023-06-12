@@ -1,20 +1,17 @@
 package in.prismar.game.item.impl.throwable;
 
-import in.prismar.api.PrismarinApi;
-import in.prismar.api.PrismarinConstants;
-import in.prismar.api.user.User;
-import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.ThrowableDeployEvent;
-import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
-import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.event.CustomItemEvent;
+import in.prismar.game.item.event.spigot.ThrowableDeployEvent;
+import in.prismar.game.item.event.spigot.ThrowableExplodeEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
+import in.prismar.game.item.model.CustomItem;
 import in.prismar.library.spigot.item.ItemUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -24,11 +21,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -55,12 +47,9 @@ public abstract class ThrowableItem extends CustomItem {
     public abstract void onThrow(ThrowEvent throwEvent);
 
     public boolean callExplodeEvent(ThrowEvent event, Location location) {
-        ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(event.getPlayer(), this, location, false);
-        event.getGame().getItemRegistry().getEventBus().publish(explodeEvent);
-        if(explodeEvent.isCancelled()) {
-            return true;
-        }
-        return false;
+        ThrowableExplodeEvent explodeEvent = new ThrowableExplodeEvent(event.getPlayer(), this, location);
+        Bukkit.getPluginManager().callEvent(explodeEvent);
+        return explodeEvent.isCancelled();
     }
 
     @CustomItemEvent
@@ -72,8 +61,8 @@ public abstract class ThrowableItem extends CustomItem {
         if(event.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        ThrowableDeployEvent deployEvent = new ThrowableDeployEvent(player, this, false);
-        game.getItemRegistry().getEventBus().publish(deployEvent);
+        ThrowableDeployEvent deployEvent = new ThrowableDeployEvent(player, this);
+        Bukkit.getPluginManager().callEvent(deployEvent);
         if(deployEvent.isCancelled()) {
             return;
         }

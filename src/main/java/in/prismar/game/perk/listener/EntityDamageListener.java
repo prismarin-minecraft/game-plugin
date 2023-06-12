@@ -34,7 +34,7 @@ public class EntityDamageListener implements Listener {
     @Inject
     private PerkService service;
 
-    private ScoreboardProvider scoreboardProvider;
+    private final ScoreboardProvider scoreboardProvider;
 
     public EntityDamageListener() {
         this.scoreboardProvider = PrismarinApi.getProvider(ScoreboardProvider.class);

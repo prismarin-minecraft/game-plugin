@@ -48,8 +48,8 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
 
     private final ArsenalService service;
 
-    private Player player;
-    private User user;
+    private final Player player;
+    private final User user;
 
     public ArsenalFrame(Player player, User user, ArsenalService service) {
         super("§f七七七七七七七七日", 6);

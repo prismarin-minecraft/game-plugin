@@ -10,7 +10,7 @@ import in.prismar.game.item.impl.attachment.AttachmentApplier;
  **/
 public class IntPercentageAttachmentApplier implements AttachmentApplier<Integer> {
 
-    private int percentage;
+    private final int percentage;
 
     public IntPercentageAttachmentApplier(int percentage) {
         this.percentage = percentage;

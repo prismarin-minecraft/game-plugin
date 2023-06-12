@@ -53,9 +53,7 @@ public class ResetSubCommand extends HelpSubCommand<Player> {
             }
             User user = provider.getUserByUUID(cacheProvider.getUUIDByName(name));
             Bundle bundle = facade.getRepository().findById(id);
-            if(user.getSeasonData().getAttachments().containsKey("bundles." + bundle.getId())) {
-                user.getSeasonData().getAttachments().remove("bundles." + bundle.getId());
-            }
+            user.getSeasonData().getAttachments().remove("bundles." + bundle.getId());
             player.sendMessage(PrismarinConstants.PREFIX + "§7You have reset the bundle §3" + bundle.getId() + " §7for the player §b" + user.getData().getName());
             return true;
         }

@@ -2,13 +2,12 @@ package in.prismar.game.item.impl.gun;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import in.prismar.api.PrismarinConstants;
 import in.prismar.api.user.data.SeasonData;
 import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEvent;
-import in.prismar.game.item.event.bus.GunPreShootEvent;
-import in.prismar.game.item.event.bus.GunReloadEvent;
-import in.prismar.game.item.event.bus.GunShootEvent;
+import in.prismar.game.item.event.spigot.GunPreShootEvent;
+import in.prismar.game.item.event.spigot.GunReloadEvent;
+import in.prismar.game.item.event.spigot.GunShootEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.impl.attachment.Attachment;
@@ -36,12 +35,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -324,7 +320,7 @@ public class Gun extends SkinableItem {
     }
 
     private long addStatsValue(SeasonData seasonData, String key) {
-        long current = seasonData.getStats().getOrDefault(key, 0l) + 1;
+        long current = seasonData.getStats().getOrDefault(key, 0L) + 1;
         seasonData.getStats().put(key, current);
         return current;
     }
@@ -429,8 +425,8 @@ public class Gun extends SkinableItem {
     public void shoot(Game game, Player player, ItemStack stack) {
         GunPlayer gunPlayer = GunPlayer.of(player);
 
-        GunShootEvent shootEvent = new GunShootEvent(gunPlayer, this, false);
-        game.getItemRegistry().getEventBus().publish(shootEvent);
+        GunShootEvent shootEvent = new GunShootEvent(player, gunPlayer, this);
+        Bukkit.getPluginManager().callEvent(shootEvent);
 
         if (shootEvent.isCancelled()) {
             return;
@@ -497,8 +493,8 @@ public class Gun extends SkinableItem {
             ammo = needed;
         }
         if (ammo >= 1) {
-            GunReloadEvent reloadEvent = new GunReloadEvent(player, gunPlayer, this, this.reloadTimeInTicks, false);
-            game.getItemRegistry().getEventBus().publish(reloadEvent);
+            GunReloadEvent reloadEvent = new GunReloadEvent(player, gunPlayer, this, this.reloadTimeInTicks);
+            Bukkit.getPluginManager().callEvent(reloadEvent);
             if (reloadEvent.isCancelled()) {
                 return;
             }
@@ -525,7 +521,7 @@ public class Gun extends SkinableItem {
             gunPlayer.setState(GunPlayerState.RELOADING);
             updateStateInventory(player, stack);
             gunPlayer.setReloadingGunId(getId());
-            gunPlayer.setReloadingEndTimestamp(System.currentTimeMillis() + 50 * reloadTimeInTicks);
+            gunPlayer.setReloadingEndTimestamp(System.currentTimeMillis() + 50L * reloadTimeInTicks);
             player.removePotionEffect(PotionEffectType.SLOW);
             playSound(player, GunSoundType.RELOAD_OUT);
         }
@@ -649,8 +645,8 @@ public class Gun extends SkinableItem {
             if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
                 reload(event.getPlayer(), game, holder.getStack());
             } else if (allowedInteract) {
-                GunPreShootEvent preShootEvent = new GunPreShootEvent(player, GunPlayer.of(player), this, false);
-                game.getItemRegistry().getEventBus().publish(preShootEvent);
+                GunPreShootEvent preShootEvent = new GunPreShootEvent(player, GunPlayer.of(player), this);
+                Bukkit.getPluginManager().callEvent(preShootEvent);
                 if(preShootEvent.isCancelled()) {
                     return;
                 }

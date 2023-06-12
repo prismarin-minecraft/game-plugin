@@ -19,7 +19,7 @@ import java.util.List;
  **/
 public class CustomItemReader {
 
-    private List<CustomItemReaderSource> sources;
+    private final List<CustomItemReaderSource> sources;
 
     public CustomItemReader(Game game) {
         this.sources = new ArrayList<>();

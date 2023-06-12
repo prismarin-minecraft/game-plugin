@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
  **/
 public class HardpointChestplate extends ArmorItem {
 
-    private Color color;
+    private final Color color;
 
     public HardpointChestplate(String name, Color color) {
         super("HardpointChestplate" + name, Material.LEATHER_CHESTPLATE, name + " Chestplate", ArmorType.CHESTPLATE);

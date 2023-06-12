@@ -56,7 +56,7 @@ public class EntityDamageListener implements Listener {
         } else {
             facade.sendMessage(PrismarinConstants.PREFIX + "§c" + target.getName() + " §7just died.");
         }
-        boolean samePlayer = damager == null ? true : damager.getUniqueId().equals(target.getUniqueId());
+        boolean samePlayer = damager == null || damager.getUniqueId().equals(target.getUniqueId());
         if(!samePlayer) {
             statsDistributor.addKill(damager);
             statsDistributor.addExtractionKill(damager);

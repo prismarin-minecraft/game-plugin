@@ -14,6 +14,6 @@ public enum DroneState {
     HOVER,
     START_MOVING,
     MOVING,
-    STOP_MOVING;
+    STOP_MOVING
 
 }

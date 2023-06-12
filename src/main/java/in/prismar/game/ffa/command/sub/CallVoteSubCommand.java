@@ -49,7 +49,7 @@ public class CallVoteSubCommand extends HelpSubCommand<Player> {
             }
             ConfigStore store = PrismarinApi.getProvider(ConfigStore.class);
             int seconds = Integer.valueOf(store.getProperty("ffa.callvote.timer"));
-            user.setTimestamp("ffa.callvote", System.currentTimeMillis() + 1000 * seconds);
+            user.setTimestamp("ffa.callvote", System.currentTimeMillis() + 1000L * seconds);
         }
         facade.getRotator().callVote();
         return true;

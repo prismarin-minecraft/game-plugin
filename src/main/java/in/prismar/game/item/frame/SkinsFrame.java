@@ -47,9 +47,9 @@ public class SkinsFrame extends Frame {
 
     private static final ItemStack AIR = new ItemStack(Material.AIR);
 
-    private Player currentPlayer;
+    private final Player currentPlayer;
 
-    private ItemStack item;
+    private final ItemStack item;
     private SkinableItem skinableItem;
 
     @Setter
@@ -77,7 +77,7 @@ public class SkinsFrame extends Frame {
                     frame.openInventory(player, Sound.BLOCK_PISTON_CONTRACT, 0.7F);
                 });
                 List<Skin> skins = skinableItem.getSkins().stream()
-                        .filter((Predicate<Skin>) skin -> currentPlayer.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "skins." + skinableItem.getId().toLowerCase() + "." + skin.getData()))
+                        .filter(skin -> currentPlayer.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "skins." + skinableItem.getId().toLowerCase() + "." + skin.getData()))
                         .toList();
                 for (int i = 0; i < SLOTS.length; i++) {
                     int slot = SLOTS[i];

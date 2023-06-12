@@ -1,15 +1,12 @@
 package in.prismar.game.item.impl.gun;
 
-import in.prismar.game.item.impl.gun.hitbox.Kindletron2Hitbox;
-import in.prismar.game.item.impl.gun.hitbox.Type02Hitbox;
-import in.prismar.game.item.impl.gun.hitbox.ZakuHitbox;
+import in.prismar.game.item.impl.gun.hitbox.HitboxRegistry;
 import in.prismar.library.spigot.raytrace.Raytrace;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceEntityHitbox;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceHitbox;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceHitboxHelper;
 import in.prismar.library.spigot.raytrace.result.RaytraceHit;
 import in.prismar.library.spigot.raytrace.result.RaytraceResult;
-import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import lombok.Getter;
@@ -33,12 +30,14 @@ import java.util.List;
 @Getter
 public class Bullet {
 
-    private Location origin;
-    private Location particleOrigin;
-    private Raytrace raytrace;
-    private Location endPoint;
-    private double range;
-    private Vector direction;
+    private static final HitboxRegistry HITBOX_REGISTRY = new HitboxRegistry();
+
+    private final Location origin;
+    private final Location particleOrigin;
+    private final Raytrace raytrace;
+    private final Location endPoint;
+    private final double range;
+    private final Vector direction;
 
     public Bullet(Location particleOrigin, Location origin, Vector direction, double range) {
         this.particleOrigin = particleOrigin;
@@ -72,25 +71,12 @@ public class Bullet {
                 Vector targetDirection = new Vector(deltaX, deltaY, deltaZ).normalize();
                 double dot = targetDirection.dot(direction);
                 if (dot > minDotProduct) {
-                    if(livingEntity.getType() == EntityType.HUSK) {
-                        ActiveMob activeMob = MythicBukkit.inst().getMobManager().getActiveMob(livingEntity.getUniqueId()).orElse(null);
-                        if (activeMob == null) {
-                            continue;
-                        }
-                        if (activeMob.getType().getInternalName().equals("toro_type02")) {
-                            hitboxes.add(new Type02Hitbox(entity));
-                        } else if (activeMob.getType().getInternalName().equals("zaku")) {
-                            hitboxes.add(new ZakuHitbox(entity));
-                        }
-                    } else if(livingEntity.getType() == EntityType.IRON_GOLEM) {
-                        ActiveMob activeMob = MythicBukkit.inst().getMobManager().getActiveMob(livingEntity.getUniqueId()).orElse(null);
-                        if (activeMob == null) {
-                            continue;
-                        }
-                        if (activeMob.getType().getInternalName().equals("kindletron_2")) {
-                            hitboxes.add(new Kindletron2Hitbox(entity));
-                        }
-                    } else if(livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {
+                    HitboxRegistry.EntityHitbox hitbox = HITBOX_REGISTRY.getEntityHitbox(livingEntity);
+                    if(hitbox != null) {
+                        hitboxes.add(hitbox);
+                        continue;
+                    }
+                    if(livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {
                         hitboxes.add(new RaytraceEntityHitbox(entity));
                     }
                 }

@@ -44,7 +44,7 @@ public class AttachmentFrame extends Frame {
             .build();
     private static final int[] SLOTS = {29, 30, 31, 32, 33};
 
-    private ItemStack item;
+    private final ItemStack item;
     private Gun gun;
 
     @Setter

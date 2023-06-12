@@ -1,7 +1,6 @@
 package in.prismar.game.item.impl.throwable;
 
 import in.prismar.game.Game;
-import in.prismar.game.item.event.bus.ThrowableExplodeEvent;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;

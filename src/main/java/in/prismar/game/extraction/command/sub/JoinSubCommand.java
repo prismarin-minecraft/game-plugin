@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  **/
 public class JoinSubCommand extends HelpSubCommand<Player> {
 
-    private ExtractionFacade facade;
+    private final ExtractionFacade facade;
 
     public JoinSubCommand(ExtractionFacade facade) {
         super("join");

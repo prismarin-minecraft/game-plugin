@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  **/
 public class OpenSubCommand extends HelpSubCommand<Player> {
 
-    private ExtractionFacade facade;
+    private final ExtractionFacade facade;
 
     public OpenSubCommand(ExtractionFacade facade) {
         super("open");

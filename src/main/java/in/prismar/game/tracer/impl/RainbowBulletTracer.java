@@ -25,7 +25,7 @@ import java.util.List;
 
 public class RainbowBulletTracer extends AbstractBulletTracer {
 
-    private List<Particle.DustOptions> options;
+    private final List<Particle.DustOptions> options;
 
     public RainbowBulletTracer() {
         super(new ItemBuilder(Material.MAGENTA_WOOL).setName("§2R§6a§di§bn§9b§ao§5w").build());

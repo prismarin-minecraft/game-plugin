@@ -27,12 +27,12 @@ import java.util.function.Consumer;
  **/
 @Getter
 public class AirDrop {
-    private long spawned;
-    private long timeToLive;
-    private long expiration;
-    private Location location;
+    private final long spawned;
+    private final long timeToLive;
+    private final long expiration;
+    private final Location location;
     private ArmorStand armorStand;
-    private Inventory inventory;
+    private final Inventory inventory;
 
     @Setter
     private Callback removeCallback;

@@ -26,12 +26,12 @@ import java.util.List;
 @Getter
 public class WebServer {
 
-    private String basePath;
+    private final String basePath;
 
-    private Javalin javalin;
-    private List<WebRoute<?>> routes;
+    private final Javalin javalin;
+    private final List<WebRoute<?>> routes;
 
-    private Gson gson;
+    private final Gson gson;
 
     public WebServer(String basePath, int port) {
         this.basePath = basePath;
