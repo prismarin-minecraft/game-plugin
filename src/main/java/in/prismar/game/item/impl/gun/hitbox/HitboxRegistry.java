@@ -28,7 +28,7 @@ public class HitboxRegistry {
     private final List<Hitbox> hitboxes = new ArrayList<>();
 
     public HitboxRegistry() {
-        create(EntityType.IRON_GOLEM, "kindletron2", 3f, 5f);
+        create(EntityType.IRON_GOLEM, "kindletron_2", 3f, 5f);
         create(EntityType.HUSK, "toro_type02", 4f, 7f);
         create(EntityType.HUSK, "zaku", 2.3f, 5f);
     }
