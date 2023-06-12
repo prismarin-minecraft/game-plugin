@@ -3,8 +3,6 @@ package in.prismar.game.web.config.command.sub;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.item.impl.gun.type.AmmoType;
 import in.prismar.game.item.model.Skin;
-import in.prismar.game.item.reader.impl.GunData;
-import in.prismar.game.item.reader.impl.GunSoundData;
 import in.prismar.game.web.config.builder.ConfigNodeBuilder;
 import in.prismar.game.web.config.file.ConfigNodeFile;
 import in.prismar.game.web.config.model.ConfigNode;

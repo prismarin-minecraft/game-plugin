@@ -3,7 +3,6 @@ package in.prismar.game.web.impl;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.impl.gun.Gun;
-import in.prismar.game.item.reader.impl.GunData;
 import in.prismar.game.web.route.GetWebRoute;
 import io.javalin.http.Context;
 
