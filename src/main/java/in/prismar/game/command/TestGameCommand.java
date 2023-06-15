@@ -1,22 +1,14 @@
 package in.prismar.game.command;
 
-import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
-import in.prismar.api.configuration.node.ConfigNode;
-import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.game.Game;
-import in.prismar.game.item.impl.drone.Drone;
-import in.prismar.game.keycode.KeyCode;
+import in.prismar.game.keycode.KeyCodeFrame;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
-import in.prismar.library.spigot.hologram.Hologram;
-import in.prismar.library.spigot.hologram.line.HologramLineType;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -40,7 +32,7 @@ public class TestGameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        final KeyCode code = new KeyCode((player1, code1) -> {
+        final KeyCodeFrame code = new KeyCodeFrame((player1, code1) -> {
             if(code1.equals("05071")) {
                 player.closeInventory();
                 player.sendMessage(PrismarinConstants.PREFIX + "§aSheesh");
