@@ -25,7 +25,7 @@ public class KeyCodeTestInitializer {
                 Animation animation = game.getAnimationFacade().getRepository().findById("lab.entrance");
                 if(animation != null) {
                     game.getAnimationFacade().getService().play(animation, false);
-                    Location location = animation.getLocationA();
+                    Location location = animation.getCuboid().getCenter();
                     location.getWorld().playSound(location, "door.warning", SoundCategory.BLOCKS, 0.6f, 1f);
                     Scheduler.runDelayed(24, () -> {
                         location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
