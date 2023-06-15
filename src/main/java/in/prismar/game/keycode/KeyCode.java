@@ -1,6 +1,7 @@
 package in.prismar.game.keycode;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.PrismarinConstants;
 import in.prismar.api.location.LocationProvider;
 import in.prismar.library.spigot.entity.EntityInteracter;
 import in.prismar.library.spigot.entity.EntityUtil;
@@ -50,8 +51,13 @@ public class KeyCode implements Listener {
             Entity entity = event.getRightClicked();
             if (entity.getType() == EntityType.ITEM_FRAME) {
                 if(entity.getLocation().distanceSquared(location) <= 2) {
+                    Player player = event.getPlayer();
+                    if(player.isSneaking() && player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "door.bypass.interact")) {
+                        event.setCancelled(false);
+                        return;
+                    }
                     KeyCodeFrame frame = new KeyCodeFrame(callback);
-                    frame.openInventory(event.getPlayer());
+                    frame.openInventory(player);
                     event.setCancelled(true);
                 }
             }
