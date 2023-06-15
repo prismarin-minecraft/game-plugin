@@ -1,4 +1,4 @@
-package in.prismar.game.keycode;
+package in.prismar.game.interactable.model.keycode;
 
 import in.prismar.library.spigot.inventory.Frame;
 import in.prismar.library.spigot.inventory.button.event.ClickFrameButtonEvent;

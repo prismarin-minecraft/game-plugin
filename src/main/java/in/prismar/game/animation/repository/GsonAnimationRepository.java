@@ -13,6 +13,7 @@ import org.bukkit.Location;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -27,6 +28,7 @@ public class GsonAnimationRepository extends GsonRepository<Animation> implement
         loadAll();
         for(Animation animation : findAll()) {
             animation.setCuboid(new Cuboid(animation.getLocationA(), animation.getLocationB()));
+            animation.setTempData(new HashMap<>());
             for(AnimationFrame frame : animation.getFrames()) {
                 for(AnimationFrameBlock block : frame.getBlocks()) {
                     block.setBlockData(Bukkit.createBlockData(block.getBlockDataValue()));

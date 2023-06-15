@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.bukkit.Location;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -25,6 +26,14 @@ public class Animation extends StringRepositoryEntity {
     private List<AnimationFrame> frames;
 
     private transient Cuboid cuboid;
+    private transient Map<String, Object> tempData;
+
+    public boolean isTempDataBoolean(String key) {
+        if(tempData.containsKey(key)) {
+            return (boolean) tempData.get(key);
+        }
+        return false;
+    }
 
     @Override
     public String toString() {

@@ -2,7 +2,7 @@ package in.prismar.game.command;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.keycode.KeyCodeFrame;
+import in.prismar.game.interactable.model.keycode.KeyCodeFrame;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
