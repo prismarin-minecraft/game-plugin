@@ -1,13 +1,13 @@
 package in.prismar.game.keycode;
 
-import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
 import in.prismar.game.animation.model.Animation;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.scheduler.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
-import org.bukkit.entity.Player;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -19,8 +19,9 @@ import org.bukkit.entity.Player;
 public class KeyCodeTestInitializer {
 
     public KeyCodeTestInitializer(Game game) {
+        AtomicBoolean doorOpen = new AtomicBoolean(false);
         new KeyCode(game, "lab.entrance", (player, code) ->  {
-            if (code.equals("05071")) {
+            if (code.equals("05071") && !doorOpen.get()) {
                 player.closeInventory();
                 Animation animation = game.getAnimationFacade().getRepository().findById("lab.entrance");
                 if(animation != null) {
@@ -34,10 +35,12 @@ public class KeyCodeTestInitializer {
                         game.getAnimationFacade().getService().play(animation, true);
                         Scheduler.runDelayed(24, () -> {
                             location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
+                            doorOpen.set(false);
                         });
                     });
+                    doorOpen.set(true);
+                    return true;
                 }
-                return true;
             }
             return false;
         });
