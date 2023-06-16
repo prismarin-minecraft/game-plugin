@@ -26,7 +26,7 @@ public class Railgun extends Gun {
         setBulletsPerShot(1);
         setZoom(7);
         setAmmoType(AmmoType.RAIL);
-        setSpread(0);
+        setSpread(10);
         setSneakSpread(0);
         setRange(175);
 
