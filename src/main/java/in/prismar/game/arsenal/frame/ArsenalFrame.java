@@ -3,6 +3,7 @@ package in.prismar.game.arsenal.frame;
 import in.prismar.api.user.User;
 import in.prismar.api.user.data.ArsenalItem;
 import in.prismar.game.arsenal.ArsenalService;
+import in.prismar.game.item.impl.gun.impl.Railgun;
 import in.prismar.game.item.impl.melee.MeleeItem;
 import in.prismar.game.item.impl.placeable.PlaceableItem;
 import in.prismar.game.item.impl.throwable.LethalItem;
@@ -123,6 +124,9 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
                 ItemStack stack = event.getEvent().getCurrentItem();
                 CustomItem item = service.getItemRegistry().getItemByStack(stack);
                 if(item != null) {
+                    if(item instanceof Railgun) {
+                        return;
+                    }
                     if(item instanceof Gun gun) {
                         if(gun.getType() == GunType.PISTOL) {
                             service.setItem(user, "secondary", stack.clone());

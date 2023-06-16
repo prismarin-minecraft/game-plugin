@@ -36,5 +36,6 @@ public class InteractableCommand extends HelpCommand<Player> {
         addChild(new InfoSubCommand(service));
         addChild(new TeleportSubCommand(service));
         addChild(new AddCodeSubCommand(service));
+        addChild(new RemoveCodeSubCommand(service));
     }
 }

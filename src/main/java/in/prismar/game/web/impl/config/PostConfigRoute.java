@@ -40,6 +40,6 @@ public class PostConfigRoute extends PostWebRoute<Boolean> {
 
     @Override
     public String[] isSecured() {
-        return new String[]{"*"};
+        return new String[]{"web.config"};
     }
 }
