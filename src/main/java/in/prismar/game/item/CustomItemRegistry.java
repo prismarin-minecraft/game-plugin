@@ -28,6 +28,7 @@ import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.deployable.SandbagItem;
 import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
+import in.prismar.game.item.impl.gun.impl.Railgun;
 import in.prismar.game.item.impl.medical.BandageItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.medical.MedkitItem;
@@ -36,7 +37,6 @@ import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
-import in.prismar.library.common.event.EventBus;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
@@ -88,6 +88,7 @@ public class CustomItemRegistry {
         register(new GasGrenadeItem());
         register(new ImpactGrenadeItem());
         register(new UAVItem());
+        register(new Railgun());
 
         register(new AdaptiveChamberingAttachment());
         register(new VerticalGripAttachmentItem());
@@ -128,7 +129,7 @@ public class CustomItemRegistry {
         register(new JuggernautLeggings());
         register(new JuggernautBoots());
 
-        register(new RailgunItem());
+        register(new RaygunItem());
 
         register(new LandmineCustomItem());
 

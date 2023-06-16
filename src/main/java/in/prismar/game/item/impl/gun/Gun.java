@@ -165,11 +165,11 @@ public class Gun extends SkinableItem {
 
     public ItemStack getCurrentReloadItem(ItemStack stack) {
         int data = getSkinDataByItem(stack);
-        if(data == -1) {
+        if (data == -1) {
             return reloadItem;
         }
         int nextData = data + 1;
-        if(!skinnedStateItems.containsKey(nextData)) {
+        if (!skinnedStateItems.containsKey(nextData)) {
             skinnedStateItems.put(nextData, new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(nextData).build());
         }
         return skinnedStateItems.get(nextData);
@@ -177,11 +177,11 @@ public class Gun extends SkinableItem {
 
     public ItemStack getCurrentAimItem(ItemStack stack) {
         int data = getSkinDataByItem(stack);
-        if(data == -1) {
+        if (data == -1) {
             return aimItem;
         }
         int nextData = data + 2;
-        if(!skinnedStateItems.containsKey(nextData)) {
+        if (!skinnedStateItems.containsKey(nextData)) {
             skinnedStateItems.put(nextData, new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(nextData).build());
         }
         return skinnedStateItems.get(nextData);
@@ -189,10 +189,10 @@ public class Gun extends SkinableItem {
 
 
     public void buildStateItems() {
-        if(reloadItem == null) {
+        if (reloadItem == null) {
             this.reloadItem = new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(getCustomModelData() + 1).build();
         }
-        if(aimItem == null) {
+        if (aimItem == null) {
             this.aimItem = new ItemBuilder(getMaterial()).setName(getDisplayName()).setCustomModelData(getCustomModelData() + 2).build();
         }
     }
@@ -338,7 +338,7 @@ public class Gun extends SkinableItem {
         double spread = !player.isSneaking() ? normalSpread : sneakSpread;
         Location eyeLocation = player.getEyeLocation();
         Location particleOrigin = eyeLocation.clone();
-        if(gunPlayer.getState() != GunPlayerState.AIMING) {
+        if (gunPlayer.getState() != GunPlayerState.AIMING) {
             Vector eyeOffset = VectorUtil.rotateVector(DEFAULT_EYE_ROTATION, eyeLocation.getYaw(), eyeLocation.getPitch());
             particleOrigin = particleOrigin.add(eyeOffset);
         } else {
@@ -363,6 +363,7 @@ public class Gun extends SkinableItem {
                             if (angle <= 1.1) {
                                 targetPlayer.getWorld().playSound(targetPlayer.getLocation(), Sound.ITEM_SHIELD_BLOCK, 1f, 1);
                                 spawnParticle(game, gunPlayer, particleOrigin, entityHit.getPoint());
+                                onImpact(game, player, entityHit.getPoint());
                                 return;
                             }
                         }
@@ -408,6 +409,7 @@ public class Gun extends SkinableItem {
                             blockHit.getTarget().getBlockData());
                     blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.cement", 0.35f, 1);
                     spawnParticle(game, gunPlayer, particleOrigin, blockHit.getPoint());
+                    onImpact(game, player, blockHit.getPoint());
                     return;
                 }
                 if (blockHit.getTarget().getType().name().contains("GLASS")) {
@@ -489,7 +491,7 @@ public class Gun extends SkinableItem {
         int ammoToGive;
 
         int ammo = !unlimitedAmmo ? AmmoType.getAmmoInInventory(player, ammoType) : needed;
-        if(player.getGameMode() == GameMode.CREATIVE) {
+        if (player.getGameMode() == GameMode.CREATIVE) {
             ammo = needed;
         }
         if (ammo >= 1) {
@@ -528,13 +530,14 @@ public class Gun extends SkinableItem {
 
 
     }
+
     @CustomItemEvent
     public void onChangeSlot(Player player, Game game, CustomItemHolder holder, PlayerItemHeldEvent event) {
         final ItemStack stack = player.getInventory().getItem(event.getNewSlot());
-        if(stack != null) {
-            if(stack.hasItemMeta()) {
-                if(stack.getItemMeta().hasDisplayName()) {
-                    if(stack.getItemMeta().getDisplayName().equals(getDisplayName())) {
+        if (stack != null) {
+            if (stack.hasItemMeta()) {
+                if (stack.getItemMeta().hasDisplayName()) {
+                    if (stack.getItemMeta().getDisplayName().equals(getDisplayName())) {
                         playSound(player, GunSoundType.EQUIP);
                         updateStateInventory(player, stack);
                     }
@@ -556,15 +559,15 @@ public class Gun extends SkinableItem {
 
         if (zoom > 0) {
             if (player.isSneaking()) {
-                if(!gunPlayer.isReloading()) {
+                if (!gunPlayer.isReloading()) {
                     if (!gunPlayer.isAiming()) {
                         gunPlayer.setState(GunPlayerState.AIMING);
                         playSound(player, GunSoundType.AIM_IN);
-                        if(zoomItem == null) {
+                        if (zoomItem == null) {
                             updateStateInventory(player, holder.getStack());
                         }
                     }
-                    if(zoomItem != null) {
+                    if (zoomItem != null) {
                         ItemUtil.sendFakeMainHeadEquipment(player, zoomItem);
                     }
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, zoom - 1, false, false));
@@ -615,8 +618,8 @@ public class Gun extends SkinableItem {
                 for (int i = 0; i < bulletsPerShot; i++) {
                     shoot(game, player, holder.getStack());
                 }
-                if(gunPlayer.getState() == GunPlayerState.AIMING) {
-                    if(gunPlayer.getRecoilTask() == null) {
+                if (gunPlayer.getState() == GunPlayerState.AIMING) {
+                    if (gunPlayer.getRecoilTask() == null) {
                         RecoilTask task = new RecoilTask(this, player, 15);
                         new Timer().schedule(task, 15, 15);
                         gunPlayer.setRecoilTask(task);
@@ -647,7 +650,7 @@ public class Gun extends SkinableItem {
             } else if (allowedInteract) {
                 GunPreShootEvent preShootEvent = new GunPreShootEvent(player, GunPlayer.of(player), this);
                 Bukkit.getPluginManager().callEvent(preShootEvent);
-                if(preShootEvent.isCancelled()) {
+                if (preShootEvent.isCancelled()) {
                     return;
                 }
                 int ammo = game.getItemAmmoProvider().getAmmo(player, holder.getStack());
@@ -671,11 +674,8 @@ public class Gun extends SkinableItem {
         return stack;
     }
 
-
-
-
-
-
+    public void onImpact(Game game, Player player, Location location) {
+    }
 
 
 }

@@ -16,14 +16,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
-import org.checkerframework.checker.units.qual.C;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -31,7 +29,7 @@ import org.checkerframework.checker.units.qual.C;
  * Proprietary and confidential
  * Written by Maga
  **/
-public class RailgunItem extends CustomItem {
+public class RaygunItem extends CustomItem {
 
     private static final int MAX_AMMO = 5;
 
@@ -43,8 +41,8 @@ public class RailgunItem extends CustomItem {
 
     private static final Progress PROGRESS = new Progress("§8[§7=§7=§7=§7=§7=§7=§7=§7=§7=§7=§7=§7=§7=§7=§7=§8]", 15, "§7=", "§a=", false);
 
-    public RailgunItem() {
-        super("Railgun", Material.DIAMOND_AXE, "§4§lRailgun");
+    public RaygunItem() {
+        super("Raygun", Material.DIAMOND_AXE, "§4§lRaygun");
         setCustomModelData(1);
         allFlags();
     }
@@ -113,7 +111,7 @@ public class RailgunItem extends CustomItem {
             }
             return;
         }
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§7Railgun shots§8: §c§l" + ammo));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent("§7Raygun shots§8: §c§l" + ammo));
         gunPlayer.setCurrentUpdateTick(0);
     }
 
@@ -182,6 +180,7 @@ public class RailgunItem extends CustomItem {
             return Math.abs(vec.getZ()) < Math.abs(vec.getX()) ?
                     new Vector(vec.getY(), -vec.getX(), 0) : new Vector(0, -vec.getZ(), vec.getY());
         }
+
     }
 
 
