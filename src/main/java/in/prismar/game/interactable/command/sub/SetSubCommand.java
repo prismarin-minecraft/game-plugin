@@ -56,6 +56,8 @@ public class SetSubCommand extends HelpSubCommand<Player> {
                 value = arguments.getString(3);
             } else if(type == int.class) {
                 value = arguments.getInteger(3);
+            } else if(type == boolean.class) {
+                value = arguments.getBoolean(3);
             } else {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis field is not supported");
                 return true;

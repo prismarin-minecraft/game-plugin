@@ -45,7 +45,7 @@ public class InfoSubCommand extends HelpSubCommand<Player> {
                     field.setAccessible(true);
                 }
                 Class<?> type = field.getType();
-                if(type == String.class || type == int.class) {
+                if(type == String.class || type == int.class || type == boolean.class) {
                     try {
                         player.sendMessage("  " + PrismarinConstants.LISTING_DOT + " §7" + field.getName() + "§8: §b" + field.get(interactable));
                     } catch (IllegalAccessException e) {}

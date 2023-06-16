@@ -27,6 +27,7 @@ public class Button extends Interactable {
 
     private String door;
     private int doorOpenSeconds;
+    private boolean disableWarningSounds;
 
 
     @Override
@@ -42,14 +43,16 @@ public class Button extends Interactable {
             getLocation().getWorld().playSound(getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 0.7f, 1f);
             service.getGame().getAnimationFacade().getService().play(animation, false);
             Location location = animation.getCuboid().getCenter();
-            location.getWorld().playSound(location, "door.warning", SoundCategory.BLOCKS, 0.6f, 1f);
-            Scheduler.runDelayed((long) animation.getTicks() * animation.getFrames().size(), () -> {
+            if(!disableWarningSounds) {
+                location.getWorld().playSound(location, "door.warning", SoundCategory.BLOCKS, 0.6f, 1f);
+            }
+            Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
                 location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
             });
             if(doorOpenSeconds != 0) {
                 Scheduler.runDelayed(20L * doorOpenSeconds, () -> {
                     service.getGame().getAnimationFacade().getService().play(animation, true);
-                    Scheduler.runDelayed((long) animation.getTicks() * animation.getFrames().size(), () -> {
+                    Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
                         location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
                         animation.getTempData().put("doorOpen", false);
                     });

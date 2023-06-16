@@ -5,11 +5,13 @@ import in.prismar.game.animation.model.Animation;
 import in.prismar.game.animation.model.AnimationFrame;
 import in.prismar.game.animation.model.AnimationFrameBlock;
 import in.prismar.library.spigot.location.Cuboid;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -36,6 +38,7 @@ public class LocalAnimationService implements AnimationService{
         animation.setLocationB(locationB);
         animation.setFrames(new ArrayList<>());
         animation.setCuboid(new Cuboid(locationA, locationB));
+        animation.setTempData(new HashMap<>());
         facade.getRepository().create(animation);
         return animation;
     }
@@ -58,6 +61,7 @@ public class LocalAnimationService implements AnimationService{
                         cancel();
                         if(!animation.isStay()) {
                             changeToFrame(animation, !reverse ? 0 : animation.getFrames().size()-1);
+                            return;
                         }
                         return;
                     }
