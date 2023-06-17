@@ -7,9 +7,11 @@ import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
+import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.item.PersistentItemDataUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -39,6 +41,16 @@ public class GetSubCommand extends HelpSubCommand<Player> {
             }
             CustomItem customItem = registry.getItemById(id);
             ItemStack stack = registry.createItem(id);
+
+            if(arguments.getLength() >= 3) {
+                ItemBuilder builder = new ItemBuilder(stack.getType());
+                if(stack.hasItemMeta()) {
+                    if(stack.getItemMeta().hasCustomModelData()) {
+                        builder.setCustomModelData(stack.getItemMeta().getCustomModelData());
+                    }
+                }
+                stack = builder.build();
+            }
 
             player.getInventory().addItem(stack);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You received the item §a" + customItem.getDisplayName());

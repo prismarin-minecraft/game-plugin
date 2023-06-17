@@ -49,11 +49,16 @@ public class ListSubCommand extends HelpSubCommand<Player> {
             List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
             lore.add("§c");
             lore.add(" §8" + PrismarinConstants.DOT + " §3Click §7to retrieve this item");
+            lore.add(" §8" + PrismarinConstants.DOT + " §3Shift click §7to retrieve a raw item");
             lore.add("§c");
             meta.setLore(lore);
             clone.setItemMeta(meta);
             pager.addItem(clone, (ClickFrameButtonEvent) (player1, event) -> {
-                player.performCommand("customitem get " + entry.getKey());
+                if(event.isShiftClick()) {
+                    player.performCommand("customitem get " + entry.getKey() + " 1");
+                } else {
+                    player.performCommand("customitem get " + entry.getKey());
+                }
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.65F, 1);
             });
         }

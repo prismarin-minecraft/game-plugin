@@ -34,6 +34,9 @@ public class PlayerInteractEntityListener implements Listener {
             if (entity.getType() == EntityType.ITEM_FRAME) {
                 for(Interactable interactable : service.getRepository().findAll()) {
                     Location location = interactable.getLocation();
+                    if(!entity.getLocation().getWorld().getName().equals(location.getWorld().getName())) {
+                        continue;
+                    }
                     if(entity.getLocation().distanceSquared(location) <= 2) {
                         Player player = event.getPlayer();
                         if(player.isSneaking() && player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "interactable.modify")) {
