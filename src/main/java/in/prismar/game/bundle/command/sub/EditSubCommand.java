@@ -42,7 +42,7 @@ public class EditSubCommand extends HelpSubCommand<Player> {
                 return true;
             }
             Bundle bundle = facade.getRepository().findById(id);
-            Frame frame = new Frame(bundle.getDisplayName(), 4);
+            Frame frame = new Frame(bundle.getDisplayName(), 3);
             frame.getProperties().setAllowClick(true);
 
             if(bundle.getContainer() != null) {

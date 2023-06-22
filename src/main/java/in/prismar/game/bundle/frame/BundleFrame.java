@@ -54,14 +54,20 @@ public class BundleFrame extends Frame {
                         .addLore("§c").allFlags();
                 if(player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "bundles." + bundle.getId())) {
                     if(!user.getSeasonData().getAttachments().containsKey("bundles." + bundle.getId())) {
-                        builder.addLore("§7Click me to redeem");
+                        builder.addLore("§aLeft click §7to redeem");
                     } else {
-                        builder.addLore("§cYou already redeemed this bundle");
+                        builder.addLore("§cYou already redeemed this bundle", "§c ");
                     }
                 } else {
-                    builder.addLore("§cYou do not own this bundle");
+                    builder.addLore("§cYou do not own this bundle", "§c");
                 }
+                builder.addLore("§aRight click §7to preview this bundle");
                 addButton(SLOTS[index], builder.build(), (ClickFrameButtonEvent) (player1, event) -> {
+                    if(event.isRightClick()) {
+                        PreviewBundleFrame frame = new PreviewBundleFrame(facade, user, player, bundle);
+                        frame.openInventory(player, Sound.BLOCK_SHULKER_BOX_OPEN, 0.5f);
+                        return;
+                    }
                     if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "bundles." + bundle.getId())) {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cYou don't have any bundles of this type in possession.");
                         return;
