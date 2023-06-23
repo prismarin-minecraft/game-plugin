@@ -18,7 +18,12 @@ public class CraftItemListener implements Listener {
     @EventHandler
     public void onCall(CraftItemEvent event) {
         final String result = event.getRecipe().getResult().getType().name();
-        if (result.contains("LEGGINGS") || result.contains("HELMET") || result.contains("CHESTPLATE") || result.contains("BOOTS")) {
+        if (result.contains("LEGGINGS") || result.contains("HELMET")
+                || result.contains("CHESTPLATE")
+                || result.contains("BOOTS") ||
+                result.contains("SWORD")
+                || result.contains("BOW")
+                || result.contains("ARROW")) {
             event.setCancelled(true);
         }
     }
