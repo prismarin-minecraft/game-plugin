@@ -50,7 +50,7 @@ public class AirDropLootTable extends GsonFileWrapper<List<AirDropItem>> {
         for (int i = 0; i < amount; i++) {
             Optional<AirDropItem> optional = findRandomItem();
             if(optional.isPresent()){
-                items.add(optional.get().getItem().getItem());
+                items.add(optional.get().getItem().getItem().clone());
             }
         }
         return items;
