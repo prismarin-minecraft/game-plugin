@@ -2,6 +2,7 @@ package in.prismar.game.warzone;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.clan.ClanStatsProvider;
+import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.warp.WarpProvider;
 import in.prismar.api.warzone.WarzoneProvider;
 import in.prismar.game.Game;
@@ -49,12 +50,15 @@ public class WarzoneService implements WarzoneProvider {
 
     private final AirdropTask airdropTask;
 
+    private final ConfigStore configStore;
+
     private ClanStatsProvider clanStatsProvider;
 
     public WarzoneService(Game game) {
         this.game = game;
         this.warpProvider = PrismarinApi.getProvider(WarpProvider.class);
         this.tombstones = new CopyOnWriteArrayList<>();
+        this.configStore = PrismarinApi.getProvider(ConfigStore.class);
         this.config = new WarzoneConfig(game.getDefaultDirectory());
 
         Bukkit.getScheduler().runTaskTimer(game, new WarzoneAmbienceTask(this), 20, 20);
@@ -82,8 +86,10 @@ public class WarzoneService implements WarzoneProvider {
             }
         }
 
+        long time = Long.parseLong(configStore.getProperty("warzone.tombstone.despawn"));
+
         Tombstone tombstone = new Tombstone();
-        tombstone.setDespawnTimestamp(System.currentTimeMillis() + (1000 * 60 * 2));
+        tombstone.setDespawnTimestamp(System.currentTimeMillis() + time);
         tombstone.setInventory(Bukkit.createInventory(null, 9 * 4, player.getName()));
         tombstone.getInventory().setContents(cleared.toArray(new ItemStack[0]));
         Hologram hologram = new Hologram(LocationUtil.getCenterOfBlock(location.getBlock().getLocation().clone().add(0, 1, 0)));

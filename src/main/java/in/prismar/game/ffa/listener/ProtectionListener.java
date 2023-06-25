@@ -5,6 +5,7 @@ import in.prismar.game.ffa.FFAFacade;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -98,7 +99,7 @@ public class ProtectionListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if(event.getEntity() instanceof ArmorStand) {
+        if(event.getEntity() instanceof ArmorStand || event.getEntity() instanceof ItemFrame) {
             if(event.getDamager() instanceof Player damager) {
                 if(facade.isCurrentlyPlaying(damager)) {
                     event.setCancelled(true);
