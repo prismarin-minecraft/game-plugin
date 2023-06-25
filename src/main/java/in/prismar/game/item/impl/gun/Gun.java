@@ -585,7 +585,7 @@ public class Gun extends SkinableItem {
         if (currentUpdateTick >= Integer.MAX_VALUE) {
             currentUpdateTick = 0;
         }
-        int ammo = game.getItemAmmoProvider().getAmmo(player, holder.getStack());
+        int ammo = !game.getItemAmmoProvider().hasId(holder.getStack()) ? 0 : game.getItemAmmoProvider().getAmmo(player, holder.getStack());
         List<Attachment> attachments = getAttachments(game, holder.getStack(), true);
         int fireRate = this.fireRate;
         int maxAmmo = this.maxAmmo;

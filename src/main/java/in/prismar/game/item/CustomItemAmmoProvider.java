@@ -57,6 +57,11 @@ public class CustomItemAmmoProvider {
         return id;
     }
 
+    public boolean hasId(ItemStack stack) {
+        String id = PersistentItemDataUtil.getString(game, stack, "ammo_id");
+        return !id.isEmpty();
+    }
+
     public int getAmmo(Player player, ItemStack stack) {
         String id = getId(stack);
         if(isTempCache(player)) {
