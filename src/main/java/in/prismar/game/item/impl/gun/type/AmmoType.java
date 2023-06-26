@@ -17,17 +17,18 @@ import org.bukkit.inventory.ItemStack;
 @Getter
 public enum AmmoType {
 
-    PISTOL(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build()),
-    AR(new ItemBuilder(Material.ARROW).setCustomModelData(2).setName("§eAR Ammo").build()),
-    LMG(new ItemBuilder(Material.ARROW).setCustomModelData(2).setName("§eAR Ammo").build()),
-    RAIL(new ItemBuilder(Material.ARROW).setCustomModelData(5).setName("§cRail").build()),
-    SNIPER(new ItemBuilder(Material.ARROW).setCustomModelData(3).setName("§cSniper Ammo").build()),
-    SHOTGUN(new ItemBuilder(Material.ARROW).setCustomModelData(4).setName("§fShotgun Ammo").build()),
+    PISTOL(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build(), 10),
+    AR(new ItemBuilder(Material.ARROW).setCustomModelData(2).setName("§eAR Ammo").build(), 7),
+    LMG(new ItemBuilder(Material.ARROW).setCustomModelData(2).setName("§eAR Ammo").build(), 7),
+    RAIL(new ItemBuilder(Material.ARROW).setCustomModelData(5).setName("§cRail").build(), 0),
+    SNIPER(new ItemBuilder(Material.ARROW).setCustomModelData(3).setName("§cSniper Ammo").build(), 1),
+    SHOTGUN(new ItemBuilder(Material.ARROW).setCustomModelData(4).setName("§fShotgun Ammo").build(), 2),
 
-    SMG(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build()),
-    GRENADE_LAUNCHER(new ItemBuilder(Material.STICK).setCustomModelData(6).setName("§cImpact Grenade").allFlags().build());
+    SMG(new ItemBuilder(Material.ARROW).setCustomModelData(1).setName("§7Pistol Ammo").build(), 10),
+    GRENADE_LAUNCHER(new ItemBuilder(Material.STICK).setCustomModelData(6).setName("§cImpact Grenade").allFlags().build(), 1);
 
     private final ItemStack item;
+    private final int refillStacks;
 
     public static int getAmmoInInventory(Player player, AmmoType type) {
         int amount = 0;
