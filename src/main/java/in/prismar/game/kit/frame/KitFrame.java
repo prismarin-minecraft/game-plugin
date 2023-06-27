@@ -42,13 +42,19 @@ public class KitFrame extends Frame {
             ItemBuilder builder = new ItemBuilder(kit.getIcon().getItem());
             builder.addLore("§c ");
             if(user.isTimestampAvailable("kit." + kit.getId()) || player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.bypass")) {
-                builder.addLore("§aClick §7to redeem this kit");
+                builder.addLore("§aLeft click §7to redeem this kit");
             } else {
                 long time = user.getTimestamp("kit." + kit.getId()) - System.currentTimeMillis();
                 builder.addLore(PrismarinConstants.ARROW_RIGHT + " §7Cooldown§8: §c" + TimeUtil.convertToThreeDigits(time / 1000));
                 builder.addLore("§c");
             }
+            builder.addLore("§aRight click §7to preview this kit");
             addButton(SLOTS[index], builder.build(), (ClickFrameButtonEvent) (player1, event) -> {
+                if(event.isRightClick()) {
+                    PreviewKitFrame frame = new PreviewKitFrame(service, kit);
+                    frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.5f);
+                    return;
+                }
                 if(!user.isTimestampAvailable("kit." + kit.getId()) && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.bypass")) {
                     player.sendMessage(PrismarinConstants.PREFIX + "§cThis kit is on cooldown");
                     return;

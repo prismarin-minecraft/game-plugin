@@ -41,7 +41,7 @@ public class EditSubCommand extends HelpSubCommand<Player> {
                 return true;
             }
             Kit kit = service.getRepository().findById(id);
-            Frame frame = new Frame("§cEdit kit", 4);
+            Frame frame = new Frame("§cEdit kit", 3);
             if(kit.getItems() != null) {
                 int slot = 0;
                 for(ItemStack stack : kit.getItems().getItem()) {
