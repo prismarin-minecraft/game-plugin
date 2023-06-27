@@ -94,7 +94,7 @@ public class WarzoneService implements WarzoneProvider {
         Location location = start.clone();
         for (int i = 0; i < checkDown; i++) {
             location = start.clone().subtract(0, i, 0);
-            if (location.getBlock().getType().isSolid()) {
+            if (location.getBlock().getType().isSolid() && location.getBlock().getType() != Material.BARRIER) {
                 break;
             }
         }
