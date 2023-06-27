@@ -76,7 +76,7 @@ public class AirDropRegistry {
 
         Bukkit.broadcastMessage(CenteredMessage.createCentredMessage(PrismarinConstants.BORDER));
         Bukkit.broadcastMessage(" ");
-        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage("§e§lAirdrop"));
+        Bukkit.broadcastMessage(CenteredMessage.createCentredMessage("§e§lAirdrop in Warzone"));
         Bukkit.broadcastMessage(CenteredMessage.createCentredMessage("§7Incoming at§8: §7X§8: §e" +
                 location.getBlockX() + " §7Z§8: §e" + location.getBlockZ()));
         Bukkit.broadcastMessage(" ");

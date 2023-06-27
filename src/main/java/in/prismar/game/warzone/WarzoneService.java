@@ -54,6 +54,8 @@ public class WarzoneService implements WarzoneProvider {
 
     private ClanStatsProvider clanStatsProvider;
 
+    private boolean closed;
+
     public WarzoneService(Game game) {
         this.game = game;
         this.warpProvider = PrismarinApi.getProvider(WarpProvider.class);
@@ -64,6 +66,17 @@ public class WarzoneService implements WarzoneProvider {
         Bukkit.getScheduler().runTaskTimer(game, new WarzoneAmbienceTask(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, new TombstoneTask(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, airdropTask = new AirdropTask(this), 20 * 5, 20 * 5);
+    }
+
+    public void close() {
+        this.closed = true;
+        for(Player player : getWarzoneLocation().getWorld().getPlayers()) {
+            warpProvider.teleportToSpawn(player);
+        }
+    }
+
+    public void open() {
+        this.closed = false;
     }
 
     public Tombstone createTombstone(Player player, List<ItemStack> stacks) {
