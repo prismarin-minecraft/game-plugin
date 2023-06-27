@@ -42,7 +42,9 @@ public class KitFrame extends Frame {
             ItemBuilder builder = new ItemBuilder(kit.getIcon().getItem());
             builder.addLore("§c ");
             if(user.isTimestampAvailable("kit." + kit.getId()) || player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.bypass")) {
-                builder.addLore("§aLeft click §7to redeem this kit");
+                if(player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit." + kit.getId())) {
+                    builder.addLore("§aLeft click §7to redeem this kit");
+                }
             } else {
                 long time = user.getTimestamp("kit." + kit.getId()) - System.currentTimeMillis();
                 builder.addLore(PrismarinConstants.ARROW_RIGHT + " §7Cooldown§8: §c" + TimeUtil.convertToThreeDigits(time / 1000));
@@ -53,6 +55,10 @@ public class KitFrame extends Frame {
                 if(event.isRightClick()) {
                     PreviewKitFrame frame = new PreviewKitFrame(service, kit);
                     frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.5f);
+                    return;
+                }
+                if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit." + kit.getId())) {
+                    player.sendMessage(PrismarinConstants.PREFIX + "§cYou do not have permission to claim this kit");
                     return;
                 }
                 if(!user.isTimestampAvailable("kit." + kit.getId()) && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.bypass")) {
