@@ -142,6 +142,8 @@ public class CustomItemRegistry {
 
         register(new FlashbangItem());
 
+        register(new PortableMinerItem());
+
 
         for(HardpointTeam team : HardpointTeam.values()) {
             register(new HardpointHelmet(team.getFancyName(), team.getColor()));
