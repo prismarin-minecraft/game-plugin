@@ -17,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Comparator;
+
 /**
  * Copyright (c) Maga, All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -38,8 +40,8 @@ public class KitFrame extends Frame {
         User user = userProvider.getUserByUUID(player.getUniqueId());
 
         int index = 0;
-        for(Kit kit : service.getRepository().findAll()) {
-            ItemBuilder builder = new ItemBuilder(kit.getIcon().getItem());
+        for(Kit kit : service.getRepository().findAll().stream().sorted((o1, o2) -> Integer.compare(o2.getWeight(), o1.getWeight())).toList()) {
+            ItemBuilder builder = new ItemBuilder(kit.getIcon().getItem()).allFlags();
             builder.addLore("§c ");
             if(user.isTimestampAvailable("kit." + kit.getId()) || player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.bypass")) {
                 if(player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit." + kit.getId())) {

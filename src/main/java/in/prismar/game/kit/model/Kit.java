@@ -18,6 +18,7 @@ public class Kit extends StringRepositoryEntity {
     private ItemContainer icon;
     private ItemsContainer items;
     private int cooldownInSeconds;
+    private int weight;
 
     @Override
     public String toString() {
