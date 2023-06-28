@@ -23,7 +23,7 @@ public class CraftItemListener implements Listener {
                 || result.contains("BOOTS") ||
                 result.contains("SWORD")
                 || result.contains("BOW")
-                || result.contains("ARROW")) {
+                || result.contains("ARROW") || result.contains("GRINDSTONE")) {
             event.setCancelled(true);
         }
     }
