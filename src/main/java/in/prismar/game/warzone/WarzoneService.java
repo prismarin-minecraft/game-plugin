@@ -103,7 +103,7 @@ public class WarzoneService implements WarzoneProvider {
 
         Tombstone tombstone = new Tombstone();
         tombstone.setDespawnTimestamp(System.currentTimeMillis() + time);
-        tombstone.setInventory(Bukkit.createInventory(null, 9 * 4, player.getName()));
+        tombstone.setInventory(Bukkit.createInventory(null, 9 * 5, player.getName()));
         tombstone.getInventory().setContents(cleared.toArray(new ItemStack[0]));
         Hologram hologram = new Hologram(LocationUtil.getCenterOfBlock(location.getBlock().getLocation().clone().add(0, 1, 0)));
         hologram.addLine(HologramLineType.TEXT, "§c" + player.getName(), false);

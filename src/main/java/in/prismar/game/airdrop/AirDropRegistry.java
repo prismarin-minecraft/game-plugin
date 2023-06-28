@@ -47,6 +47,9 @@ public class AirDropRegistry {
 
     public Optional<AirDrop> findDropByStandLocation(Location location) {
         for (AirDrop airDrop : airDrops) {
+            if(!airDrop.getArmorStand().getLocation().getWorld().getName().equals(location.getWorld().getName())) {
+                continue;
+            }
             if(airDrop.getArmorStand().getLocation().distanceSquared(location) <= 1) {
                 return Optional.of(airDrop);
             }
