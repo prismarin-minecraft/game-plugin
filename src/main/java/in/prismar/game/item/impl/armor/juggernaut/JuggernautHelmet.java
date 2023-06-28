@@ -20,13 +20,13 @@ import org.bukkit.potion.PotionEffectType;
 public class JuggernautHelmet extends ArmorItem {
     public JuggernautHelmet() {
         super("JuggernautHelmet", Material.NETHERITE_HELMET, "§4Juggernaut Helmet", ArmorType.HELMET);
-        setHeadProtection(60);
+        setHeadProtection(50);
         setBodyProtection(0);
 
         generateDefaultLore();
 
         addLore(" §7Effects§8:");
-        addLore("   §8➥ §cSlowness");
+        addLore("   §8➥ §cSlowness 2");
         addLore("§c ");
     }
 

@@ -21,12 +21,12 @@ public class JuggernautBoots extends ArmorItem {
     public JuggernautBoots() {
         super("JuggernautBoots", Material.NETHERITE_BOOTS, "§4Juggernaut Boots", ArmorType.BOOTS);
         setHeadProtection(0);
-        setBodyProtection(10);
+        setBodyProtection(8);
 
         generateDefaultLore();
 
         addLore(" §7Effects§8:");
-        addLore("   §8➥ §cSlowness");
+        addLore("   §8➥ §cSlowness 2");
         addLore("§c ");
     }
 

@@ -14,7 +14,7 @@ public class LightweightChestplate extends ArmorItem {
     public LightweightChestplate() {
         super("LightweightChestplate", Material.CHAINMAIL_CHESTPLATE, "§7Lightweight Chestplate", ArmorType.CHESTPLATE);
         setHeadProtection(0);
-        setBodyProtection(10);
+        setBodyProtection(11);
 
         generateDefaultLore();
     }

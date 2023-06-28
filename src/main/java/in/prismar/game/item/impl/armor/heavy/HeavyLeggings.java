@@ -14,7 +14,7 @@ public class HeavyLeggings extends ArmorItem {
     public HeavyLeggings() {
         super("HeavyLeggings", Material.IRON_LEGGINGS, "§cHeavy Leggings", ArmorType.LEGGINGS);
         setHeadProtection(0);
-        setBodyProtection(10);
+        setBodyProtection(11);
 
         generateDefaultLore();
     }

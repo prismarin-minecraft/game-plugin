@@ -14,7 +14,7 @@ public class HeavyChestplate extends ArmorItem {
     public HeavyChestplate() {
         super("HeavyChestplate", Material.IRON_CHESTPLATE, "§cHeavy Chestplate", ArmorType.CHESTPLATE);
         setHeadProtection(0);
-        setBodyProtection(15);
+        setBodyProtection(18);
 
         generateDefaultLore();
     }

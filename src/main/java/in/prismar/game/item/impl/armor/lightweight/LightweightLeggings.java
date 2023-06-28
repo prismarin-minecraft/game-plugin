@@ -14,7 +14,7 @@ public class LightweightLeggings extends ArmorItem {
     public LightweightLeggings() {
         super("LightweightLeggings", Material.CHAINMAIL_LEGGINGS, "§7Lightweight Leggings", ArmorType.LEGGINGS);
         setHeadProtection(0);
-        setBodyProtection(6);
+        setBodyProtection(7);
         generateDefaultLore();
     }
 }
