@@ -16,7 +16,7 @@ public class FileKitRepository extends GsonCompactRepository<Kit> implements Kit
     public FileKitRepository(String directory) {
         super(directory.concat("kits.json"), new TypeToken<Map<String, Kit>>(){});
         for(Kit kit : getEntity().values()) {
-            kit.getItems().deserialize();
+            kit.getIcon().deserialize();
             if(kit.getItems() != null) {
                 kit.getItems().deserialize();
             }
