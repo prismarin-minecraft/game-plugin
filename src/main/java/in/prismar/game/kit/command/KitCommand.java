@@ -41,12 +41,12 @@ public class KitCommand extends HelpCommand<Player> {
 
     @Override
     public boolean raw(Player player, SpigotArguments arguments) {
-        if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.admin")) {
-            return false;
-        }
         if(arguments.getLength() == 0) {
             KitFrame frame = new KitFrame(service, player);
             frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.5f);
+            return false;
+        }
+        if(!player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.admin")) {
             return false;
         }
         return true;
