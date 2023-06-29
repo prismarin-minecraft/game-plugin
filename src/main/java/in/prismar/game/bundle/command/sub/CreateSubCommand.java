@@ -24,6 +24,8 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
         this.facade = facade;
         setDescription("Create a new bundle");
         setUsage("<id> <seasonal> <display>");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin");
+
     }
 
     @Override

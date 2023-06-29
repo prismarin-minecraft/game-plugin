@@ -24,6 +24,7 @@ public class ListSubCommand extends HelpSubCommand<Player> {
         this.service = service;
         setUsage("<id>");
         setDescription("List all kits");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.admin");
     }
 
     @Override

@@ -22,6 +22,7 @@ public class ListSubCommand extends HelpSubCommand<Player> {
         super("list");
         this.facade = facade;
         setDescription("List all bundles");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin");
     }
 
     @Override

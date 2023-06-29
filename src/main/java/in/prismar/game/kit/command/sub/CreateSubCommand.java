@@ -24,6 +24,7 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
         this.service = service;
         setUsage("<id> <cooldownInSeconds>");
         setDescription("Create a new kit");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.admin");
     }
 
     @Override

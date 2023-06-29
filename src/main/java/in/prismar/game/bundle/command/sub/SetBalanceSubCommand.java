@@ -23,6 +23,7 @@ public class SetBalanceSubCommand extends HelpSubCommand<Player> {
         this.facade = facade;
         setDescription("Set balance of a bundle");
         setUsage("<id> <balance>");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin");
     }
 
     @Override

@@ -26,6 +26,7 @@ public class KitCommand extends HelpCommand<Player> {
 
     public KitCommand() {
         super("kit", "Kit");
+        setAliases("kits");
         setSenders(Player.class);
 
     }

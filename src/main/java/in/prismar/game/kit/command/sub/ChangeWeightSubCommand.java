@@ -23,6 +23,7 @@ public class ChangeWeightSubCommand extends HelpSubCommand<Player> {
         this.service = service;
         setUsage("<id> <weight>");
         setDescription("Change weight of kit");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.admin");
     }
 
     @Override

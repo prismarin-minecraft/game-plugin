@@ -22,6 +22,7 @@ public class DeleteSubCommand extends HelpSubCommand<Player> {
         this.facade = facade;
         setDescription("Delete a bundle");
         setUsage("<id>");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin");
     }
 
     @Override

@@ -35,6 +35,7 @@ public class ResetSubCommand extends HelpSubCommand<Player> {
         this.facade = facade;
         setDescription("Reset a bundle for player");
         setUsage("<player> <id>");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin");
     }
 
     @Override

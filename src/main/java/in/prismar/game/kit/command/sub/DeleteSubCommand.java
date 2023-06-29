@@ -25,6 +25,7 @@ public class DeleteSubCommand extends HelpSubCommand<Player> {
         this.service = service;
         setUsage("<id>");
         setDescription("Delete a kit");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.admin");
     }
 
     @Override

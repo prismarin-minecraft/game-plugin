@@ -30,6 +30,7 @@ public class EditSubCommand extends HelpSubCommand<Player> {
         this.service = service;
         setUsage("<id>");
         setDescription("Edit a kit items");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.admin");
     }
 
     @Override

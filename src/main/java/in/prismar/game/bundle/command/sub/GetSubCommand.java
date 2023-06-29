@@ -24,6 +24,7 @@ public class GetSubCommand extends HelpSubCommand<Player> {
         this.facade = facade;
         setDescription("Get a bundle");
         setUsage("<id>");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "bundle.admin");
     }
 
     @Override
