@@ -201,7 +201,7 @@ public class WarzoneService implements WarzoneProvider {
             }
         }
         long playtimeIgnore = Long.parseLong(configStore.getProperty("newbie.protection.playtime"));
-        if(playtimeProvider.getOverallTime(user) >= playtimeIgnore) {
+        if(getPlaytimeProvider().getOverallTime(user) >= playtimeIgnore) {
             return false;
         }
 
