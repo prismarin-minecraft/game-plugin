@@ -3,6 +3,10 @@ package in.prismar.game.warzone;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.clan.ClanStatsProvider;
 import in.prismar.api.configuration.ConfigStore;
+import in.prismar.api.playtime.PlaytimeProvider;
+import in.prismar.api.user.User;
+import in.prismar.api.user.UserProvider;
+import in.prismar.api.user.data.SeasonData;
 import in.prismar.api.warp.WarpProvider;
 import in.prismar.api.warzone.WarzoneProvider;
 import in.prismar.game.Game;
@@ -25,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -52,6 +57,11 @@ public class WarzoneService implements WarzoneProvider {
 
     private final ConfigStore configStore;
 
+    private final UserProvider<User> userProvider;
+
+    private PlaytimeProvider playtimeProvider;
+
+
     private ClanStatsProvider clanStatsProvider;
 
     private boolean closed;
@@ -61,6 +71,7 @@ public class WarzoneService implements WarzoneProvider {
         this.warpProvider = PrismarinApi.getProvider(WarpProvider.class);
         this.tombstones = new CopyOnWriteArrayList<>();
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
+        this.userProvider = PrismarinApi.getProvider(UserProvider.class);
         this.config = new WarzoneConfig(game.getDefaultDirectory());
 
         Bukkit.getScheduler().runTaskTimer(game, new WarzoneAmbienceTask(this), 20, 20);
@@ -167,5 +178,39 @@ public class WarzoneService implements WarzoneProvider {
             clanStatsProvider = PrismarinApi.getProvider(ClanStatsProvider.class);
         }
         return clanStatsProvider;
+    }
+
+    public PlaytimeProvider getPlaytimeProvider() {
+        if(playtimeProvider == null) {
+            playtimeProvider = PrismarinApi.getProvider(PlaytimeProvider.class);
+        }
+        return playtimeProvider;
+    }
+
+    public long getNewbieProtectionTime() {
+        long protectionTime = Long.parseLong(configStore.getProperty("newbie.protection.time"));
+        return protectionTime;
+    }
+
+    public boolean tryEnableNewbieProtection(Player player) {
+        User user = userProvider.getUserByUUID(player.getUniqueId());
+        SeasonData seasonData = user.getSeasonData();
+        if(seasonData.getTimestamps() != null) {
+            if(user.getSeasonData().getTimestamps().containsKey("newbie.protection")) {
+                return false;
+            }
+        }
+        long playtimeIgnore = Long.parseLong(configStore.getProperty("newbie.protection.playtime"));
+        if(playtimeProvider.getOverallTime(user) >= playtimeIgnore) {
+            return false;
+        }
+
+        user.setTimestamp("newbie.protection", System.currentTimeMillis() + getNewbieProtectionTime());
+        return true;
+    }
+
+    public boolean isOnNewbieProtection(Player player) {
+        User user = userProvider.getUserByUUID(player.getUniqueId());
+        return !user.isTimestampAvailable("newbie.protection");
     }
 }

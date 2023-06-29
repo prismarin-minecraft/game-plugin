@@ -14,7 +14,7 @@ public class MedkitItem extends MedicalItem {
     public MedkitItem() {
         super("Medkit", Material.FEATHER, "§4Medkit");
         setCustomModelData(3);
-        setHealingTicks(100);
+        setHealingTicks(80);
         setHealing(20);
     }
 

@@ -47,7 +47,7 @@ public class FlashbangItem extends LethalItem {
                         return;
                     }
                     item.getWorld().playSound(item.getLocation(), "grenade.flashbang", 1.7f, 1f);
-                    for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 10, 10, 10)) {
+                    for(Entity near : item.getWorld().getNearbyEntities(item.getLocation(), 9, 9, 9)) {
                         if(near instanceof Player target) {
                             int time = TIME - ((int)target.getLocation().distance(item.getLocation()) * 7);
                             if(time > 0) {

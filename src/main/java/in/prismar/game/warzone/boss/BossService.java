@@ -5,6 +5,7 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.clan.Clan;
 import in.prismar.api.clan.ClanBuff;
 import in.prismar.api.clan.ClanProvider;
+import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.configuration.node.ConfigNode;
 import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.api.user.User;
@@ -36,10 +37,12 @@ public class BossService {
 
     private final Game game;
     private final List<Boss> bosses;
+    private final ConfigStore configStore;
 
     public BossService(Game game) {
         this.game = game;
         this.bosses = new ArrayList<>();
+        this.configStore = PrismarinApi.getProvider(ConfigStore.class);
 
         register("toro_type02", ClanBuff.GENERATOR_MULTIPLIER);
         register("zaku", ClanBuff.GENERATOR_MULTIPLIER);
@@ -86,6 +89,9 @@ public class BossService {
 
     public void handleBossDeath(Boss boss, ActiveMob mob) {
         if(boss.getDamagers().containsKey(mob.getUniqueId())) {
+
+            final long baseDamage = Long.parseLong(configStore.getProperty("warzone.boss.base.damage"));
+
             Map<UUID, BossDamager> damagers = boss.getDamagers().get(mob.getUniqueId());
             List<BossDamager> sorted = new ArrayList<>(damagers.values()).stream().sorted((o1, o2) -> Double.compare(o2.getDamage(), o1.getDamage())).limit(10).toList();
             double balance = game.getConfigNodeFile().getDouble("Boss." + boss.getMythicMob().getInternalName() + ".Start balance", 60000);
@@ -102,10 +108,12 @@ public class BossService {
                     online.sendMessage(" ");
                     online.sendMessage(arrow + "§bRewards§8:");
                     for (int i = 0; i < sorted.size(); i++) {
-                        double receiveMoney = balance - (reducePerPlacement * i);
                         BossDamager damager = sorted.get(i);
-                        final String place = i == 0 ? "§e§l1st" : i == 1 ? "§7§l2nd" : i == 2 ? "§6§l3rd" : "§2" + (i + 1);
-                        online.sendMessage(dot + place + " " + damager.getName() + " §8| §c"+Math.round(damager.getDamage())+" damage §8| §a+" + NumberFormatter.formatDoubleToThousands(receiveMoney) + "$ ");
+                        if(damager.getDamage() >= baseDamage) {
+                            double receiveMoney = balance - (reducePerPlacement * i);
+                            final String place = i == 0 ? "§e§l1st" : i == 1 ? "§7§l2nd" : i == 2 ? "§6§l3rd" : "§2" + (i + 1);
+                            online.sendMessage(dot + place + " " + damager.getName() + " §8| §c"+Math.round(damager.getDamage())+" damage §8| §a+" + NumberFormatter.formatDoubleToThousands(receiveMoney) + "$ ");
+                        }
                     }
                     online.sendMessage(" ");
                     online.sendMessage(PrismarinConstants.BORDER);
@@ -118,6 +126,9 @@ public class BossService {
             ClanProvider<Clan> clanProvider = PrismarinApi.getProvider(ClanProvider.class);
             for (int i = 0; i < sorted.size(); i++) {
                 BossDamager damager = sorted.get(i);
+                if(damager.getDamage() < baseDamage) {
+                    continue;
+                }
                 double receiveMoney = balance - (reducePerPlacement * i);
 
                 User user = userProvider.getUserByUUID(damager.getUuid());

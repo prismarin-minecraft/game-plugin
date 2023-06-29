@@ -13,5 +13,6 @@ public class MedicalSyringeItem extends MedicalItem {
         super("MedicalSyringe", Material.FEATHER, "§cMedical Syringe");
         setHealingTicks(30);
         setCustomModelData(1);
+        setHealing(5);
     }
 }

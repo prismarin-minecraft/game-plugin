@@ -1,9 +1,11 @@
 package in.prismar.game.warzone.listener;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.PrismarinConstants;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.warzone.combatlog.CombatLogService;
+import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Location;
@@ -42,6 +44,10 @@ public class PlayerWorldChangeListener implements Listener {
             }
             if(warzoneService.isInWarzone(player)) {
                 scoreboardProvider.recreateTablist(player);
+                if(warzoneService.tryEnableNewbieProtection(player)) {
+                    long time = warzoneService.getNewbieProtectionTime();
+                    player.sendMessage(PrismarinConstants.PREFIX + "§7Your §anewbie protection §7has been enabled. §8(§7Duration§8: §a" + TimeUtil.convertToTwoDigits(time/1000) + "§8)");
+                }
             }
         }
 

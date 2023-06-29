@@ -8,6 +8,7 @@ import in.prismar.library.spigot.meta.anno.AutoListener;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 /**
@@ -23,12 +24,13 @@ public class ThrowableDeployListener implements Listener {
     @Inject
     private Game game;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEvent(ThrowableDeployEvent event) {
         Player player = event.getPlayer();
         if (game.getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {
             event.setCancelled(true);
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not allowed to use this item inside a safe region.");
+            return;
         }
     }
 }
