@@ -21,6 +21,7 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -31,16 +32,16 @@ import org.bukkit.inventory.ItemStack;
 public class RiotShieldItem extends CustomItem {
 
 
-    private final ItemStack shieldUpItem;
-    private final ItemStack shieldItem;
+    private final int shieldUpItem;
+    private final int shieldItem;
 
 
     public RiotShieldItem() {
         super("RiotShield", Material.SHEARS, "§cRiot Shield");
         setCustomModelData(1);
         allFlags();
-        this.shieldItem = build();
-        this.shieldUpItem = new ItemBuilder(shieldItem).setCustomModelData(2).allFlags().build();
+        this.shieldItem = 1;
+        this.shieldUpItem = 2;
     }
 
     @CustomItemEvent
@@ -55,11 +56,10 @@ public class RiotShieldItem extends CustomItem {
     }
 
     private void updateItem(Player player, CustomItemHolder holder, boolean state) {
-        if(holder.getHoldingType() == CustomItemHoldingType.LEFT_HAND) {
-            player.getInventory().setItemInOffHand(state ? shieldUpItem : shieldItem);
-        } else if(holder.getHoldingType() == CustomItemHoldingType.RIGHT_HAND) {
-            player.getInventory().setItemInMainHand(state ? shieldUpItem : shieldItem);
-        }
+        ItemStack stack = holder.getStack();
+        ItemMeta meta = stack.getItemMeta();
+        meta.setCustomModelData(state ? shieldUpItem : shieldItem);
+        stack.setItemMeta(meta);
         player.updateInventory();
     }
 

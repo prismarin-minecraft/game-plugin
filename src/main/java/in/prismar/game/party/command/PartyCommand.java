@@ -36,5 +36,6 @@ public class PartyCommand extends HelpCommand<Player> {
         addChild(new AcceptSubCommand(registry));
         addChild(new DenySubCommand(registry));
         addChild(new KickSubCommand(registry));
+        addChild(new ChatSubCommand(registry));
     }
 }

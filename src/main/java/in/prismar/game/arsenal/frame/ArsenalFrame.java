@@ -124,7 +124,7 @@ public class ArsenalFrame extends Frame implements EventSubscriber<FrameClickEve
                 ItemStack stack = event.getEvent().getCurrentItem();
                 CustomItem item = service.getItemRegistry().getItemByStack(stack);
                 if(item != null) {
-                    if(item instanceof Railgun) {
+                    if(item instanceof Railgun || item.getId().equalsIgnoreCase("minigun")) {
                         return;
                     }
                     if(item instanceof Gun gun) {

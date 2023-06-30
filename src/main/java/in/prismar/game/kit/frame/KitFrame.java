@@ -76,7 +76,7 @@ public class KitFrame extends Frame {
                     }
                     ItemUtil.giveItem(player, stack.clone());
                 }
-                user.setTimestamp("kit." + kit.getId(), System.currentTimeMillis() + 1);
+                user.setTimestamp("kit." + kit.getId(), System.currentTimeMillis() + 1000 * kit.getCooldownInSeconds());
                 userProvider.saveAsync(user, true);
                 player.sendMessage(PrismarinConstants.PREFIX + "§7You have claimed the kit " + kit.getIcon().getItem().getItemMeta().getDisplayName());
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1f);

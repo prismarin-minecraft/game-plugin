@@ -4,6 +4,8 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.party.PartyProvider;
 import in.prismar.api.scoreboard.ScoreboardProvider;
+import in.prismar.api.user.User;
+import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
 import in.prismar.library.common.event.EventBus;
 import in.prismar.library.common.math.MathUtil;
@@ -30,14 +32,33 @@ import java.util.UUID;
 @Service
 public class PartyRegistry extends LocalMapRegistry<String, Party> implements PartyProvider {
 
+    public static final String PARTY_CHAT_PREFIX = "§8[§dParty§8] §d";
+
     @Inject
     private Game game;
 
     private final ConfigStore store;
+    private final UserProvider<User> userProvider;
 
     public PartyRegistry() {
         super(false, false);
         this.store = PrismarinApi.getProvider(ConfigStore.class);
+        this.userProvider = PrismarinApi.getProvider(UserProvider.class);
+    }
+
+    public boolean isPartyChatToggled(Player player) {
+        User user = userProvider.getUserByUUID(player.getUniqueId());
+        return user.containsTag("partychat");
+    }
+
+    public boolean togglePartyChat(Player player) {
+        User user = userProvider.getUserByUUID(player.getUniqueId());
+        if(!user.containsTag("partychat")) {
+            user.setTag("partychat", true);
+            return true;
+        }
+        user.removeTag("partychat");
+        return false;
     }
 
     public int getMaxPartySize() {
