@@ -31,7 +31,7 @@ public class FastPickaxeItem extends CustomItem {
     public FastPickaxeItem() {
         super("fastpickaxe", Material.NETHERITE_PICKAXE, "§cFast Pickaxe");
         addLore("§c");
-        addLore(PrismarinConstants.ARROW_RIGHT + " §7This axe can only be used in the §cmine");
+        addLore(PrismarinConstants.ARROW_RIGHT + " §7This pickaxe can only be used in the §cmine");
         addLore("§c");
 
         allFlags();
