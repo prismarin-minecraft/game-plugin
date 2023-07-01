@@ -35,6 +35,8 @@ import in.prismar.game.item.impl.medical.MedkitItem;
 import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.throwable.*;
+import in.prismar.game.item.impl.tools.FastAxeItem;
+import in.prismar.game.item.impl.tools.FastPickaxeItem;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.reader.CustomItemReader;
 import in.prismar.library.meta.anno.SafeInitialize;
@@ -143,6 +145,10 @@ public class CustomItemRegistry {
         register(new FlashbangItem());
 
         register(new PortableMinerItem());
+        register(new PortableBuilderItem());
+
+        register(new FastAxeItem());
+        register(new FastPickaxeItem());
 
 
         for(HardpointTeam team : HardpointTeam.values()) {
