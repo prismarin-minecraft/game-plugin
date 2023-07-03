@@ -1,7 +1,7 @@
 package in.prismar.game.warzone.dungeon.listener;
 
 import in.prismar.api.PrismarinConstants;
-import in.prismar.game.interactable.event.InteractableInteractEvent;
+import in.prismar.game.interactable.event.InteractableKeyLockEvent;
 import in.prismar.game.interactable.model.keylock.KeyLock;
 import in.prismar.game.warzone.dungeon.Dungeon;
 import in.prismar.game.warzone.dungeon.DungeonService;
@@ -20,18 +20,21 @@ public class DungeonInteractableListener implements Listener {
 
 
     @EventHandler
-    public void onCall(InteractableInteractEvent event) {
-        if(event.getInteractable() instanceof KeyLock lock) {
-            if(lock.getDungeon() != null) {
-                if(service.getRegistry().existsById(lock.getDungeon())) {
-                    Dungeon dungeon = service.getRegistry().getById(lock.getDungeon());
+    public void onCall(InteractableKeyLockEvent event) {
+        KeyLock lock = event.getKeyLock();
+        if(lock.getDungeon() != null) {
+            if(service.getRegistry().existsById(lock.getDungeon())) {
+                Dungeon dungeon = service.getRegistry().getById(lock.getDungeon());
+                if(event.isPre()) {
                     MythicSpawner spawner = MythicBukkit.inst().getSpawnerManager().getSpawnerByName(dungeon.getSpawnerName());
                     if(spawner.isOnWarmup()) {
                         event.setCancelled(true);
                         event.getPlayer().sendMessage(PrismarinConstants.PREFIX + "§cThe boss hasn't been spawned");
                         return;
                     }
+                    return;
                 }
+                dungeon.resetUntil();
             }
         }
     }

@@ -1,8 +1,7 @@
 package in.prismar.game.interactable.event;
 
 import in.prismar.game.interactable.model.Interactable;
-import in.prismar.game.item.impl.gun.Gun;
-import in.prismar.game.item.impl.gun.player.GunPlayer;
+import in.prismar.game.interactable.model.keylock.KeyLock;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
@@ -17,19 +16,21 @@ import org.bukkit.event.HandlerList;
  * Written by Maga
  **/
 @Getter
-public class InteractableInteractEvent extends Event implements Cancellable {
+public class InteractableKeyLockEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
     private final Player player;
-    private final Interactable interactable;
+    private final KeyLock keyLock;
+    private final boolean pre;
 
     @Setter
     private boolean cancelled;
 
-    public InteractableInteractEvent(Player player, Interactable interactable) {
+    public InteractableKeyLockEvent(Player player, KeyLock keyLock, boolean pre) {
         this.player = player;
-        this.interactable = interactable;
+        this.keyLock = keyLock;
+        this.pre = pre;
     }
 
     @Override

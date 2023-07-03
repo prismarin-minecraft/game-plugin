@@ -3,7 +3,7 @@ package in.prismar.game.interactable.model.keylock;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.animation.model.Animation;
 import in.prismar.game.interactable.InteractableService;
-import in.prismar.game.interactable.event.InteractableInteractEvent;
+import in.prismar.game.interactable.event.InteractableKeyLockEvent;
 import in.prismar.game.interactable.model.Interactable;
 import in.prismar.library.spigot.item.ItemUtil;
 import in.prismar.library.spigot.scheduler.Scheduler;
@@ -38,7 +38,7 @@ public class KeyLock extends Interactable {
         if(door == null) {
             return;
         }
-        InteractableInteractEvent event = new InteractableInteractEvent(interacter, this);
+        InteractableKeyLockEvent event = new InteractableKeyLockEvent(interacter, this, true);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) {
             return;
@@ -58,6 +58,8 @@ public class KeyLock extends Interactable {
             if(!stack.getItemMeta().getDisplayName().equals(key.replace("&", "§").replace("_", " "))) {
                 return;
             }
+            event = new InteractableKeyLockEvent(interacter, this, false);
+            Bukkit.getPluginManager().callEvent(event);
             ItemUtil.takeItemFromHand(interacter.getPlayer(), true);
 
             getLocation().getWorld().playSound(getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 0.7f, 1f);
