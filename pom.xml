@@ -26,7 +26,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
-                    <outputDirectory>D:\Projects\Prismarin\Minecraft\Environment\1.19.2\plugins</outputDirectory>
+                    <outputDirectory>C:\Users\Maga\Desktop\Prismarin\Local Server\plugins</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -85,6 +85,10 @@
         <repository>
             <id>minecraft</id>
             <url>https://nexus.prismar.in/repository/minecraft/</url>
+        </repository>
+        <repository>
+            <id>prismarin</id>
+            <url>https://nexus.prismar.in/repository/prismarin/</url>
         </repository>
         <repository>
             <id>ranull-repo-external</id>

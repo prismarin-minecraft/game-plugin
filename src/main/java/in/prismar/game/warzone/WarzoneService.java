@@ -166,9 +166,13 @@ public class WarzoneService implements WarzoneProvider {
 
     @Override
     public boolean isInWarzone(Player player) {
+        return isInWarzone(player.getLocation());
+    }
+
+    public boolean isInWarzone(Location insideLocation) {
         Location location = warpProvider.getWarp(WARP_NAME);
         if (location != null) {
-            return player.getWorld().getName().equals(location.getWorld().getName());
+            return insideLocation.getWorld().getName().equals(location.getWorld().getName());
         }
         return false;
     }
