@@ -4,6 +4,7 @@ import in.prismar.game.warzone.boss.Boss;
 import in.prismar.game.warzone.boss.BossService;
 import in.prismar.library.common.text.Progress;
 import io.lumine.mythic.api.adapters.AbstractBossBar;
+import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import lombok.AllArgsConstructor;
@@ -34,16 +35,11 @@ public class BossTask implements Runnable {
     @Override
     public void run() {
         for (Boss boss : service.getBosses()) {
-            if(boss.getMythicMob() == null) {
-                boss.setMythicMob(MythicBukkit.inst().getMobManager().getMythicMob(boss.getId()).orElse(null));
-            }
-            if(boss.getMythicMob() == null) {
-                continue;
-            }
             for (ActiveMob mob : MythicBukkit.inst().getMobManager().getActiveMobs()) {
-                if(!mob.getName().equals(boss.getMythicMob().getDisplayName().get())) {
+                if(!boss.getMythicMobs().containsKey(mob.getType().getInternalName().toLowerCase())) {
                     continue;
                 }
+                MythicMob mythicMob = boss.getMythicMobs().get(mob.getType().getInternalName().toLowerCase());
                 if(mob.isDead()) {
                     continue;
                 }
@@ -68,7 +64,7 @@ public class BossTask implements Runnable {
                     }
                 }
                 long health = (long)mob.getEntity().getHealth();
-                long maxHealth = (long)boss.getMythicMob().getHealth().get();
+                long maxHealth = (long)mythicMob.getHealth().get();
                 bossBar.setTitle(mob.getDisplayName() + " " + PROGRESS.show(health, maxHealth));
             }
         }

@@ -22,6 +22,7 @@ public class DungeonRegistry extends LocalMapRegistry<String, Dungeon> {
 
     @SafeInitialize
     private void initialize() {
+        load();
         nodeFile.getEventBus().subscribe(ConfigRefreshEvent.class, entity -> {
             load();
         });

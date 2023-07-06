@@ -34,7 +34,7 @@ public class BossMobDamageListener implements Listener {
             }
             Boss boss = service.getBossById(mob.getType().getInternalName());
             if (boss != null) {
-                service.addDamage(boss, mob, damager, event.getDamage());
+                service.addDamage(boss, damager, event.getDamage());
             }
         }
 

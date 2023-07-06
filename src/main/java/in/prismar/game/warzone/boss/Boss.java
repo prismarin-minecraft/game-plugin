@@ -23,9 +23,13 @@ public class Boss {
     private String id;
     private ClanBuff buff;
 
-    private transient MythicMob mythicMob;
-    private transient Map<UUID, BossBar> bossBars;
-    private transient Map<UUID, Map<UUID, BossDamager>> damagers;
+    private int lives;
+    private int maxLives;
+
+    private Map<String, MythicMob> mythicMobs;
+
+    private Map<UUID, BossBar> bossBars;
+    private Map<UUID, BossDamager> damagers;
 
 
 }

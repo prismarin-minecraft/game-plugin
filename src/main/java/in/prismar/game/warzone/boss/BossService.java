@@ -14,6 +14,7 @@ import in.prismar.game.Game;
 import in.prismar.game.warzone.boss.task.BossTask;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Service;
+import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -47,16 +48,41 @@ public class BossService {
         register("toro_type02", ClanBuff.GENERATOR_MULTIPLIER);
         register("zaku", ClanBuff.GENERATOR_MULTIPLIER);
         register("kindletron_2", ClanBuff.GENERATOR_MULTIPLIER);
+        register("zahar", ClanBuff.GENERATOR_MULTIPLIER, 2, "zahar", "zahar_abomination");
         Bukkit.getScheduler().runTaskTimer(game, new BossTask(this), 20, 20);
     }
 
-    public Boss register(String id, ClanBuff buff) {
+    public Boss register(String id, ClanBuff buff, String... mobs) {
         Boss boss = new Boss();
         boss.setId(id);
         boss.setBuff(buff);
+        boss.setMaxLives(1);
+        boss.setLives(1);
         boss.setBossBars(new HashMap<>());
         boss.setDamagers(new HashMap<>());
+        boss.setMythicMobs(new HashMap<>());
+        if(mobs.length == 0) {
+            if(MythicBukkit.inst().getMobManager().getMythicMob(id).isPresent()) {
+                boss.getMythicMobs().put(id, MythicBukkit.inst().getMobManager().getMythicMob(id).get());
+            }
+
+        } else {
+            for(String mob : mobs) {
+                if(MythicBukkit.inst().getMobManager().getMythicMob(mob).isPresent()) {
+                    boss.getMythicMobs().put(mob, MythicBukkit.inst().getMobManager().getMythicMob(mob).get());
+                }
+
+            }
+        }
+
         this.bosses.add(boss);
+        return boss;
+    }
+
+    public Boss register(String id, ClanBuff buff, int lives, String... mobs) {
+        Boss boss = register(id, buff, mobs);
+        boss.setLives(lives);
+        boss.setMaxLives(lives);
         return boss;
     }
 
@@ -72,11 +98,8 @@ public class BossService {
         boss.getBossBars().remove(uuid);
     }
 
-    public void addDamage(Boss boss, ActiveMob mob, Player player, double damage) {
-        if(!boss.getDamagers().containsKey(mob.getUniqueId())) {
-            boss.getDamagers().put(mob.getUniqueId(), new HashMap<>());
-        }
-        Map<UUID, BossDamager> damagers = boss.getDamagers().get(mob.getUniqueId());
+    public void addDamage(Boss boss, Player player, double damage) {
+        Map<UUID, BossDamager> damagers = boss.getDamagers();
         if(!damagers.containsKey(player.getUniqueId())) {
             BossDamager damager = new BossDamager(player.getUniqueId(), player.getName());
             damager.setDamage(damage);
@@ -88,14 +111,18 @@ public class BossService {
     }
 
     public void handleBossDeath(Boss boss, ActiveMob mob) {
-        if(boss.getDamagers().containsKey(mob.getUniqueId())) {
-
+        if(!boss.getDamagers().isEmpty()) {
+            if(boss.getLives() >= 2) {
+                boss.setLives(boss.getLives() - 1);
+                return;
+            }
+            boss.setLives(boss.getMaxLives());
             final long baseDamage = Long.parseLong(configStore.getProperty("warzone.boss.base.damage"));
 
-            Map<UUID, BossDamager> damagers = boss.getDamagers().get(mob.getUniqueId());
+            Map<UUID, BossDamager> damagers = boss.getDamagers();
             List<BossDamager> sorted = new ArrayList<>(damagers.values()).stream().sorted((o1, o2) -> Double.compare(o2.getDamage(), o1.getDamage())).limit(10).toList();
-            double balance = game.getConfigNodeFile().getDouble("Boss." + boss.getMythicMob().getInternalName() + ".Start balance", 60000);
-            double reducePerPlacement = game.getConfigNodeFile().getDouble("Boss." + boss.getMythicMob().getInternalName() + ".Reduce per placement", 65000);
+            double balance = game.getConfigNodeFile().getDouble("Boss." + boss.getId() + ".Start balance", 60000);
+            double reducePerPlacement = game.getConfigNodeFile().getDouble("Boss." + boss.getId() + ".Reduce per placement", 65000);
 
             final String arrow = PrismarinConstants.ARROW_RIGHT + " ";
             final String dot = "    " + PrismarinConstants.DOT + " ";
@@ -144,7 +171,7 @@ public class BossService {
 
                 }
             }
-            boss.getDamagers().remove(mob.getUniqueId());
+            boss.getDamagers().clear();
         }
     }
 
@@ -155,7 +182,7 @@ public class BossService {
 
     public Boss getBossById(String id) {
         for(Boss boss : bosses) {
-            if(boss.getId().equalsIgnoreCase(id)) {
+            if(boss.getMythicMobs().containsKey(id.toLowerCase())) {
                 return boss;
             }
         }
