@@ -52,4 +52,13 @@ public class DungeonService implements DungeonProvider {
         }
         return Optional.empty();
     }
+
+    public Dungeon getDungeonByEndBossId(String id) {
+        for(Dungeon dungeon : registry.getAll()) {
+            if(dungeon.getEndBossId().equalsIgnoreCase(id)) {
+                return dungeon;
+            }
+        }
+        return null;
+    }
 }

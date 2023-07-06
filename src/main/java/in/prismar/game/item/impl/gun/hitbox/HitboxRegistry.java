@@ -33,6 +33,7 @@ public class HitboxRegistry {
         create(EntityType.HUSK, "zaku", 2.3f, 5f);
         create(EntityType.ZOMBIE, "giant_zombie", 2.3f, 4f);
         create(EntityType.IRON_GOLEM, "zahar", 2f, 5f);
+        create(EntityType.IRON_GOLEM, "zahar_abomination", 2f, 5f);
     }
 
     public Hitbox create(EntityType type, double width, double height) {

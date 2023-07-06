@@ -32,7 +32,9 @@ public class DungeonRegistry extends LocalMapRegistry<String, Dungeon> {
         clear();
         register(new Dungeon("Laboratory", nodeFile.getString("Dungeons.Laboratory.Title", "&6Anderson").replace("&", "§"),
                 nodeFile.getString("Dungeons.Laboratory.Spawner name", "laboratory").replace("&", "§"),
-                nodeFile.getInteger("Dungeons.Laboratory.Duration", 1800000)));
+                nodeFile.getInteger("Dungeons.Laboratory.Duration", 1800000),
+                nodeFile.getInteger("Dungeons.Laboratory.Reduce timer", 300000),
+                nodeFile.getString("Dungeons.Laboratory.End boss id", "zahar_abomination")));
     }
 
     public void register(Dungeon dungeon) {

@@ -1,9 +1,11 @@
 package in.prismar.game.warzone;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.PrismarinConstants;
 import in.prismar.api.clan.ClanStatsProvider;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.playtime.PlaytimeProvider;
+import in.prismar.api.region.RegionProvider;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.api.user.data.SeasonData;
@@ -61,6 +63,8 @@ public class WarzoneService implements WarzoneProvider {
 
     private PlaytimeProvider playtimeProvider;
 
+    private RegionProvider regionProvider;
+
 
     private ClanStatsProvider clanStatsProvider;
 
@@ -73,6 +77,7 @@ public class WarzoneService implements WarzoneProvider {
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
         this.config = new WarzoneConfig(game.getDefaultDirectory());
+        this.regionProvider = PrismarinApi.getProvider(RegionProvider.class);
 
         Bukkit.getScheduler().runTaskTimer(game, new WarzoneAmbienceTask(this), 20, 20);
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, new TombstoneTask(this), 20, 20);
@@ -101,7 +106,7 @@ public class WarzoneService implements WarzoneProvider {
         }
         final int checkDown = 20;
 
-        Location start = player.getLocation().clone().add(0, 2, 0).getBlock().getLocation();
+        Location start = player.getLocation().clone().add(0, 1, 0).getBlock().getLocation();
         Location location = start.clone();
         for (int i = 0; i < checkDown; i++) {
             location = start.clone().subtract(0, i, 0);
@@ -121,6 +126,16 @@ public class WarzoneService implements WarzoneProvider {
         hologram.addLine(HologramLineType.TEXT, "§8[§c" + getFormattedTombstoneTime(tombstone) + "§8]");
         hologram.addLine(HologramLineType.ITEM_HEAD, new ItemBuilder(Material.LEAD).setCustomModelData(4).build());
         hologram.interaction(player1 -> {
+            if(isOnNewbieProtection(player1)) {
+                if(!player1.getUniqueId().equals(player.getUniqueId())) {
+                    player1.sendMessage(PrismarinConstants.PREFIX + "§cYou cannot loot other people's gravestone while having newbie protection on");
+                    return;
+                }
+            }
+            if(regionProvider.isInRegionWithFlag(tombstone.getHologram().getLocation(), "tombstone")) {
+                player1.sendMessage(PrismarinConstants.PREFIX + "§cYou cannot open a gravestone while being inside a safe region");
+                return;
+            }
             Bukkit.getScheduler().runTask(game, () -> {
                 player1.openInventory(tombstone.getInventory());
                 player1.playSound(player1.getLocation(), Sound.BLOCK_BARREL_OPEN, 0.6f, 1);

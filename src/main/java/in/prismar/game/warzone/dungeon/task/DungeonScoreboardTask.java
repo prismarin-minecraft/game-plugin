@@ -6,6 +6,8 @@ import in.prismar.game.warzone.dungeon.Dungeon;
 import in.prismar.game.warzone.dungeon.DungeonParticipant;
 import in.prismar.game.warzone.dungeon.DungeonService;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -32,6 +34,21 @@ public class DungeonScoreboardTask implements Runnable {
                     });
                     dungeon.getParticipants().put(player.getUniqueId(), new DungeonParticipant(player));
                 }
+            }
+            if(!dungeon.isRunning() && !dungeon.isTeleported()) {
+                String id = dungeon.getId().toLowerCase();
+                Location location = service.getRegionProvider().getLocationB(dungeon.getId());
+                if(location != null) {
+                    Bukkit.getScheduler().runTask(service.getGame(), () -> {
+                        for(Player player : location.getWorld().getPlayers()) {
+                            if(service.getRegionProvider().isIn(location, id)) {
+                                player.teleport(service.getWarzoneService().getWarzoneLocation());
+                                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 1f);
+                            }
+                        }
+                    });
+                }
+                dungeon.setTeleported(true);
             }
             for(DungeonParticipant participant : dungeon.getParticipants().values()) {
                 if(!participant.getPlayer().isOnline()) {
