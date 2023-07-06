@@ -40,6 +40,9 @@ public class DungeonScoreboardTask implements Runnable {
                 }
                 if(!service.getWarzoneService().isInWarzone(participant.getPlayer())) {
                     dungeon.getParticipants().remove(participant.getPlayer().getUniqueId());
+                    Bukkit.getScheduler().runTask(service.getGame(), () -> {
+                        scoreboardProvider.recreateSidebar(participant.getPlayer());
+                    });
                     continue;
                 }
                 if(!service.getRegionProvider().isIn(participant.getPlayer().getLocation(), dungeon.getId())) {
