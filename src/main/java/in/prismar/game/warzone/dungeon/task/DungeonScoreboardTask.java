@@ -41,7 +41,7 @@ public class DungeonScoreboardTask implements Runnable {
                 if(location != null) {
                     Bukkit.getScheduler().runTask(service.getGame(), () -> {
                         for(Player player : location.getWorld().getPlayers()) {
-                            if(service.getRegionProvider().isIn(location, id)) {
+                            if(service.getRegionProvider().isIn(player.getLocation(), id)) {
                                 player.teleport(service.getWarzoneService().getWarzoneLocation());
                                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 1f);
                             }
