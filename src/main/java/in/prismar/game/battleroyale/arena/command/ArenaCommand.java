@@ -30,6 +30,7 @@ public class ArenaCommand extends HelpCommand<Player> {
         addChild(new ListSubCommand(arenaService));
         addChild(new SetCenterSubCommand(arenaService));
         addChild(new SetSpawnYLevelSubCommand(arenaService));
+        addChild(new SetSizeSubCommand(arenaService));
         addChild(new AddDropLocationSubCommand(arenaService));
         addChild(new ListDropLocationsSubCommand(arenaService));
     }

@@ -12,6 +12,7 @@ public class BattleRoyaleArena extends StringRepositoryEntity {
 
     private String displayName;
     private int spawnYLevel;
+    private int size;
     private Location center;
     private List<Location> drops;
 

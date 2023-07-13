@@ -28,6 +28,7 @@ public class BattleRoyaleArenaService {
         BattleRoyaleArena arena = new BattleRoyaleArena();
         arena.setId(id);
         arena.setDisplayName(displayName);
+        arena.setSize(2000);
         arena.setDrops(new ArrayList<>());
         return repository.create(arena);
     }

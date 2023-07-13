@@ -28,7 +28,7 @@ public class AddItemSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cPlease hold an item in your main hand");
                 return true;
             }
-            double chance = arguments.getDouble(1) * 100;
+            double chance = arguments.getDouble(1) * 10;
             dropTable.register(player.getInventory().getItemInMainHand().clone(), chance);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You have successfully added a new §aitem §7to the droptable");
             return true;

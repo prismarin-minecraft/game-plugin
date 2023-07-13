@@ -31,7 +31,7 @@ public class ListItemsSubCommand extends HelpSubCommand<Player> {
         pager.fill();
         for(DropTableItem item : dropTable.getEntity()) {
             pager.addItem(new ItemBuilder(item.getItem().getItem())
-                    .addLore("§c ", PrismarinConstants.ARROW_RIGHT + " §7Chance§8: §a" + Math.round(item.getChance()), "§c ", "§aLeft click §7to remove")
+                    .addLore("§c ", PrismarinConstants.ARROW_RIGHT + " §7Chance§8: §a" + Math.round(item.getChance() / 10) + "%", "§c ", "§aLeft click §7to remove")
                     .build(), (ClickFrameButtonEvent) (player1, event) -> {
                 dropTable.getEntity().remove(item);
                 dropTable.save();
