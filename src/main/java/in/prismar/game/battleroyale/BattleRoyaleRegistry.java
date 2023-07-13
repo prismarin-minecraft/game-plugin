@@ -1,10 +1,7 @@
 package in.prismar.game.battleroyale;
 
 import in.prismar.game.battleroyale.arena.model.BattleRoyaleArena;
-import in.prismar.game.battleroyale.model.BattleRoyaleGame;
-import in.prismar.game.battleroyale.model.BattleRoyaleParticipant;
-import in.prismar.game.battleroyale.model.BattleRoyaleQueueEntry;
-import in.prismar.game.battleroyale.model.BattleRoyaleTeam;
+import in.prismar.game.battleroyale.model.*;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -28,8 +25,8 @@ public class BattleRoyaleRegistry {
         return games.stream().filter(game -> game.getState() == state).findAny();
     }
 
-    public BattleRoyaleGame create(int playersSize, int teamSize, BattleRoyaleArena arena) {
-        BattleRoyaleGame game = new BattleRoyaleGame(playersSize, teamSize, arena);
+    public BattleRoyaleGame create(BattleRoyaleProperties properties, BattleRoyaleArena arena) {
+        BattleRoyaleGame game = new BattleRoyaleGame(properties, arena);
         this.games.add(game);
         return game;
     }

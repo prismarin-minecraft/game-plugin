@@ -10,8 +10,7 @@ import java.util.*;
 public class BattleRoyaleGame {
 
     private final String id;
-    private final int playersSize;
-    private final int teamSize;
+    private final BattleRoyaleProperties properties;
     private final BattleRoyaleArena arena;
 
     private BattleRoyaleGameState state;
@@ -20,10 +19,9 @@ public class BattleRoyaleGame {
     private List<BattleRoyaleTeam> teams;
     private List<BattleRoyaleQueueEntry> queue;
 
-    public BattleRoyaleGame(int playersSize, int teamSize, BattleRoyaleArena arena) {
+    public BattleRoyaleGame(BattleRoyaleProperties properties, BattleRoyaleArena arena) {
         this.id = RandomStringUtil.generateString(10, false, false);
-        this.playersSize = playersSize;
-        this.teamSize = teamSize;
+        this.properties = properties;
         this.arena = arena;
         this.state = BattleRoyaleGameState.QUEUE;
 

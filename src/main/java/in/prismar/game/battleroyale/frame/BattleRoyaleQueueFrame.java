@@ -22,7 +22,7 @@ public class BattleRoyaleQueueFrame extends Frame {
     public BattleRoyaleQueueFrame(BattleRoyaleService service, BattleRoyaleGame game, BattleRoyaleQueueEntry entry) {
         super("§aBR Queue", 3);
 
-        int amount = game.getTeamSize() - entry.getPlayers().size();
+        int amount = game.getProperties().getTeamSize() - entry.getPlayers().size();
 
         int slot = 10;
         for(Player player : entry.getPlayers().values()) {

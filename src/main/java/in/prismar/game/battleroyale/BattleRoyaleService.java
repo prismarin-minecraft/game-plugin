@@ -2,6 +2,7 @@ package in.prismar.game.battleroyale;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.scoreboard.ScoreboardProvider;
+import in.prismar.game.Game;
 import in.prismar.game.battleroyale.arena.BattleRoyaleArenaService;
 import in.prismar.game.battleroyale.event.BattleRoyaleQueueJoinEvent;
 import in.prismar.game.battleroyale.event.BattleRoyaleQueueLeaveEvent;
@@ -26,6 +27,9 @@ public class BattleRoyaleService {
 
     @Inject
     private BattleRoyaleRegistry registry;
+
+    @Inject
+    private Game game;
 
     private final ScoreboardProvider scoreboardProvider;
 

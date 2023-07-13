@@ -61,7 +61,7 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
                         return true;
                     }
                     BattleRoyaleQueueEntry entry = service.getRegistry().getQueueEntryByPlayer(current, player);
-                    if(entry.getPlayers().size() >= current.getPlayersSize()) {
+                    if(entry.getPlayers().size() >= current.getProperties().getTeamSize()) {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cYour queue is already full");
                         return true;
                     }
@@ -99,7 +99,7 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cYou were not invited to this queue");
                         return true;
                     }
-                    if(entry.getPlayers().size() >= game.getPlayersSize()) {
+                    if(entry.getPlayers().size() >= game.getProperties().getTeamSize()) {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cThis queue is already full");
                         return true;
                     }
