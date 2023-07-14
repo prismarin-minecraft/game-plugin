@@ -1,6 +1,7 @@
 package in.prismar.game.battleroyale.command;
 
 import in.prismar.game.battleroyale.BattleRoyaleService;
+import in.prismar.game.battleroyale.command.sub.CreateSubCommand;
 import in.prismar.game.battleroyale.command.sub.QueueSubCommand;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
@@ -25,6 +26,7 @@ public class BattleRoyaleCommand extends HelpCommand<Player> {
 
     @SafeInitialize
     private void initialize() {
+        addChild(new CreateSubCommand(service));
         addChild(new QueueSubCommand(service));
     }
 }

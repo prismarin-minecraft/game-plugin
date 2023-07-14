@@ -6,6 +6,12 @@ public interface BattleRoyaleCountdown {
     void onUpdate();
     void onEnd();
 
+    void start();
+
+    void stop();
+
+    boolean isRunning();
+
     int getCurrentSeconds();
 
     int getMaxSeconds();
