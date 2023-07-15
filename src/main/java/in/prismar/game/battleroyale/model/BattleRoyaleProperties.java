@@ -10,7 +10,7 @@ public class BattleRoyaleProperties {
     private int playersSize = 20;
     private int teamSize = 1;
 
-    private int queueTime = 305;
+    private int queueTime = 299;
     private int warmUpTime = 100;
     private int inGameTime = 1800;
 }

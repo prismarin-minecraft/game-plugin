@@ -63,6 +63,7 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
             }
             player.sendMessage(" ");
             player.sendMessage(PrismarinConstants.BORDER);
+            service.announceBattleRoyale(game);
             return true;
         }
         return false;
