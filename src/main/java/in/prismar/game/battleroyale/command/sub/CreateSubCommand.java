@@ -24,7 +24,7 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
     public CreateSubCommand(BattleRoyaleService service) {
         super("create");
         setAliases("q");
-        setDescription("<arena> <props>");
+        setUsage("<arena> <props?...>");
         setDescription("Create a new battleroyale event");
         this.service = service;
     }
@@ -32,18 +32,21 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
     @SneakyThrows
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-        if(arguments.getLength() >= 3) {
+        if (arguments.getLength() >= 2) {
             final String arenaId = arguments.getString(1);
-            if(!service.getArenaService().getRepository().existsById(arenaId)) {
+            if (!service.getArenaService().getRepository().existsById(arenaId)) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis arena does not exists");
                 return true;
             }
             BattleRoyaleArena arena = service.getArenaService().getRepository().findById(arenaId);
-            final String props = arguments.getCombinedArgsFrom(2);
+            String props = "";
+            if (arguments.getLength() >= 3) {
+                props = arguments.getCombinedArgsFrom(2);
+            }
             BattleRoyaleGame game;
             try {
                 game = service.create(props, arena);
-            }catch (Exception exception) {
+            } catch (Exception exception) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThere was an error while trying to create a new battleroyale event");
                 return true;
             }
@@ -52,8 +55,8 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
             player.sendMessage(" ");
             player.sendMessage(arrow + "§7You have created a new §aBattleRoyale Event");
             player.sendMessage(arrow + "§7Properties§8:");
-            for(Field field : game.getProperties().getClass().getDeclaredFields()) {
-                if(!field.canAccess(game.getProperties())) {
+            for (Field field : game.getProperties().getClass().getDeclaredFields()) {
+                if (!field.canAccess(game.getProperties())) {
                     field.setAccessible(true);
                 }
                 player.sendMessage(PrismarinConstants.LISTING_DOT + " §7" + capitalize(field.getName()) + "§8: §a" + field.get(game.getProperties()));

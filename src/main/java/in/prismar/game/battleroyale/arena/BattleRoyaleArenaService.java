@@ -7,6 +7,7 @@ import in.prismar.game.battleroyale.arena.repository.BattleRoyaleArenaRepository
 import in.prismar.game.battleroyale.arena.repository.FileBattleRoyaleArenaRepository;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class BattleRoyaleArenaService {
         arena.setId(id);
         arena.setDisplayName(displayName);
         arena.setSize(2000);
+        arena.setCenter(Bukkit.getWorlds().get(0).getSpawnLocation());
         arena.setDrops(new ArrayList<>());
         return repository.create(arena);
     }

@@ -21,7 +21,7 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
     public QueueSubCommand(BattleRoyaleService service) {
         super("queue");
         setAliases("q");
-        setDescription("<id>");
+        setUsage("<join,leave> <[id]>");
         setDescription("Join the battleroyale queue");
 
         this.service = service;
@@ -29,7 +29,6 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-
         if(arguments.getLength() >= 2) {
             final String sub = arguments.getString(1);
             if(arguments.getLength() == 3) {
@@ -45,7 +44,7 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
                         return true;
                     }
                     if(service.getRegistry().isInGame(player)) {
-                        player.sendMessage(PrismarinConstants.PREFIX + "§cYou are already playing");
+                        player.sendMessage(PrismarinConstants.PREFIX + "§cYou are already in the queue");
                         return true;
                     }
                     service.addToQueue(game, player);
@@ -79,6 +78,7 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
                     builder.addText(" §8| ");
                     builder.addText("§8[§c§lDeny§8]", "/broyale queue deny " + player.getName(), "§aClick §7to deny this invitation");
                     builder.send(target);
+                    return true;
                 } else if(sub.equalsIgnoreCase("accept")) {
                     if(service.getRegistry().isInGame(player)) {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cYou are already in game or in a queue");
@@ -106,6 +106,7 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
                     entry.getInvites().remove(player.getUniqueId());
                     service.sendQueueMessage(entry, PrismarinConstants.PREFIX + "§a" + player.getName() + " §7joined your battleroyale queue");
                     service.addToSpecificQueue(game, entry, player);
+                    return true;
                 } else if(sub.equalsIgnoreCase("deny")) {
                     if(service.getRegistry().isInGame(player)) {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cYou are already in game or in a queue");
@@ -129,6 +130,7 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
                     entry.getInvites().remove(player.getUniqueId());
                     service.sendQueueMessage(entry, PrismarinConstants.PREFIX + "§c" + player.getName() + " §7denied the battleroyale queue invitation");
                     target.sendMessage(PrismarinConstants.PREFIX + "§7You have denied a battleroyale queue invitation");
+                    return true;
                 }
             } else if(arguments.getLength() == 2) {
                 if(sub.equalsIgnoreCase("leave")) {
@@ -142,7 +144,9 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
                         player.sendMessage(PrismarinConstants.PREFIX + "§cYou are not in the battleroyale queue");
                         return true;
                     }
+                    service.removeFromQueue(player);
                     service.sendQueueMessage(entry, PrismarinConstants.PREFIX + "§c" + player.getName() + " §7left your battleroyale queue");
+                    return true;
                 }
             }
         }
@@ -163,6 +167,6 @@ public class QueueSubCommand extends HelpSubCommand<Player> {
             return true;
         }
         service.addToQueue(optional.get(), player);
-        return false;
+        return true;
     }
 }

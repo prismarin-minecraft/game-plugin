@@ -6,9 +6,6 @@ import in.prismar.game.battleroyale.countdown.AbstractBattleRoyaleCountdown;
 import in.prismar.game.battleroyale.model.BattleRoyaleGame;
 import in.prismar.library.common.time.TimeUtil;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-
-import java.util.function.Consumer;
 
 public class QueueCountdown extends AbstractBattleRoyaleCountdown {
     public QueueCountdown(BattleRoyaleService service, BattleRoyaleGame game) {

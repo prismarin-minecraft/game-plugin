@@ -9,6 +9,7 @@ import in.prismar.library.spigot.inventory.Frame;
 import in.prismar.library.spigot.inventory.button.event.ClickFrameButtonEvent;
 import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.item.SkullBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class BattleRoyaleQueueFrame extends Frame {
 
     public BattleRoyaleQueueFrame(BattleRoyaleService service, BattleRoyaleGame game, BattleRoyaleQueueEntry entry) {
         super("§aBR Queue", 3);
+        fill(Material.BLACK_STAINED_GLASS_PANE);
 
         int amount = game.getProperties().getTeamSize() - entry.getPlayers().size();
 
@@ -38,7 +40,10 @@ public class BattleRoyaleQueueFrame extends Frame {
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1);
                 ChatInput input = new ChatInput(player, message -> {
                     message = message.replace(" ", "");
-                    player.performCommand("broyale queue invite " + message);
+                    final String name = message;
+                    Bukkit.getScheduler().runTask(service.getGame(), () -> {
+                        player.performCommand("broyale queue invite " + name);
+                    });
                     return true;
                 });
                 input.setCancelMessage(PrismarinConstants.PREFIX + "§cYou canceled the chat input");
@@ -51,5 +56,7 @@ public class BattleRoyaleQueueFrame extends Frame {
             player.closeInventory();
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1f);
         });
+
+        build();
     }
 }

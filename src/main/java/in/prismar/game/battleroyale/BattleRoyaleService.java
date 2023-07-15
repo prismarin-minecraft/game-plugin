@@ -44,23 +44,26 @@ public class BattleRoyaleService {
 
     public BattleRoyaleGame create(String props, BattleRoyaleArena arena) throws Exception {
         BattleRoyaleProperties properties = new BattleRoyaleProperties();
-        String[] args = props.split(" ");
-        for(String prop : args) {
-            String[] split = prop.split("=");
-            String fieldName = split[0];
-            String value = split[1];
-            for(Field field : properties.getClass().getDeclaredFields()) {
-                if(!field.canAccess(properties)) {
-                    field.setAccessible(true);
-                }
-                if(field.getName().equalsIgnoreCase(fieldName)) {
-                    if(field.getType() == int.class) {
-                        field.setInt(properties, Integer.parseInt(value));
+        if(!props.isBlank()) {
+            String[] args = props.split(" ");
+            for(String prop : args) {
+                String[] split = prop.split("=");
+                String fieldName = split[0];
+                String value = split[1];
+                for(Field field : properties.getClass().getDeclaredFields()) {
+                    if(!field.canAccess(properties)) {
+                        field.setAccessible(true);
                     }
-                    break;
+                    if(field.getName().equalsIgnoreCase(fieldName)) {
+                        if(field.getType() == int.class) {
+                            field.setInt(properties, Integer.parseInt(value));
+                        }
+                        break;
+                    }
                 }
             }
         }
+
         BattleRoyaleGame game = registry.create(properties, arena);
         switchState(game, BattleRoyaleGame.BattleRoyaleGameState.QUEUE);
         return game;
@@ -76,12 +79,12 @@ public class BattleRoyaleService {
 
     public void announceBattleRoyale(BattleRoyaleGame game) {
         final String arrow = PrismarinConstants.ARROW_RIGHT.concat(" ");
-        InteractiveTextBuilder builder = new InteractiveTextBuilder(arrow + "    ");
+        InteractiveTextBuilder builder = new InteractiveTextBuilder(arrow);
         builder.addText("§8[§a§lJoin queue§8]", "/broyale queue join " + game.getId(), "§aClick §7to join the queue");
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(PrismarinConstants.BORDER);
             player.sendMessage(" ");
-            player.sendMessage(arrow + "    §a§lBattleRoyale Event");
+            player.sendMessage(arrow + "§a§lBattleRoyale Event");
             player.sendMessage(arrow + "§7starts in §2" + TimeUtil.showInMinutesSeconds(game.getCountdown().getCurrentSeconds()));
             player.sendMessage( " ");
             builder.send(player);

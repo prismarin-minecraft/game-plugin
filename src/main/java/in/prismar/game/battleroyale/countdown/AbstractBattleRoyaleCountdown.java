@@ -28,6 +28,7 @@ public abstract class AbstractBattleRoyaleCountdown implements BattleRoyaleCount
 
     @Override
     public void start() {
+        onStart();
         task = Bukkit.getScheduler().runTaskTimer(service.getGame(), this, 20, 20);
     }
 
@@ -50,6 +51,7 @@ public abstract class AbstractBattleRoyaleCountdown implements BattleRoyaleCount
             onEnd();
             return;
         }
+        onUpdate();
         currentSeconds--;
     }
 }
