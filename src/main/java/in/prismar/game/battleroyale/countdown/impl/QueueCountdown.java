@@ -60,7 +60,6 @@ public class QueueCountdown extends AbstractBattleRoyaleCountdown {
             player.setGameMode(GameMode.ADVENTURE);
             player.getInventory().setChestplate(new ItemStack(Material.ELYTRA));
         });
-        game.getCountdown().stop();
         for(BattleRoyaleTeam team : game.getTeams()) {
             service.randomTeleport(game, team);
         }

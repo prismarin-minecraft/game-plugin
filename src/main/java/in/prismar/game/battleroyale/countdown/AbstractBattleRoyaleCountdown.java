@@ -49,6 +49,7 @@ public abstract class AbstractBattleRoyaleCountdown implements BattleRoyaleCount
     public void run() {
         if(currentSeconds <= 0) {
             onEnd();
+            stop();
             return;
         }
         onUpdate();
