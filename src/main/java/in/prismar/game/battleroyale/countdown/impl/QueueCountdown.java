@@ -48,6 +48,9 @@ public class QueueCountdown extends AbstractBattleRoyaleCountdown {
             player.sendMessage(arrow + "§a§lBattleRoyale Event");
             player.sendMessage(arrow + "§7has started!");
             player.sendMessage(" ");
+            player.sendMessage(arrow + "§7The §awarmup phase §7has started.");
+            player.sendMessage(arrow + "§7You are invulnerable while you are in the warmup phase");
+            player.sendMessage(" ");
             player.sendMessage(PrismarinConstants.BORDER);
             player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 0.5f, 1f);
 

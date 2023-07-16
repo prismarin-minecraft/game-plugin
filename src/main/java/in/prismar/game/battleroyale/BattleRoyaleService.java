@@ -134,13 +134,13 @@ public class BattleRoyaleService {
     }
 
     public void randomTeleport(BattleRoyaleGame game, BattleRoyaleTeam team) {
-        int size = game.getArena().getSize() - 200;
-        Location location = game.getArena().getCenter().clone().add(MathUtil.random(-size, size), 0, MathUtil.random(-size, size));
+        double size = game.getArena().getSize() - 200;
+        Location location = game.getArena().getCenter().clone().add(MathUtil.randomDouble(-size, size), 0, MathUtil.randomDouble(-size, size));
         location.setY(game.getArena().getSpawnYLevel());
 
-        int radius = 7;
+        double radius = 7;
         for(BattleRoyaleParticipant participant : team.getParticipants().values()) {
-            Location spawn = location.clone().add(MathUtil.random(-radius, radius), 0, MathUtil.random(-radius, radius));
+            Location spawn = location.clone().add(MathUtil.randomDouble(-radius, radius), 0, MathUtil.randomDouble(-radius, radius));
             participant.getPlayer().teleport(spawn);
         }
     }
