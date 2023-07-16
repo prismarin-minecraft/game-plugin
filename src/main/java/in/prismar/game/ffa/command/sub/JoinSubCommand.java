@@ -40,6 +40,10 @@ public class JoinSubCommand extends HelpSubCommand<Player> {
             player.sendMessage(PrismarinConstants.PREFIX + "§cFFA is closed!");
             return true;
         }
+        if(facade.getGame().getBattleRoyaleService().getRegistry().isInGame(player)) {
+            player.sendMessage(PrismarinConstants.PREFIX + "§cYou can't join while being in the battleroyale game or queue");
+            return true;
+        }
         facade.join(player);
         player.sendMessage(PrismarinConstants.PREFIX + "§7You are now playing on §b" +
                 facade.getRotator().getCurrentMap().getIcon().getItem().getItemMeta().getDisplayName());

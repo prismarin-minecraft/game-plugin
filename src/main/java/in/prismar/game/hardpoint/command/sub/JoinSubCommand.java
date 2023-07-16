@@ -45,6 +45,10 @@ public class JoinSubCommand extends HelpSubCommand<Player> {
             player.sendMessage(PrismarinConstants.PREFIX + "§cHardpoint is closed!");
             return true;
         }
+        if(facade.getGame().getBattleRoyaleService().getRegistry().isInGame(player)) {
+            player.sendMessage(PrismarinConstants.PREFIX + "§cYou can't join while being in the battleroyale game or queue");
+            return true;
+        }
         Frame frame = new Frame("§f七七七七七七七七以", 3);
 
 

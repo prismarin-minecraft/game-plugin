@@ -14,6 +14,7 @@ import in.prismar.api.warzone.WarzoneProvider;
 import in.prismar.api.warzone.dungeon.DungeonProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.animation.AnimationFacade;
+import in.prismar.game.battleroyale.BattleRoyaleService;
 import in.prismar.game.database.RedisContext;
 import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
@@ -75,6 +76,9 @@ public class Game extends JavaPlugin implements GameProvider {
 
     @Inject
     private PerkService perkService;
+
+    @Inject
+    private BattleRoyaleService battleRoyaleService;
 
     @Inject
     private BulletTracerRegistry tracerRegistry;

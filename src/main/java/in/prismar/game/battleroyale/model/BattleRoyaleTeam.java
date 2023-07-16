@@ -1,6 +1,7 @@
 package in.prismar.game.battleroyale.model;
 
 import lombok.Getter;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,5 +14,9 @@ public class BattleRoyaleTeam {
 
     public BattleRoyaleTeam() {
         this.participants = new HashMap<>();
+    }
+
+    public void registerParticipant(Player player) {
+        this.participants.put(player.getUniqueId(), new BattleRoyaleParticipant(player));
     }
 }

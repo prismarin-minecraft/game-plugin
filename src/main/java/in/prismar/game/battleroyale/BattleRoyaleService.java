@@ -7,19 +7,27 @@ import in.prismar.game.Game;
 import in.prismar.game.battleroyale.arena.BattleRoyaleArenaService;
 import in.prismar.game.battleroyale.arena.model.BattleRoyaleArena;
 import in.prismar.game.battleroyale.countdown.impl.QueueCountdown;
+import in.prismar.game.battleroyale.countdown.impl.WarmUpCountdown;
+import in.prismar.game.battleroyale.event.BattleRoyaleLeaveEvent;
 import in.prismar.game.battleroyale.event.BattleRoyaleQueueJoinEvent;
 import in.prismar.game.battleroyale.event.BattleRoyaleQueueLeaveEvent;
 import in.prismar.game.battleroyale.model.*;
+import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.text.InteractiveTextBuilder;
+import io.lumine.mythic.core.utils.RandomUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 @Service
@@ -69,10 +77,79 @@ public class BattleRoyaleService {
         return game;
     }
 
+    public void shuffleTeams(BattleRoyaleGame game) {
+        List<BattleRoyaleQueueEntry> entries = new CopyOnWriteArrayList<>(game.getQueue());
+        for(BattleRoyaleQueueEntry entry : entries) {
+            if(entry.getPlayers().size() >= game.getProperties().getTeamSize()) {
+                BattleRoyaleTeam team = new BattleRoyaleTeam();
+                for(Player player : entry.getPlayers().values()) {
+                    team.registerParticipant(player);
+                }
+                game.getTeams().add(team);
+                entries.remove(entry);
+                continue;
+            }
+            boolean found = false;
+            for(BattleRoyaleQueueEntry otherEntry : entries) {
+                int next = entry.getPlayers().size() + otherEntry.getPlayers().size();
+                if(next <= game.getProperties().getTeamSize()) {
+                    found = true;
+                    BattleRoyaleTeam team = new BattleRoyaleTeam();
+                    for(Player player : entry.getPlayers().values()) {
+                        team.registerParticipant(player);
+                    }
+                    for(Player player : otherEntry.getPlayers().values()) {
+                        team.registerParticipant(player);
+                    }
+                    game.getTeams().add(team);
+                    entries.remove(entry);
+                    entries.remove(otherEntry);
+                    break;
+                }
+            }
+            if(!found) {
+                BattleRoyaleTeam team = new BattleRoyaleTeam();
+                for(Player player : entry.getPlayers().values()) {
+                    team.registerParticipant(player);
+                }
+                game.getTeams().add(team);
+                entries.remove(entry);
+            }
+        }
+        game.getQueue().clear();
+    }
+
+    public void removeFromGame(Player player, boolean force) {
+        BattleRoyaleGame game = getRegistry().getByPlayer(player);
+        if(game == null) {
+            return;
+        }
+        BattleRoyaleTeam team = getRegistry().getTeamByPlayer(game, player);
+        BattleRoyaleParticipant participant = team.getParticipants().remove(player.getUniqueId());
+        if(team.getParticipants().isEmpty()) {
+            game.getTeams().remove(team);
+        }
+
+        Bukkit.getPluginManager().callEvent(new BattleRoyaleLeaveEvent(game, team, participant, force));
+    }
+
+    public void randomTeleport(BattleRoyaleGame game, BattleRoyaleTeam team) {
+        int size = game.getArena().getSize() - 200;
+        Location location = game.getArena().getCenter().clone().add(MathUtil.random(-size, size), 0, MathUtil.random(-size, size));
+        location.setY(game.getArena().getSpawnYLevel());
+
+        int radius = 7;
+        for(BattleRoyaleParticipant participant : team.getParticipants().values()) {
+            Location spawn = location.clone().add(MathUtil.random(-radius, radius), 0, MathUtil.random(-radius, radius));
+            participant.getPlayer().teleport(spawn);
+        }
+    }
+
     public void switchState(BattleRoyaleGame game, BattleRoyaleGame.BattleRoyaleGameState state) {
         game.setState(state);
         switch (state) {
             case QUEUE -> game.setCountdown(new QueueCountdown(this, game));
+            case WARM_UP -> game.setCountdown(new WarmUpCountdown(this, game));
         }
         game.getCountdown().start();
     }

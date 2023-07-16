@@ -102,6 +102,14 @@ public class BattleRoyaleRegistry {
         return false;
     }
 
+    public boolean isPlaying(Player player) {
+        BattleRoyaleGame game = getByPlayer(player);
+        if(game != null) {
+            return game.getState() != BattleRoyaleGame.BattleRoyaleGameState.QUEUE;
+        }
+        return false;
+    }
+
     public boolean isInGame(Player player) {
         return getByPlayer(player) != null;
     }
