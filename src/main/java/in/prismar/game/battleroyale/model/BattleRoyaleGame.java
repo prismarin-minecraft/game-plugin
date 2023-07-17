@@ -1,5 +1,6 @@
 package in.prismar.game.battleroyale.model;
 
+import in.prismar.game.battleroyale.BattleRoyaleService;
 import in.prismar.game.battleroyale.arena.model.BattleRoyaleArena;
 import in.prismar.game.battleroyale.countdown.BattleRoyaleCountdown;
 import in.prismar.game.battleroyale.countdown.impl.QueueCountdown;
@@ -21,6 +22,8 @@ public class BattleRoyaleGame {
     @Setter
     private BattleRoyaleCountdown countdown;
 
+    @Setter
+    private long nextBorderMove;
 
     private List<BattleRoyaleTeam> teams;
     private List<BattleRoyaleQueueEntry> queue;
@@ -31,6 +34,23 @@ public class BattleRoyaleGame {
         this.arena = arena;
         this.teams = new ArrayList<>();
         this.queue = new ArrayList<>();
+    }
+
+    public void resetNextBorderMove() {
+        this.nextBorderMove = System.currentTimeMillis() + 1000L * arena.getShrinkTime();
+    }
+
+
+    public int getAliveCount() {
+        int count = 0;
+        for(BattleRoyaleTeam team : teams) {
+            for(BattleRoyaleParticipant participant : team.getParticipants().values()) {
+                if(participant.getState() == BattleRoyaleParticipant.BattleRoyaleParticipantState.ALIVE || participant.getState() == BattleRoyaleParticipant.BattleRoyaleParticipantState.KNOCKED) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public enum BattleRoyaleGameState {

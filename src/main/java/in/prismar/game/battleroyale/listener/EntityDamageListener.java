@@ -24,6 +24,9 @@ public class EntityDamageListener implements Listener {
     public void onDamage(EntityDamageEvent event) {
         if(event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof Player player) {
             BattleRoyaleGame game = service.getRegistry().getByPlayer(player);
+            if(game == null) {
+                return;
+            }
             if(game.getState() == BattleRoyaleGame.BattleRoyaleGameState.QUEUE) {
                 return;
             }

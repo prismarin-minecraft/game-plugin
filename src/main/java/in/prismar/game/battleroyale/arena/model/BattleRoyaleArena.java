@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.bukkit.Location;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter @Setter
 public class BattleRoyaleArena extends StringRepositoryEntity {
@@ -13,8 +14,10 @@ public class BattleRoyaleArena extends StringRepositoryEntity {
     private String displayName;
     private int spawnYLevel;
     private int size;
+    private int shrinkTime;
+    private int shrinkAmount;
     private Location center;
-    private List<Location> drops;
+    private Set<Location> drops;
 
     @Override
     public String toString() {

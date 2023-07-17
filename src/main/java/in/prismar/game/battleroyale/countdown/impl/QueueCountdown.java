@@ -39,6 +39,8 @@ public class QueueCountdown extends AbstractBattleRoyaleCountdown {
 
     @Override
     public void onEnd() {
+        service.getArenaService().prepare(game.getArena());
+        game.resetNextBorderMove();
         service.shuffleTeams(game);
 
         final String arrow = PrismarinConstants.ARROW_RIGHT.concat(" ");
@@ -59,6 +61,7 @@ public class QueueCountdown extends AbstractBattleRoyaleCountdown {
             player.setHealth(20);
             player.setGameMode(GameMode.ADVENTURE);
             player.getInventory().setChestplate(new ItemStack(Material.ELYTRA));
+            service.getScoreboardProvider().recreateSidebar(player);
         });
         for(BattleRoyaleTeam team : game.getTeams()) {
             service.randomTeleport(game, team);
