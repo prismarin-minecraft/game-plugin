@@ -20,7 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 public class JuggernautHelmet extends ArmorItem {
     public JuggernautHelmet() {
         super("JuggernautHelmet", Material.NETHERITE_HELMET, "§4Juggernaut Helmet", ArmorType.HELMET);
-        setHeadProtection(50);
+        setHeadProtection(45);
         setBodyProtection(0);
 
         generateDefaultLore();
