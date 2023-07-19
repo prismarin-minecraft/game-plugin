@@ -73,4 +73,9 @@ public class BattleRoyaleArenaService {
         border.setCenter(arena.getCenter());
         border.setSize(size);
     }
+
+    public int getBorderSize(BattleRoyaleArena arena) {
+        WorldBorder border = arena.getCenter().getWorld().getWorldBorder();
+        return (int) border.getSize();
+    }
 }

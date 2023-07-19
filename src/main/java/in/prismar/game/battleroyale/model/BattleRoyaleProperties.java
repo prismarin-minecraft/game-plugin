@@ -12,5 +12,10 @@ public class BattleRoyaleProperties {
 
     private int queueTime = 299;
     private int warmUpTime = 100;
-    private int inGameTime = 1800;
+
+    private int shrinkTime = 120;
+    private int shrinkAmount = 300;
+    private int shrinkProgressTime = 60;
+
+    private int maxShrinkAmount = 20;
 }

@@ -1,5 +1,6 @@
 package in.prismar.game.battleroyale.arena.droptable;
 
+import com.google.gson.reflect.TypeToken;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.file.gson.GsonFileWrapper;
 import in.prismar.library.spigot.item.container.ItemContainer;
@@ -13,7 +14,7 @@ public class DropTableFile extends GsonFileWrapper<List<DropTableItem>> {
     private List<ItemStack> items;
 
     public DropTableFile(String directory) {
-        super(directory.concat("droptable.json"), ArrayList.class);
+        super(directory.concat("droptable.json"), new TypeToken<List<DropTableItem>>(){}.getType());
         load();
         if(getEntity() == null) {
             setEntity(new ArrayList<>());
@@ -23,6 +24,15 @@ public class DropTableFile extends GsonFileWrapper<List<DropTableItem>> {
             }
         }
         generateRandomChanceItems();
+    }
+
+    public ItemStack find(ItemStack stack) {
+        for(DropTableItem item : getEntity()) {
+            if(item.getItem().getItem().isSimilar(stack)) {
+                return item.getItem().getItem();
+            }
+        }
+        return null;
     }
 
     public DropTableItem register(ItemStack stack, double chance) {

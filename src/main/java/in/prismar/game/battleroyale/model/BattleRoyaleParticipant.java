@@ -25,9 +25,13 @@ public class BattleRoyaleParticipant {
         this.savedArmorContent = player.getInventory().getArmorContents();
     }
 
+    @Getter
+    @AllArgsConstructor
     public enum BattleRoyaleParticipantState {
 
-        ALIVE, KNOCKED, DEAD
+        ALIVE("§aAlive"), KNOCKED("§eKnocked"), DEAD("§cDead");
+
+        private final String displayName;
 
     }
 }

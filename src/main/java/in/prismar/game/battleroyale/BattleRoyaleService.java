@@ -6,6 +6,7 @@ import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.game.Game;
 import in.prismar.game.battleroyale.arena.BattleRoyaleArenaService;
 import in.prismar.game.battleroyale.arena.model.BattleRoyaleArena;
+import in.prismar.game.battleroyale.countdown.impl.InGameCountdown;
 import in.prismar.game.battleroyale.countdown.impl.QueueCountdown;
 import in.prismar.game.battleroyale.countdown.impl.WarmUpCountdown;
 import in.prismar.game.battleroyale.event.BattleRoyaleLeaveEvent;
@@ -134,7 +135,7 @@ public class BattleRoyaleService {
     }
 
     public void randomTeleport(BattleRoyaleGame game, BattleRoyaleTeam team) {
-        double size = game.getArena().getSize() - 200;
+        double size = ((double) game.getArena().getSize() / 2) - 200;
         Location location = game.getArena().getCenter().clone().add(MathUtil.randomDouble(-size, size), 0, MathUtil.randomDouble(-size, size));
         location.setY(game.getArena().getSpawnYLevel());
 
@@ -150,6 +151,7 @@ public class BattleRoyaleService {
         switch (state) {
             case QUEUE -> game.setCountdown(new QueueCountdown(this, game));
             case WARM_UP -> game.setCountdown(new WarmUpCountdown(this, game));
+            case IN_GAME -> game.setCountdown(new InGameCountdown(this, game));
         }
         game.getCountdown().start();
     }

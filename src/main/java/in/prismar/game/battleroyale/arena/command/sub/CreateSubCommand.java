@@ -26,7 +26,7 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis arena already exists");
                 return true;
             }
-            final String displayName = arguments.getCombinedArgsFrom(2);
+            final String displayName = arguments.getCombinedArgsFrom(2).replace("&", "§");
             service.create(id, displayName);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You have successfully created the arena §a" + id);
             return true;

@@ -44,7 +44,7 @@ public class ListDropLocationsSubCommand extends HelpSubCommand<Player> {
                     if(event.isRightClick()) {
                         arena.getDrops().remove(location);
                         service.getRepository().save(arena);
-                        player.performCommand("bra listDropLocations");
+                        player.performCommand("bra listDropLocations " + arena.getId());
                         return;
                     }
                     player.teleport(location);

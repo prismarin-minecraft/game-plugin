@@ -4,12 +4,8 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.game.battleroyale.BattleRoyaleService;
 import in.prismar.game.battleroyale.countdown.AbstractBattleRoyaleCountdown;
 import in.prismar.game.battleroyale.model.BattleRoyaleGame;
-import in.prismar.game.battleroyale.model.BattleRoyaleTeam;
 import in.prismar.library.common.time.TimeUtil;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.inventory.ItemStack;
 
 public class QueueCountdown extends AbstractBattleRoyaleCountdown {
     public QueueCountdown(BattleRoyaleService service, BattleRoyaleGame game) {
@@ -40,7 +36,6 @@ public class QueueCountdown extends AbstractBattleRoyaleCountdown {
     @Override
     public void onEnd() {
         service.getArenaService().prepare(game.getArena());
-        game.resetNextBorderMove();
         service.shuffleTeams(game);
 
         final String arrow = PrismarinConstants.ARROW_RIGHT.concat(" ");
@@ -55,17 +50,7 @@ public class QueueCountdown extends AbstractBattleRoyaleCountdown {
             player.sendMessage(" ");
             player.sendMessage(PrismarinConstants.BORDER);
             player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 0.5f, 1f);
-
-
-            player.getInventory().clear();
-            player.setHealth(20);
-            player.setGameMode(GameMode.ADVENTURE);
-            player.getInventory().setChestplate(new ItemStack(Material.ELYTRA));
-            service.getScoreboardProvider().recreateSidebar(player);
         });
-        for(BattleRoyaleTeam team : game.getTeams()) {
-            service.randomTeleport(game, team);
-        }
 
         service.switchState(game, BattleRoyaleGame.BattleRoyaleGameState.WARM_UP);
     }

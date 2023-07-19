@@ -22,8 +22,6 @@ public class BattleRoyaleGame {
     @Setter
     private BattleRoyaleCountdown countdown;
 
-    @Setter
-    private long nextBorderMove;
 
     private List<BattleRoyaleTeam> teams;
     private List<BattleRoyaleQueueEntry> queue;
@@ -34,10 +32,6 @@ public class BattleRoyaleGame {
         this.arena = arena;
         this.teams = new ArrayList<>();
         this.queue = new ArrayList<>();
-    }
-
-    public void resetNextBorderMove() {
-        this.nextBorderMove = System.currentTimeMillis() + 1000L * arena.getShrinkTime();
     }
 
 

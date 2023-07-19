@@ -9,7 +9,10 @@ import in.prismar.library.common.time.TimeUtil;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.Consumer;
 
 public class WarmUpCountdown extends AbstractBattleRoyaleCountdown {
     public WarmUpCountdown(BattleRoyaleService service, BattleRoyaleGame game) {
@@ -18,7 +21,16 @@ public class WarmUpCountdown extends AbstractBattleRoyaleCountdown {
 
     @Override
     public void onStart() {
-
+        service.executeForAll(game, player -> {
+            player.getInventory().clear();
+            player.setHealth(20);
+            player.setGameMode(GameMode.ADVENTURE);
+            player.getInventory().setChestplate(new ItemStack(Material.ELYTRA));
+            service.getScoreboardProvider().recreateSidebar(player);
+        });
+        for(BattleRoyaleTeam team : game.getTeams()) {
+            service.randomTeleport(game, team);
+        }
     }
 
     @Override

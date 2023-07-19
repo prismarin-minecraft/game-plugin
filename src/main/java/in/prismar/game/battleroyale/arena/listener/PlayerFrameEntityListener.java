@@ -27,15 +27,19 @@ public class PlayerFrameEntityListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEntityEvent event) {
         if(event.getRightClicked() instanceof ItemFrame frame) {
+            System.out.println("Yes: " + frame.getLocation().getBlock().getLocation());
             for(BattleRoyaleArena arena : service.getRepository().findAll()) {
                 if(frame.getWorld().getName().equals(arena.getCenter().getWorld().getName())) {
-                    if(arena.getDrops().contains(frame.getLocation())) {
-                        ItemStack stack = frame.getItem().clone();
+                    if(arena.getDrops().contains(frame.getLocation().getBlock().getLocation())) {
+                        event.setCancelled(true);
                         frame.remove();
 
                         Player player = event.getPlayer();
-                        ItemUtil.giveItem(player, stack);
-                        player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.6f, 1f);
+                        ItemStack stack = service.getDroptable().find(frame.getItem());
+                        if(stack != null) {
+                            ItemUtil.giveItem(player, stack.clone());
+                            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.6f, 1f);
+                        }
                     }
                     return;
                 }

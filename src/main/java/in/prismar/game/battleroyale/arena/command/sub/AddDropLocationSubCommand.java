@@ -29,7 +29,7 @@ public class AddDropLocationSubCommand extends HelpSubCommand<Player> {
                 return true;
             }
             BattleRoyaleArena arena = service.getRepository().findById(id);
-            arena.getDrops().add(LocationUtil.getCenterOfBlock(player.getLocation().getBlock().getLocation()));
+            arena.getDrops().add(player.getLocation().getBlock().getLocation());
             service.getRepository().save(arena);
             player.sendMessage(PrismarinConstants.PREFIX + "§7You have added a new drop location for the arena §a" + id);
             return true;
