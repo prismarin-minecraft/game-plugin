@@ -43,7 +43,7 @@ public class BattleRoyaleArenaService {
     public int getBorderDistance(BattleRoyaleArena arena, Player player) {
         WorldBorder border = arena.getCenter().getWorld().getWorldBorder();
         Location center = border.getCenter();
-        double distance = border.getSize() - player.getLocation().distance(center);
+        double distance = (border.getSize()/2) - player.getLocation().distance(center);
         return (int)distance;
     }
 

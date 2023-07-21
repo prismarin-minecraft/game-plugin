@@ -8,6 +8,7 @@ import in.prismar.game.warzone.combatlog.CombatLogService;
 import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,6 +49,7 @@ public class PlayerWorldChangeListener implements Listener {
                     long time = warzoneService.getNewbieProtectionTime();
                     player.sendMessage(PrismarinConstants.PREFIX + "§7Your §anewbie protection §7has been enabled. §8(§7Duration§8: §a" + TimeUtil.convertToTwoDigits(time/1000) + "§8)");
                 }
+                player.setGameMode(GameMode.ADVENTURE);
             }
         }
 

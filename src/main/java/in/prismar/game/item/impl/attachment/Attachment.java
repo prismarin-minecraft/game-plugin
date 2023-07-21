@@ -1,12 +1,15 @@
 package in.prismar.game.item.impl.attachment;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.type.GunType;
 import org.bukkit.Material;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -31,8 +34,9 @@ public class Attachment extends CustomItem {
     }
 
     protected void addAllowedTypesLore() {
+        List<String> types = allowedTypes.stream().map(type -> type.getDisplayName()).sorted().collect(Collectors.toList());
         addLore(" §8╚ §7Gun types§8: §3" + Joiner.on("§8, §3").join(
-              allowedTypes.stream().map(type -> type.getDisplayName()).toList()
+              types
         ));
     }
 

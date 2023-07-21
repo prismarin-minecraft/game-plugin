@@ -5,13 +5,13 @@ import in.prismar.game.battleroyale.BattleRoyaleService;
 import in.prismar.game.battleroyale.event.BattleRoyaleQueueJoinEvent;
 import in.prismar.game.battleroyale.event.BattleRoyaleQueueLeaveEvent;
 import in.prismar.game.battleroyale.model.BattleRoyaleGame;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import javax.inject.Inject;
 
 @AutoListener
 public class BattleRoyaleQueueListener implements Listener {

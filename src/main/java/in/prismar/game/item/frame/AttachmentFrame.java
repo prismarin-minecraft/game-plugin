@@ -128,7 +128,12 @@ public class AttachmentFrame extends Frame {
                                 }
                                 attachments.add(attachment);
                                 PersistentItemDataUtil.setString(registry.getGame(), item, Gun.ATTACHMENTS_KEY, Joiner.on(",").join(attachments));
-                                event.getEvent().setCurrentItem(new ItemStack(Material.AIR));
+                                if(stack.getAmount() <= 1) {
+                                    event.getEvent().setCurrentItem(new ItemStack(Material.AIR));
+                                } else {
+                                    stack.setAmount(stack.getAmount() - 1);
+                                }
+                                event.getPlayer().updateInventory();
                                 setReceiveBack(false);
                                 rebuildLore(attachments);
                                 AttachmentFrame frame = new AttachmentFrame(registry, item);
