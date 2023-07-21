@@ -1,6 +1,7 @@
 package in.prismar.game.battleroyale.listener;
 
 import in.prismar.game.battleroyale.BattleRoyaleService;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,8 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-
-import javax.inject.Inject;
 
 @AutoListener
 public class PlayerQuitListener implements Listener {

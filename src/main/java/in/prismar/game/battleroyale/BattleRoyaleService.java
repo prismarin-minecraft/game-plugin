@@ -51,22 +51,12 @@ public class BattleRoyaleService {
     @Inject
     private final ScoreboardProvider scoreboardProvider;
 
-    @Provider
-    private UserProvider<User> userProvider;
 
     public BattleRoyaleService() {
         this.scoreboardProvider = PrismarinApi.getProvider(ScoreboardProvider.class);
         this.scoreboardProvider.addSidebarProvisioner(new BattleRoyaleSidebarProvisioner(this));
     }
 
-    @SafeInitialize
-    private void init() {
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println("WORKS: " + (userProvider != null));
-        System.out.println(" ");
-        System.out.println(" ");
-    }
 
     public BattleRoyaleGame create(String props, BattleRoyaleArena arena) throws Exception {
         BattleRoyaleProperties properties = new BattleRoyaleProperties();

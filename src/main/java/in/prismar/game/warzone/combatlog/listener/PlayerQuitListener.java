@@ -4,6 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.warzone.combatlog.CombatLogService;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import javax.inject.Inject;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
