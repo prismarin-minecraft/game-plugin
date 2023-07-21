@@ -3,6 +3,7 @@ package in.prismar.game.battleroyale.arena.listener;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.battleroyale.arena.BattleRoyaleArenaService;
 import in.prismar.game.battleroyale.arena.model.BattleRoyaleArena;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.item.ItemUtil;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.GameMode;
@@ -16,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import javax.inject.Inject;
 
 @AutoListener
 public class PlayerFrameEntityListener implements Listener {

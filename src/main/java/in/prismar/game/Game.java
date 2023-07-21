@@ -8,6 +8,8 @@ import in.prismar.api.game.GameProvider;
 import in.prismar.api.game.hardpoint.HardpointProvider;
 import in.prismar.api.game.ffa.ExtractionProvider;
 import in.prismar.api.game.ffa.FFAMapProvider;
+import in.prismar.api.meta.Provider;
+import in.prismar.api.meta.ProviderProcessor;
 import in.prismar.api.party.PartyProvider;
 import in.prismar.api.region.RegionProvider;
 import in.prismar.api.warzone.WarzoneProvider;
@@ -140,6 +142,7 @@ public class Game extends JavaPlugin implements GameProvider {
         this.metaRegistry = new MetaRegistry();
         this.metaRegistry.registerProcessor(AutoCommand.class, new SpigotCommandProcessor(setup, metaRegistry));
         this.metaRegistry.registerProcessor(AutoListener.class, new SpigotListenerProcessor(setup, metaRegistry));
+        this.metaRegistry.registerProcessor(Provider.class, new ProviderProcessor(metaRegistry));
 
         this.metaRegistry.registerEntity(this);
         this.metaRegistry.build(this.getClassLoader(), "in.prismar.game");

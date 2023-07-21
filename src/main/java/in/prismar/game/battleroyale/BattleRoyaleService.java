@@ -2,7 +2,10 @@ package in.prismar.game.battleroyale;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.meta.Provider;
 import in.prismar.api.scoreboard.ScoreboardProvider;
+import in.prismar.api.user.User;
+import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
 import in.prismar.game.battleroyale.arena.BattleRoyaleArenaService;
 import in.prismar.game.battleroyale.arena.model.BattleRoyaleArena;
@@ -16,6 +19,7 @@ import in.prismar.game.battleroyale.model.*;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.meta.anno.Inject;
+import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.meta.anno.Service;
 import in.prismar.library.spigot.text.InteractiveTextBuilder;
 import io.lumine.mythic.core.utils.RandomUtil;
@@ -44,11 +48,24 @@ public class BattleRoyaleService {
     @Inject
     private Game game;
 
+    @Inject
     private final ScoreboardProvider scoreboardProvider;
+
+    @Provider
+    private UserProvider<User> userProvider;
 
     public BattleRoyaleService() {
         this.scoreboardProvider = PrismarinApi.getProvider(ScoreboardProvider.class);
         this.scoreboardProvider.addSidebarProvisioner(new BattleRoyaleSidebarProvisioner(this));
+    }
+
+    @SafeInitialize
+    private void init() {
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println("WORKS: " + (userProvider != null));
+        System.out.println(" ");
+        System.out.println(" ");
     }
 
     public BattleRoyaleGame create(String props, BattleRoyaleArena arena) throws Exception {

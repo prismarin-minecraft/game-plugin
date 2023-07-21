@@ -2,12 +2,12 @@ package in.prismar.game.ffa.command;
 
 import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.ffa.command.sub.*;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
 import in.prismar.library.spigot.command.spigot.template.help.HelpCommand;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
 import org.bukkit.entity.Player;
 
-import javax.inject.Inject;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
