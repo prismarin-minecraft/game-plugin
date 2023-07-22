@@ -21,6 +21,7 @@ import in.prismar.game.item.impl.armor.lightweight.LightweightBoots;
 import in.prismar.game.item.impl.armor.lightweight.LightweightChestplate;
 import in.prismar.game.item.impl.armor.lightweight.LightweightHelmet;
 import in.prismar.game.item.impl.armor.lightweight.LightweightLeggings;
+import in.prismar.game.item.impl.armor.misc.GasMaskHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitBoots;
 import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
@@ -99,6 +100,7 @@ public class CustomItemRegistry {
         register(new ExtendedMagazineAttachmentItem());
         register(new BarrelAttachmentItem());
         register(new SuppressorAttachmentItem());
+        register(new LaserAttachmentItem());
 
 
         register(new MedicalSyringeItem());
@@ -120,6 +122,8 @@ public class CustomItemRegistry {
         register(new LightweightChestplate());
         register(new LightweightLeggings());
         register(new LightweightBoots());
+
+        register(new GasMaskHelmet());
 
         register(new HeavyHelmet());
         register(new HeavyChestplate());

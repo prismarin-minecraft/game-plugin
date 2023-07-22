@@ -27,7 +27,6 @@ public class PlayerFrameEntityListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEntityEvent event) {
         if(event.getRightClicked() instanceof ItemFrame frame) {
-            System.out.println("Yes: " + frame.getLocation().getBlock().getLocation());
             for(BattleRoyaleArena arena : service.getRepository().findAll()) {
                 if(frame.getWorld().getName().equals(arena.getCenter().getWorld().getName())) {
                     if(arena.getDrops().contains(frame.getLocation().getBlock().getLocation())) {

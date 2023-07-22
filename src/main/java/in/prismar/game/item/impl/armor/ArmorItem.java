@@ -1,9 +1,18 @@
 package in.prismar.game.item.impl.armor;
 
+import in.prismar.game.Game;
+import in.prismar.game.item.event.CustomItemEvent;
+import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.model.CustomItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -19,6 +28,8 @@ public class ArmorItem extends CustomItem {
 
     private int headProtection = 10;
     private int bodyProtection = 10;
+
+    private boolean custom;
 
     public ArmorItem(String id, Material material, String displayName, ArmorType type) {
         super(id, material, displayName);

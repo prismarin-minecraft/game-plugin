@@ -83,6 +83,10 @@
 
     <repositories>
         <repository>
+            <id>leoko-dev</id>
+            <url>https://repo.leoko.dev/releases</url>
+        </repository>
+        <repository>
             <id>minecraft</id>
             <url>https://nexus.prismar.in/repository/minecraft/</url>
         </repository>
@@ -104,6 +108,13 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>me.leoko.advancedgui</groupId>
+            <artifactId>AdvancedGUI</artifactId>
+            <version>2.2.2</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.lumine</groupId>
             <artifactId>Mythic-Dist</artifactId>
