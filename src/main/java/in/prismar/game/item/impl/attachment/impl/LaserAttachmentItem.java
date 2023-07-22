@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class LaserAttachmentItem extends GripAttachment {
 
     public LaserAttachmentItem() {
-        super("HorizontalGrip", Material.LEVER, "§cLaser");
+        super("LaserAttachment", Material.LEVER, "§cLaser");
         setCustomModelData(8);
         addAllowedTypes(Arrays.stream(GunType.values()).filter(type -> type != GunType.SPECIAL).toList().toArray(new GunType[0]));
         registerApplier(AttachmentModifier.SPREAD, new DoublePercentageAttachmentApplier(25, ApplierOperation.SUBTRACT));
