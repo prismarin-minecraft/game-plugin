@@ -4,5 +4,5 @@ api-version: 1.18
 main: in.prismar.game.Game
 author: Maga
 description: Prismarin-Game made by ReaperMaga
-depend: [Prismarin-Core, AdvancedGUI]
-softdepend: [Multiverse-Core, NPCLib, Prismarin-Essentials, Prismarin-Compass, MythicMobs]
+depend: [Prismarin-Core]
+softdepend: [Multiverse-Core, NPCLib, Prismarin-Essentials, Prismarin-Compass, MythicMobs, AdvancedGUI]
