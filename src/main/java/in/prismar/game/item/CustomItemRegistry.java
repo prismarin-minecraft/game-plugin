@@ -290,6 +290,9 @@ public class CustomItemRegistry {
     }
 
     public ItemStack createItem(String id) {
+        if(!existsItemById(id)) {
+            return null;
+        }
         CustomItem item = getItemById(id.toLowerCase());
         ItemStack stack = item.build();
         return stack;

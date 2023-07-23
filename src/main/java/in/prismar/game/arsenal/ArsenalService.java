@@ -202,6 +202,9 @@ public class ArsenalService {
     }
 
     public void setItem(User user, String key, ItemStack item, String value) {
+        if(item == null) {
+            return;
+        }
         SeasonData data = user.getSeasonData();
         ArsenalItem arsenalItem = new ArsenalItem();
         arsenalItem.setItem(item);
