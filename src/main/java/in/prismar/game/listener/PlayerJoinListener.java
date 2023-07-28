@@ -2,6 +2,7 @@ package in.prismar.game.listener;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
+import in.prismar.api.core.CoreProvider;
 import in.prismar.game.Game;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
@@ -28,12 +29,20 @@ public class PlayerJoinListener implements Listener {
 
     private final ConfigStore store;
 
+    private final CoreProvider coreProvider;
+
     private final String url;
     private final byte[] hash;
 
     public PlayerJoinListener() {
         this.store = PrismarinApi.getProvider(ConfigStore.class);
-        this.url = store.getProperty("resourcepack.url");
+        this.coreProvider = PrismarinApi.getProvider(CoreProvider.class);
+        if(coreProvider.isDevMode()) {
+            this.url = store.getProperty("dev.resourcepack.url");
+        } else {
+            this.url = store.getProperty("resourcepack.url");
+        }
+
         this.hash = HexFormat.of().parseHex(store.getProperty("resourcepack.hash"));
     }
 
@@ -42,7 +51,12 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         player.setGameMode(GameMode.ADVENTURE);
         Bukkit.getScheduler().runTaskLater(game, () -> {
-            player.setResourcePack(url, hash, false);
+            if(coreProvider.isDevMode()) {
+                player.setResourcePack(url);
+            } else {
+                player.setResourcePack(url, hash, false);
+            }
+
         }, 20);
     }
 
