@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
  * Written by Maga
  **/
 @AutoListener
-public class WarpListener implements Listener {
+public class PlayerWarpListener implements Listener {
 
     @Inject
     private WarzoneService service;
@@ -23,6 +23,13 @@ public class WarpListener implements Listener {
     public void onCall(WarpEvent event) {
         if(event.getId().equalsIgnoreCase("warzone") && service.isClosed()) {
             event.setCancelled(true);
+            return;
         }
+        if(service.isInWarzone(event.getPlayer())) {
+            if(service.isInSafeZone(event.getPlayer())) {
+                event.setTimer(Long.parseLong(service.getConfigStore().getProperty("warzone.teleport.timer")));
+            }
+        }
+
     }
 }

@@ -5,6 +5,7 @@ import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
+import in.prismar.game.warzone.WarzoneService;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Bukkit;
@@ -33,6 +34,9 @@ public class PlayerCommandListener implements Listener {
     @Inject
     private HardpointFacade hardpointFacade;
 
+    @Inject
+    private WarzoneService warzoneService;
+
     public PlayerCommandListener() {
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
     }
@@ -47,13 +51,15 @@ public class PlayerCommandListener implements Listener {
                 final String[] disabledCommands;
                 if(mapFacade.isInMap(player.getUniqueId()) || hardpointFacade.isCurrentlyPlaying(player)) {
                     disabledCommands = configStore.getProperty("game.disabled.commands").split(",");
+                } else if(warzoneService.isInWarzone(player) && warzoneService.isInSafeZone(player)) {
+                    disabledCommands = configStore.getProperty("warzone.disabled.commands").split(",");
                 } else {
                     disabledCommands = new String[0];
                 }
                 for(String disabled : disabledCommands) {
                     if(message.toLowerCase().startsWith(disabled.toLowerCase())) {
                         event.setCancelled(true);
-                        player.sendMessage(PrismarinConstants.PREFIX + "§cYou cannot use this command ingame.");
+                        player.sendMessage(PrismarinConstants.PREFIX + "§cYou cannot use this command here");
                         return;
                     }
                 }
