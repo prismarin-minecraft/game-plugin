@@ -51,7 +51,7 @@ public class PlayerCommandListener implements Listener {
                 final String[] disabledCommands;
                 if(mapFacade.isInMap(player.getUniqueId()) || hardpointFacade.isCurrentlyPlaying(player)) {
                     disabledCommands = configStore.getProperty("game.disabled.commands").split(",");
-                } else if(warzoneService.isInWarzone(player) && warzoneService.isInSafeZone(player)) {
+                } else if(warzoneService.isInWarzone(player) && !warzoneService.isInSafeZone(player)) {
                     disabledCommands = configStore.getProperty("warzone.disabled.commands").split(",");
                 } else {
                     disabledCommands = new String[0];

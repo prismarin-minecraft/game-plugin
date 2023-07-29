@@ -26,7 +26,7 @@ public class PlayerWarpListener implements Listener {
             return;
         }
         if(service.isInWarzone(event.getPlayer())) {
-            if(service.isInSafeZone(event.getPlayer())) {
+            if(!service.isInSafeZone(event.getPlayer())) {
                 event.setTimer(Long.parseLong(service.getConfigStore().getProperty("warzone.teleport.timer")));
             }
         }
