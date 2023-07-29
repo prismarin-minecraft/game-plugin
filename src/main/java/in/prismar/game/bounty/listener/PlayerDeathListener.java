@@ -7,11 +7,13 @@ import in.prismar.game.bounty.model.Bounty;
 import in.prismar.game.bounty.model.BountySupplier;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Inject;
+import in.prismar.library.spigot.item.SkullBuilder;
 import in.prismar.library.spigot.meta.anno.AutoListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
@@ -24,13 +26,14 @@ public class PlayerDeathListener implements Listener {
     @Inject
     private BountyService service;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onCall(PlayerDeathEvent event) {
         if(event.getEntity().getKiller() != null) {
             Player entity = event.getEntity();
             Player killer = event.getEntity().getKiller();
             Optional<Bounty> optional = service.getBounty(event.getEntity());
             if(optional.isPresent()) {
+                event.getDrops().add(new SkullBuilder(entity.getName()).setName("§c" + entity.getName() + "'s Skull").allFlags().build());
                 Bounty bounty = optional.get();
                 final String arrow = PrismarinConstants.ARROW_RIGHT + " §7";
                 Bukkit.broadcastMessage(PrismarinConstants.BORDER);
