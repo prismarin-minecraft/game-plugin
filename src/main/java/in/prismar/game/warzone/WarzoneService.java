@@ -184,6 +184,10 @@ public class WarzoneService implements WarzoneProvider {
         return isInWarzone(player.getLocation());
     }
 
+    public boolean isInSafeZone(Player player) {
+        return regionProvider.isInRegionWithFlag(player.getLocation(), "pvp");
+    }
+
     public boolean isInWarzone(Location insideLocation) {
         Location location = warpProvider.getWarp(WARP_NAME);
         if (location != null) {
