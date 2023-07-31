@@ -3,6 +3,7 @@ package in.prismar.game.item.reader;
 import in.prismar.game.Game;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.model.CustomItem;
+import in.prismar.game.item.reader.impl.ConfigFishingRodReaderSource;
 import in.prismar.game.item.reader.impl.ConfigGunReaderSource;
 import in.prismar.game.item.reader.impl.ConfigMeleeReaderSource;
 
@@ -24,6 +25,7 @@ public class CustomItemReader {
 
         this.sources.add(new ConfigGunReaderSource(game));
         this.sources.add(new ConfigMeleeReaderSource(game));
+        this.sources.add(new ConfigFishingRodReaderSource(game));
     }
 
     public void load() {

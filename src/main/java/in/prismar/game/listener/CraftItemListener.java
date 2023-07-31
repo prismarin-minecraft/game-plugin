@@ -1,6 +1,7 @@
 package in.prismar.game.listener;
 
 import in.prismar.library.spigot.meta.anno.AutoListener;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
@@ -23,7 +24,7 @@ public class CraftItemListener implements Listener {
                 || result.contains("BOOTS") ||
                 result.contains("SWORD")
                 || result.contains("BOW")
-                || result.contains("ARROW") || result.contains("GRINDSTONE") || result.contains("SHIELD")) {
+                || result.contains("ARROW") || result.contains("GRINDSTONE") || result.contains("SHIELD") || event.getRecipe().getResult().getType() == Material.FISHING_ROD) {
             event.setCancelled(true);
         }
     }
