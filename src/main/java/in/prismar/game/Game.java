@@ -19,6 +19,7 @@ import in.prismar.game.animation.AnimationFacade;
 import in.prismar.game.battleroyale.BattleRoyaleService;
 import in.prismar.game.database.RedisContext;
 import in.prismar.game.extraction.ExtractionFacade;
+import in.prismar.game.fishing.FishingRewardRegistry;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemAmmoProvider;
 import in.prismar.game.item.CustomItemRegistry;
@@ -75,6 +76,9 @@ public class Game extends JavaPlugin implements GameProvider {
 
     @Inject
     private AnimationFacade animationFacade;
+
+    @Inject
+    private FishingRewardRegistry fishingRewardRegistry;
 
     @Inject
     private PerkService perkService;
