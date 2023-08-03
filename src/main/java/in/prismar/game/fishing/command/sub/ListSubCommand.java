@@ -28,7 +28,9 @@ public class ListSubCommand extends HelpSubCommand<Player> {
         pager.fill();
         for(FishingReward reward : registry.getEntity()) {
             ItemBuilder builder = new ItemBuilder(reward.getItem().getItem())
-                    .addLore("§c ", PrismarinConstants.ARROW_RIGHT + " §7Chance§8: §d" + Math.round(reward.getChance() * 100) + "%", "§c ", "§dLeft click §7to remove");
+                    .addLore("§c ", PrismarinConstants.ARROW_RIGHT + " §7Chance§8: §d" + Math.round(reward.getChance() * 100) + "%",
+                            PrismarinConstants.ARROW_RIGHT + " §7Assigned rod§8: §d" + reward.getAssignedRod(),
+                            "§c ", "§dLeft click §7to remove");
             pager.addItem(builder.build(), (ClickFrameButtonEvent) (player1, event) -> {
                 registry.remove(reward);
                 player.performCommand("fishingreward list");
