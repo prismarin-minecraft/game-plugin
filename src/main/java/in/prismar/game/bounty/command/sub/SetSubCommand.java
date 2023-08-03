@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class SetSubCommand extends HelpSubCommand<Player> {
 
@@ -68,14 +69,15 @@ public class SetSubCommand extends HelpSubCommand<Player> {
                 Bukkit.broadcastMessage("§c");
                 Bukkit.broadcastMessage(PrismarinConstants.BORDER);
             } else {
-                bounty = service.create(target, new BountySupplier(player, money));
-                Bukkit.broadcastMessage(PrismarinConstants.BORDER);
-                Bukkit.broadcastMessage("§c");
-                Bukkit.broadcastMessage(arrow + "Bounty has been set on §c" + target.getName());
-                Bukkit.broadcastMessage(arrow + "by §c" + player.getName() + " §7for §6" + NumberFormatter.formatDoubleToThousands(money) + "$");
-                Bukkit.broadcastMessage(arrow + "The ranking of this bounty is §c#" + service.getRank(bounty));
-                Bukkit.broadcastMessage("§c");
-                Bukkit.broadcastMessage(PrismarinConstants.BORDER);
+                service.create(target, new BountySupplier(player, money)).thenAccept(bounty1 -> {
+                    Bukkit.broadcastMessage(PrismarinConstants.BORDER);
+                    Bukkit.broadcastMessage("§c");
+                    Bukkit.broadcastMessage(arrow + "Bounty has been set on §c" + target.getName());
+                    Bukkit.broadcastMessage(arrow + "by §c" + player.getName() + " §7for §6" + NumberFormatter.formatDoubleToThousands(money) + "$");
+                    Bukkit.broadcastMessage(arrow + "The ranking of this bounty is §c#" + service.getRank(bounty1));
+                    Bukkit.broadcastMessage("§c");
+                    Bukkit.broadcastMessage(PrismarinConstants.BORDER);
+                });
             }
             return true;
         }

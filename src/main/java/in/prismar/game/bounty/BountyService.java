@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Getter
@@ -63,14 +64,13 @@ public class BountyService {
         return -1;
     }
 
-    public Bounty create(Player target, BountySupplier supplier) {
+    public CompletableFuture<Bounty> create(Player target, BountySupplier supplier) {
         Bounty bounty = new Bounty();
         bounty.setId(target.getUniqueId().toString());
         bounty.setName(target.getName());
         bounty.setSuppliers(new ArrayList<>());
         bounty.getSuppliers().add(supplier);
-        repository.createAsync(bounty);
-        return bounty;
+        return repository.createAsync(bounty);
     }
 
     public double getMinMoney() {
