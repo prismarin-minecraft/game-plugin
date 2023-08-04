@@ -5,9 +5,9 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.api.game.GameProvider;
-import in.prismar.api.game.hardpoint.HardpointProvider;
 import in.prismar.api.game.ffa.ExtractionProvider;
 import in.prismar.api.game.ffa.FFAMapProvider;
+import in.prismar.api.game.hardpoint.HardpointProvider;
 import in.prismar.api.meta.Provider;
 import in.prismar.api.meta.ProviderProcessor;
 import in.prismar.api.party.PartyProvider;
@@ -19,11 +19,10 @@ import in.prismar.game.animation.AnimationFacade;
 import in.prismar.game.battleroyale.BattleRoyaleService;
 import in.prismar.game.database.RedisContext;
 import in.prismar.game.extraction.ExtractionFacade;
-import in.prismar.game.fishing.FishingRewardRegistry;
+import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemAmmoProvider;
 import in.prismar.game.item.CustomItemRegistry;
-import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.party.PartyRegistry;
 import in.prismar.game.perk.PerkService;
 import in.prismar.game.tracer.BulletTracerRegistry;
@@ -31,7 +30,6 @@ import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.warzone.dungeon.DungeonService;
 import in.prismar.game.web.WebServer;
 import in.prismar.game.web.config.file.ConfigNodeFile;
-import in.prismar.game.web.impl.items.ItemsRoute;
 import in.prismar.game.web.impl.PlayerRoute;
 import in.prismar.game.web.impl.ReportsRoute;
 import in.prismar.game.web.impl.VoteRoute;
@@ -39,6 +37,7 @@ import in.prismar.game.web.impl.banner.BannerRoute;
 import in.prismar.game.web.impl.config.GetConfigRoute;
 import in.prismar.game.web.impl.config.GetConfigTemplateRoute;
 import in.prismar.game.web.impl.config.PostConfigRoute;
+import in.prismar.game.web.impl.items.ItemsRoute;
 import in.prismar.library.meta.MetaRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
@@ -77,8 +76,6 @@ public class Game extends JavaPlugin implements GameProvider {
     @Inject
     private AnimationFacade animationFacade;
 
-    @Inject
-    private FishingRewardRegistry fishingRewardRegistry;
 
     @Inject
     private PerkService perkService;

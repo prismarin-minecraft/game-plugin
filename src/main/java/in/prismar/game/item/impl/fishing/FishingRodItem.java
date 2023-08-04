@@ -1,21 +1,22 @@
 package in.prismar.game.item.impl.fishing;
 
+import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.farm.FishingProvider;
 import in.prismar.game.Game;
-import in.prismar.game.fishing.FishingReward;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
 import in.prismar.game.item.model.CustomItem;
-import in.prismar.library.spigot.item.ItemUtil;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.inventory.ItemStack;
 
 @Setter
 public class FishingRodItem extends CustomItem {
+
+    private FishingProvider fishingProvider;
 
     private int minWaitTimeSeconds = 1;
     private int maxWaitTimeSeconds = 2;
@@ -34,13 +35,12 @@ public class FishingRodItem extends CustomItem {
                 event.getCaught().remove();
             }
             event.setExpToDrop(0);
-            FishingReward reward = game.getFishingRewardRegistry().getRandomByAssignedRod(getId());
-            ItemStack stack = reward.getItem().getItem().clone();
-            ItemUtil.giveItem(player, stack);
-            if(stack.hasItemMeta()) {
-                if(stack.getItemMeta().hasDisplayName()) {
-                    player.sendMessage(PrismarinConstants.PREFIX + "§7You have caught §a" + stack.getItemMeta().getDisplayName());
-                }
+            if(this.fishingProvider == null) {
+                this.fishingProvider = PrismarinApi.getProvider(FishingProvider.class);
+            }
+            String name = fishingProvider.giveRewardByAssignedRod(player, getId());
+            if(name != null) {
+                player.sendMessage(PrismarinConstants.PREFIX + "§7You have fished §a" + name);
             }
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1f);
         }
