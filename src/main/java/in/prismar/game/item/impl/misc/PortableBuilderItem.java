@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
  **/
 public class PortableBuilderItem extends CustomItem {
     public PortableBuilderItem() {
-        super("portablebuilder", Material.PLAYER_HEAD, "§dPortable Builder");
+        super("portablebuilder", Material.PLAYER_HEAD, "§dPortable Builder Shop");
         allFlags();
     }
 

@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
  **/
 public class PortableMinerItem extends CustomItem {
     public PortableMinerItem() {
-        super("portableminer", Material.PLAYER_HEAD, "§6Portable Miner");
+        super("portableminer", Material.PLAYER_HEAD, "§6Portable Miner Shop");
         allFlags();
     }
 
