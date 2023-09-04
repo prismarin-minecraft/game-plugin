@@ -26,7 +26,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
-                    <outputDirectory>C:\Users\Maga\Desktop\Prismarin\Local Server\plugins</outputDirectory>
+                    <outputDirectory>D:\Projects\Prismarin\Minecraft\Local Server\plugins</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
