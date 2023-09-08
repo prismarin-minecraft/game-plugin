@@ -36,6 +36,8 @@ import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.medical.MedkitItem;
 import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
+import in.prismar.game.item.impl.tea.TeaItem;
+import in.prismar.game.item.impl.tea.TeaType;
 import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.impl.tools.FastAxeItem;
 import in.prismar.game.item.impl.tools.FastPickaxeItem;
@@ -164,6 +166,10 @@ public class CustomItemRegistry {
         }
 
         register(new FishingRodItem("testrod", "§6Test Fishing Rod"));
+
+        for(TeaType type : TeaType.values()) {
+            register(new TeaItem(type));
+        }
 
     }
 

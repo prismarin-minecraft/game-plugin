@@ -57,6 +57,14 @@ public class ConfigNode implements in.prismar.api.configuration.node.ConfigNode 
             return (int)valueAsDouble();
         }
     }
+    @Override
+    public long valueAsLong() {
+        try {
+            return (long)value;
+        }catch (ClassCastException exception) {
+            return (long) valueAsDouble();
+        }
+    }
 
     public String valueAsString() {
         return (String) value;

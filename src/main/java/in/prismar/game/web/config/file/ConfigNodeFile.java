@@ -78,6 +78,13 @@ public class ConfigNodeFile extends GsonFileWrapper<Map<String, ConfigNode>> imp
         return 0;
     }
 
+    public long getLong(ConfigNode category, String name) {
+        if(category.getChildren().containsKey(name)) {
+            return category.getChildren().get(name).valueAsLong();
+        }
+        return 0L;
+    }
+
     public double getDouble(ConfigNode category, String name) {
         if(category.getChildren().containsKey(name)) {
             return category.getChildren().get(name).valueAsDouble();
@@ -223,6 +230,16 @@ public class ConfigNodeFile extends GsonFileWrapper<Map<String, ConfigNode>> imp
         return this.nodeIds.containsKey(id);
     }
 
+
+    @Override
+    public long getLong(String id, long defaultValue) {
+        ConfigNode node = getOrCreateNode(id);
+        if(node.getValue() == null) {
+            node.setValue(defaultValue);
+            node.setValueType(ConfigNodeValueType.NUMBER);
+        }
+        return node.valueAsLong();
+    }
 
     @Override
     public int getInteger(String id, int defaultValue) {
