@@ -8,14 +8,16 @@ import in.prismar.game.Game;
 import in.prismar.game.item.impl.armor.misc.GasMaskHelmet;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.library.meta.anno.Service;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class RadioactiveTask implements Runnable {
@@ -24,10 +26,13 @@ public class RadioactiveTask implements Runnable {
     private final RegionProvider regionProvider;
     private final ConfigStore configStore;
 
+    private Map<UUID, Integer> sounds;
+
     public RadioactiveTask(Game game) {
         this.game = game;
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
         this.regionProvider = PrismarinApi.getProvider(RegionProvider.class);
+        this.sounds = new HashMap<>();
         Bukkit.getScheduler().runTaskTimerAsynchronously(game, this, 20, 20);
     }
 
@@ -37,6 +42,15 @@ public class RadioactiveTask implements Runnable {
         final int gasMaskDamage = Integer.valueOf(configStore.getProperty("radioactive.damage.gasmask"));
         for(Player player : Bukkit.getOnlinePlayers()) {
             if(regionProvider.isInRegionWithFlag(player.getLocation(), "radioactive")) {
+                int currentSeconds = sounds.getOrDefault(player.getUniqueId(), 0);
+                if(currentSeconds == 0) {
+                    player.playSound(player.getLocation(), "radioactive", SoundCategory.AMBIENT, 0.25f, 1f);
+                }
+                currentSeconds++;
+                if(currentSeconds >= 24) {
+                    currentSeconds = 0;
+                }
+                sounds.put(player.getUniqueId(), currentSeconds);
                 if(player.getInventory().getHelmet() != null) {
                     ItemStack helmet = player.getInventory().getHelmet();
                     CustomItem item = game.getItemRegistry().getItemByStack(helmet);
@@ -57,10 +71,12 @@ public class RadioactiveTask implements Runnable {
                     Bukkit.getScheduler().runTask(game, () -> {
                         player.damage(damage);
                         player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 60, 1));
-                        player.sendTitle("§2Radioactive", "§2Zone", 5, 20, 5);
+                        player.sendTitle("§2Radioactive Zone", "§7Put on your gas mask", 5, 20, 5);
                     });
                 }
-
+            } else {
+                sounds.remove(player.getUniqueId());
+                player.stopSound("radioactive", SoundCategory.AMBIENT);
             }
         }
     }

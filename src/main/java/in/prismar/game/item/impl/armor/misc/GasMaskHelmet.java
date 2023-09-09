@@ -26,7 +26,7 @@ public class GasMaskHelmet extends ArmorItem {
         setCustomModelData(4);
         setCustom(true);
         generateDefaultLore();
-        addLore(PrismarinConstants.ARROW_RIGHT + " §7Durability§8: §2200§8/§2600");
+        addLore(PrismarinConstants.ARROW_RIGHT + " §7Durability§8: §2600§8/§2600");
         addLore(PrismarinConstants.ARROW_RIGHT + " §7Protects against harmful §2gases");
         addLore("§c ");
     }
