@@ -9,6 +9,7 @@ import in.prismar.game.bounty.gui.BountyLayoutExtension;
 import in.prismar.game.bounty.model.Bounty;
 import in.prismar.game.bounty.model.BountySupplier;
 import in.prismar.game.bounty.repository.BountyRepository;
+import in.prismar.game.bounty.repository.FileBountyRepository;
 import in.prismar.game.bounty.repository.LocalBountyRepository;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class BountyService {
     private final UserProvider<User> userProvider;
 
     public BountyService(Game game) {
-        this.repository = new LocalBountyRepository();
+        this.repository = new FileBountyRepository(game.getDefaultDirectory());
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
 
