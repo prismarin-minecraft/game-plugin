@@ -22,8 +22,13 @@ public class TeaItem extends CustomItem {
     private final UserProvider<User> userProvider;
 
     protected final TeaType type;
-    public TeaItem(TeaType type) {
-        super(type.name().toLowerCase() + "tea", Material.POTION, type.getDisplayName());
+
+    protected final int tier;
+
+
+    public TeaItem(TeaType type, int tier) {
+        super(type.name().toLowerCase() + "tea" + tier, Material.POTION, type.getDisplayName());
+        this.tier = tier;
         setCustomModelData(type.getCustomModelData());
         allFlags();
 
@@ -38,12 +43,14 @@ public class TeaItem extends CustomItem {
             return;
         }
         User user = userProvider.getUserByUUID(player.getUniqueId());
-        if(!user.isTimestampAvailable(getId())) {
+        final String id = type.name().toLowerCase() + "tea";
+        if(!user.isTimestampAvailable(id)) {
+            event.setCancelled(true);
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou have already consumed this type of tea");
             return;
         }
-        final long duration = game.getConfigNodeFile().getLong("Tea." + type.name() + ".Duration", 10000);
-        user.setTimestamp(getId(), System.currentTimeMillis() + duration);
+        final long duration = game.getConfigNodeFile().getLong("Tea." + type.name() + ".Tier_"+tier+".Duration", 10000);
+        user.setTimestamp(id, System.currentTimeMillis() + duration);
         userProvider.saveAsync(user, true);
 
         player.playSound(player.getLocation(), Sound.ENTITY_WITCH_DRINK, 0.7F, 1f);
