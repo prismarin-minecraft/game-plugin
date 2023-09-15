@@ -24,6 +24,7 @@ public class FishingRodItem extends CustomItem {
     public FishingRodItem(String id, String displayName) {
         super(id, Material.FISHING_ROD, displayName);
         addLore("§c", PrismarinConstants.ARROW_RIGHT + " §7Time to catch§8: §a" + minWaitTimeSeconds + "-" + maxWaitTimeSeconds + "s", "§c");
+        setUnbreakable(true);
         allFlags();
     }
 
