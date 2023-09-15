@@ -165,10 +165,9 @@ public class CustomItemRegistry {
             register(new HardpointBoots(team.getFancyName(), team.getColor()));
         }
 
-        register(new FishingRodItem("testrod", "§6Test Fishing Rod"));
 
         for(TeaType type : TeaType.values()) {
-            register(new TeaItem(type));
+            register(new TeaItem(type, 1));
         }
 
     }

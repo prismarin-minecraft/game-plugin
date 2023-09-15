@@ -23,13 +23,19 @@ public class FishingRodItem extends CustomItem {
 
     public FishingRodItem(String id, String displayName) {
         super(id, Material.FISHING_ROD, displayName);
+        addLore("§c", PrismarinConstants.ARROW_RIGHT + " §7Time to catch§8: §a" + minWaitTimeSeconds + "-" + maxWaitTimeSeconds + "s", "§c");
         allFlags();
+    }
+
+    public void updateLore() {
+        getLore().clear();
+        addLore("§c", PrismarinConstants.ARROW_RIGHT + " §7Time to catch§8: §a" + minWaitTimeSeconds + "-" + maxWaitTimeSeconds + "s", "§c");
     }
 
     @CustomItemEvent
     public void onCall(Player player, Game game, CustomItemHolder holder, PlayerFishEvent event) {
-        event.getHook().setMinWaitTime(minWaitTimeSeconds * 20);
         event.getHook().setMaxWaitTime(maxWaitTimeSeconds * 20);
+        event.getHook().setMinWaitTime(minWaitTimeSeconds * 20);
         if( event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             if(event.getCaught() != null) {
                 event.getCaught().remove();

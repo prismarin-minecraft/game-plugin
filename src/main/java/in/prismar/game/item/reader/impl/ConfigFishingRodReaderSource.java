@@ -40,7 +40,7 @@ public class ConfigFishingRodReaderSource implements CustomItemReaderSource {
             rod.setCustomModelData(file.getInteger(node, "Custom model data"));
             rod.setMinWaitTimeSeconds(file.getInteger(node, "Min wait time seconds"));
             rod.setMaxWaitTimeSeconds(file.getInteger(node, "Max wait time seconds"));
-
+            rod.updateLore();
             items.add(rod);
         }
         return items;
