@@ -1,6 +1,7 @@
 package in.prismar.game.item;
 
 import in.prismar.api.configuration.node.event.ConfigRefreshEvent;
+import in.prismar.api.item.TeaType;
 import in.prismar.game.Game;
 import in.prismar.game.hardpoint.HardpointTeam;
 import in.prismar.game.item.holder.CustomItemHolder;
@@ -28,7 +29,6 @@ import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.deployable.SandbagItem;
-import in.prismar.game.item.impl.fishing.FishingRodItem;
 import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
 import in.prismar.game.item.impl.gun.impl.Railgun;
 import in.prismar.game.item.impl.medical.BandageItem;
@@ -37,7 +37,6 @@ import in.prismar.game.item.impl.medical.MedkitItem;
 import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.tea.TeaItem;
-import in.prismar.game.item.impl.tea.TeaType;
 import in.prismar.game.item.impl.throwable.*;
 import in.prismar.game.item.impl.tools.FastAxeItem;
 import in.prismar.game.item.impl.tools.FastPickaxeItem;
@@ -60,7 +59,7 @@ import java.util.*;
  **/
 @Getter
 @Service
-public class CustomItemRegistry {
+public class CustomItemRegistry  {
 
     private final Game game;
 
@@ -166,9 +165,17 @@ public class CustomItemRegistry {
         }
 
 
-        for(TeaType type : TeaType.values()) {
-            register(new TeaItem(type, 1));
-        }
+        register(new TeaItem(TeaType.MINER, "§7Miner's Tea §6[Tier 1]", 1, 1));
+        register(new TeaItem(TeaType.MINER, "§7Miner's Tea §6[Tier 2]", 2, 2));
+        register(new TeaItem(TeaType.MINER, "§7Miner's Tea §6[Tier 3]", 3, 3));
+
+        register(new TeaItem(TeaType.LUMBERJACK, "§2Lumberjack's Tea §6[Tier 1]", 4, 1));
+        register(new TeaItem(TeaType.LUMBERJACK, "§2Lumberjack's Tea §6[Tier 2]", 5, 2));
+        register(new TeaItem(TeaType.LUMBERJACK, "§2Lumberjack's Tea §6[Tier 3]", 6, 3));
+
+        register(new TeaItem(TeaType.FARMER, "§aFarmer's Tea §6[Tier 1]", 7, 1));
+        register(new TeaItem(TeaType.FARMER, "§aFarmer's Tea §6[Tier 2]", 8, 2));
+        register(new TeaItem(TeaType.FARMER, "§aFarmer's Tea §6[Tier 3]", 9, 3));
 
     }
 
@@ -180,7 +187,10 @@ public class CustomItemRegistry {
         game.getConfigNodeFile().getEventBus().subscribe(ConfigRefreshEvent.class, event -> {
             load();
             reader.apply(this);
+            game.getTeaService().load(game.getItemRegistry());
         });
+
+        game.getTeaService().load(this);
     }
 
 

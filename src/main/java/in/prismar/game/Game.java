@@ -8,6 +8,7 @@ import in.prismar.api.game.GameProvider;
 import in.prismar.api.game.ffa.ExtractionProvider;
 import in.prismar.api.game.ffa.FFAMapProvider;
 import in.prismar.api.game.hardpoint.HardpointProvider;
+import in.prismar.api.item.TeaProvider;
 import in.prismar.api.meta.Provider;
 import in.prismar.api.meta.ProviderProcessor;
 import in.prismar.api.party.PartyProvider;
@@ -23,6 +24,7 @@ import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemAmmoProvider;
 import in.prismar.game.item.CustomItemRegistry;
+import in.prismar.game.item.CustomItemTeaService;
 import in.prismar.game.party.PartyRegistry;
 import in.prismar.game.perk.PerkService;
 import in.prismar.game.tracer.BulletTracerRegistry;
@@ -72,6 +74,9 @@ public class Game extends JavaPlugin implements GameProvider {
 
     @Inject
     private FFAFacade mapFacade;
+
+    @Inject
+    private CustomItemTeaService teaService;
 
     @Inject
     private AnimationFacade animationFacade;
@@ -166,6 +171,7 @@ public class Game extends JavaPlugin implements GameProvider {
         PrismarinApi.registerProvider(WarzoneProvider.class, warzoneService);
         PrismarinApi.registerProvider(ConfigNodeProvider.class, configNodeFile);
         PrismarinApi.registerProvider(DungeonProvider.class, dungeonService);
+        PrismarinApi.registerProvider(TeaProvider.class, teaService);
     }
 
     private void initializeWebServer() {
