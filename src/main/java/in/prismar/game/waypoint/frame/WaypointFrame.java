@@ -34,6 +34,7 @@ public class WaypointFrame extends Frame {
                         WaypointFrame frame = new WaypointFrame(service, player);
                         frame.openInventory(player, Sound.UI_BUTTON_CLICK, 0.5f);
                     });
+                    slot++;
                     continue;
                 }
             }
