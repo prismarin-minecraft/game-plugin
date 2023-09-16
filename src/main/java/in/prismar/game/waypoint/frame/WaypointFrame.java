@@ -16,7 +16,7 @@ public class WaypointFrame extends Frame {
     private final Player player;
 
     public WaypointFrame(WaypointService service, Player player) {
-        super("§6Waypoints", 1);
+        super("§6Waypoints", 2);
         this.service = service;
         this.player = player;
 
