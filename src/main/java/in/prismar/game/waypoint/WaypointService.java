@@ -48,6 +48,10 @@ public class WaypointService {
 
     public void setWaypoint(Player player, Waypoint waypoint) {
         User user = userProvider.getUserByUUID(player.getUniqueId());
+        if(hasWaypoint(player)) {
+            removeWaypoint(player);
+        }
+
         user.setTag(TAG, waypoint);
         refreshWaypoint(player, waypoint);
     }
