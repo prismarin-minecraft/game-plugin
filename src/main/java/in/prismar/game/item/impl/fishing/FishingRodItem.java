@@ -6,12 +6,18 @@ import in.prismar.api.farm.FishingProvider;
 import in.prismar.game.Game;
 import in.prismar.game.item.event.CustomItemEvent;
 import in.prismar.game.item.holder.CustomItemHolder;
+import in.prismar.game.item.holder.CustomItemHoldingType;
 import in.prismar.game.item.model.CustomItem;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Setter
 public class FishingRodItem extends CustomItem {
@@ -35,9 +41,12 @@ public class FishingRodItem extends CustomItem {
 
     @CustomItemEvent
     public void onCall(Player player, Game game, CustomItemHolder holder, PlayerFishEvent event) {
+        if(holder.getHoldingType() != CustomItemHoldingType.RIGHT_HAND) {
+            return;
+        }
         event.getHook().setMaxWaitTime(maxWaitTimeSeconds * 20);
         event.getHook().setMinWaitTime(minWaitTimeSeconds * 20);
-        if( event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+        if(event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             if(event.getCaught() != null) {
                 event.getCaught().remove();
             }
