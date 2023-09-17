@@ -25,13 +25,14 @@ public class PlayerInteractListener implements Listener {
             Player player = event.getPlayer();
             Block block = event.getClickedBlock();
             if(block.getType() == Material.CHEST) {
-                event.setCancelled(true);
                 for(Quarry quarry : service.getRepository().findAll()) {
                     if(quarry.getInputLocation().equals(block.getLocation())) {
+                        event.setCancelled(true);
                         service.openInput(player, quarry);
                         return;
                     }
                     if(quarry.getOutputLocation().equals(block.getLocation())) {
+                        event.setCancelled(true);
                         service.openOutput(player, quarry);
                         return;
                     }
