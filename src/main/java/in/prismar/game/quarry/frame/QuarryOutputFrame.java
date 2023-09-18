@@ -1,6 +1,9 @@
 package in.prismar.game.quarry.frame;
 
+import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.clan.Clan;
+import in.prismar.api.clan.ClanProvider;
 import in.prismar.game.quarry.QuarryService;
 import in.prismar.game.quarry.model.Quarry;
 import in.prismar.library.spigot.inventory.Frame;
@@ -33,6 +36,9 @@ public class QuarryOutputFrame extends Frame {
             ItemStack output = quarry.getOutput().getItem().clone();
             output.setAmount(amount);
             ItemUtil.giveItem(player, output);
+
+            ClanProvider<Clan> clanProvider = PrismarinApi.getProvider(ClanProvider.class);
+            clanProvider.addCollectionExp(player, quarry.getId(), amount);
 
             quarry.setOutputAmount(quarry.getOutputAmount() - amount);
             service.save(quarry);
