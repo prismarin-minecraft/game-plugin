@@ -2,6 +2,8 @@ package in.prismar.game.quarry.frame;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.booster.BoosterProvider;
+import in.prismar.api.booster.BoosterType;
 import in.prismar.api.clan.Clan;
 import in.prismar.api.clan.ClanProvider;
 import in.prismar.game.quarry.QuarryService;
@@ -37,8 +39,9 @@ public class QuarryOutputFrame extends Frame {
             output.setAmount(amount);
             ItemUtil.giveItem(player, output);
 
+            BoosterProvider boosterProvider = PrismarinApi.getProvider(BoosterProvider.class);
             ClanProvider<Clan> clanProvider = PrismarinApi.getProvider(ClanProvider.class);
-            clanProvider.addCollectionExp(player, quarry.getId(), amount);
+            clanProvider.addCollectionExp(player, quarry.getId(), amount * boosterProvider.getMultiplier(BoosterType.COLLECTION));
 
             quarry.setOutputAmount(quarry.getOutputAmount() - amount);
             service.save(quarry);
