@@ -44,6 +44,9 @@ public class ThrowableDeployListener implements Listener {
             return;
         }
         if(game.getWarzoneService().isInWarzone(player)) {
+            if(player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "throwable.cooldown.bypass")) {
+               return;
+            }
             User user = userProvider.getUserByUUID(player.getUniqueId());
             if(!user.isLocalTimestampAvailable("throwable")) {
                 event.setCancelled(true);
