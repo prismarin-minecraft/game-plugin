@@ -45,7 +45,7 @@ public class GasMaskHelmet extends ArmorItem {
         List<String> lore = meta.getLore();
         int index = findIndex(lore);
         lore.remove(index);
-        lore.add(index, PrismarinConstants.ARROW_RIGHT + " §7Durability§8: §2"+next+"/200");
+        lore.add(index, PrismarinConstants.ARROW_RIGHT + " §7Durability§8: §2"+next+"/600");
         meta.setLore(lore);
         stack.setItemMeta(meta);
         return false;

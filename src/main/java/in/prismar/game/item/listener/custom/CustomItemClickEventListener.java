@@ -37,6 +37,11 @@ public class CustomItemClickEventListener implements Listener {
         if(event.getWhoClicked() instanceof Player player) {
             if(event.getCursor() != null) {
                 if(event.getSlotType() == InventoryType.SlotType.ARMOR && event.getRawSlot() == 5) {
+                    if(player.getInventory().getHelmet() != null) {
+                        if(player.getInventory().getHelmet().getType() != Material.AIR) {
+                            return;
+                        }
+                    }
                     CustomItem item = registry.getItemByStack(event.getCursor());
                     if(item instanceof ArmorItem armor) {
                         if(!armor.isCustom()) {
