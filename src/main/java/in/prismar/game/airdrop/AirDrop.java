@@ -11,11 +11,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.function.Consumer;
 
@@ -61,7 +63,7 @@ public class AirDrop {
                     setCurrentTicks(1);
                 }
                 if (getCurrentTicks() == 1) {
-                    stand.remove();
+                    remove(stand.getLocation());
                     removeCallback.call();
                     return;
                 }
@@ -96,6 +98,12 @@ public class AirDrop {
         parachuteMeta.setCustomModelData(2);
         parachute.setItemMeta(parachuteMeta);
         stand.getEquipment().setHelmet(parachute);
+    }
+
+    protected void remove(Location location) {
+        for(Entity stand : location.getWorld().getNearbyEntities(location, 3, 3, 3, entity -> entity instanceof ArmorStand)) {
+            stand.remove();
+        }
     }
 
     public boolean isExpired() {

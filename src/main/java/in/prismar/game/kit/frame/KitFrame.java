@@ -40,7 +40,7 @@ public class KitFrame extends Frame {
         User user = userProvider.getUserByUUID(player.getUniqueId());
 
         int index = 0;
-        for(Kit kit : service.getRepository().findAll().stream().sorted((o1, o2) -> Integer.compare(o2.getWeight(), o1.getWeight())).toList()) {
+        for(Kit kit : service.getRepository().findAll().stream().filter(kit -> !kit.isRespawn() && !kit.isStarter()).sorted((o1, o2) -> Integer.compare(o2.getWeight(), o1.getWeight())).toList()) {
             ItemBuilder builder = new ItemBuilder(kit.getIcon().getItem()).allFlags();
             builder.addLore("§c ");
             if(user.isTimestampAvailable("kit." + kit.getId()) || player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "kit.bypass")) {

@@ -87,12 +87,8 @@
             <url>https://repo.leoko.dev/releases</url>
         </repository>
         <repository>
-            <id>minecraft</id>
-            <url>https://nexus.prismar.in/repository/minecraft/</url>
-        </repository>
-        <repository>
-            <id>prismarin</id>
-            <url>https://nexus.prismar.in/repository/prismarin/</url>
+            <id>prismarin-private-maven-registry</id>
+            <url>https://nexus.averix.tech/repository/prismarin-private-maven-registry/</url>
         </repository>
         <repository>
             <id>ranull-repo-external</id>

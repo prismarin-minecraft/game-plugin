@@ -39,6 +39,8 @@ public class KitCommand extends HelpCommand<Player> {
         addChild(new EditSubCommand(service));
         addChild(new ChangeCooldownSubCommand(service));
         addChild(new ChangeWeightSubCommand(service));
+        addChild(new SetRespawnSubCommand(service));
+        addChild(new SetStarterSubCommand(service));
     }
 
     @Override

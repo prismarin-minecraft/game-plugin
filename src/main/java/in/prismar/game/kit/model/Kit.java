@@ -19,6 +19,8 @@ public class Kit extends StringRepositoryEntity {
     private ItemsContainer items;
     private int cooldownInSeconds;
     private int weight;
+    private boolean respawn;
+    private boolean starter;
 
     @Override
     public String toString() {

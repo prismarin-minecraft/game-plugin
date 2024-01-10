@@ -37,11 +37,13 @@ public class PlayerJoinListener implements Listener {
     public PlayerJoinListener() {
         this.store = PrismarinApi.getProvider(ConfigStore.class);
         this.coreProvider = PrismarinApi.getProvider(CoreProvider.class);
-        if(coreProvider.isDevMode()) {
+       /* if(coreProvider.isDevMode()) {
             this.url = store.getProperty("dev.resourcepack.url");
         } else {
             this.url = store.getProperty("resourcepack.url");
-        }
+        }*/
+
+        this.url = store.getProperty("resourcepack.url");
 
         this.hash = HexFormat.of().parseHex(store.getProperty("resourcepack.hash"));
     }
@@ -51,12 +53,12 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         player.setGameMode(GameMode.ADVENTURE);
         Bukkit.getScheduler().runTaskLater(game, () -> {
-            if(coreProvider.isDevMode()) {
+            /*if(coreProvider.isDevMode()) {
                 player.setResourcePack(url);
             } else {
                 player.setResourcePack(url, hash, false);
-            }
-
+            }*/
+            player.setResourcePack(url, hash, false);
         }, 20);
     }
 
