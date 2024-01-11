@@ -177,32 +177,34 @@ public class FFAMapRotator implements Runnable {
     public void run() {
         long now = System.currentTimeMillis();
         if (currentMap != null) {
-            for (FFAMapPowerUp mapPowerUp : currentMap.getPowerUps()) {
-                PowerUp powerUp = facade.getPowerUpRegistry().getById(mapPowerUp.getId());
-                if (now >= mapPowerUp.getRespawnTime() && mapPowerUp.getHologram() == null) {
-                    mapPowerUp.setHologram(spawnPowerUpHologram(mapPowerUp.getLocation(), powerUp));
-                } else {
-                    if (mapPowerUp.getHologram() != null) {
-                        Location holoLoc = mapPowerUp.getHologram().getLocation().clone();
-                        holoLoc.setYaw(holoLoc.getYaw() + 2);
-                        mapPowerUp.getHologram().teleport(holoLoc);
-                        for (FFAMapPlayer mapPlayer : currentMap.getPlayers().values()) {
-                            Player player = mapPlayer.getPlayer();
-                            if (!player.getWorld().getName().equalsIgnoreCase(mapPowerUp.getLocation().getWorld().getName())) {
-                                continue;
-                            }
-                            double distance = player.getLocation().distanceSquared(mapPowerUp.getLocation());
-                            if (distance <= 3) {
-                                powerUp.onPickUp(player);
-                                mapPowerUp.getHologram().disable();
-                                mapPowerUp.setHologram(null);
-                                mapPowerUp.setRespawnTime(System.currentTimeMillis() + powerUp.getRespawnTime());
-                                break;
-                            }
-                            if (distance <= 30) {
-                                final Location location = mapPowerUp.getLocation().clone().add(0, 0.5, 0);
-                                mapPowerUp.getLocation().getWorld().spawnParticle(Particle.PORTAL, location, 1);
-                                mapPowerUp.getLocation().getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, location, 1);
+            if(!currentMap.getPlayers().isEmpty()) {
+                for (FFAMapPowerUp mapPowerUp : currentMap.getPowerUps()) {
+                    PowerUp powerUp = facade.getPowerUpRegistry().getById(mapPowerUp.getId());
+                    if (now >= mapPowerUp.getRespawnTime() && mapPowerUp.getHologram() == null) {
+                        mapPowerUp.setHologram(spawnPowerUpHologram(mapPowerUp.getLocation(), powerUp));
+                    } else {
+                        if (mapPowerUp.getHologram() != null) {
+                            Location holoLoc = mapPowerUp.getHologram().getLocation().clone();
+                            holoLoc.setYaw(holoLoc.getYaw() + 2);
+                            mapPowerUp.getHologram().teleport(holoLoc);
+                            for (FFAMapPlayer mapPlayer : currentMap.getPlayers().values()) {
+                                Player player = mapPlayer.getPlayer();
+                                if (!player.getWorld().getName().equalsIgnoreCase(mapPowerUp.getLocation().getWorld().getName())) {
+                                    continue;
+                                }
+                                double distance = player.getLocation().distanceSquared(mapPowerUp.getLocation());
+                                if (distance <= 3) {
+                                    powerUp.onPickUp(player);
+                                    mapPowerUp.getHologram().disable();
+                                    mapPowerUp.setHologram(null);
+                                    mapPowerUp.setRespawnTime(System.currentTimeMillis() + powerUp.getRespawnTime());
+                                    break;
+                                }
+                                if (distance <= 30) {
+                                    final Location location = mapPowerUp.getLocation().clone().add(0, 0.5, 0);
+                                    mapPowerUp.getLocation().getWorld().spawnParticle(Particle.PORTAL, location, 1);
+                                    mapPowerUp.getLocation().getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, location, 1);
+                                }
                             }
                         }
                     }

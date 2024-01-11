@@ -147,6 +147,9 @@ public class StatsCommand extends SpigotCommand<Player> {
         int slot = 0;
         for (int i = seasonNumber; i >= 0; i--) {
             final int seasonCount = i;
+            if(!user.getData().getSeasons().containsKey("" + seasonCount)) {
+                continue;
+            }
             ItemStack history = new ItemBuilder(Material.CHEST).setName("§bSeason " + seasonCount)
                     .addLore("§c")
                     .addLore("§7Click me to view this season statistics")
