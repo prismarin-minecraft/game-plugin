@@ -146,13 +146,14 @@ public class StatsCommand extends SpigotCommand<Player> {
 
         int slot = 0;
         for (int i = seasonNumber; i >= 0; i--) {
-            ItemStack history = new ItemBuilder(Material.CHEST).setName("§bSeason " + seasonNumber)
+            final int seasonCount = i;
+            ItemStack history = new ItemBuilder(Material.CHEST).setName("§bSeason " + seasonCount)
                     .addLore("§c")
                     .addLore("§7Click me to view this season statistics")
                     .allFlags()
                     .build();
             frame.addButton(slot, history, (ClickFrameButtonEvent) (clicker, event) -> {
-                openMenu(player, user, "" + seasonNumber);
+                openMenu(player, user, "" + seasonCount);
             });
             slot++;
         }

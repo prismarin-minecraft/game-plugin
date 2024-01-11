@@ -35,6 +35,9 @@ public class Button extends Interactable {
         if(door == null) {
             return;
         }
+        if(doorOpenSeconds == 0) {
+            return;
+        }
         Animation animation = service.getGame().getAnimationFacade().getRepository().findById(door);
         if(animation != null) {
             if(animation.isTempDataBoolean("doorOpen")) {
@@ -49,16 +52,13 @@ public class Button extends Interactable {
             Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
                 location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
             });
-            if(doorOpenSeconds != 0) {
-                Scheduler.runDelayed(20L * doorOpenSeconds, () -> {
-                    service.getGame().getAnimationFacade().getService().play(animation, true);
-                    Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
-                        location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
-                        animation.getTempData().put("doorOpen", false);
-                    });
+            Scheduler.runDelayed(20L * doorOpenSeconds, () -> {
+                service.getGame().getAnimationFacade().getService().play(animation, true);
+                Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
+                    location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
+                    animation.getTempData().put("doorOpen", false);
                 });
-            }
-            animation.getTempData().put("doorOpen", true);
+            });
         }
     }
 }

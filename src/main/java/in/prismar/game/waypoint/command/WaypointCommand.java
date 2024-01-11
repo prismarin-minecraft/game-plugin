@@ -2,9 +2,7 @@ package in.prismar.game.waypoint.command;
 
 import in.prismar.api.PrismarinConstants;
 import in.prismar.game.waypoint.WaypointService;
-import in.prismar.game.waypoint.command.sub.CreateSubCommand;
-import in.prismar.game.waypoint.command.sub.DeleteSubCommand;
-import in.prismar.game.waypoint.command.sub.ListSubCommand;
+import in.prismar.game.waypoint.command.sub.*;
 import in.prismar.game.waypoint.frame.WaypointFrame;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.SafeInitialize;
@@ -33,6 +31,9 @@ public class WaypointCommand extends HelpCommand<Player> {
         addChild(new CreateSubCommand(service));
         addChild(new DeleteSubCommand(service));
         addChild(new ListSubCommand(service));
+        addChild(new SetDescriptionSubCommand(service));
+        addChild(new SetDifficultySubCommand(service));
+        addChild(new SetLootSubCommand(service));
     }
 
     @Override

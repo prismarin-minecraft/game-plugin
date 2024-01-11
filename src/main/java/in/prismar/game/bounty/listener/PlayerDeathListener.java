@@ -31,6 +31,10 @@ public class PlayerDeathListener implements Listener {
         if(event.getEntity().getKiller() != null) {
             Player entity = event.getEntity();
             Player killer = event.getEntity().getKiller();
+
+            if(entity.getUniqueId().equals(killer.getUniqueId())) {
+                return;
+            }
             Optional<Bounty> optional = service.getBounty(event.getEntity());
             if(optional.isPresent()) {
                 event.getDrops().add(new SkullBuilder(entity.getName()).setName("§c" + entity.getName() + "'s Skull").allFlags().build());

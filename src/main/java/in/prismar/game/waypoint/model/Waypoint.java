@@ -13,6 +13,10 @@ public class Waypoint extends StringRepositoryEntity {
     private ItemContainer icon;
     private Location location;
 
+    private String description;
+    private String difficulty;
+    private String loot;
+
     @Override
     public String toString() {
         return getId();
