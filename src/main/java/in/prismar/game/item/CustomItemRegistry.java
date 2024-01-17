@@ -28,6 +28,7 @@ import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
+import in.prismar.game.item.impl.backpack.SmallBackpackItem;
 import in.prismar.game.item.impl.deployable.SandbagItem;
 import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
 import in.prismar.game.item.impl.gun.impl.Railgun;
@@ -176,6 +177,9 @@ public class CustomItemRegistry  {
         register(new TeaItem(TeaType.FARMER, "§aFarmer's Tea §6[Tier 1]", 7, 1));
         register(new TeaItem(TeaType.FARMER, "§aFarmer's Tea §6[Tier 2]", 8, 2));
         register(new TeaItem(TeaType.FARMER, "§aFarmer's Tea §6[Tier 3]", 9, 3));
+
+
+        register(new SmallBackpackItem());
 
     }
 

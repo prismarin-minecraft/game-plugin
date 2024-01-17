@@ -27,6 +27,7 @@ import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.CustomItemTeaService;
 import in.prismar.game.party.PartyRegistry;
 import in.prismar.game.perk.PerkService;
+import in.prismar.game.storage.StorageService;
 import in.prismar.game.tracer.BulletTracerRegistry;
 import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.warzone.dungeon.DungeonService;
@@ -81,6 +82,8 @@ public class Game extends JavaPlugin implements GameProvider {
     @Inject
     private AnimationFacade animationFacade;
 
+    @Inject
+    private StorageService storageService;
 
     @Inject
     private PerkService perkService;

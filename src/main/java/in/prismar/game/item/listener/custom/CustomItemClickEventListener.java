@@ -35,6 +35,7 @@ public class CustomItemClickEventListener implements Listener {
     @EventHandler
     public void onCall(InventoryClickEvent event) {
         if(event.getWhoClicked() instanceof Player player) {
+            registry.publishEvent(player, event);
             if(event.getCursor() != null) {
                 if(event.getSlotType() == InventoryType.SlotType.ARMOR && event.getRawSlot() == 5) {
                     if(player.getInventory().getHelmet() != null) {
