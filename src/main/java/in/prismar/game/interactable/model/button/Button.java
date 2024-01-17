@@ -51,14 +51,15 @@ public class Button extends Interactable {
             }
             Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
                 location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
-            });
-            Scheduler.runDelayed(20L * doorOpenSeconds, () -> {
-                service.getGame().getAnimationFacade().getService().play(animation, true);
-                Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
-                    location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
-                    animation.getTempData().put("doorOpen", false);
+                Scheduler.runDelayed(20L * doorOpenSeconds, () -> {
+                    service.getGame().getAnimationFacade().getService().play(animation, true);
+                    Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
+                        location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
+                        animation.getTempData().put("doorOpen", false);
+                    });
                 });
             });
+
         }
     }
 }

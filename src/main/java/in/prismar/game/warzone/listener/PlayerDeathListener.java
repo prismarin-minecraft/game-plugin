@@ -60,6 +60,6 @@ public class PlayerDeathListener implements Listener {
                 }
             }
         }
-        return worth >= 3;
+        return worth >= 6;
     }
 }
