@@ -1,6 +1,7 @@
 package in.prismar.game.item;
 
 import in.prismar.api.configuration.node.event.ConfigRefreshEvent;
+import in.prismar.api.item.CustomItemProvider;
 import in.prismar.api.item.TeaType;
 import in.prismar.game.Game;
 import in.prismar.game.hardpoint.HardpointTeam;
@@ -30,6 +31,7 @@ import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
 import in.prismar.game.item.impl.backpack.SmallBackpackItem;
 import in.prismar.game.item.impl.deployable.SandbagItem;
+import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
 import in.prismar.game.item.impl.gun.impl.Railgun;
 import in.prismar.game.item.impl.medical.BandageItem;
@@ -60,7 +62,7 @@ import java.util.*;
  **/
 @Getter
 @Service
-public class CustomItemRegistry  {
+public class CustomItemRegistry implements CustomItemProvider {
 
     private final Game game;
 
@@ -318,4 +320,13 @@ public class CustomItemRegistry  {
         return stack;
     }
 
+    @Override
+    public void createAmmoFilledGun(Player player, ItemStack based) {
+        CustomItem customItem = getItemByStack(based);
+        if(customItem != null) {
+            if(customItem instanceof Gun gun) {
+                game.getItemAmmoProvider().setAmmo(player, based, gun.getMaxAmmo());
+            }
+        }
+    }
 }

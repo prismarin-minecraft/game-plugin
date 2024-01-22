@@ -8,6 +8,7 @@ import in.prismar.api.game.GameProvider;
 import in.prismar.api.game.ffa.ExtractionProvider;
 import in.prismar.api.game.ffa.FFAMapProvider;
 import in.prismar.api.game.hardpoint.HardpointProvider;
+import in.prismar.api.item.CustomItemProvider;
 import in.prismar.api.item.TeaProvider;
 import in.prismar.api.meta.Provider;
 import in.prismar.api.meta.ProviderProcessor;
@@ -175,6 +176,7 @@ public class Game extends JavaPlugin implements GameProvider {
         PrismarinApi.registerProvider(ConfigNodeProvider.class, configNodeFile);
         PrismarinApi.registerProvider(DungeonProvider.class, dungeonService);
         PrismarinApi.registerProvider(TeaProvider.class, teaService);
+        PrismarinApi.registerProvider(CustomItemProvider.class, itemRegistry);
     }
 
     private void initializeWebServer() {

@@ -1,5 +1,7 @@
 package in.prismar.game.item;
 
+import in.prismar.api.PrismarinApi;
+import in.prismar.api.tournament.TournamentProvider;
 import in.prismar.game.Game;
 import in.prismar.game.database.RedisContext;
 import in.prismar.library.common.delayed.DelayedOperation;
@@ -35,6 +37,8 @@ public class CustomItemAmmoProvider {
     private final Map<String, Integer> tempCache;
     private RMap<String, Integer> redisMap;
     private final DelayedOperationExecutor<DelayedOperation> executor;
+
+    private TournamentProvider tournamentProvider;
 
     public CustomItemAmmoProvider() {
         this.cache = new HashMap<>();
@@ -93,7 +97,14 @@ public class CustomItemAmmoProvider {
     }
 
     private boolean isTempCache(Player player) {
-        return game.isCurrentlyPlayingAnyMode(player);
+        return game.isCurrentlyPlayingAnyMode(player) || getTournamentProvider().isPlaying(player);
     }
 
+
+    public TournamentProvider getTournamentProvider() {
+        if(tournamentProvider == null) {
+            tournamentProvider = PrismarinApi.getProvider(TournamentProvider.class);
+        }
+        return tournamentProvider;
+    }
 }
