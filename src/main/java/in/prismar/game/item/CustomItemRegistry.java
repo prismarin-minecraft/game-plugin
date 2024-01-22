@@ -69,6 +69,7 @@ public class CustomItemRegistry implements CustomItemProvider {
     private final CustomItemReader reader;
     private final Map<String, CustomItem> items;
     private final Map<UUID, List<CustomItemHolder>> holders;
+    private final List<CustomItemAmmoTempCacheChecker> ammoTempCacheCheckers;
 
 
     public CustomItemRegistry(Game game) {
@@ -76,6 +77,7 @@ public class CustomItemRegistry implements CustomItemProvider {
         this.items = new LinkedHashMap<>();
         this.reader = new CustomItemReader(game);
         this.holders = new HashMap<>();
+        this.ammoTempCacheCheckers = new ArrayList<>();
 
 
         load();
@@ -328,5 +330,10 @@ public class CustomItemRegistry implements CustomItemProvider {
                 game.getItemAmmoProvider().setAmmo(player, based, gun.getMaxAmmo());
             }
         }
+    }
+
+    @Override
+    public void addCustomItemAmmoTempCacheChecker(CustomItemAmmoTempCacheChecker checker) {
+        this.ammoTempCacheCheckers.add(checker);
     }
 }

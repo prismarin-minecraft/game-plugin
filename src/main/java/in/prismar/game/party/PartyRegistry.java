@@ -18,6 +18,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -210,11 +211,10 @@ public class PartyRegistry extends LocalMapRegistry<String, Party> implements Pa
 
     @Override
     public List<Player> getPartyMembers(Player player) {
-        return null;
+        Party party = getPartyByPlayer(player);
+        List<Player> members = new ArrayList<>(party.getMembers());
+        members.add(party.getOwner());
+        return members;
     }
 
-    @Override
-    public EventBus getEventBus() {
-        return null;
-    }
 }
