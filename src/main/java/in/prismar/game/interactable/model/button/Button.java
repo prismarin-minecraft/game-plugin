@@ -49,6 +49,7 @@ public class Button extends Interactable {
             if(!disableWarningSounds) {
                 location.getWorld().playSound(location, "door.warning", SoundCategory.BLOCKS, 0.6f, 1f);
             }
+            animation.getTempData().put("doorOpen", true);
             Scheduler.runDelayed(((long) animation.getTicks() * animation.getFrames().size())+5, () -> {
                 location.getWorld().playSound(location, "door.open", SoundCategory.BLOCKS, 0.75f, 1f);
                 Scheduler.runDelayed(20L * doorOpenSeconds, () -> {
