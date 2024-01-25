@@ -69,14 +69,22 @@ public class BountyLayoutExtension implements LayoutExtension {
                 listComponent.nextPage();
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1f);
             });
-            component.locate("TFy9fGcZ", HoverComponent.class).setClickAction((interaction, player, primaryTrigger) -> {
-                ListComponent<Bounty> listComponent = list.locateOn(interaction);
-                if(listComponent.getPage() <= 0) {
-                    return;
-                }
-                listComponent.previousPage();
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1f);
-            });
+
+            HoverComponent previousButton = component.locate("TFy9fGcZ", HoverComponent.class);
+            if(list.getPage() > 0) {
+                previousButton.setHidden(false);
+                previousButton.setClickAction((interaction, player, primaryTrigger) -> {
+                    ListComponent<Bounty> listComponent = list.locateOn(interaction);
+                    if(listComponent.getPage() <= 0) {
+                        return;
+                    }
+                    listComponent.previousPage();
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1f);
+                });
+            } else {
+                previousButton.setHidden(true);
+            }
+
         }
     }
 }
