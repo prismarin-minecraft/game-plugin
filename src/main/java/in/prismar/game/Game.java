@@ -1,11 +1,9 @@
 package in.prismar.game;
 
-import dev.sergiferry.playernpc.api.NPCLib;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.api.game.GameProvider;
-import in.prismar.api.game.ffa.ExtractionProvider;
 import in.prismar.api.game.ffa.FFAMapProvider;
 import in.prismar.api.game.hardpoint.HardpointProvider;
 import in.prismar.api.item.CustomItemProvider;
@@ -20,7 +18,6 @@ import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.animation.AnimationFacade;
 import in.prismar.game.battleroyale.BattleRoyaleService;
 import in.prismar.game.database.RedisContext;
-import in.prismar.game.extraction.ExtractionFacade;
 import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemAmmoProvider;
@@ -110,8 +107,6 @@ public class Game extends JavaPlugin implements GameProvider {
     @Inject
     private CustomItemRegistry itemRegistry;
 
-    @Inject
-    private ExtractionFacade extractionFacade;
 
     @Inject
     private AirDropRegistry airDropRegistry;
@@ -161,14 +156,11 @@ public class Game extends JavaPlugin implements GameProvider {
 
         initApi();
 
-        NPCLib.getInstance().registerPlugin(this);
-
         initializeWebServer();
     }
 
     private void initApi() {
         PrismarinApi.registerProvider(FFAMapProvider.class, mapFacade);
-        PrismarinApi.registerProvider(ExtractionProvider.class, extractionFacade);
         PrismarinApi.registerProvider(HardpointProvider.class, hardpointFacade);
         PrismarinApi.registerProvider(GameProvider.class, this);
         PrismarinApi.registerProvider(PartyProvider.class, partyRegistry);
@@ -185,7 +177,7 @@ public class Game extends JavaPlugin implements GameProvider {
             final int port = Integer.valueOf(store.getProperty("live.web.port"));
             this.webServer = new WebServer(store.getProperty("live.web.base.path"), port);
             this.webServer.addRoute(new ItemsRoute(itemRegistry));
-            this.webServer.addRoute(new PlayerRoute(mapFacade, extractionFacade));
+            this.webServer.addRoute(new PlayerRoute(mapFacade));
             this.webServer.addRoute(new VoteRoute());
             this.webServer.addRoute(new BannerRoute(this, webServer));
             this.webServer.addRoute(new GetConfigRoute(this));
@@ -201,7 +193,7 @@ public class Game extends JavaPlugin implements GameProvider {
 
     @Override
     public boolean isCurrentlyInGame(Player player) {
-        return isCurrentlyPlayingAnyMode(player) || extractionFacade.isIn(player);
+        return isCurrentlyPlayingAnyMode(player);
     }
 
     @Override

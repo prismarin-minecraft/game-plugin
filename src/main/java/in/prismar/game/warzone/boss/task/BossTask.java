@@ -44,7 +44,7 @@ public class BossTask implements Runnable {
                     continue;
                 }
                 BossBar bossBar = boss.getBossBars().containsKey(mob.getUniqueId()) ?
-                        boss.getBossBars().get(mob.getUniqueId()) : service.createBossbar(boss, mob);
+                        boss.getBossBars().get(mob.getUniqueId()) : service.createBossbar(boss, mob.getUniqueId());
 
                 Location location = mob.getLocation().toPosition().toLocation();
                 for (Player player : location.getWorld().getPlayers()) {

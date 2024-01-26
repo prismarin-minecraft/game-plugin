@@ -26,6 +26,9 @@ public class DungeonScoreboardTask implements Runnable {
 
     @Override
     public void run() {
+        if(service.getWarzoneService().getWarzoneLocation() == null) {
+            return;
+        }
         for(Dungeon dungeon : service.getRegistry().getAll()) {
             for(Player player : service.getWarzoneService().getWarzoneLocation().getWorld().getPlayers()) {
                 if(!dungeon.getParticipants().containsKey(player.getUniqueId()) && service.getRegionProvider().isIn(player.getLocation(), dungeon.getId())) {

@@ -73,7 +73,7 @@ public class MeleeItem extends SkinableItem {
             return;
         }
         if(event.getDamager().getUniqueId().equals(player.getUniqueId())) {
-            User user = game.getExtractionFacade().getUserProvider().getUserByUUID(player.getUniqueId());
+            User user = game.getMapFacade().getUserProvider().getUserByUUID(player.getUniqueId());
             if(user.containsTag("meleeCountdown")) {
                 long time = user.getTag("meleeCountdown");
                 if(System.currentTimeMillis() < time) {

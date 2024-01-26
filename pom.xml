@@ -23,6 +23,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <outputDirectory>D:\Projects\Prismarin\Local Server\plugins</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
                 <configuration>
@@ -120,12 +128,6 @@
             <artifactId>javalin</artifactId>
             <version>5.3.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>dev.sergiferry</groupId>
-            <artifactId>playernpc</artifactId>
-            <version>2022.8</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.xxmicloxx</groupId>

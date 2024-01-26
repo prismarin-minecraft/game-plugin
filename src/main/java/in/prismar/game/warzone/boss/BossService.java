@@ -6,16 +6,12 @@ import in.prismar.api.clan.Clan;
 import in.prismar.api.clan.ClanBuff;
 import in.prismar.api.clan.ClanProvider;
 import in.prismar.api.configuration.ConfigStore;
-import in.prismar.api.configuration.node.ConfigNode;
-import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
 import in.prismar.game.warzone.boss.task.BossTask;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Service;
-import io.lumine.mythic.bukkit.MythicBukkit;
-import io.lumine.mythic.core.mobs.ActiveMob;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -24,7 +20,10 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -45,36 +44,19 @@ public class BossService {
         this.bosses = new ArrayList<>();
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
 
+        if(!game.getServer().getPluginManager().isPluginEnabled("MythicMobs")) {
+           return;
+        }
         register("toro_type02", ClanBuff.GENERATOR_MULTIPLIER);
         register("zaku", ClanBuff.GENERATOR_MULTIPLIER);
         register("kindletron_2", ClanBuff.GENERATOR_MULTIPLIER);
         register("zahar", ClanBuff.GENERATOR_MULTIPLIER, 2, "zahar", "zahar_abomination");
         Bukkit.getScheduler().runTaskTimer(game, new BossTask(this), 20, 20);
+
     }
 
     public Boss register(String id, ClanBuff buff, String... mobs) {
-        Boss boss = new Boss();
-        boss.setId(id);
-        boss.setBuff(buff);
-        boss.setMaxLives(1);
-        boss.setLives(1);
-        boss.setBossBars(new HashMap<>());
-        boss.setDamagers(new HashMap<>());
-        boss.setMythicMobs(new HashMap<>());
-        if(mobs.length == 0) {
-            if(MythicBukkit.inst().getMobManager().getMythicMob(id).isPresent()) {
-                boss.getMythicMobs().put(id, MythicBukkit.inst().getMobManager().getMythicMob(id).get());
-            }
-
-        } else {
-            for(String mob : mobs) {
-                if(MythicBukkit.inst().getMobManager().getMythicMob(mob).isPresent()) {
-                    boss.getMythicMobs().put(mob, MythicBukkit.inst().getMobManager().getMythicMob(mob).get());
-                }
-
-            }
-        }
-
+        Boss boss = MythicMobsWrapper.createBoss(id, buff, mobs);
         this.bosses.add(boss);
         return boss;
     }
@@ -86,9 +68,9 @@ public class BossService {
         return boss;
     }
 
-    public BossBar createBossbar(Boss boss, ActiveMob mob) {
+    public BossBar createBossbar(Boss boss, UUID uuid) {
         BossBar bossBar = Bukkit.createBossBar(boss.getId(), BarColor.RED, BarStyle.SOLID);
-        boss.getBossBars().put(mob.getUniqueId(), bossBar);
+        boss.getBossBars().put(uuid, bossBar);
         return bossBar;
     }
 
@@ -110,7 +92,7 @@ public class BossService {
         }
     }
 
-    public void handleBossDeath(Boss boss, ActiveMob mob) {
+    public void handleBossDeath(Boss boss, String displayName) {
         if(!boss.getDamagers().isEmpty()) {
             if(boss.getLives() >= 2) {
                 boss.setLives(boss.getLives() - 1);
@@ -131,7 +113,7 @@ public class BossService {
                     online.sendMessage(" ");
                     online.sendMessage(PrismarinConstants.BORDER);
                     online.sendMessage(" ");
-                    online.sendMessage(arrow + "§b" + mob.getDisplayName() + " §7has been killed");
+                    online.sendMessage(arrow + "§b" + displayName + " §7has been killed");
                     online.sendMessage(" ");
                     online.sendMessage(arrow + "§bRewards§8:");
                     for (int i = 0; i < sorted.size(); i++) {
@@ -165,7 +147,7 @@ public class BossService {
                     Clan clan = clanProvider.getClanByPlayer(damager.getUuid());
                     if(i == 0) {
                         clanProvider.giveBuff(clan, boss.getBuff());
-                        clanProvider.sendPrefixMessage(clan, "§7Your clan received the buff §e" + boss.getBuff().getDisplayName() + " §7provided by §6" + damager.getName() + " §7for killing the boss §3" + mob.getDisplayName());
+                        clanProvider.sendPrefixMessage(clan, "§7Your clan received the buff §e" + boss.getBuff().getDisplayName() + " §7provided by §6" + damager.getName() + " §7for killing the boss §3" + displayName);
                     }
                     game.getWarzoneService().getClanStatsProvider().addBossFights(damager.getUuid());
 
