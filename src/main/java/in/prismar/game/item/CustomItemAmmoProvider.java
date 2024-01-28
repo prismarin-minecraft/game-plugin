@@ -94,7 +94,7 @@ public class CustomItemAmmoProvider {
     }
 
     private boolean isTempCache(Player player) {
-        if (game.isCurrentlyPlayingAnyMode(player)) {
+        if (game.isCurrentlyInGame(player)) {
             return true;
         }
         for(CustomItemProvider.CustomItemAmmoTempCacheChecker checker : game.getItemRegistry().getAmmoTempCacheCheckers()) {

@@ -33,7 +33,7 @@ public class PlayerWorldChangeListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onChange(PlayerChangedWorldEvent event) {
-        if(game.isCurrentlyPlayingAnyMode(event.getPlayer())) {
+        if(game.isCurrentlyInGame(event.getPlayer())) {
             if(event.getPlayer().getGameMode() != GameMode.CREATIVE) {
                 event.getPlayer().setGameMode(GameMode.ADVENTURE);
             }

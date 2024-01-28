@@ -64,7 +64,7 @@ public class PerkService  {
     }
 
     public boolean hasPerkAndAllowedToUse(Player player, Perk perk) {
-        if(game.isCurrentlyPlayingAnyMode(player)) {
+        if(game.isCurrentlyInGame(player)) {
             return hasPerk(player, perk);
         }
         return false;

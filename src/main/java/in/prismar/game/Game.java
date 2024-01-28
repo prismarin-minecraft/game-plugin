@@ -193,11 +193,6 @@ public class Game extends JavaPlugin implements GameProvider {
 
     @Override
     public boolean isCurrentlyInGame(Player player) {
-        return isCurrentlyPlayingAnyMode(player);
-    }
-
-    @Override
-    public boolean isCurrentlyPlayingAnyMode(Player player) {
         return mapFacade.isCurrentlyPlaying(player) || hardpointFacade.isCurrentlyPlaying(player);
     }
 
