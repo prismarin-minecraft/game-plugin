@@ -29,6 +29,7 @@ import in.prismar.game.item.impl.armor.recruit.RecruitChestplate;
 import in.prismar.game.item.impl.armor.recruit.RecruitHelmet;
 import in.prismar.game.item.impl.armor.recruit.RecruitLeggings;
 import in.prismar.game.item.impl.attachment.impl.*;
+import in.prismar.game.item.impl.backpack.MediumBackpackItem;
 import in.prismar.game.item.impl.backpack.SmallBackpackItem;
 import in.prismar.game.item.impl.deployable.SandbagItem;
 import in.prismar.game.item.impl.gun.Gun;
@@ -184,6 +185,7 @@ public class CustomItemRegistry implements CustomItemProvider {
 
 
         register(new SmallBackpackItem());
+        register(new MediumBackpackItem());
 
     }
 

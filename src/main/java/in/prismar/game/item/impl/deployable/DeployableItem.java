@@ -61,6 +61,10 @@ public abstract class DeployableItem extends CustomItem {
             if(barrier.getType() != Material.AIR) {
                 return;
             }
+            Block beneath = barrier.getLocation().clone().subtract(0, 1, 0).getBlock();
+            if(beneath.getType() == Material.DIRT_PATH || beneath.getType() == Material.FARMLAND) {
+                return;
+            }
         }
         ItemUtil.takeItemFromHand(player, true);
 
