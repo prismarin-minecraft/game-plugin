@@ -27,14 +27,14 @@ import java.util.Comparator;
  **/
 public class KitFrame extends Frame {
 
-    private static final int[] SLOTS = {11, 12, 13, 14, 15};
+    private static final int[] SLOTS = {13, 20, 30, 32, 33, 24};
 
     private final KitService service;
 
     public KitFrame(KitService service, Player player) {
-        super("§aKits", 3);
+        super("§aKits", 5);
         this.service = service;
-        fill();
+        fill(Material.BLACK_STAINED_GLASS_PANE);
 
         UserProvider<User> userProvider = PrismarinApi.getProvider(UserProvider.class);
         User user = userProvider.getUserByUUID(player.getUniqueId());
