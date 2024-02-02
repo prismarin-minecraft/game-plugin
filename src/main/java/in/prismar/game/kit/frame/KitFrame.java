@@ -27,7 +27,7 @@ import java.util.Comparator;
  **/
 public class KitFrame extends Frame {
 
-    private static final int[] SLOTS = {13, 20, 30, 32, 33, 24};
+    private static final int[] SLOTS = {13, 20, 30, 32, 24};
 
     private final KitService service;
 
