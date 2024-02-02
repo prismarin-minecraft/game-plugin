@@ -28,20 +28,26 @@ public class WebServer {
 
     private final String basePath;
 
-    private final Javalin javalin;
+    private Javalin javalin;
     private final List<WebRoute<?>> routes;
 
     private final Gson gson;
 
-    public WebServer(String basePath, int port) {
+    private final boolean devMode;
+
+    public WebServer(String basePath, int port, boolean isDevMode) {
         this.basePath = basePath;
         this.gson = new GsonBuilder().create();
         this.routes = new ArrayList<>();
-        this.javalin = Javalin.create(config -> {
-            config.plugins.enableCors(cors -> {
-                cors.add(CorsPluginConfig::anyHost);
-            });
-        }).start(port);
+        this.devMode = isDevMode;
+        if(!isDevMode) {
+            this.javalin = Javalin.create(config -> {
+                config.plugins.enableCors(cors -> {
+                    cors.add(CorsPluginConfig::anyHost);
+                });
+            }).start(port);
+        }
+
     }
 
     public WebServer addRoute(WebRoute<?> route) {
@@ -50,6 +56,9 @@ public class WebServer {
     }
 
     public void initializePaths() {
+        if(this.devMode) {
+            return;
+        }
         WebAuthenticator authenticator = PrismarinApi.getProvider(WebAuthenticator.class);
         for(WebRoute<?> route : this.routes) {
             if(route instanceof GetWebRoute<?>) {

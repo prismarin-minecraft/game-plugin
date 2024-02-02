@@ -3,6 +3,7 @@ package in.prismar.game;
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.configuration.node.ConfigNodeProvider;
+import in.prismar.api.core.CoreProvider;
 import in.prismar.api.game.GameProvider;
 import in.prismar.api.game.ffa.FFAMapProvider;
 import in.prismar.api.game.hardpoint.HardpointProvider;
@@ -174,8 +175,9 @@ public class Game extends JavaPlugin implements GameProvider {
     private void initializeWebServer() {
         try {
             ConfigStore store = PrismarinApi.getProvider(ConfigStore.class);
+            CoreProvider coreProvider = PrismarinApi.getProvider(CoreProvider.class);
             final int port = Integer.valueOf(store.getProperty("live.web.port"));
-            this.webServer = new WebServer(store.getProperty("live.web.base.path"), port);
+            this.webServer = new WebServer(store.getProperty("live.web.base.path"), port, coreProvider.isDevMode());
             this.webServer.addRoute(new ItemsRoute(itemRegistry));
             this.webServer.addRoute(new PlayerRoute(mapFacade));
             this.webServer.addRoute(new VoteRoute());
