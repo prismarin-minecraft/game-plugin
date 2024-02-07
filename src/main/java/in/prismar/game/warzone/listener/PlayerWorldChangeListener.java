@@ -4,7 +4,6 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.game.warzone.WarzoneService;
-import in.prismar.game.warzone.combatlog.CombatLogService;
 import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.meta.anno.AutoListener;
@@ -52,6 +51,6 @@ public class PlayerWorldChangeListener implements Listener {
                 player.setGameMode(GameMode.ADVENTURE);
             }
         }
-
     }
+
 }
