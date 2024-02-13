@@ -9,8 +9,10 @@ import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
+import in.prismar.game.missions.MissionWrapper;
 import in.prismar.game.warzone.boss.task.BossTask;
 import in.prismar.library.common.math.NumberFormatter;
+import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -38,6 +40,9 @@ public class BossService {
     private final Game game;
     private final List<Boss> bosses;
     private final ConfigStore configStore;
+
+    @Inject
+    private MissionWrapper missionWrapper;
 
     public BossService(Game game) {
         this.game = game;
@@ -131,12 +136,19 @@ public class BossService {
                 }
             }
 
+
+
+
+
             UserProvider<User> userProvider = PrismarinApi.getProvider(UserProvider.class);
             ClanProvider<Clan> clanProvider = PrismarinApi.getProvider(ClanProvider.class);
             for (int i = 0; i < sorted.size(); i++) {
                 BossDamager damager = sorted.get(i);
                 if(damager.getDamage() < baseDamage) {
                     continue;
+                }
+                if(boss.getId().equalsIgnoreCase("zahar")) {
+                    missionWrapper.getMissionProvider().addProgress(damager.getPlayer(), "killanderson10", 1, 1);
                 }
                 double receiveMoney = balance - (reducePerPlacement * i);
 

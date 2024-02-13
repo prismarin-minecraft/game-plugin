@@ -7,6 +7,7 @@ import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
+import in.prismar.game.missions.MissionWrapper;
 import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.warzone.boss.Boss;
 import in.prismar.game.warzone.boss.BossService;
@@ -31,9 +32,13 @@ public class MobDeathListener implements Listener {
     @Inject
     private WarzoneService warzoneService;
 
+    @Inject
+    private MissionWrapper missionWrapper;
+
     private final ConfigStore configStore;
     private final UserProvider<User> userProvider;
     private BattlePassProvider battlePassProvider;
+
 
     public MobDeathListener() {
         this.configStore = PrismarinApi.getProvider(ConfigStore.class);
@@ -56,9 +61,10 @@ public class MobDeathListener implements Listener {
                 getBattlePassProvider().addExp(user, battlepass);
                 player.sendMessage(PrismarinConstants.PREFIX + "§7You received §6" + NumberFormatter.formatDoubleToThousands(money) + "$ §7for killing a §c" + event.getMob().getDisplayName());
                 player.sendMessage(PrismarinConstants.PREFIX + "§7You received §a" + NumberFormatter.formatDoubleToThousands(money) + " Battlepass EXP §7for killing a §c" + event.getMob().getDisplayName());
-
                 userProvider.saveAsync(user, true);
                 warzoneService.getClanStatsProvider().addMobKills(player);
+
+                missionWrapper.getMissionProvider().addProgress(player, "kill25zombies", 1, 1);
             }
         }
     }
