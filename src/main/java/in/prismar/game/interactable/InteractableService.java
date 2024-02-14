@@ -1,6 +1,7 @@
 package in.prismar.game.interactable;
 
 import in.prismar.game.Game;
+import in.prismar.game.interactable.gui.LayoutInitialization;
 import in.prismar.game.interactable.model.Interactable;
 import in.prismar.game.interactable.model.keycode.Keycode;
 import in.prismar.game.interactable.repository.FileInteractableRepository;
@@ -28,6 +29,8 @@ public class InteractableService {
     public InteractableService(Game game) {
         this.game = game;
         this.repository = new FileInteractableRepository(this);
+
+        LayoutInitialization.init(this, game);
     }
 
     public <T extends Interactable> T create(String id, Location location, InteractableType type) {

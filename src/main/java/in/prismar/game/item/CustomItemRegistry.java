@@ -38,6 +38,7 @@ import in.prismar.game.item.impl.gun.impl.Railgun;
 import in.prismar.game.item.impl.medical.BandageItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.medical.MedkitItem;
+import in.prismar.game.item.impl.melee.ThrowableTomahawkMeeleItem;
 import in.prismar.game.item.impl.misc.*;
 import in.prismar.game.item.impl.placeable.LandmineCustomItem;
 import in.prismar.game.item.impl.tea.TeaItem;
@@ -186,6 +187,8 @@ public class CustomItemRegistry implements CustomItemProvider {
 
         register(new SmallBackpackItem());
         register(new MediumBackpackItem());
+
+        register(new ThrowableTomahawkMeeleItem());
 
     }
 

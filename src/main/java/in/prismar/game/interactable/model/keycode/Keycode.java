@@ -2,7 +2,9 @@ package in.prismar.game.interactable.model.keycode;
 
 import in.prismar.game.animation.model.Animation;
 import in.prismar.game.interactable.InteractableService;
+import in.prismar.game.interactable.gui.LayoutInitialization;
 import in.prismar.game.interactable.model.Interactable;
+import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.spigot.scheduler.Scheduler;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +28,7 @@ public class Keycode extends Interactable {
     private String door;
     private int doorOpenSeconds;
     private Set<String> codes;
+    private boolean reset;
 
 
     @Override
@@ -38,6 +41,13 @@ public class Keycode extends Interactable {
             Animation animation = service.getGame().getAnimationFacade().getRepository().findById(door);
             if (animation != null) {
                 if (codes.contains(code) && !animation.isTempDataBoolean("doorOpen")) {
+                    if(isReset()) {
+                        codes.remove(code);
+                        String newCode = String.valueOf(MathUtil.random(10000, 99999));
+                        codes.add(newCode);
+                        LayoutInitialization.changeCode(getId(), newCode);
+                        service.getRepository().save(this);
+                    }
                     player.closeInventory();
                     service.getGame().getAnimationFacade().getService().play(animation, false);
                     Location location = animation.getCuboid().getCenter();
