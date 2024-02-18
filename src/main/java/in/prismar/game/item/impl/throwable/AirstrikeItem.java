@@ -71,7 +71,7 @@ public class AirstrikeItem extends ThrowableItem {
                                     iterator.remove();
                                     armorStand.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, armorStand.getLocation(), 1);
                                     armorStand.getLocation().getWorld()
-                                            .playSound(armorStand.getLocation(), "airstrike.impact", 10f, 1);
+                                            .playSound(armorStand.getLocation(), "airstrike.impact", 5f, 1);
                                     for(Entity near : item.getWorld().getNearbyEntities(armorStand.getLocation(), 7, 7, 7)) {
                                         if(near instanceof LivingEntity target) {
                                             double damage = 30 - target.getLocation().distance(armorStand.getLocation());
@@ -81,8 +81,8 @@ public class AirstrikeItem extends ThrowableItem {
                                 }
                             }
                             if(getCurrentTicks() % 2 == 0) {
-                                for (int i = 0; i < 1; i++) {
-                                    Location location = start.clone().add(MathUtil.random(-20, 20), y, MathUtil.random(-20, 20));
+                                for (int i = 0; i < 4; i++) {
+                                    Location location = start.clone().add(MathUtil.random(-30, 30), y, MathUtil.random(-30, 30));
                                     spawned.add(spawnMissile(stack, location));
                                 }
 
