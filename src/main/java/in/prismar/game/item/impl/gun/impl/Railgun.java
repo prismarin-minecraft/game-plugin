@@ -48,6 +48,8 @@ public class Railgun extends Gun {
 
         generateDefaultLore();
 
+        setPreviewImage("https://i.imgur.com/gnSfqPO.png");
+
 
         buildStateItems();
     }

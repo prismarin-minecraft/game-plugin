@@ -45,6 +45,8 @@ public class GrenadeLauncherItem extends Gun {
         registerSound(GunSoundType.RELOAD_OUT, "reload.lmg.clipout", 1.5f, 1f);
         registerSound(GunSoundType.SHOOT, "shoot.grenadelauncher", 0.5f, 1);
 
+        setPreviewImage("https://i.imgur.com/1Fo1hmQ.png");
+
         generateDefaultLore();
     }
 
