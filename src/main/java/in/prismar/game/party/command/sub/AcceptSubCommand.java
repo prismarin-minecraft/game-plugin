@@ -50,6 +50,7 @@ public class AcceptSubCommand extends HelpSubCommand<Player> {
             }
             registry.removeInvite(party, player);
             party.getMembers().add(player);
+            registry.getMissionWrapper().getMissionProvider().addProgress(player, "create-or-join-party", 1, 1);
             registry.glow(party, player);
             registry.sendMessage(party, PrismarinConstants.PREFIX + "§b" + player.getName() + " §7joined the party");
             return true;

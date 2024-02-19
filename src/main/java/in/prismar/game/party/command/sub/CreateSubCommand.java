@@ -30,6 +30,7 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
             return true;
         }
         registry.create(player);
+        registry.getMissionWrapper().getMissionProvider().addProgress(player, "create-or-join-party", 1, 1);
         player.sendMessage(PrismarinConstants.PREFIX + "§7You have created a §bparty");
         return true;
     }

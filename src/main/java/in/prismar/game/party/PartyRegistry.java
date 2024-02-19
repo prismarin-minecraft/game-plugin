@@ -7,21 +7,18 @@ import in.prismar.api.scoreboard.ScoreboardProvider;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
-import in.prismar.library.common.event.EventBus;
+import in.prismar.game.missions.MissionWrapper;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.registry.LocalMapRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -37,6 +34,9 @@ public class PartyRegistry extends LocalMapRegistry<String, Party> implements Pa
 
     @Inject
     private Game game;
+
+    @Inject
+    private MissionWrapper missionWrapper;
 
     private final ConfigStore store;
     private final UserProvider<User> userProvider;

@@ -25,8 +25,11 @@ public class MissionWrapper {
     @SafeInitialize
     private void initialize() {
         missionProvider.register(new Kill25ZombiesMission());
+        missionProvider.register(new Kill100ZombiesMission(customItemRegistry));
         missionProvider.register(new KillAnderson10Mission(customItemRegistry));
         missionProvider.register(new KillZaku10Mission(customItemRegistry));
+        missionProvider.register(new CreateOrJoinPartyMission());
+        missionProvider.register(new KillKindletron2Mission(customItemRegistry));
     }
 
 

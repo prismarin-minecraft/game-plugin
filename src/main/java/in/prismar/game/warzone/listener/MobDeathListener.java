@@ -65,6 +65,7 @@ public class MobDeathListener implements Listener {
                 warzoneService.getClanStatsProvider().addMobKills(player);
 
                 missionWrapper.getMissionProvider().addProgress(player, "kill25zombies", 1, 1);
+                missionWrapper.getMissionProvider().addProgress(player, "kill100zombies", 1, 1);
             }
         }
     }

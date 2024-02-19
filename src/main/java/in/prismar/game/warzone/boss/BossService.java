@@ -151,6 +151,8 @@ public class BossService {
                     missionWrapper.getMissionProvider().addProgress(damager.getPlayer(), "killanderson10", 1, 1);
                 } else if(boss.getId().equalsIgnoreCase("zaku")) {
                     missionWrapper.getMissionProvider().addProgress(damager.getPlayer(), "killzaku10", 1, 1);
+                } else if(boss.getId().equalsIgnoreCase("kindletron_2")) {
+                    missionWrapper.getMissionProvider().addProgress(damager.getPlayer(), "killkindletron2", 1, 1);
                 }
                 double receiveMoney = balance - (reducePerPlacement * i);
 
