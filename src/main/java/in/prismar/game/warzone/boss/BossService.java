@@ -55,6 +55,7 @@ public class BossService {
         register("toro_type02", ClanBuff.GENERATOR_MULTIPLIER);
         register("zaku", ClanBuff.GENERATOR_MULTIPLIER);
         register("kindletron_2", ClanBuff.GENERATOR_MULTIPLIER);
+        register("Scorpion_King", ClanBuff.GENERATOR_MULTIPLIER);
         register("zahar", ClanBuff.GENERATOR_MULTIPLIER, 2, "zahar", "zahar_abomination");
         Bukkit.getScheduler().runTaskTimer(game, new BossTask(this), 20, 20);
 

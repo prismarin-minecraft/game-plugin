@@ -18,13 +18,13 @@ public final class MythicMobsWrapper {
         boss.setMythicMobs(new HashMap<>());
         if(mobs.length == 0) {
             if(MythicBukkit.inst().getMobManager().getMythicMob(id).isPresent()) {
-                boss.getMythicMobs().put(id, MythicBukkit.inst().getMobManager().getMythicMob(id).get());
+                boss.getMythicMobs().put(id.toLowerCase(), MythicBukkit.inst().getMobManager().getMythicMob(id).get());
             }
 
         } else {
             for(String mob : mobs) {
                 if(MythicBukkit.inst().getMobManager().getMythicMob(mob).isPresent()) {
-                    boss.getMythicMobs().put(mob, MythicBukkit.inst().getMobManager().getMythicMob(mob).get());
+                    boss.getMythicMobs().put(mob.toLowerCase(), MythicBukkit.inst().getMobManager().getMythicMob(mob).get());
                 }
 
             }
