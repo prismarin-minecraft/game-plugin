@@ -26,6 +26,7 @@ public class MissionWrapper {
     private void initialize() {
         missionProvider.register(new Kill25ZombiesMission());
         missionProvider.register(new KillAnderson10Mission(customItemRegistry));
+        missionProvider.register(new KillZaku10Mission(customItemRegistry));
     }
 
 
