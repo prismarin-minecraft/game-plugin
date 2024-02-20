@@ -33,10 +33,10 @@ public class SetSubCommand extends HelpSubCommand<Player> {
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
         if(arguments.getLength() >= 3) {
             Player target = arguments.getOnlinePlayer(1);
-            /*if(player.getName().equals(target.getName())) {
+            if(player.getName().equals(target.getName())) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cYou can't put a bounty on yourself");
                 return true;
-            }*/
+            }
             double money = arguments.getDouble(2);
             if(money < service.getMinMoney()) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cYou need to have a minimum of " + NumberFormatter.formatDoubleToThousands(service.getMinMoney()) + "$");
