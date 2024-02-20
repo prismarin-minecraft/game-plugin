@@ -5,23 +5,33 @@ import in.prismar.api.mission.AbstractMission;
 import in.prismar.api.mission.MissionType;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
+import in.prismar.library.common.math.NumberFormatter;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class CreateOrJoinPartyMission extends AbstractMission {
-    public CreateOrJoinPartyMission() {
-        super("create-or-join-party", MissionType.SEASONAL, 1, Material.ARMOR_STAND, "§dTeam up");
+public class MoneyBasedMission extends AbstractMission {
+
+    private final double amount;
+    private final long maxProgress;
+
+    private final String task;
+
+    public MoneyBasedMission(String id, MissionType type, Material icon, String title, String task, long maxProgress, double amount) {
+        super(id, type, 1, icon, title);
+        this.amount = amount;
+        this.maxProgress = maxProgress;
+        this.task = task;
     }
 
     @Override
     public String getDescription(int stage) {
-        return "§dCreate or join a party";
+        return task;
     }
 
     @Override
     public String[] getRewards() {
         return new String[]{
-                "§a+2.000$"
+                "§a+"+ NumberFormatter.formatDoubleToThousands(amount) +"$"
         };
     }
 
@@ -29,11 +39,11 @@ public class CreateOrJoinPartyMission extends AbstractMission {
     public void onReceiveReward(Player player) {
         UserProvider<User> userProvider = PrismarinApi.getProvider(UserProvider.class);
         User user = userProvider.getUserByUUID(player.getUniqueId());
-        user.getSeasonData().setBalance(user.getSeasonData().getBalance() + 2000);
+        user.getSeasonData().setBalance(user.getSeasonData().getBalance() + amount);
     }
 
     @Override
     public long getMaxProgress(int stage) {
-        return 1;
+        return maxProgress;
     }
 }

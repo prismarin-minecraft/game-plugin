@@ -1,4 +1,4 @@
-package in.prismar.game.missions;
+package in.prismar.game.missions.impl;
 
 import in.prismar.api.mission.AbstractMission;
 import in.prismar.api.mission.MissionType;

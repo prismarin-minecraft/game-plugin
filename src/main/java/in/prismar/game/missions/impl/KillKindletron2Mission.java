@@ -1,4 +1,4 @@
-package in.prismar.game.missions;
+package in.prismar.game.missions.impl;
 
 import in.prismar.api.mission.AbstractMission;
 import in.prismar.api.mission.MissionType;
@@ -37,6 +37,6 @@ public class KillKindletron2Mission extends AbstractMission {
 
     @Override
     public long getMaxProgress(int stage) {
-        return 10;
+        return 1;
     }
 }

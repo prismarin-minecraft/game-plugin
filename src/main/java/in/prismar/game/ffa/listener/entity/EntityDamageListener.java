@@ -6,6 +6,7 @@ import in.prismar.api.configuration.ConfigStore;
 import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.ffa.model.FFAMap;
 import in.prismar.game.ffa.model.FFAMapPlayer;
+import in.prismar.game.missions.MissionWrapper;
 import in.prismar.game.stats.GameStatsDistributor;
 import in.prismar.library.common.math.NumberFormatter;
 import in.prismar.library.meta.anno.Inject;
@@ -69,6 +70,7 @@ public class EntityDamageListener implements Listener {
     }
 
     private void handleDeath(Player target, Player damager) {
+        MissionWrapper.progress(damager, "kill_5_players_in_ffa", 1, 1);
         target.getPlayer().playSound(target.getLocation(), "game.death", 1f, 1);
         target.sendTitle("§4You died", "", 5, 20, 5);
         facade.respawn(target);

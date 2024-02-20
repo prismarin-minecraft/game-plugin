@@ -1,6 +1,7 @@
 package in.prismar.game.quarry.frame;
 
 import in.prismar.api.PrismarinConstants;
+import in.prismar.game.missions.MissionWrapper;
 import in.prismar.game.quarry.QuarryService;
 import in.prismar.game.quarry.model.Quarry;
 import in.prismar.library.common.time.TimeUtil;
@@ -65,7 +66,7 @@ public class QuarryInputFrame extends Frame {
                     event.getEvent().setCurrentItem(new ItemStack(Material.AIR));
                     player.updateInventory();
                     player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1f);
-
+                    MissionWrapper.progress(player, "activate_quarry", 1, 1);
                     update();
                 }
             }

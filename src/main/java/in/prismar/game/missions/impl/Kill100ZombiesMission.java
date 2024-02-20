@@ -1,4 +1,4 @@
-package in.prismar.game.missions;
+package in.prismar.game.missions.impl;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.mission.AbstractMission;
@@ -16,7 +16,7 @@ public class Kill100ZombiesMission extends AbstractMission {
     private final CustomItemRegistry itemRegistry;
 
     public Kill100ZombiesMission(CustomItemRegistry itemRegistry) {
-        super("kill100zombies", MissionType.WEEKLY, 1, Material.IRON_SWORD, "§cZombie slayer V2");
+        super("kill100zombies", MissionType.WEEKLY, 1, Material.ZOMBIE_HEAD, "§cZombie slayer V2");
         this.itemRegistry = itemRegistry;
     }
 
