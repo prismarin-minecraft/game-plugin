@@ -1,5 +1,6 @@
 package in.prismar.game.quarry.command;
 
+import in.prismar.api.PrismarinConstants;
 import in.prismar.game.quarry.QuarryService;
 import in.prismar.game.quarry.command.sub.*;
 import in.prismar.library.meta.anno.Inject;
@@ -18,6 +19,7 @@ public class QuarryCommand extends HelpCommand<Player> {
         super("quarry", "Quarry");
         setSenders(Player.class);
         setBaseColor("§e");
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "quarry.setup");
     }
 
     @SafeInitialize

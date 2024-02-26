@@ -20,6 +20,7 @@ public class BossDamager {
     private final UUID uuid;
     private final String name;
     private double damage;
+    private long lastDamageTimestamp;
 
     public BossDamager(UUID uuid, String name) {
         this.uuid = uuid;

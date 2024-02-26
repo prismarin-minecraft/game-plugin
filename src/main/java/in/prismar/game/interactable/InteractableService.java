@@ -10,7 +10,6 @@ import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
 import org.bukkit.Location;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 
 /**
@@ -30,7 +29,12 @@ public class InteractableService {
         this.game = game;
         this.repository = new FileInteractableRepository(this);
 
-        LayoutInitialization.init(this, game);
+        try {
+            LayoutInitialization.init(this, game);
+        }catch (NoClassDefFoundError exception) {
+            System.out.println("Couldn't find AdvancedGUI");
+        }
+
     }
 
     public <T extends Interactable> T create(String id, Location location, InteractableType type) {

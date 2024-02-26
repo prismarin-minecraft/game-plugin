@@ -20,6 +20,8 @@ public class SetInputChestSubCommand extends HelpSubCommand<Player> {
 
         setUsage("<id>");
         setDescription("Set the input chest");
+
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "quarry.setup");
     }
 
     @Override

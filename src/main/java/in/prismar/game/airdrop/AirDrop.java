@@ -101,7 +101,7 @@ public class AirDrop {
     }
 
     protected void remove(Location location) {
-        for(Entity stand : location.getWorld().getNearbyEntities(location, 3, 3, 3, entity -> entity instanceof ArmorStand)) {
+        for(Entity stand : location.getWorld().getNearbyEntities(location, 3, 150, 3, entity -> entity instanceof ArmorStand)) {
             stand.remove();
         }
     }

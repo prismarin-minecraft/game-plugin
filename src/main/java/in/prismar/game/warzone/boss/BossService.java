@@ -91,9 +91,11 @@ public class BossService {
         if(!damagers.containsKey(player.getUniqueId())) {
             BossDamager damager = new BossDamager(player.getUniqueId(), player.getName());
             damager.setDamage(damage);
+            damager.setLastDamageTimestamp(System.currentTimeMillis());
             damagers.put(player.getUniqueId(), damager);
         } else {
             BossDamager damager = damagers.get(player.getUniqueId());
+            damager.setLastDamageTimestamp(System.currentTimeMillis());
             damager.setDamage(damager.getDamage() + damage);
         }
     }
@@ -108,7 +110,12 @@ public class BossService {
             final long baseDamage = Long.parseLong(configStore.getProperty("warzone.boss.base.damage"));
 
             Map<UUID, BossDamager> damagers = boss.getDamagers();
-            List<BossDamager> sorted = new ArrayList<>(damagers.values()).stream().sorted((o1, o2) -> Double.compare(o2.getDamage(), o1.getDamage())).limit(10).toList();
+            List<BossDamager> sorted = new ArrayList<>(damagers.values()).stream().sorted((o1, o2) -> Double.compare(o2.getDamage(), o1.getDamage()))
+                    .filter(damager -> {
+                        long diff = (System.currentTimeMillis() - damager.getLastDamageTimestamp())/1000;
+                        return diff <= 600;
+                    })
+                    .limit(10).toList();
             double balance = game.getConfigNodeFile().getDouble("Boss." + boss.getId() + ".Start balance", 60000);
             double reducePerPlacement = game.getConfigNodeFile().getDouble("Boss." + boss.getId() + ".Reduce per placement", 65000);
 
@@ -126,8 +133,11 @@ public class BossService {
                         BossDamager damager = sorted.get(i);
                         if(damager.getDamage() >= baseDamage) {
                             double receiveMoney = balance - (reducePerPlacement * i);
-                            final String place = i == 0 ? "§e§l1st" : i == 1 ? "§7§l2nd" : i == 2 ? "§6§l3rd" : "§2" + (i + 1);
-                            online.sendMessage(dot + place + " " + damager.getName() + " §8| §c"+Math.round(damager.getDamage())+" damage §8| §a+" + NumberFormatter.formatDoubleToThousands(receiveMoney) + "$ ");
+                            if(receiveMoney > 0) {
+                                final String place = i == 0 ? "§e§l1st" : i == 1 ? "§7§l2nd" : i == 2 ? "§6§l3rd" : "§2" + (i + 1);
+                                online.sendMessage(dot + place + " " + damager.getName() + " §8| §c"+Math.round(damager.getDamage())+" damage §8| §a+" + NumberFormatter.formatDoubleToThousands(receiveMoney) + "$ ");
+                            }
+
                         }
                     }
                     online.sendMessage(" ");
@@ -158,17 +168,20 @@ public class BossService {
                 double receiveMoney = balance - (reducePerPlacement * i);
 
                 User user = userProvider.getUserByUUID(damager.getUuid());
-                user.getSeasonData().setBalance(user.getSeasonData().getBalance() + receiveMoney);
-                userProvider.saveAsync(user, true);
-                if(clanProvider.isInClan(damager.getUuid())) {
-                    Clan clan = clanProvider.getClanByPlayer(damager.getUuid());
-                    if(i == 0) {
-                        clanProvider.giveBuff(clan, boss.getBuff());
-                        clanProvider.sendPrefixMessage(clan, "§7Your clan received the buff §e" + boss.getBuff().getDisplayName() + " §7provided by §6" + damager.getName() + " §7for killing the boss §3" + displayName);
-                    }
-                    game.getWarzoneService().getClanStatsProvider().addBossFights(damager.getUuid());
+                if(receiveMoney > 0) {
+                    user.getSeasonData().setBalance(user.getSeasonData().getBalance() + receiveMoney);
+                    userProvider.saveAsync(user, true);
+                    if(clanProvider.isInClan(damager.getUuid())) {
+                        Clan clan = clanProvider.getClanByPlayer(damager.getUuid());
+                        if(i == 0) {
+                            clanProvider.giveBuff(clan, boss.getBuff());
+                            clanProvider.sendPrefixMessage(clan, "§7Your clan received the buff §e" + boss.getBuff().getDisplayName() + " §7provided by §6" + damager.getName() + " §7for killing the boss §3" + displayName);
+                        }
+                        game.getWarzoneService().getClanStatsProvider().addBossFights(damager.getUuid());
 
+                    }
                 }
+
             }
             boss.getDamagers().clear();
         }

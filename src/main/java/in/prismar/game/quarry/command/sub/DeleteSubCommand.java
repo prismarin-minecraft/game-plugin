@@ -19,6 +19,8 @@ public class DeleteSubCommand extends HelpSubCommand<Player> {
 
         setUsage("<id>");
         setDescription("Delete a quarry");
+
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "quarry.setup");
     }
 
     @Override

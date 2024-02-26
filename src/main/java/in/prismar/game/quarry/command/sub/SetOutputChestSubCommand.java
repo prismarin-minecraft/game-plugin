@@ -21,6 +21,8 @@ public class SetOutputChestSubCommand extends HelpSubCommand<Player> {
 
         setUsage("<id>");
         setDescription("Set the output chest");
+
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "quarry.setup");
     }
 
     @Override

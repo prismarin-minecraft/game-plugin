@@ -17,6 +17,8 @@ public class ListSubCommand extends HelpSubCommand<Player> {
         this.service = service;
 
         setDescription("List all quarries");
+
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "quarry.setup");
     }
 
     @Override

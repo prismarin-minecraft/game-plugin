@@ -19,6 +19,8 @@ public class CreateSubCommand extends HelpSubCommand<Player> {
 
         setUsage("<id> <producePerSecond> <displayName...>");
         setDescription("Create a new quarry");
+
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "quarry.setup");
     }
 
     @Override

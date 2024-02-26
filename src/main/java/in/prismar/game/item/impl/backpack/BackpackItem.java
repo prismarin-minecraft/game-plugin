@@ -46,16 +46,21 @@ public class BackpackItem extends CustomItem {
 
     @CustomItemEvent
     public void onClick(Player player, Game game, CustomItemHolder holder, InventoryClickEvent event) {
-        ItemStack stack;
-        if(event.getClick() == ClickType.NUMBER_KEY) {
-            stack = player.getInventory().getItem(event.getHotbarButton());
-        } else {
-            stack = event.getCurrentItem();
-        }
-        CustomItem customItem = game.getItemRegistry().getItemByStack(stack);
-        if(customItem instanceof BackpackItem) {
-            event.setCancelled(true);
-            event.setResult(Event.Result.DENY);
+        if(player.getOpenInventory() != null) {
+            if(player.getOpenInventory().getTitle().contains("Backpack") || player.getOpenInventory().getTitle().contains("Vault")) {
+                ItemStack stack;
+                if(event.getClick() == ClickType.NUMBER_KEY) {
+                    stack = player.getInventory().getItem(event.getHotbarButton());
+                } else {
+                    stack = event.getCurrentItem();
+                }
+                CustomItem customItem = game.getItemRegistry().getItemByStack(stack);
+                if(customItem instanceof BackpackItem) {
+                    event.setCancelled(true);
+                    event.setResult(Event.Result.DENY);
+                }
+            }
         }
     }
+    
 }

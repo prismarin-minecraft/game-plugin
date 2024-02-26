@@ -47,7 +47,9 @@ public class AirDropRegistry {
             if(!airDrop.getArmorStand().getLocation().getWorld().getName().equals(location.getWorld().getName())) {
                 continue;
             }
-            if(airDrop.getArmorStand().getLocation().distanceSquared(location) <= 1) {
+            Location sameLevelLoc = airDrop.getArmorStand().getLocation().clone();
+            sameLevelLoc.setY(location.getY());
+            if(sameLevelLoc.distanceSquared(location) <= 1) {
                 return Optional.of(airDrop);
             }
         }

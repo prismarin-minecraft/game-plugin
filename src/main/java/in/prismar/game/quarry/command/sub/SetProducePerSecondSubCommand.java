@@ -20,6 +20,8 @@ public class SetProducePerSecondSubCommand extends HelpSubCommand<Player> {
 
         setUsage("<id> <producePerSecond>");
         setDescription("Update produce per second");
+
+        setPermission(PrismarinConstants.PERMISSION_PREFIX + "quarry.setup");
     }
 
     @Override
