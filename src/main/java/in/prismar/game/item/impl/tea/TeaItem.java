@@ -63,7 +63,6 @@ public class TeaItem extends CustomItem {
         final String id = type.name().toLowerCase() + "tea";
         if(!user.isTimestampAvailable(id)) {
             event.setCancelled(true);
-
             player.sendMessage(PrismarinConstants.PREFIX + "§cYou have already consumed this type of tea");
             return;
         }

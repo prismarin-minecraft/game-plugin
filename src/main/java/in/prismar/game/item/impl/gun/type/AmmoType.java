@@ -1,6 +1,7 @@
 package in.prismar.game.item.impl.gun.type;
 
 import in.prismar.library.spigot.item.ItemBuilder;
+import in.prismar.library.spigot.item.ItemUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -34,7 +35,7 @@ public enum AmmoType {
         int amount = 0;
         for(ItemStack stack : player.getInventory()) {
             if(stack != null) {
-                if(stack.isSimilar(type.getItem())) {
+                if(ItemUtil.compare(type.getItem(), stack)) {
                     amount += stack.getAmount();
                 }
             }
@@ -46,7 +47,7 @@ public enum AmmoType {
         for (int i = 0; i < player.getInventory().getSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
             if(stack != null) {
-                if(stack.isSimilar(type.getItem())) {
+                if(ItemUtil.compare(type.getItem(), stack)) {
                    if(amount >= stack.getAmount()) {
                        amount -= stack.getAmount();
                        player.getInventory().setItem(i, null);

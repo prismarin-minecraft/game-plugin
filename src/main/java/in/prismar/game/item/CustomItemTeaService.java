@@ -49,7 +49,17 @@ public class CustomItemTeaService implements TeaProvider {
         if(user.isTimestampAvailable(id)) {
            return 1;
         }
-        final int tier = (int) user.getSeasonData().getAttachments().getOrDefault(id, 1);
+
+        int tier = 1;
+        if(user.getSeasonData().getAttachments().containsKey(id)) {
+            Object raw = user.getSeasonData().getAttachments().get(id);
+            if(raw instanceof Double) {
+                double rawValue = (double) raw;
+                tier = (int)rawValue;
+            } else {
+                tier = (int)user.getSeasonData().getAttachments().get(id);
+            }
+        }
         if(tier == 1) {
             return 2;
         }

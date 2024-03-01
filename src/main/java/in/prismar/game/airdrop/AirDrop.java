@@ -56,6 +56,8 @@ public class AirDrop {
         final long ticks = 20*expiration;
         double y = 0.4;
         final Particle.DustOptions options = new Particle.DustOptions(Color.RED, 1);
+        location.getChunk().load();
+        location.getChunk().setForceLoaded(true);
         Scheduler.runTimerFor(1, 1, ticks, new SchedulerRunnable() {
             @Override
             public void run() {
@@ -104,6 +106,7 @@ public class AirDrop {
         for(Entity stand : location.getWorld().getNearbyEntities(location, 3, 150, 3, entity -> entity instanceof ArmorStand)) {
             stand.remove();
         }
+        location.getChunk().setForceLoaded(false);
     }
 
     public boolean isExpired() {
