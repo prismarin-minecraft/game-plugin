@@ -1,14 +1,15 @@
 package in.prismar.game.item.impl.gun;
 
 import in.prismar.game.item.impl.gun.hitbox.HitboxRegistry;
+import in.prismar.game.warzone.combatlog.npc.TemporaryNpc;
+import in.prismar.game.warzone.combatlog.npc.TemporaryNpcHitbox;
+import in.prismar.game.warzone.combatlog.npc.TemporaryNpcService;
 import in.prismar.library.spigot.raytrace.Raytrace;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceEntityHitbox;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceHitbox;
 import in.prismar.library.spigot.raytrace.hitbox.RaytraceHitboxHelper;
 import in.prismar.library.spigot.raytrace.result.RaytraceHit;
 import in.prismar.library.spigot.raytrace.result.RaytraceResult;
-import io.lumine.mythic.bukkit.MythicBukkit;
-import io.lumine.mythic.core.mobs.ActiveMob;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -50,6 +51,7 @@ public class Bullet {
         raytrace.getHitboxes().addAll(RaytraceHitboxHelper.collectPossibleEntityHitboxes(raytrace.getOrigin(), raytrace.getDirection(), range, 180));
         raytrace.getHitboxes().addAll(RaytraceHitboxHelper.collectPossibleBlockHitboxesProfessionalWay(raytrace.getOrigin(), raytrace.getDirection(), range));
         raytrace.getHitboxes().addAll(collectPossibleMobHitboxes(raytrace.getOrigin(), raytrace.getDirection(), range, 180));
+        raytrace.getHitboxes().addAll(collectPossibleNpcHitboxes(raytrace.getOrigin(), raytrace.getDirection(), range, 180));
     }
 
     public static List<RaytraceHitbox> collectPossibleMobHitboxes(Location origin, Vector direction, double range, double fov) {
@@ -79,6 +81,34 @@ public class Bullet {
                     if(livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {
                         hitboxes.add(new RaytraceEntityHitbox(entity));
                     }
+                }
+            }
+
+        }
+        return hitboxes;
+    }
+
+    public static List<RaytraceHitbox> collectPossibleNpcHitboxes(Location origin, Vector direction, double range, double fov) {
+        final double rangeSqrt = range * range;
+        final var diff = fov - 90;
+        final var factor = (double) 4 / 10;
+        final var result = diff * factor + 61;
+        final var minDotProduct = Math.cos(Math.toRadians(result));
+        List<RaytraceHitbox> hitboxes = new ArrayList<>();
+
+        for (TemporaryNpc npc : TemporaryNpcService.getInstance().getNpcs().values()) {
+            Location location = npc.getEyeLocation();
+            if(!origin.getWorld().getName().equals(location.getWorld().getName())) {
+                continue;
+            }
+            if (location.distanceSquared(origin) <= rangeSqrt) {
+                double deltaX = location.getX() - origin.getX();
+                double deltaY = location.getY() - origin.getY();
+                double deltaZ = location.getZ() - origin.getZ();
+                Vector targetDirection = new Vector(deltaX, deltaY, deltaZ).normalize();
+                double dot = targetDirection.dot(direction);
+                if (dot > minDotProduct) {
+                    hitboxes.add(new TemporaryNpcHitbox(npc));
                 }
             }
 

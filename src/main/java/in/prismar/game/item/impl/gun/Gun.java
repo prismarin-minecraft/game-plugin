@@ -22,6 +22,8 @@ import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.model.SkinableItem;
+import in.prismar.game.warzone.combatlog.npc.TemporaryNpcHitbox;
+import in.prismar.game.warzone.combatlog.npc.TemporaryNpcService;
 import in.prismar.game.tracer.BulletTracer;
 import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.item.ItemUtil;
@@ -418,6 +420,9 @@ public class Gun extends SkinableItem {
                     blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.tree", 0.35f, 1);
                 }
                 damageReducePercentage += wallbangTypes.get(blockHit.getTarget().getType());
+            } else if(hit instanceof TemporaryNpcHitbox.RaytraceNpcHit npcHit) {
+                TemporaryNpcService.getInstance().damage(npcHit.getTarget(), getBodyDamage());
+                playSound(player, GunSoundType.HIT);
             }
         }
         spawnParticle(game, gunPlayer, particleOrigin, bullet.getEndPoint());

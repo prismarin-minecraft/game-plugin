@@ -35,6 +35,7 @@ import in.prismar.game.item.impl.deployable.SandbagItem;
 import in.prismar.game.item.impl.gun.Gun;
 import in.prismar.game.item.impl.gun.impl.GrenadeLauncherItem;
 import in.prismar.game.item.impl.gun.impl.Railgun;
+import in.prismar.game.item.impl.gun.impl.TestGun;
 import in.prismar.game.item.impl.medical.BandageItem;
 import in.prismar.game.item.impl.medical.MedicalSyringeItem;
 import in.prismar.game.item.impl.medical.MedkitItem;
@@ -164,6 +165,7 @@ public class CustomItemRegistry implements CustomItemProvider {
         register(new FastPickaxeItem());
 
 
+
         for(HardpointTeam team : HardpointTeam.values()) {
             register(new HardpointHelmet(team.getFancyName(), team.getColor()));
             register(new HardpointChestplate(team.getFancyName(), team.getColor()));
@@ -189,6 +191,8 @@ public class CustomItemRegistry implements CustomItemProvider {
         register(new MediumBackpackItem());
 
         register(new ThrowableTomahawkMeeleItem());
+
+        register(new TestGun());
 
     }
 
