@@ -9,6 +9,8 @@ import in.prismar.library.spigot.command.spigot.template.help.HelpCommand;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 /**
  * Copyright (c) Maga, All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -40,7 +42,16 @@ public class CustomItemCommand extends HelpCommand<Player> {
 
     }
 
-
-
-
+    @Override
+    public List<String> tab(Player sender, String alias, String[] args) {
+        if (args.length > 1) {
+            if (args[0].equalsIgnoreCase("get")) {
+                return registry.getItems().keySet()
+                        .stream()
+                        .filter(s -> s.startsWith(args[1]))
+                        .toList();
+            }
+        }
+        return super.tab(sender, alias, args);
+    }
 }
