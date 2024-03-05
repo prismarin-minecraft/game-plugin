@@ -52,6 +52,9 @@ public class PlayerQuitListener implements Listener {
             if(player.isDead()) {
                 return;
             }
+            if(!temporaryNpcService.isWorth(player)) {
+                return;
+            }
             temporaryNpcService.spawn(player);
         }
     }

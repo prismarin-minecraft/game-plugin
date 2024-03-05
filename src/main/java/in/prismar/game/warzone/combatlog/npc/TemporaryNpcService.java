@@ -88,6 +88,18 @@ public class TemporaryNpcService {
         }
     }
 
+    public boolean isWorth(Player player) {
+        int worth = 0;
+        for(ItemStack stack : player.getInventory()) {
+            if(stack != null) {
+                if(stack.getType() != Material.AIR) {
+                    worth++;
+                }
+            }
+        }
+        return worth >= 2;
+    }
+
     public void spawn(Player player) {
         TemporaryNpc npc = new TemporaryNpc(game, player);
         npcs.put(player.getUniqueId(), npc);

@@ -19,9 +19,17 @@ public class Party {
     private List<Player> members;
     private List<Player> invites;
 
+    private long overLimitAt;
+    private long nextNotificationAt;
+    private long nextStaffNotificationAt;
+
     public Party(Player owner) {
         this.owner = owner;
         this.members = new ArrayList<>();
         this.invites = new ArrayList<>();
+    }
+
+    public int getSize() {
+        return members.size() + 1;
     }
 }

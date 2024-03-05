@@ -1,6 +1,7 @@
 package in.prismar.game;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.bounty.BountyProvider;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.configuration.node.ConfigNodeProvider;
 import in.prismar.api.core.CoreProvider;
@@ -18,6 +19,7 @@ import in.prismar.api.warzone.dungeon.DungeonProvider;
 import in.prismar.game.airdrop.AirDropRegistry;
 import in.prismar.game.animation.AnimationFacade;
 import in.prismar.game.battleroyale.BattleRoyaleService;
+import in.prismar.game.bounty.BountyService;
 import in.prismar.game.database.RedisContext;
 import in.prismar.game.ffa.FFAFacade;
 import in.prismar.game.hardpoint.HardpointFacade;
@@ -121,6 +123,9 @@ public class Game extends JavaPlugin implements GameProvider {
     @Inject
     private DungeonService dungeonService;
 
+    @Inject
+    private BountyService bountyService;
+
 
     private RegionProvider regionProvider;
     private WebServer webServer;
@@ -170,6 +175,7 @@ public class Game extends JavaPlugin implements GameProvider {
         PrismarinApi.registerProvider(DungeonProvider.class, dungeonService);
         PrismarinApi.registerProvider(TeaProvider.class, teaService);
         PrismarinApi.registerProvider(CustomItemProvider.class, itemRegistry);
+        PrismarinApi.registerProvider(BountyProvider.class, bountyService);
     }
 
     private void initializeWebServer() {

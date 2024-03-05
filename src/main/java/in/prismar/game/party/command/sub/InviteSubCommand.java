@@ -43,7 +43,7 @@ public class InviteSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cThis player is already in a party.");
                 return true;
             }
-            if(party.getMembers().size() >= registry.getMaxPartySize() - 1) {
+            if(registry.isPartyOverLimitOrEquals(party)) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cMax party members reached.");
                 return true;
             }

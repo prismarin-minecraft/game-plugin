@@ -2,12 +2,14 @@ package in.prismar.game.bounty.command.sub;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.bounty.BountyService;
 import in.prismar.game.bounty.model.Bounty;
 import in.prismar.game.bounty.model.BountySupplier;
 import in.prismar.library.common.math.NumberFormatter;
+import in.prismar.library.common.time.TimeUtil;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.template.help.HelpSubCommand;
@@ -20,9 +22,11 @@ import java.util.function.Consumer;
 public class SetSubCommand extends HelpSubCommand<Player> {
 
     private final BountyService service;
+    private final ConfigStore configStore;
 
     public SetSubCommand(BountyService service) {
         super("set");
+        this.configStore = PrismarinApi.getProvider(ConfigStore.class);
         this.service = service;
 
         setUsage("<player> <money>");
@@ -32,6 +36,13 @@ public class SetSubCommand extends HelpSubCommand<Player> {
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
         if(arguments.getLength() >= 3) {
+            User ownUser = service.getUserProvider().getUserByUUID(player.getUniqueId());
+            if(!ownUser.isLocalTimestampAvailable("bounty", System.currentTimeMillis() + 1000 * configStore.getLongPropertyOrDefault("bounty.cooldown", 60 * 3))
+            && !player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "bounty.cooldown.bypass")) {
+                long difference = ownUser.getLocalTimestamp("bounty") - System.currentTimeMillis();
+                player.sendMessage(PrismarinConstants.PREFIX + "§cYou are on a cooldown.(" + TimeUtil.showInMinutesSeconds(difference/1000) + ")");
+                return true;
+            }
             Player target = arguments.getOnlinePlayer(1);
             if(player.getName().equals(target.getName())) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cYou can't put a bounty on yourself");

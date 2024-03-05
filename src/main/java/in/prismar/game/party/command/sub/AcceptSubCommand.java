@@ -43,7 +43,7 @@ public class AcceptSubCommand extends HelpSubCommand<Player> {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cYou weren't invited to this party.");
                 return true;
             }
-            if(party.getMembers().size() >= registry.getMaxPartySize() - 1) {
+            if(registry.isPartyOverLimitOrEquals(party)) {
                 player.sendMessage(PrismarinConstants.PREFIX + "§cMax party members reached.");
                 registry.removeInvite(party, player);
                 return true;

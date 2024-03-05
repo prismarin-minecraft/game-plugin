@@ -1,6 +1,8 @@
 package in.prismar.game.bounty;
 
 import in.prismar.api.PrismarinApi;
+import in.prismar.api.bounty.BountyEvent;
+import in.prismar.api.bounty.BountyProvider;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
@@ -12,6 +14,7 @@ import in.prismar.game.bounty.repository.BountyRepository;
 import in.prismar.game.bounty.repository.FileBountyRepository;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @Getter
-public class BountyService {
+public class BountyService implements BountyProvider {
 
     private final BountyRepository repository;
     private final ConfigStore configStore;
@@ -38,6 +41,12 @@ public class BountyService {
 
     }
 
+    @Override
+    public double getBountyValue(Player player) {
+        Optional<Bounty> optional = getBounty(player);
+        return optional.map(Bounty::getMoney).orElse(0.0);
+    }
+
     public Optional<Bounty> getBounty(Player player) {
         return repository.findByIdOptional(player.getUniqueId().toString());
     }
@@ -47,11 +56,13 @@ public class BountyService {
         for(BountySupplier current : bounty.getSuppliers()) {
             if(current.getUuid().equals(supplier.getUuid())) {
                 current.setMoney(current.getMoney() + money);
+                Bukkit.getPluginManager().callEvent(new BountyEvent(target, bounty.getMoney()));
                 repository.saveAsync(bounty, true);
                 return bounty;
             }
         }
         bounty.getSuppliers().add(supplier);
+        Bukkit.getPluginManager().callEvent(new BountyEvent(target, bounty.getMoney()));
         repository.saveAsync(bounty, true);
         return bounty;
     }
@@ -73,6 +84,7 @@ public class BountyService {
         bounty.setName(target.getName());
         bounty.setSuppliers(new ArrayList<>());
         bounty.getSuppliers().add(supplier);
+        Bukkit.getPluginManager().callEvent(new BountyEvent(target, supplier.getMoney()));
         return repository.createAsync(bounty);
     }
 

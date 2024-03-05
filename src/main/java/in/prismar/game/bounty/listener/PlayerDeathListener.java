@@ -1,6 +1,7 @@
 package in.prismar.game.bounty.listener;
 
 import in.prismar.api.PrismarinConstants;
+import in.prismar.api.bounty.BountyEvent;
 import in.prismar.api.user.User;
 import in.prismar.game.bounty.BountyService;
 import in.prismar.game.bounty.model.Bounty;
@@ -58,6 +59,7 @@ public class PlayerDeathListener implements Listener {
                         supplierPlayer.playSound(supplierPlayer.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 0.8f, 1f);
                     }
                 }
+                Bukkit.getPluginManager().callEvent(new BountyEvent(entity, bounty.getMoney()));
                 service.getRepository().deleteAsync(bounty);
             }
         }

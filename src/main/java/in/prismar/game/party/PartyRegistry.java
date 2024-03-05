@@ -8,11 +8,13 @@ import in.prismar.api.user.User;
 import in.prismar.api.user.UserProvider;
 import in.prismar.game.Game;
 import in.prismar.game.missions.MissionWrapper;
+import in.prismar.game.party.task.PartyLimitCheckerTask;
 import in.prismar.library.common.math.MathUtil;
 import in.prismar.library.common.registry.LocalMapRegistry;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.meta.anno.Service;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -40,12 +42,18 @@ public class PartyRegistry extends LocalMapRegistry<String, Party> implements Pa
 
     private final ConfigStore store;
     private final UserProvider<User> userProvider;
+    private final ConfigStore configStore;
 
-    public PartyRegistry() {
+    public PartyRegistry(Game game) {
         super(false, false);
         this.store = PrismarinApi.getProvider(ConfigStore.class);
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
+        this.configStore = PrismarinApi.getProvider(ConfigStore.class);
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(game, new PartyLimitCheckerTask(this), 20, 20);
     }
+
+
 
     public boolean isPartyChatToggled(Player player) {
         User user = userProvider.getUserByUUID(player.getUniqueId());
@@ -62,8 +70,28 @@ public class PartyRegistry extends LocalMapRegistry<String, Party> implements Pa
         return false;
     }
 
+    public boolean isPartyOverLimit(Party party) {
+        return party.getSize() > getAllowedPartySize();
+    }
+
+    public boolean isPartyOverLimitOrEquals(Party party) {
+        return party.getSize() >= getAllowedPartySize();
+    }
+
+    public int getAllowedPartySize() {
+        return Bukkit.getOnlinePlayers().size() > getPartySizeLimitPlayers() ? getMaxPartySize() : getPartySizeLimit();
+    }
+
+    public int getPartySizeLimitPlayers() {
+        return configStore.getIntPropertyOrDefault("party.size.limit.players", 40);
+    }
+
+    public int getPartySizeLimit() {
+        return configStore.getIntPropertyOrDefault("party.size.limit", 3);
+    }
+
     public int getMaxPartySize() {
-        return Integer.valueOf(store.getProperty("party.max.size"));
+        return configStore.getIntPropertyOrDefault("party.max.size", 4);
     }
 
 
