@@ -4,6 +4,7 @@ import in.prismar.api.PrismarinApi;
 import in.prismar.api.PrismarinConstants;
 import in.prismar.api.configuration.ConfigStore;
 import in.prismar.api.region.RegionProvider;
+import in.prismar.game.warzone.WarzoneService;
 import in.prismar.game.warzone.combatlog.npc.TemporaryNpcService;
 import in.prismar.game.warzone.combatlog.CombatLogService;
 import in.prismar.library.meta.anno.Inject;
@@ -27,6 +28,9 @@ public class PlayerQuitListener implements Listener {
     private CombatLogService service;
 
     @Inject
+    private WarzoneService warzoneService;
+
+    @Inject
     private TemporaryNpcService temporaryNpcService;
 
     private RegionProvider regionProvider;
@@ -41,6 +45,9 @@ public class PlayerQuitListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if(player.hasPermission(PrismarinConstants.PERMISSION_PREFIX + "combatlog.bypass")) {
+            return;
+        }
+        if(!warzoneService.isInWarzone(player)) {
             return;
         }
         if(getRegionProvider().isInRegionWithFlag(player.getLocation(), "pvp")) {

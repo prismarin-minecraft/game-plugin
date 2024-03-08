@@ -151,7 +151,7 @@ public class CustomItemRegistry implements CustomItemProvider {
 
         register(new SandbagItem());
 
-       // register(new GrapplingGunItem());
+        register(new GrapplingGunItem());
 
         register(new RiotShieldItem());
         register(new GrenadeLauncherItem());

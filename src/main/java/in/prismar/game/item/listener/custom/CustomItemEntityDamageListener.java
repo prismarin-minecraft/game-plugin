@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.List;
 
@@ -34,31 +35,38 @@ public class CustomItemEntityDamageListener implements Listener {
     private Game game;
 
     @EventHandler(priority = EventPriority.NORMAL)
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            registry.publishEvent(player, event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onCall(EntityDamageByEntityEvent event) {
-        if(event.getDamager() instanceof Player damager) {
+        if (event.getDamager() instanceof Player damager) {
             registry.publishEvent(damager, event);
         }
-        if(event.getEntity() instanceof Player player) {
+        if (event.getEntity() instanceof Player player) {
             List<CustomItemHolder> holders = registry.publishEvent(player, event);
             int headProtection = 0;
             int bodyProtection = 0;
-            for(CustomItemHolder holder : holders) {
-                if(holder.getHoldingType() != CustomItemHoldingType.ARMOR) {
+            for (CustomItemHolder holder : holders) {
+                if (holder.getHoldingType() != CustomItemHoldingType.ARMOR) {
                     continue;
                 }
-                if(holder.getItem() instanceof ArmorItem armor) {
+                if (holder.getItem() instanceof ArmorItem armor) {
                     headProtection += armor.getHeadProtection();
                     bodyProtection += armor.getBodyProtection();
                 }
             }
             int reducePercentage = bodyProtection;
             GunPlayer gunPlayer = GunPlayer.of(player.getUniqueId());
-            if(gunPlayer.getLastDamageReceived() != null) {
-                if(gunPlayer.getLastDamageReceived() == GunDamageType.HEADSHOT) {
+            if (gunPlayer.getLastDamageReceived() != null) {
+                if (gunPlayer.getLastDamageReceived() == GunDamageType.HEADSHOT) {
                     reducePercentage = headProtection;
                 }
             }
-            if(reducePercentage > 0) {
+            if (reducePercentage > 0) {
                 double damage = event.getDamage();
                 double reducedDamage = (damage / 100.0) * (double) reducePercentage;
                 double finalDamage = MathUtil.clamp(damage - reducedDamage, 0, damage);
