@@ -31,6 +31,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -62,11 +64,22 @@ public class GrapplingGunItem extends CustomItem {
 
     private final UserProvider<User> userProvider;
 
+    private final int customModelDataWithoutHook = 6;
+
     public GrapplingGunItem() {
-        super("GrapplingGun", Material.FISHING_ROD, "§6Grappling Gun");
+        super("GrapplingGun", Material.BOW, "§6Grappling Gun");
         allFlags();
+        setCustomModelData(5);
 
         this.userProvider = PrismarinApi.getProvider(UserProvider.class);
+    }
+
+    private void updateItem(Player player, CustomItemHolder holder, boolean hook) {
+        ItemStack stack = holder.getStack();
+        ItemMeta meta = stack.getItemMeta();
+        meta.setCustomModelData(hook ? getCustomModelData() : customModelDataWithoutHook);
+        stack.setItemMeta(meta);
+        player.updateInventory();
     }
 
     @CustomItemEvent
@@ -104,8 +117,8 @@ public class GrapplingGunItem extends CustomItem {
                 long diff = System.currentTimeMillis() - entry.getStarted();
                 if (diff >= 500) {
                     remove(player.getUniqueId());
+                    updateItem(player, holder, true);
                     player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 0.8f, 1f);
-                    player.sendMessage("Unhooked!");
                     noFallDamage.put(player.getUniqueId(), System.currentTimeMillis() + (NO_DAMAGE_TIMER/2));
                 }
             }
@@ -138,17 +151,20 @@ public class GrapplingGunItem extends CustomItem {
                 ClientboundSetEntityLinkPacket packet = new ClientboundSetEntityLinkPacket(craftSheep.getHandle(), craftPlayer.getHandle());
                 sendPacket(player, packet);
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDER_PEARL_THROW, 1f, 1f);
-                player.sendMessage("Hooked!");
                 player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT, 0.5f, 1);
                 user.setLocalTimestamp("grappling.gun", System.currentTimeMillis() + COOLDOWN);
+                updateItem(player, holder, false);
+
                 entries.put(player.getUniqueId(), new GrapplingEntry(player, player.getLocation().clone(), target.getLocation(), target, System.currentTimeMillis(), System.currentTimeMillis(), Bukkit.getScheduler().runTaskTimer(game, () -> {
                     if (entries.containsKey(player.getUniqueId())) {
                         if (!player.isOnline()) {
                             remove(player.getUniqueId());
+                            updateItem(player, holder, true);
                             return;
                         }
                         if (player.isDead()) {
                             remove(player.getUniqueId());
+                            updateItem(player, holder, true);
                             return;
                         }
                         GrapplingEntry entry = entries.get(player.getUniqueId());
@@ -156,20 +172,24 @@ public class GrapplingGunItem extends CustomItem {
                         Location end = entry.getEnd();
                         if (!location.getWorld().getName().equals(end.getWorld().getName())) {
                             remove(player.getUniqueId());
+                            updateItem(player, holder, true);
                             return;
                         }
                         Location start = entry.getStart();
                         if (!start.getWorld().getName().equals(location.getWorld().getName())) {
                             remove(player.getUniqueId());
+                            updateItem(player, holder, true);
                             return;
                         }
                         double distance = location.distanceSquared(end);
                         if (distance > MAX_RANGE) {
                             remove(player.getUniqueId());
+                            updateItem(player, holder, true);
                             return;
                         }
                         if (distance < RANGE_UNHOOK) {
                             remove(player.getUniqueId());
+                            updateItem(player, holder, true);
 
                             noFallDamage.put(player.getUniqueId(), System.currentTimeMillis() + NO_DAMAGE_TIMER);
                             //Boost
