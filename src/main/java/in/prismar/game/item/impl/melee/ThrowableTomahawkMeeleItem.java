@@ -39,9 +39,9 @@ public class ThrowableTomahawkMeeleItem extends MeleeItem{
             player.getInventory().setItemInMainHand(null);
             player.updateInventory();
 
-            player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 0.8f, 1f);
             Item item = player.getWorld().dropItem(player.getEyeLocation(), holder.getStack().clone());
             item.setVelocity(player.getLocation().getDirection().multiply(2.5));
+            player.playSound(player.getLocation(), "misc.throwaxe", 0.65f, 1f);
             Scheduler.runTimerFor(1, 1, 20 * 8, new SchedulerRunnable() {
                 @Override
                 public void run() {
@@ -54,9 +54,9 @@ public class ThrowableTomahawkMeeleItem extends MeleeItem{
                             if(livingEntity.getUniqueId().equals(player.getUniqueId())) {
                                 continue;
                             }
-                            livingEntity.damage(28, player);
-                            player.playSound(player.getLocation(), Sound.BLOCK_SLIME_BLOCK_BREAK, 1f, 1.7f);
+                            player.playSound(player.getLocation(), "misc.fleshknifeimpact", 1f, 1f);
                             cancel();
+                            livingEntity.damage(28, player);
                             break;
                         }
                     }

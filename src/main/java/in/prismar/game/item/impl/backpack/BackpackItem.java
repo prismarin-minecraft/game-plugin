@@ -40,7 +40,8 @@ public class BackpackItem extends CustomItem {
             PersistentItemDataUtil.setString(game, event.getItem(), "storage_id", id);
         }
         game.getStorageService().openStorageInventory(player, id, getDisplayName(), rows);
-        player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 0.7f, 1f);
+        player.playSound(player.getLocation(), "misc.backpack", 0.35f, 1f);
+
 
     }
 

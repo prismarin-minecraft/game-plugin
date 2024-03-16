@@ -57,7 +57,7 @@ public class GrapplingGunItem extends CustomItem {
     private static final double BOOST = 1.6;
     private static final long NO_DAMAGE_TIMER = 5 * 1000;
     private static final long COOLDOWN = 3 * 1000;
-    private static final long SOUND_DELAY = 500;
+    private static final long SOUND_DELAY = 900;
 
     private static final float SPEED = 0.8f;
 
@@ -67,7 +67,7 @@ public class GrapplingGunItem extends CustomItem {
     private final int customModelDataWithoutHook = 6;
 
     public GrapplingGunItem() {
-        super("GrapplingGun", Material.BOW, "§6Grappling Gun");
+        super("GrapplingGun", Material.BOWL, "§6Grappling Gun");
         allFlags();
         setCustomModelData(5);
 
@@ -116,8 +116,7 @@ public class GrapplingGunItem extends CustomItem {
                 GrapplingEntry entry = entries.get(player.getUniqueId());
                 long diff = System.currentTimeMillis() - entry.getStarted();
                 if (diff >= 500) {
-                    remove(player.getUniqueId());
-                    updateItem(player, holder, true);
+                    unhook(player, holder);
                     player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 0.8f, 1f);
                     noFallDamage.put(player.getUniqueId(), System.currentTimeMillis() + (NO_DAMAGE_TIMER/2));
                 }
@@ -139,6 +138,7 @@ public class GrapplingGunItem extends CustomItem {
         RaytraceResult result = raytrace.ray(RANGE);
         if (!result.getHits().isEmpty()) {
             if (result.getHits().stream().findFirst().get() instanceof RaytraceBlockHit blockHit) {
+                player.playSound(player.getLocation(), "grappling", 0.7f, 1f);
                 Sheep target = player.getWorld().spawn(blockHit.getPoint(), Sheep.class);
                 target.setAI(false);
                 target.setBaby();
@@ -150,47 +150,37 @@ public class GrapplingGunItem extends CustomItem {
                 CraftPlayer craftPlayer = (CraftPlayer) player;
                 ClientboundSetEntityLinkPacket packet = new ClientboundSetEntityLinkPacket(craftSheep.getHandle(), craftPlayer.getHandle());
                 sendPacket(player, packet);
-                player.playSound(player.getLocation(), Sound.ENTITY_ENDER_PEARL_THROW, 1f, 1f);
-                player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT, 0.5f, 1);
                 user.setLocalTimestamp("grappling.gun", System.currentTimeMillis() + COOLDOWN);
                 updateItem(player, holder, false);
-
-                entries.put(player.getUniqueId(), new GrapplingEntry(player, player.getLocation().clone(), target.getLocation(), target, System.currentTimeMillis(), System.currentTimeMillis(), Bukkit.getScheduler().runTaskTimer(game, () -> {
+                entries.put(player.getUniqueId(), new GrapplingEntry(player, player.getLocation().clone(), target.getLocation(), target, 0, System.currentTimeMillis(), Bukkit.getScheduler().runTaskTimer(game, () -> {
                     if (entries.containsKey(player.getUniqueId())) {
                         if (!player.isOnline()) {
-                            remove(player.getUniqueId());
-                            updateItem(player, holder, true);
+                            unhook(player, holder);
                             return;
                         }
                         if (player.isDead()) {
-                            remove(player.getUniqueId());
-                            updateItem(player, holder, true);
+                            unhook(player, holder);
                             return;
                         }
                         GrapplingEntry entry = entries.get(player.getUniqueId());
                         Location location = player.getLocation();
                         Location end = entry.getEnd();
                         if (!location.getWorld().getName().equals(end.getWorld().getName())) {
-                            remove(player.getUniqueId());
-                            updateItem(player, holder, true);
+                            unhook(player, holder);
                             return;
                         }
                         Location start = entry.getStart();
                         if (!start.getWorld().getName().equals(location.getWorld().getName())) {
-                            remove(player.getUniqueId());
-                            updateItem(player, holder, true);
+                            unhook(player, holder);
                             return;
                         }
                         double distance = location.distanceSquared(end);
                         if (distance > MAX_RANGE) {
-                            remove(player.getUniqueId());
-                            updateItem(player, holder, true);
+                            unhook(player, holder);
                             return;
                         }
                         if (distance < RANGE_UNHOOK) {
-                            remove(player.getUniqueId());
-                            updateItem(player, holder, true);
-
+                            unhook(player, holder);
                             noFallDamage.put(player.getUniqueId(), System.currentTimeMillis() + NO_DAMAGE_TIMER);
                             //Boost
                             Vector vector = end.toVector().subtract(location.toVector())
@@ -205,7 +195,8 @@ public class GrapplingGunItem extends CustomItem {
 
                             long difference = System.currentTimeMillis() - entry.getLastSoundPlayed();
                             if (difference >= SOUND_DELAY) {
-                                player.playSound(player.getLocation(), Sound.BLOCK_COMPARATOR_CLICK, 0.5f, 1f);
+                                entry.setLastSoundPlayed(System.currentTimeMillis());
+                                player.playSound(player.getLocation(),"grappling.pull", 0.5f, 1f);
                             }
                         }
                     }
@@ -213,6 +204,12 @@ public class GrapplingGunItem extends CustomItem {
 
             }
         }
+    }
+
+    private void unhook(Player player, CustomItemHolder holder) {
+        remove(player.getUniqueId());
+        updateItem(player, holder, true);
+        player.stopSound("grappling.pull");
     }
 
     protected void sendPacket(Player player, Packet<?> packet) {
@@ -235,6 +232,7 @@ public class GrapplingGunItem extends CustomItem {
         private final Location start;
         private final Location end;
         private final Sheep target;
+        @Setter
         private long lastSoundPlayed;
         private long started;
 
