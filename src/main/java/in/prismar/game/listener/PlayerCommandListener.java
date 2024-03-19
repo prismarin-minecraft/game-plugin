@@ -28,9 +28,6 @@ public class PlayerCommandListener implements Listener {
     @Inject
     private FFAFacade mapFacade;
 
-   /* @Inject
-    private ExtractionFacade extractionFacade;*/
-
     @Inject
     private HardpointFacade hardpointFacade;
 

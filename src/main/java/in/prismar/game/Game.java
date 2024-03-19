@@ -26,6 +26,7 @@ import in.prismar.game.hardpoint.HardpointFacade;
 import in.prismar.game.item.CustomItemAmmoProvider;
 import in.prismar.game.item.CustomItemRegistry;
 import in.prismar.game.item.CustomItemTeaService;
+import in.prismar.game.ai.AIRegistry;
 import in.prismar.game.party.PartyRegistry;
 import in.prismar.game.perk.PerkService;
 import in.prismar.game.storage.StorageService;
@@ -76,6 +77,9 @@ public class Game extends JavaPlugin implements GameProvider {
 
     @Inject
     private FFAFacade mapFacade;
+
+    @Inject
+    private AIRegistry aiRegistry;
 
     @Inject
     private CustomItemTeaService teaService;

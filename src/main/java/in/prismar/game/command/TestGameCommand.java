@@ -1,17 +1,13 @@
 package in.prismar.game.command;
 
-import in.prismar.api.PrismarinConstants;
 import in.prismar.game.Game;
-import in.prismar.game.interactable.model.keycode.KeyCodeFrame;
+import in.prismar.game.ai.ConvoyEscort;
 import in.prismar.library.meta.anno.Inject;
 import in.prismar.library.spigot.command.exception.CommandException;
 import in.prismar.library.spigot.command.spigot.SpigotArguments;
 import in.prismar.library.spigot.command.spigot.SpigotCommand;
-import in.prismar.library.spigot.item.ItemBuilder;
 import in.prismar.library.spigot.meta.anno.AutoCommand;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Copyright (c) Maga, All Rights Reserved
@@ -26,6 +22,8 @@ public class TestGameCommand extends SpigotCommand<Player> {
     @Inject
     private Game game;
 
+
+
     public TestGameCommand(Game game) {
         super("testgame");
         setAliases("tg");
@@ -35,7 +33,8 @@ public class TestGameCommand extends SpigotCommand<Player> {
 
     @Override
     public boolean send(Player player, SpigotArguments arguments) throws CommandException {
-
+        ConvoyEscort escort = new ConvoyEscort(game, player.getLocation());
+        player.sendMessage("SPAWNED!");
         return true;
     }
 

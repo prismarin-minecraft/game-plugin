@@ -22,6 +22,7 @@ import in.prismar.game.item.impl.gun.type.GunDamageType;
 import in.prismar.game.item.impl.gun.type.GunType;
 import in.prismar.game.item.model.CustomItem;
 import in.prismar.game.item.model.SkinableItem;
+import in.prismar.game.ai.hitbox.AIHitbox;
 import in.prismar.game.warzone.combatlog.npc.TemporaryNpcHitbox;
 import in.prismar.game.warzone.combatlog.npc.TemporaryNpcService;
 import in.prismar.game.tracer.BulletTracer;
@@ -370,22 +371,8 @@ public class Gun extends SkinableItem {
                             }
                         }
                     }
-
-                    double damage = 0;
                     GunDamageType damageType = getHitType(entityHit.getTarget(), entityHit.getPoint());
-                    if (damageType == GunDamageType.LEGS) {
-                        damageType = GunDamageType.LEGS;
-                        damage = legDamage;
-                    } else if (damageType == GunDamageType.BODY) {
-                        damage = bodyDamage;
-                        damageType = GunDamageType.BODY;
-                    } else if (damageType == GunDamageType.HEADSHOT) {
-                        damage = headDamage;
-                    }
-                    if (damageReducePercentage > 0) {
-                        damage -= (damage / 100) * damageReducePercentage;
-                    }
-
+                    double damage = getDamage(damageReducePercentage, damageType);
                     if (damage > 0) {
                         LivingEntity entity = (LivingEntity) entityHit.getTarget();
                         if (entity instanceof Player target) {
@@ -397,12 +384,17 @@ public class Gun extends SkinableItem {
                         entity.setVelocity(new Vector());
                         if (damageType == GunDamageType.HEADSHOT) {
                             playSound(player, GunSoundType.HEADSHOT);
-                            addStatsValue(seasonData, "headshots");
+                            if (seasonData != null) {
+                                addStatsValue(seasonData, "headshots");
+                            }
+
                         } else {
                             playSound(player, GunSoundType.HIT);
                         }
                     }
-                    addStatsValue(seasonData, "hits");
+                    if (seasonData != null) {
+                        addStatsValue(seasonData, "hits");
+                    }
                     damageReducePercentage += 30;
                 }
             } else if (hit instanceof RaytraceBlockHit blockHit) {
@@ -420,12 +412,46 @@ public class Gun extends SkinableItem {
                     blockHit.getPoint().getWorld().playSound(blockHit.getPoint(), "impact.tree", 0.35f, 1);
                 }
                 damageReducePercentage += wallbangTypes.get(blockHit.getTarget().getType());
-            } else if(hit instanceof TemporaryNpcHitbox.RaytraceNpcHit npcHit) {
+            } else if (hit instanceof TemporaryNpcHitbox.RaytraceNpcHit npcHit) {
                 TemporaryNpcService.getInstance().damage(npcHit.getTarget(), getBodyDamage());
                 playSound(player, GunSoundType.HIT);
+            } else if (hit instanceof AIHitbox.RaytraceAIHit aiHit) {
+                GunDamageType damageType = getHitType(aiHit.getTarget().asLivingEntity(), aiHit.getPoint());
+                double damage = getDamage(damageReducePercentage, damageType);
+                if (damage > 0) {
+                    LivingEntity entity = aiHit.getTarget().asLivingEntity();
+                    if (entity instanceof Player target) {
+                        GunPlayer targetGunPlayer = GunPlayer.of(target);
+                        targetGunPlayer.setLastDamageReceived(damageType);
+                    }
+                    entity.setNoDamageTicks(0);
+                    entity.damage(damage, player);
+                    entity.setVelocity(new Vector());
+                    if (damageType == GunDamageType.HEADSHOT) {
+                        playSound(player, GunSoundType.HEADSHOT);
+                    } else {
+                        playSound(player, GunSoundType.HIT);
+                    }
+                }
+                damageReducePercentage += 30;
             }
         }
         spawnParticle(game, gunPlayer, particleOrigin, bullet.getEndPoint());
+    }
+
+    private double getDamage(int damageReducePercentage, GunDamageType damageType) {
+        double damage = 0;
+        if (damageType == GunDamageType.LEGS) {
+            damage = legDamage;
+        } else if (damageType == GunDamageType.BODY) {
+            damage = bodyDamage;
+        } else if (damageType == GunDamageType.HEADSHOT) {
+            damage = headDamage;
+        }
+        if (damageReducePercentage > 0) {
+            damage -= (damage / 100) * damageReducePercentage;
+        }
+        return damage;
     }
 
 

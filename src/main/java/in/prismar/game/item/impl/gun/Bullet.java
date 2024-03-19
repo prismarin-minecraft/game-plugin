@@ -1,6 +1,10 @@
 package in.prismar.game.item.impl.gun;
 
 import in.prismar.game.item.impl.gun.hitbox.HitboxRegistry;
+import in.prismar.game.ai.AI;
+import in.prismar.game.ai.hitbox.AIHitbox;
+import in.prismar.game.ai.AIRegistry;
+import in.prismar.game.ai.DamageableAI;
 import in.prismar.game.warzone.combatlog.npc.TemporaryNpc;
 import in.prismar.game.warzone.combatlog.npc.TemporaryNpcHitbox;
 import in.prismar.game.warzone.combatlog.npc.TemporaryNpcService;
@@ -74,11 +78,11 @@ public class Bullet {
                 double dot = targetDirection.dot(direction);
                 if (dot > minDotProduct) {
                     HitboxRegistry.EntityHitbox hitbox = HITBOX_REGISTRY.getEntityHitbox(livingEntity);
-                    if(hitbox != null) {
+                    if (hitbox != null) {
                         hitboxes.add(hitbox);
                         continue;
                     }
-                    if(livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {
+                    if (livingEntity.getType() == EntityType.ZOMBIE || livingEntity.getType() == EntityType.ZOMBIE_VILLAGER || livingEntity.getType() == EntityType.SKELETON) {
                         hitboxes.add(new RaytraceEntityHitbox(entity));
                     }
                 }
@@ -98,7 +102,7 @@ public class Bullet {
 
         for (TemporaryNpc npc : TemporaryNpcService.getInstance().getNpcs().values()) {
             Location location = npc.getEyeLocation();
-            if(!origin.getWorld().getName().equals(location.getWorld().getName())) {
+            if (!origin.getWorld().getName().equals(location.getWorld().getName())) {
                 continue;
             }
             if (location.distanceSquared(origin) <= rangeSqrt) {
@@ -111,7 +115,26 @@ public class Bullet {
                     hitboxes.add(new TemporaryNpcHitbox(npc));
                 }
             }
+        }
 
+        for (AI ai : AIRegistry.getInstance().getAis()) {
+            if (ai instanceof DamageableAI damageableAI) {
+                LivingEntity livingEntity = (LivingEntity) ai.getNpc().getEntity();
+                Location location = livingEntity.getEyeLocation();
+                if (!origin.getWorld().getName().equals(location.getWorld().getName())) {
+                    continue;
+                }
+                if (location.distanceSquared(origin) <= rangeSqrt) {
+                    double deltaX = location.getX() - origin.getX();
+                    double deltaY = location.getY() - origin.getY();
+                    double deltaZ = location.getZ() - origin.getZ();
+                    Vector targetDirection = new Vector(deltaX, deltaY, deltaZ).normalize();
+                    double dot = targetDirection.dot(direction);
+                    if (dot > minDotProduct) {
+                        hitboxes.add(new AIHitbox(damageableAI));
+                    }
+                }
+            }
         }
         return hitboxes;
     }
