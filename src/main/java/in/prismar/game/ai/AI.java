@@ -19,6 +19,12 @@ public class AI {
     protected final Location startLocation;
     protected net.citizensnpcs.api.npc.NPC npc;
 
+    /**
+     * Create a new AI
+     * @param game The plugin class
+     * @param name The color name of the AI
+     * @param startLocation The location to spawn the AI
+     */
     public AI(Game game, String name,  Location startLocation) {
         this.game = game;
         this.startLocation = startLocation;
@@ -27,12 +33,16 @@ public class AI {
 
         game.getAiRegistry().register(this);
     }
-
-
     public Equipment getEquipment() {
         return this.npc.getOrAddTrait(Equipment.class);
     }
 
+    /**
+     * Set the skin of the AI
+     * @param name The name of the skin
+     * @param signature The signature of the skin
+     * @param value The value of the skin
+     */
     public void setSkin(String name, String signature, String value) {
         SkinTrait skinTrait = this.npc.getOrAddTrait(SkinTrait.class);
         if(skinTrait != null) {
@@ -40,20 +50,21 @@ public class AI {
         }
     }
 
+    /**
+     * Set the sneaking status of the AI
+     * @param sneaking The sneaking status of the AI
+     */
     public void setSneaking(boolean sneaking) {
         SneakTrait sneakTrait = this.npc.getOrAddTrait(SneakTrait.class);
         sneakTrait.setSneaking(sneaking);
     }
 
+    // Spawn the AI
     public void spawn() {
         this.npc.spawn(startLocation);
     }
 
-    public void move(Player player) {
-        this.npc.getNavigator().setTarget(player.getLocation());
-
-    }
-
+    // Despawn the AI and unregister it
     public void delete() {
         CitizensAPI.getNPCRegistry().deregister(npc);
         game.getAiRegistry().unregister(this);

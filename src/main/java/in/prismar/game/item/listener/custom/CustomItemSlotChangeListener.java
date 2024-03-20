@@ -26,7 +26,6 @@ public class CustomItemSlotChangeListener implements Listener {
 
     @EventHandler
     public void onCall(PlayerItemHeldEvent event) {
-        registry.scan(event.getPlayer());
         registry.publishEvent(event.getPlayer(), event);
     }
 }

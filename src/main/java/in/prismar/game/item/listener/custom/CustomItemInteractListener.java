@@ -25,7 +25,6 @@ public class CustomItemInteractListener implements Listener {
 
     @EventHandler
     public void onCall(PlayerInteractEvent event) {
-        registry.scan(event.getPlayer());
         registry.publishEvent(event.getPlayer(), event);
     }
 }

@@ -72,7 +72,7 @@ public class CustomItemRegistry implements CustomItemProvider {
 
     private final CustomItemReader reader;
     private final Map<String, CustomItem> items;
-    private final Map<UUID, List<CustomItemHolder>> holders;
+    private final Map<Player, List<CustomItemHolder>> holders;
     private final List<CustomItemAmmoTempCacheChecker> ammoTempCacheCheckers;
 
 
@@ -216,8 +216,8 @@ public class CustomItemRegistry implements CustomItemProvider {
 
 
     public List<CustomItemHolder> publishEvent(Player player, Object event) {
-        if (holders.containsKey(player.getUniqueId())) {
-            List<CustomItemHolder> list = holders.get(player.getUniqueId());
+        if (holders.containsKey(player)) {
+            List<CustomItemHolder> list = holders.get(player);
             for (CustomItemHolder holder : list) {
                 holder.getItem().getEventBus().publish(player, game, holder, event);
             }
@@ -227,8 +227,8 @@ public class CustomItemRegistry implements CustomItemProvider {
     }
 
     public List<CustomItemHolder> publishEvent(Player player, Class<?> eventClass, Object event) {
-        if (holders.containsKey(player.getUniqueId())) {
-            List<CustomItemHolder> list = holders.get(player.getUniqueId());
+        if (holders.containsKey(player)) {
+            List<CustomItemHolder> list = holders.get(player);
             for (CustomItemHolder holder : list) {
                 holder.getItem().getEventBus().publish(player, game, holder, eventClass, event);
             }
@@ -267,7 +267,7 @@ public class CustomItemRegistry implements CustomItemProvider {
                 items.add(new CustomItemHolder(item, stack, CustomItemHoldingType.ARMOR));
             }
         }
-        holders.put(player.getUniqueId(), items);
+        holders.put(player, items);
         return items;
     }
 

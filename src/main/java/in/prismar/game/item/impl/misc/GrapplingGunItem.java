@@ -222,6 +222,7 @@ public class GrapplingGunItem extends CustomItem {
         for (Entity entity : entry.getEnd().getWorld().getNearbyEntities(entry.getEnd(), 2, 2, 2, e -> e instanceof Sheep)) {
             entity.remove();
         }
+        entry.getTask().cancel();
     }
 
     @AllArgsConstructor

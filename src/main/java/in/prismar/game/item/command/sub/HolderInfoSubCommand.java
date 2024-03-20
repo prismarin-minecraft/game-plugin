@@ -30,7 +30,7 @@ public class HolderInfoSubCommand extends HelpSubCommand<Player> {
         player.sendMessage("§8╔═══════════════════════╗");
         player.sendMessage(" ");
         player.sendMessage(PrismarinConstants.ARROW_RIGHT + " §7Items");
-        for (CustomItemHolder holder : registry.getHolders().get(player.getUniqueId())) {
+        for (CustomItemHolder holder : registry.getHolders().get(player)) {
             player.sendMessage(PrismarinConstants.DOT + " §e" + holder.getItem().getId() + " §8| §7Type§8: §3" + holder.getHoldingType());
         }
         player.sendMessage(" ");
