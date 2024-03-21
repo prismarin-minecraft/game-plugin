@@ -64,27 +64,31 @@ public class BountyLayoutExtension implements LayoutExtension {
             }, 5, 1);
             component.locate("1UEIyjsS", DummyComponent.class).setComponent(list);
 
+            HoverComponent previousButton = component.locate("TFy9fGcZ", HoverComponent.class);
+            previousButton.setClickAction((interaction, player, primaryTrigger) -> {
+                ListComponent<Bounty> listComponent = list.locateOn(interaction);
+                if(listComponent.getPage() <= 0) {
+                    return;
+                }
+                listComponent.previousPage();
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1f);
+                updatePreviousButton(listComponent, previousButton);
+            });
+
             component.locate("MROoX9uP", HoverComponent.class).setClickAction((interaction, player, primaryTrigger) -> {
                 ListComponent<Bounty> listComponent = list.locateOn(interaction);
                 listComponent.nextPage();
+                updatePreviousButton(listComponent, previousButton);
                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1f);
             });
+        }
+    }
 
-            HoverComponent previousButton = component.locate("TFy9fGcZ", HoverComponent.class);
-            if(list.getPage() > 0) {
-                previousButton.setHidden(false);
-                previousButton.setClickAction((interaction, player, primaryTrigger) -> {
-                    ListComponent<Bounty> listComponent = list.locateOn(interaction);
-                    if(listComponent.getPage() <= 0) {
-                        return;
-                    }
-                    listComponent.previousPage();
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1f);
-                });
-            } else {
-                previousButton.setHidden(true);
-            }
-
+    private void updatePreviousButton(ListComponent<Bounty> listComponent, HoverComponent previousButton) {
+        if(listComponent.getPage() <= 0) {
+            previousButton.setHidden(true);
+        } else {
+            previousButton.setHidden(false);
         }
     }
 }

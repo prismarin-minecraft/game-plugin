@@ -1,4 +1,4 @@
-package in.prismar.game.command;
+package in.prismar.game.resourcepack;
 
 import in.prismar.api.PrismarinApi;
 import in.prismar.api.configuration.ConfigStore;
