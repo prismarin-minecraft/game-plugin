@@ -324,6 +324,7 @@ public class CustomItemRegistry implements CustomItemProvider {
         return null;
     }
 
+    @Override
     public ItemStack createItem(String id) {
         if(!existsItemById(id)) {
             return null;
